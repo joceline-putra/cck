@@ -1,0 +1,45 @@
+/* 10 09 2019 */
+:root{
+	--back-primary: #353131!important;	
+	--back-login: #0693de!important;	
+	--back-shadow: #505356!important;	
+	--back-hover:#ffffff!important;
+
+	--font-family:"Nunito Sans",sans-serif;
+	--font-family2:"Nunito Sans",sans-serif;
+	--font-size:12px!important;
+	--theme-font:white!important;
+	--border-radius:4px!important;
+
+	/*--sidebar-background-color:#505356;*/
+	--sidebar-background-color:transparent;	
+	--sidebar-font-color:white;	
+	--sidebar-font-color-hover:#70cfff;
+
+	--sidebar-font-color-submenu:white;	
+	--sidebar-font-color-hover-submenu:#70cfff;
+
+	--sidebar-font-size:14px;
+	--sidebar-font-size-submenu:13px;	
+
+	--form-background-color:#2e6e8d;
+	--form-background-color-2:#505356;	 /* Not Used */
+	--form-background-color-hover:#505356;	
+	--form-font-color:#ffffff;
+	--form-font-color-2:red;	
+	--form-font-color-hover:#4a4a4a;       
+}
+#sidebar{
+	/* background: radial-gradient(circle, rgba(54,50,50,1) 14%, rgba(255,255,255,0.5494572829131652) 50%, rgba(255,255,255,0.45702030812324934) 52%, rgba(54,50,50,1) 91%); */
+}
+.page-sidebar{
+background: rgb(53,49,49);
+background: linear-gradient(180deg, rgba(53,49,49,1) 0%, rgba(103,94,94,1) 40%, rgba(170,173,175,1) 100%);
+}
+.page-sidebar.mini .page-sidebar-wrapper > ul > li > ul.sub-menu {
+    background: var(--back-primary)!important;
+}
+.header-quick-nav{
+	background: rgb(53,49,49);
+    background: linear-gradient(90deg, rgba(53,49,49,1) 0%, rgba(103,94,94,1) 40%, rgba(170,173,175,1) 100%);
+}

@@ -1,0 +1,61 @@
+/* 10 09 2019 */
+:root{
+	--back-primary: #4b4ba3!important;	
+	--back-login: #0693de!important;	
+	--back-shadow:#42427a!important;	
+	--back-hover:#ffffff!important;
+
+	--font-family:"Nunito Sans",sans-serif;
+	--font-family2:"Nunito Sans",sans-serif;
+	--font-size:12px!important;
+	--theme-font:white!important;
+	--border-radius:4px!important;
+
+	/*--sidebar-background-color:#505356;*/
+	--sidebar-background-color:#4b4ba3;	
+	--sidebar-font-color:white;	
+	--sidebar-font-color-hover:#70cfff;
+
+	--sidebar-font-color-submenu:white;	
+	--sidebar-font-color-hover-submenu:#70cfff;
+
+	--sidebar-font-size:14px;
+	--sidebar-font-size-submenu:13px;	
+
+	--form-background-color:var(--back-primary);
+	--form-background-color-2:#e6562a!important;	 /* Not Used */
+	--form-background-color-hover:#f24a22;	
+	--form-font-color:#ffffff;
+	--form-font-color-2:var(--back-primary);	
+	--form-font-color-hover:#4a4a4a;		
+}
+
+:root-virgin{
+	/*--back-primary: #0D1F29!important;*/
+	--back-login: #771c00!important;
+	--back-primary: #771c00!important;	
+	--back-shadow: #8C2609!important;
+	--back-hover:#ffffff!important;
+	--theme-font:blue!important;
+	/*--back-primary: #f3802e!important;*/
+	/*--back-shadow: #f3802e!important;*/
+	/*--back-hover:#f14a4a!important;*/
+	/*--theme-font:#ffffff!important;*/
+	--font-family:"Nunito Sans",sans-serif;
+	--font-family2:"Nunito Sans",sans-serif;
+	/*--font-family:"Roboto",sans-serif;  */
+	--border-radius:4px!important;
+	--font-size:12px!important;
+
+	--sidebar-background-color:#771c00;
+	--sidebar-font-color:#cecece;
+	--sidebar-font-size:12px;
+	--sidebar-font-color-hover:white;
+}
+
+#sidebar{
+	/*background: linear-gradient(180deg, rgba(0,175,210,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,1) 51%, rgba(0,175,210,1) 100%);*/
+}
+.header-quick-nav{
+	/*background: linear-gradient(90deg, rgb(0 169 203) 38%, rgb(4 20 24) 100%);*/
+}
