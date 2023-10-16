@@ -1,2 +1,2 @@
 # cck
-CCK
+Cecekost.com
