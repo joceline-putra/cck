@@ -1,0 +1,29 @@
+{
+	"name": "Cece Kost",
+    "short_name": "Cece Kost",
+	"description": "Cecekost",
+	"start_url": "localhost/git/cck",
+	"background_color": "white",
+	"theme_color": "black",
+	"display": "standalone",
+	"orientation": "portrait-primary",	
+    "lang": "en-US",
+    // "shortcuts" : [
+    //     {
+    //         "name": "Point of Sales",
+    //         "url": "/pos",
+    //         "description": "Make new sales"
+    //     },
+    //     {
+    //         "name": "Dashboard",
+    //         "url": "/admin"
+    //     }
+    // ],
+	"icons": [
+		{
+			"src":"assets/core/favicon_164.png",
+			"sizes": "164x164",
+			"type": "image/png"
+		}		 
+	]
+}

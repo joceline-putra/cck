@@ -89,8 +89,7 @@
                     className: 'text-left',
                     render: function (meta, data, row) {
                         var dsp = '';
-                        dsp += '<b>' + row.branch_name + '</b><br>';
-                        dsp += '' + row.specialist_name + '';
+                        dsp += '<b>' + row.branch_name + '</b>';
                         if (row.branch_code != undefined) {
                             dsp += '<br><label class="label">' + row.branch_code + '</label>';
                         }
