@@ -348,10 +348,11 @@ class Kontak extends MY_Controller{
                             'contact_note' => $data['note']
                         );
                         */
+                        $generate_session = $this->random_session(8);
                         $params = array(
                             'contact_type' => $set_contact_type,
                             'contact_category_id' => !empty($this->input->post('categories')) ? $this->input->post('categories') : null,                    
-                            'contact_code' => !empty($this->input->post('kode')) ? $this->input->post('kode') : null,
+                            'contact_code' => !empty($this->input->post('kode')) ? $this->input->post('kode') : $generate_session,
                             'contact_name' => !empty($this->input->post('nama')) ? $this->input->post('nama') : null,
                             'contact_address' => !empty($this->input->post('alamat')) ? $this->input->post('alamat') : null,
                             'contact_company' => !empty($this->input->post('perusahaan')) ? $this->input->post('perusahaan') : null,
@@ -369,7 +370,7 @@ class Kontak extends MY_Controller{
                             'contact_fax' => !empty($this->input->post('fax')) ? $this->input->post('fax') : null,
                             'contact_npwp' => !empty($this->input->post('npwp')) ? $this->input->post('npwp') : null,
                             'contact_handphone' => !empty($this->input->post('handphone')) ? $this->input->post('handphone') : null,
-                            'contact_note' => !empty($this->input->post('note')) ? $this->input->post('note') : null,
+                            // 'contact_note' => !empty($this->input->post('note')) ? $this->input->post('note') : null,
                             'contact_account_receivable_account_id' => !empty($this->input->post('akun_piutang')) ? $this->input->post('akun_piutang') : null,
                             'contact_account_payable_account_id' => !empty($this->input->post('akun_hutang')) ? $this->input->post('akun_hutang') : null,
                             // 'contact_name_mandarin' => $this->input->post('nama_mandarin'),
@@ -542,7 +543,7 @@ class Kontak extends MY_Controller{
                             'contact_fax' => !empty($this->input->post('fax')) ? $this->input->post('fax') : null,
                             'contact_npwp' => !empty($this->input->post('npwp')) ? $this->input->post('npwp') : null,
                             'contact_handphone' => !empty($this->input->post('handphone')) ? $this->input->post('handphone') : null,
-                            'contact_note' => !empty($this->input->post('note')) ? $this->input->post('note') : null,
+                            // 'contact_note' => !empty($this->input->post('note')) ? $this->input->post('note') : null,
                             'contact_account_receivable_account_id' => !empty($this->input->post('akun_piutang')) ? $this->input->post('akun_piutang') : null,
                             'contact_account_payable_account_id' => !empty($this->input->post('akun_hutang')) ? $this->input->post('akun_hutang') : null,
                             // 'contact_name_mandarin' => $this->input->post('nama_mandarin'),

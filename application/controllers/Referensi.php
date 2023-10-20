@@ -88,6 +88,10 @@ class Referensi extends MY_Controller{
                 $data['title'] = 'Label';
                 $data['_view'] = 'layouts/admin/menu/reference/label';
                 $file_js = 'layouts/admin/menu/reference/label_js.php';
+            }else if($identity == 10){ //Room Type
+                $data['title'] = 'Jenis Kamar';
+                $data['_view'] = 'layouts/admin/menu/reference/room_type';
+                $file_js = 'layouts/admin/menu/reference/room_type_js.php';
             }
             $data['identity']   = $identity;            
         }else{
@@ -299,7 +303,30 @@ class Referensi extends MY_Controller{
                     '2' => 'ref_note'
                 );
                 $table = 'reference';
-            }             
+            }else if($identity == 10){ //Room Type
+                $set_tipe = 10;
+                $data['nama'] = !empty($data['nama']) ? $data['nama'] : null;
+                $data['keterangan'] = !empty($data['keterangan']) ? $data['keterangan'] : null;  
+                $data['status'] = !empty($data['status']) ? $data['status'] : null;                   
+
+                $params = array(
+                    'ref_type' => $identity,
+                    'ref_name' => $data['nama'],
+                    'ref_note' => $data['keterangan'],         
+                    'ref_date_created' => date("YmdHis"),
+                );
+                $params_update = array(
+                    'ref_name' => $data['nama'],
+                    'ref_note' => $data['keterangan'],  
+                    'ref_date_updated' => date("YmdHis"),
+                    'ref_flag' => $data['status'],
+                );                        
+                $columns = array(
+                    '0' => 'ref_name',
+                    '1' => 'ref_note'
+                );
+                $table = 'reference';
+            }
 
             switch($action){
                 case "load":
@@ -326,9 +353,6 @@ class Referensi extends MY_Controller{
                             $params['ref_branch_id'] = intval($session_branch_id);
                         // }
                     }
-                    // if ($this->input->post('user_role') && $this->input->post('user_role') > 0) {
-                        // $params['user_role'] = $this->input->post('user_role');
-                    // }
 
                     $datas_result = array();
                     $datas_count = $this->Referensi_model->get_all_referensis_count($params,$search);

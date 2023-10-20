@@ -3,7 +3,7 @@
         var identity = "<?php echo $identity; ?>";
         var menu_link = "<?php echo $_view; ?>";
         $(".nav-tabs").find('li[class="active"]').removeClass('active');
-        $(".nav-tabs").find('li[data-name="' + menu_link + '"]').addClass('active');
+        $(".nav-tabs").find('li[data-name="reference/unit"]').addClass('active');
 
         // console.log(menu_link);
         var url = "<?= base_url('konfigurasi/manage'); ?>";

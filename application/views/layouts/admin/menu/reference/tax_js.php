@@ -2,7 +2,7 @@
 $(document).ready(function() {
     let menu_link = "<?php echo $_view;?>";
     $(".nav-tabs").find('li[class="active"]').removeClass('active');
-    $(".nav-tabs").find('li[data-name="' + menu_link + '"]').addClass('active');
+    $(".nav-tabs").find('li[data-name="reference/tax"]').addClass('active');
         
     // console.log(identity);
     let url = "<?= base_url('tax'); ?>";  

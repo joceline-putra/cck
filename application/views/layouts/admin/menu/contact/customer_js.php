@@ -105,15 +105,15 @@
                         dsp += 'data-nama="' + row.contact_name + '" data-kode="' + row.contact_code + '" data-id="' + data + '" data-flag="' + row.contact_flag + '">';
                         dsp += row.contact_name + '</a>';
     
-                        if (row.contact_company != undefined) {
-                            dsp += '<br>' + row.contact_company;
-                        }else{
-                            dsp += '<br>-';
-                        }
+                        // if (row.contact_company != undefined) {
+                        //     dsp += '<br>' + row.contact_company;
+                        // }else{
+                        //     dsp += '<br>-';
+                        // }
 
-                        if (row.contact_parent_id != undefined) {
-                            dsp += '<br><label class="label" style="background-color:#33b0b6;color:white;padding:1px 4px;">' + row.contact_parent_name+'</label>';
-                        }                                        
+                        // if (row.contact_parent_id != undefined) {
+                        //     dsp += '<br><label class="label" style="background-color:#33b0b6;color:white;padding:1px 4px;">' + row.contact_parent_name+'</label>';
+                        // }                                        
                         return dsp;
                     }
                 }, {
@@ -578,11 +578,11 @@
             var type_karyawan = ($("#checkbox_karyawan").is(':checked') == true) ? 1 : 0;
 
             if (next == true) {
-                if ($("input[id='kode']").val().length == 0) {
-                    notif(0, 'Kode wajib diisi');
-                    $("#kode").focus();
-                    next = false;
-                }
+                // if ($("input[id='kode']").val().length == 0) {
+                //     notif(0, 'Kode wajib diisi');
+                //     $("#kode").focus();
+                //     next = false;
+                // }
             }
 
             if (next == true) {
@@ -602,11 +602,11 @@
             }
 
             if (next == true) {
-                if ($("textarea[id='alamat']").val().length == 0) {
-                    notif(0, 'Alamat wajib diisi');
-                    $("#alamat").focus();
-                    next = false;
-                }
+                // if ($("textarea[id='alamat']").val().length == 0) {
+                //     notif(0, 'Alamat wajib diisi');
+                //     $("#alamat").focus();
+                //     next = false;
+                // }
             }
 
             if (next == true) {
@@ -925,9 +925,9 @@
             // });
 
             if (kode.val().length == 0) {
-                notif(0, 'Kode wajib diisi');
-                kode.focus();
-                next = false;
+                // notif(0, 'Kode wajib diisi');
+                // kode.focus();
+                // next = false;
             }
 
 
@@ -1586,7 +1586,7 @@
         //Attr Input yang perlu di setel
         var form = '#form-master';
         var attrInput = [
-            "kode",
+            // "kode",
             "nama",
             "perusahaan",
             "telepon_1",

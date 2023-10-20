@@ -130,7 +130,7 @@
                                                 <div class="col-md-4 col-sm-12 col-xs-12">
                                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 padding-remove-left prl-2">
                                                         <div class="form-group">
-                                                            <label class="form-label">Kode *</label>
+                                                            <label class="form-label">Kode</label>
                                                             <input id="kode" name="kode" type="text" value="" class="form-control" readonly='true'/>
                                                         </div>
                                                     </div>
@@ -178,7 +178,7 @@
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> 
                                                         <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 padding-remove-left">
                                                             <div class="form-group">
-                                                                <label class="form-label">Telepon *</label>
+                                                                <label class="form-label">Telepon</label>
                                                                 <input id="telepon_1" name="telepon_1" type="text" value="" class="form-control" readonly='true'/>
                                                             </div>                          
                                                         </div>
@@ -205,16 +205,16 @@
                                                     -->                                                   
                                                     <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">
-                                                            <label class="form-label">Alamat *</label>
+                                                            <label class="form-label">Alamat</label>
                                                             <textarea id="alamat" name="alamat" type="text" value="" class="form-control" readonly='true' rows="4"/></textarea>
                                                         </div>
                                                     </div>                                                                                                          
-                                                    <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                    <!-- <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Perusahaan</label>
                                                             <input id="perusahaan" name="perusahaan" type="text" value="" class="form-control" readonly='true'/>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="col-md-4 col-sm-12 col-xs-12">
                                                     <!--
@@ -236,7 +236,7 @@
                                                     <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">                                                    
                                                         <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-left">
                                                             <div class="form-group">
-                                                                <label class="form-label">Aturan Termin (Penjualan)</label>
+                                                                <label class="form-label" style="color:red;">Aturan Termin (Penjualan)</label>
                                                                 <select id="contact_termin" name="contact_termin" class="form-control">
                                                                     <!-- <option value="0">-- Pilih Akun --</option> -->                                
                                                                 </select>
@@ -244,25 +244,25 @@
                                                         </div>    
                                                         <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                                             <div class="form-group">
-                                                                <label class="form-label">Limit Piutang</label>
+                                                                <label class="form-label" style="color:red;">Limit Piutang</label>
                                                                 <input id="contact_receivable_limit" name="contact_receivable_limit" type="text" value="" class="form-control" readonly='true'/>
                                                             </div>
                                                         </div>                                                     
                                                     </div>    
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                                    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Sales / Karyawan</label>
                                                             <select id="contact_parent_id" name="contact_parent_id" class="form-control" disabled readonly>
                                                                 <option value="0">Pilih</option>
                                                             </select>
                                                         </div>
-                                                    </div>                    
-                                                    <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                    </div>                     -->
+                                                    <!-- <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Catatan</label>
                                                             <textarea id="note" name="note" type="text" value="" class="form-control" readonly='true' rows="4"/></textarea>
                                                         </div>
-                                                    </div> 
+                                                    </div>  -->
                                                     <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Status</label>
@@ -283,7 +283,7 @@
                                                     </div>                                
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <div class="form-group">
-                                                            <label class="form-label">Akun Hutang *</label>
+                                                            <label class="form-label" style="color:red;">Akun Hutang *</label>
                                                             <select id="account_payable" name="account_payable" class="form-control">
                                                                 <!-- <option value="0">-- Pilih Akun --</option> -->
                                                                 <?php echo '<option value="' . $account_payable['account_id'] . '">' . $account_payable['account_code'] . ' - ' . $account_payable['account_name'] . '</option>'; ?>                                
@@ -292,7 +292,7 @@
                                                     </div>
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <div class="form-group">
-                                                            <label class="form-label">Akun Piutang *</label>
+                                                            <label class="form-label" style="color:red;">Akun Piutang *</label>
                                                             <select id="account_receivable" name="account_receivable" class="form-control">
                                                                 <!-- <option value="0">-- Pilih Akun --</option> -->
                                                                 <?php echo '<option value="' . $account_receivable['account_id'] . '">' . $account_receivable['account_code'] . ' - ' . $account_receivable['account_name'] . '</option>'; ?>                                
@@ -321,7 +321,7 @@
                                                     </div>  
                                                     <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">                          
-                                                            <label>Fungsi Kontak Sebagai</label>                          
+                                                            <label style="color:red;">Fungsi Kontak Sebagai</label>                          
                                                             <!-- <label><input id="checkbox_supplier" type="checkbox"  id="checkbox_supplier" value="1">&nbsp;<?php #echo $title; ?></label> -->
                                                             <!-- <label><input id="checkbox_customer" type="checkbox"  id="checkbox_customer" value="2">&nbsp;Customer</label> -->
                                                             <!-- <label><input id="checkbox_karyawan" type="checkbox"  id="checkbox_karyawan" value="3">&nbsp;Karyawan</label> -->

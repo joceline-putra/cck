@@ -52,26 +52,35 @@ class Produk extends MY_Controller{
 
         $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
 
-        if($identity == 1){ //Barang & Produk
+        if($identity == 1){ //Makanan -- Barang & Produk
             $data['account_purchase'] = $this->get_account_map_for_transaction($session_branch_id,1,1); //Pembelian
             $data['account_sales'] = $this->get_account_map_for_transaction($session_branch_id,2,1); //Penjualan
             $data['account_inventory'] = $this->get_account_map_for_transaction($session_branch_id,3,1); //Inventory            
             // $data['satuan'] = $this->Satuan_model->get_all_satuan();  
 
             $data['identity'] = 1;
-            $data['title'] = 'Produk';
+            $data['title'] = 'Makanan';
             $data['_view'] = 'layouts/admin/menu/product/product';
             $file_js = 'layouts/admin/menu/product/product_js.php';            
-        }
-        else if($identity == 3){ //Inventaris & Alat Kesehatan
+        }else if($identity == 2){ //Kamar -- Jasa // Move to product_type = 2
+            $data['account_purchase'] = $this->get_account_map_for_transaction($session_branch_id,1,1); //Pembelian
+            $data['account_sales'] = $this->get_account_map_for_transaction($session_branch_id,2,1); //Penjualan
+
+            // $data['satuan'] = $this->Satuan_model->get_all_satuan();  
+            $data['identity'] = 2;
+            $data['title'] = 'Kamar';
+            $data['_view'] = 'layouts/admin/menu/product/room';
+            $file_js = 'layouts/admin/menu/product/room_js.php';
+        }        
+        else if($identity == 3){ //Inventaris
             $data['satuan'] = $this->Satuan_model->get_all_satuan();              
             $data['referensi'] = $this->Referensi_model->get_all_referensi(array('ref_type'=>6));
 
             $data['identity'] = 3;            
-            $data['title'] = 'Inventaris';
+            $data['title'] = 'Aset';
             $data['_view'] = 'layouts/admin/menu/product/asset';
             $file_js = 'layouts/admin/menu/product/asset_js.php';
-        }        
+        }
         /*
             else if($identity == 2){ //Jasa // Move to product_type = 2
                 $data['account_purchase'] = $this->get_account_map_for_transaction($session_branch_id,1,1); //Pembelian

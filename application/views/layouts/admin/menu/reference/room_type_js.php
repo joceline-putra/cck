@@ -1,10 +1,9 @@
-
 <script>
     $(document).ready(function () {
         var identity = "<?php echo $identity; ?>";
         var menu_link = "<?php echo $_view; ?>";
         $(".nav-tabs").find('li[class="active"]').removeClass('active');
-        $(".nav-tabs").find('li[data-name="reference/practice_type"]').addClass('active');
+        $(".nav-tabs").find('li[data-name="reference/room_type"]').addClass('active');
 
         // console.log(identity);
         var url = "<?= base_url('referensi/manage'); ?>";
@@ -40,17 +39,14 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Kode", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Nama", "searchable": true, "orderable": true},
-                {"targets": 2, "title": "Keterangan", "searchable": true, "orderable": true},
-                {"targets": 3, "title": "Action", "searchable": false, "orderable": false}
+                {"targets": 0, "title": "Nama", "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Keterangan", "searchable": true, "orderable": true},
+                {"targets": 2, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
                 [0, 'asc']
             ],
             "columns": [{
-                    'data': 'ref_code'
-                }, {
                     'data': 'ref_name'
                 }, {
                     'data': 'ref_note'
@@ -66,13 +62,13 @@
                         dsp += '</button>';
 
                         if (parseInt(row.ref_flag) === 1) {
-                            dsp += '&nbsp;<button class="btn btn-set-active btn-mini btn-primary"';
-                            dsp += 'data-nama="' + row.ref_name + '" data-kode="' + row.ref_code + '" data-id="' + data + '" data-flag="' + row.ref_flag + '">';
-                            dsp += '<span class="fas fa-check-square primary"></span></button>';
+                            dsp += '&nbsp;<button class="btn btn-set-active btn-mini btn-success"';
+                            dsp += 'data-nama="' + row.ref_name + '" data-id="' + data + '" data-flag="' + row.ref_flag + '">';
+                            dsp += '<span class="fas fa-check-square primary"></span> Aktif</button>';
                         } else {
                             dsp += '&nbsp;<button class="btn btn-set-active btn-mini btn-danger"';
-                            dsp += 'data-nama="' + row.ref_name + '" data-kode="' + row.ref_code + '" data-id="' + data + '" data-flag="' + row.ref_flag + '">';
-                            dsp += '<span class="fas fa-times danger"></span></button>';
+                            dsp += 'data-nama="' + row.ref_name + '" data-id="' + data + '" data-flag="' + row.ref_flag + '">';
+                            dsp += '<span class="fas fa-times danger"></span> Nonaktif</button>';
                         }
 
                         return dsp;
@@ -80,7 +76,7 @@
                 }]
         });
 
-//Datatable Config
+        //Datatable Config
         $("#table-data_filter").css('display', 'none');
         $("#table-data_length").css('display', 'none');
         $("#filter_length").on('change', function (e) {
@@ -112,15 +108,15 @@
             e.preventDefault();
             var next = true;
 
-            var kode = $("#form-master input[name='kode']");
+            // var kode = $("#form-master input[name='kode']");
             var nama = $("#form-master input[name='nama']");
 
             if (next == true) {
-                if ($("input[id='kode']").val().length == 0) {
-                    notif(0, 'Kode wajib diisi');
-                    $("#kode").focus();
-                    next = false;
-                }
+                // if ($("input[id='kode']").val().length == 0) {
+                //     notif(0, 'Kode wajib diisi');
+                //     $("#kode").focus();
+                //     next = false;
+                // }
             }
 
             if (next == true) {
@@ -131,12 +127,13 @@
                 }
             }
 
+
             if (next == true) {
                 var prepare = {
                     tipe: identity,
-                    kode: $("input[id='kode']").val(),
+                    // kode: $("input[id='kode']").val(),
                     nama: $("input[id='nama']").val(),
-                    keterangan: $("textarea[id='keterangan']").val(),
+                    keterangan: $("input[id='keterangan']").val(),
                     status: $("select[id='status']").find(':selected').val()
                 }
                 var prepare_data = JSON.stringify(prepare);
@@ -169,12 +166,13 @@
         // Edit Button
         $(document).on("click", ".btn-edit", function (e) {
             formMasterSetDisplay(0);
-            $("#form-master input[name='kode']").attr('readonly', true);
+            // $("#form-master input[name='kode']").attr('readonly', true);
 
             e.preventDefault();
             var id = $(this).data("id");
             var data = {
                 action: 'read',
+                tipe: identity,
                 id: id
             }
             $.ajax({
@@ -189,9 +187,9 @@
                         activeTab('tab1'); // Open/Close Tab By ID
                         // notif(1,d.result.id);ss
                         $("#form-master input[name='id_document']").val(d.result.ref_id);
-                        $("#form-master input[name='kode']").val(d.result.ref_code);
+                        // $("#form-master input[name='kode']").val(d.result.ref_code);
                         $("#form-master input[name='nama']").val(d.result.ref_name);
-                        $("#form-master textarea[name='keterangan']").val(d.result.ref_note);
+                        $("#form-master input[name='keterangan']").val(d.result.ref_note);
                         $("#form-master select[name='status']").val(d.result.ref_flag).trigger('change');
 
                         $("#btn-new").hide();
@@ -214,7 +212,7 @@
             e.preventDefault();
             var next = true;
             var id = $("#form-master input[name='id_dokumen']").val();
-            var kode = $("#form-master input[name='kode']");
+            // var kode = $("#form-master input[name='kode']");
             var nama = $("#form-master input[name='nama']");
 
             if (id == '') {
@@ -222,11 +220,11 @@
                 next = false;
             }
 
-            if (kode.val().length == 0) {
-                notif(0, 'Kode wajib diisi');
-                kode.focus();
-                next = false;
-            }
+            // if (kode.val().length == 0) {
+                // notif(0, 'Kode wajib diisi');
+                // kode.focus();
+                // next = false;
+            // }
 
             if (nama.val().length == 0) {
                 notif(0, 'Nama wajib diisi');
@@ -238,9 +236,9 @@
                 var prepare = {
                     tipe: identity,
                     id: $("input[id=id_document]").val(),
-                    kode: $("input[id='kode']").val(),
+                    // kode: $("input[id='kode']").val(),
                     nama: $("input[id='nama']").val(),
-                    keterangan: $("textarea[id='keterangan']").val(),
+                    keterangan: $("input[id='keterangan']").val(),
                     status: $("select[id='status']").find(':selected').val()
                 }
                 var prepare_data = JSON.stringify(prepare);
@@ -280,7 +278,7 @@
         $(document).on("click", ".btn-delete", function () {
             event.preventDefault();
             var id = $(this).attr("data-id");
-            var kode = $(this).attr("data-kode");
+            // var kode = $(this).attr("data-kode");
             var user = $(this).attr("data-nama");
             $.confirm({
                 title: 'Hapus!',
@@ -332,7 +330,7 @@
                 var set_flag = 1;
                 var msg = 'aktifkan';
             }
-            var kode = $(this).attr("data-kode");
+            // var kode = $(this).attr("data-kode");
             var nama = $(this).attr("data-nama");
             $.confirm({
                 title: 'Set Status',
@@ -349,10 +347,11 @@
                         action: function () {
                             var data = {
                                 action: 'set-active',
+                                tipe: identity,
                                 id: id,
                                 flag: set_flag,
                                 nama: nama,
-                                kode: kode
+                                // kode: kode
                             }
                             $.ajax({
                                 type: "POST",
@@ -413,8 +412,9 @@
         //Attr Input yang perlu di setel
         var form = '#form-master';
         var attrInput = [
-            "kode",
-            "nama"
+            // "kode",
+            "nama",
+            "keterangan"
         ];
 
         for (var i = 0; i <= attrInput.length; i++) {
@@ -422,12 +422,10 @@
         }
 
         // Attr Textarea yang perlu di setel
-        var attrText = [
-            "keterangan"
-        ];
-        for (var i = 0; i <= attrText.length; i++) {
-            $("" + form + " textarea[name='" + attrText[i] + "']").attr('readonly', flag);
-        }
+        // var attrText = [
+        //   "keterangan"
+        // ];
+        // for (var i=0; i<=attrText.length; i++) { $(""+ form +" textarea[name='"+attrText[i]+"']").attr('readonly',flag); }
 
         //Attr Select yang perlu di setel
         var atributSelect = [

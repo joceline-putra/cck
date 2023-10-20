@@ -145,8 +145,7 @@
                                                 <div class="form-group">
                                                     <label class="form-label" style="color:red;">Jenis <?php echo $title; ?> *</label>
                                                     <select id="product_type" name="product_type" class="form-control" disabled readonly>
-                                                        <option value="1" selected>Barang</option>
-                                                        <!-- <option value="2">Jasa</option> -->
+                                                        <option value="2" selected>Jasa</option>
                                                     </select>
                                                 </div>
                                             </div>									
@@ -215,6 +214,15 @@
                                                 <div class="form-group">
                                                     <label class="form-label" style="color:red;">Kategori *</label>
                                                     <select id="categories" name="categories" class="form-control" disabled readonly>
+                                                        <!-- <option value="0">-- Pilih --</option> -->
+                                                        <option value="2">Kamar</option>                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                <div class="form-group">                        
+                                                    <label class="form-label" style="color:red;">Jenis Kamar *</label>
+                                                    <select id="referensi" name="referensi" class="form-control" disabled readonly>
                                                         <option value="0">-- Pilih --</option>
                                                     </select>
                                                 </div>
@@ -293,7 +301,7 @@
                                                     </div>
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <div class="form-group">
-                                                            <label class="form-label">Akun Persediaan</label>
+                                                            <label class="form-label" style="color:red;">Akun Persediaan</label>
                                                             <select id="account_inventory" name="account_inventory" class="form-control" disabled>
                                                                 <?php echo '<option value="' . $account_inventory['account_id'] . '">' . $account_inventory['account_code'] . ' - ' . $account_inventory['account_name'] . '</option>'; ?>     
                                                             </select>
@@ -507,8 +515,8 @@
                                             <label class="form-label" style="color:red;">Jenis</label>
                                             <select id="filter_type" name="filter_type" class="form-control">
                                                 <!-- <option value="0">Semua</option> -->
-                                                <option value="1">Barang</option>
-                                                <!-- <option value="2">Jasa</option>                                                                                                 -->
+                                                <!-- <option value="1">Barang</option> -->
+                                                <option value="2">Jasa</option>                                                                                                
                                             </select>
                                         </div>
                                     </div>
@@ -517,7 +525,7 @@
                                             <label class="form-label" style="color:red;">Kategori</label>
                                             <select id="filter_categories" name="filter_categories" class="form-control">
                                                 <!-- <option value="0">Semua</option> -->
-                                                <option value="1">Makanan</option>                                                
+                                                <option value="2">Kamar</option>                                                
                                             </select>
                                         </div>
                                     </div>

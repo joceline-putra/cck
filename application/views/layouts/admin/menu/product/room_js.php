@@ -6,7 +6,7 @@
         var identity = "<?php echo $identity; ?>";
         var menu_link = "<?php echo $_view; ?>";
         $(".nav-tabs").find('li[class="active"]').removeClass('active');
-        $(".nav-tabs").find('li[data-name="product/product"]').addClass('active');
+        $(".nav-tabs").find('li[data-name="product/room"]').addClass('active');
 
         //Nav Tabs Resep & Price    
         // $(".nav-tabs-detail").find('li[class="active"]').removeClass('active');
@@ -33,7 +33,7 @@
             url: url_image,
         });
         
-        $("select").select2();
+        // $("select").select2();
         $(".date").datepicker({
             // defaultDate: new Date(),
             format: 'yyyy-mm-dd',
@@ -329,7 +329,7 @@
                         search: params.term,
                         tipe: 1, //1=Produk, 2=News
                         source: 'categories',
-                        search: 'Makanan'                        
+                        search: 'Kamar'                        
                     }
                     return query;
                 },
@@ -358,7 +358,7 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        tipe: 3, //1=Produk, 2=News
+                        tipe: 10, //1=Produk, 2=News
                         source: 'references'
                     }
                     return query;
@@ -484,7 +484,7 @@
                         search: params.term,
                         tipe: 1, //1=Produk, 2=News
                         source: 'categories',
-                        search: 'Makanan'
+                        search: 'Kamar'                        
                     }
                     return query;
                 },
@@ -1956,14 +1956,10 @@
             "satuan",
             "status",
             "categories",
-            // "manufacture",
             "referensi",
             "product_type",
-                    // "with_stock",
-                    // "account_buy",
-                    // "account_sell"
         ];
-        for (var i = 0; i <= atributSelect.length; i++) {
+        for (var i = 0; i <= atributSelect.lengthcategories; i++) {
             $("" + form + " select[name='" + atributSelect[i] + "']").attr('disabled', flag);
         }
     }
