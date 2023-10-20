@@ -649,8 +649,9 @@
                 form.append('email_1', $('#email_1').val());
                 form.append('alamat', $('#alamat').val());
                 form.append('status', $('#status').find(':selected').val());
-                form.append('specialist', $('#specialist').find(':selected').val());
-                form.append('user', $('#user').find(':selected').val());
+                // form.append('specialist', $('#specialist').find(':selected').val());
+                form.append('specialist', 1);                
+                // form.append('user', $('#user').find(':selected').val());
                 form.append('provinsi', $('#provinsi').find(':selected').val());
                 form.append('kota', $('#kota').find(':selected').val());
                 form.append('kecamatan', $('#kecamatan').find(':selected').val());
@@ -905,12 +906,12 @@
                 next = false;
             }
 
-            if (next == true) {
-                if ($("select[id='specialist']").find(":selected").val() == 0) {
-                    notif(0, 'Jenis usaha harus diisi');
-                    next = false;
-                }
-            }
+            // if (next == true) {
+            //     if ($("select[id='specialist']").find(":selected").val() == 0) {
+            //         notif(0, 'Jenis usaha harus diisi');
+            //         next = false;
+            //     }
+            // }
 
             if (next == true) {
                 /*
@@ -978,11 +979,11 @@
                 form.append('email_1', $('#email_1').val());
                 form.append('alamat', $('#alamat').val());
                 form.append('status', $('#status').find(':selected').val());
-                form.append('specialist', $('#specialist').find(':selected').val());
+                // form.append('specialist', $('#specialist').find(':selected').val());
                 form.append('provinsi', $('#provinsi').find(':selected').val());
                 form.append('kota', $('#kota').find(':selected').val());
                 form.append('kecamatan', $('#kecamatan').find(':selected').val());
-                form.append('user', $('#user').find(':selected').val());
+                // form.append('user', $('#user').find(':selected').val());
                 // form.append('with_stock', $('#with_stock').find(':selected').val());
                 // form.append('with_journal', $('#with_journal').find(':selected').val());
                 form.append('upload1', $("#files_preview").attr('data-save-img'));

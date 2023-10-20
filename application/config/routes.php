@@ -50,10 +50,11 @@ $route['search']                = "search/index";
 	$route['product/service'] 				= "produk/pages/2";
 	$route['product/asset'] 				= "produk/pages/3";
 	// $route['product/tindakan']	 		= "produk/pages/4"; //Deprecated
-	$route['product/laboratory'] 			= "produk/pages/5";
-	$route['product/lain'] 					= "produk/pages/6";
+	// $route['product/laboratory'] 			= "produk/pages/5";
+	// $route['product/lain'] 					= "produk/pages/6";
 	$route['product/print'] 				= "produk/prints";    
-	$route['product/voucher'] 				= "voucher";    	
+	$route['product/voucher'] 				= "voucher"; 
+	$route['product/room'] 					= "room"; 	   	
 
 	$route['reference']						= "referensi";
 	$route['reference/diagnose'] 			= "referensi/pages/1";
@@ -257,10 +258,9 @@ $route['search']                = "search/index";
 	// $route['product'] 
          
 /* Notify */
-	$route['notify/bank'] 					= "notify/pages/1";
-	$route['notify/mutation'] 				= "notify/pages/2"; 
-	$route['notify/balance'] 				= "notify/pages/3";
-	$route['notify/deposit'] 				= "notify/pages/4";            
-
+	// $route['notify/bank'] 					= "notify/pages/1";
+	// $route['notify/mutation'] 				= "notify/pages/2"; 
+	// $route['notify/balance'] 				= "notify/pages/3";
+	// $route['notify/deposit'] 				= "notify/pages/4";           
 /* Minio */
-	$route['minio/shortlink'] 					= "minio";    
+	// $route['minio/shortlink'] 					= "minio";    

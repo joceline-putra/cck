@@ -160,17 +160,9 @@
                                                                     <label class="form-label">Nama <?php echo $title; ?> / Perusahaan *</label>
                                                                     <input id="nama" name="nama" type="text" value="" class="form-control" readonly='true'/>
                                                                 </div>
-                                                            </div>                         
-                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">User Penanggung Jawab</label>
-                                                                    <select id="user" name="user" class="form-control" disabled readonly>
-                                                                        <option value="0">-- Pilih / Cari --</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>                                                           
+                                                            </div>                                               
                                                         </div>
-                                                        <!--
+                                                        <!--        
                                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                             <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-left">
                                                                 <div class="form-group">
