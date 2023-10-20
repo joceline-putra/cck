@@ -4,26 +4,26 @@
             <span class="fas fa-file"></span> Statistik
         </a>
     </li> -->
-    <?php
-    $ng = $session['user_data']['menu_access'];
-    foreach($ng as $b){
-        if($b['menu_group_id'] == 40){
-            foreach($b['sub_menu'] as $n){
-                $navigation_url = base_url() . $n['menu_link'];
-                if($n['user_menu_flag'] == 1){
-                    echo '<li class="" data-name="' . $n['menu_link'] . '">';
-                        echo '<a href="' . $navigation_url . '">';
-                            echo '<span class="fas fa-file-alt"></span>&nbsp;' . $n['menu_name'];
-                        echo '</a>';
-                    echo '</li>';            
-                }
-            }            
+    <?php 
+    foreach($session['user_data']['menu_access'] as $i):
+
+        if($i['menu_group_id'] == 40){
+            foreach($i['sub_menu'] as $v){
+                $menu_icon = !empty($v['menu_icon']) ? $v['menu_icon'] : 'fas fa-folder-open';
+                echo '
+                    <li class="" data-name="'.$v['menu_link'].'">
+                        <a href="'.base_url($v['menu_link']).'">
+                            <span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
+                        </a>
+                    </li>                
+                ';          
+            }
         }
-    }
-    ?>    		
+    endforeach;
+    ?>			
 	<li class="" data-name="finance/prepaid_expense">
 		<a href="<?php echo base_url('finance/prepaid_expense'); ?>">
-			<span class="fas fa-file-alt"></span> Down Payment Pembelian
+			<span class="fas fa-folder-open"></span> Down Payment Pembelian
 		</a>
 	</li>    		
     <!--

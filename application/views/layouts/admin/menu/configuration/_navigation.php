@@ -5,46 +5,41 @@
         </a>
     </li> -->   
     <?php 
-    if($session['user_data']['user_group_id'] == 1){
-    ?> 
-    <li class="" data-name="configuration/menu">
-        <a href="<?php echo base_url('configuration/menu'); ?>">
-            <span class="fas fa-vials"></span> Menu
-        </a>
-    </li>
-    <li class="" data-name="configuration/account">
-        <a href="<?php echo base_url('configuration/account'); ?>">
-            <span class="fas fa-balance-scale"></span> Akun Perkiraan
-        </a>
-    </li>
-    <li class="" data-name="configuration/mapping">
-        <a href="<?php echo base_url('configuration/account_map'); ?>">
-            <span class="fas fa-swatchbook"></span> Pemetaan Akun
-        </a>
-    </li>
-    <?php 
-    }
+    foreach($session['user_data']['menu_access'] as $i):
+
+        if($i['menu_group_id'] == 49){
+            foreach($i['sub_menu'] as $v){
+                $menu_icon = !empty($v['menu_icon']) ? $v['menu_icon'] : 'fas fa-file';
+
+                //Root Only has MENU
+                if(($v['menu_id'] == 21) and ($session['user_data']['user_group_id'] == 1)){
+                    echo '
+                        <li class="" data-name="'.$v['menu_link'].'">
+                            <a href="'.base_url($v['menu_link']).'">
+                                <span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
+                            </a>
+                        </li>                
+                    ';
+                }else{
+                    echo '
+                        <li class="" data-name="'.$v['menu_link'].'">
+                            <a href="'.base_url($v['menu_link']).'">
+                                <span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
+                            </a>
+                        </li>                
+                    ';                    
+                    if($v['menu_id'] == 30){ // Akun Perkiraan -> Pemetaan Akun
+                        echo '
+                            <li class="" data-name="configuration/mapping">
+                                <a href="'.base_url('configuration/account_map').'">
+                                    <span class="fas fa-swatchbook"></span> Pemetaan Akun
+                                </a>
+                            </li>                
+                        ';
+                    }
+                }
+            }
+        }
+    endforeach;
     ?>
-    <li class="" data-name="configuration/branch">
-        <a href="<?php echo base_url('configuration/branch'); ?>">
-            <span class="fas fa-archway"></span> Cabang
-        </a>
-    </li>				
-    <li class="" data-name="user">
-        <a href="<?php echo base_url('user'); ?>">
-            <span class="fas fa-diagnoses"></span> User
-        </a>
-    </li>	
-    <?php
-    /*
-      foreach($navigation as $n):
-      $navigation_url = base_url().$n['menu_link'];
-      echo '<li class="" data-name="'.$n['menu_link'].'">';
-      echo '<a href="'.$navigation_url.'">';
-      echo '<span class="fas fa-file-alt"></span>&nbsp;'.$n['menu_name'];
-      echo '</a>';
-      echo '</li>';
-      endforeach;
-     */
-    ?>                             
 </ul>
