@@ -57,7 +57,7 @@ class Login extends My_Controller{
         //Get Branch
         // $get_branch = $this->Branch_model->get_branch(1);
         // $this->app_name = $get_branch['branch_name'];
-        $this->app_name     = 'Cloud System';            
+        $this->app_name     = 'Cloud System';
         $this->app_url      = site_url();  
         $this->package_id   = 3;
         $this->package_name = 'Enterprise';
@@ -1630,6 +1630,9 @@ class Login extends My_Controller{
     }
     function whatsapp_template($action, $user_id){
         $next = true;
+        $get_branch = $this->Branch_model->get_branch(1);
+        $this->app_name = $get_branch['branch_name'];
+
         switch($action){
             case "register-and-confirmation-code": die;
                 $get_user = $this->User_model->get_user($user_id);
@@ -1700,8 +1703,8 @@ class Login extends My_Controller{
                 $text .= $this->app_url.'password/recovery/'.$get_user['user_activation_code'].$get_user['user_session']."\r\n\r\n";
                 // $text .= "Kode OTP:"."\r\n";
                 // $text .= "*".$get_user['user_activation_code']."*"."\r\n\r\n";
-                $text .= "📌 Abaikan jika bukan anda, seseorang mungkin mencoba masuk menggunakan akun anda."."\r\n";
-                // $text .= "Mohon segera ganti password anda secara berkala";             
+                $text .= "📌 Abaikan jika bukan anda, seseorang mungkin mencoba masuk menggunakan akun anda."."\r\n\r\n";
+                $text .= "Jika tautan tidak dapat diklik, mohon balas pesan ini dengan kata *ok*";             
                 break;
             case "lost-password-success-recovery":
                 $get_user = $this->User_model->get_user($user_id);                
