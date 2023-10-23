@@ -47,14 +47,13 @@ $route['search']                = "search/index";
 	$route['product/product'] 				= "produk/pages/1";
 	// $route['product/goods'] 				= "produk/pages/1";
 	// $route['product/properti'] 			= "produk/pages/1";	//BestPro
-	// $route['product/service'] 				= "produk/pages/2";
+	$route['product/service'] 				= "produk/pages/2";
 	$route['product/asset'] 				= "produk/pages/3";
 	// $route['product/tindakan']	 		= "produk/pages/4"; //Deprecated
-	// $route['product/laboratory'] 			= "produk/pages/5";
-	// $route['product/lain'] 					= "produk/pages/6";
+	$route['product/laboratory'] 			= "produk/pages/5";
+	$route['product/lain'] 					= "produk/pages/6";
 	$route['product/print'] 				= "produk/prints";    
-	$route['product/voucher'] 				= "voucher"; 
-	$route['product/room'] 					= "produk/pages/2"; //Room	   	
+	$route['product/voucher'] 				= "voucher";    	
 
 	$route['reference']						= "referensi";
 	$route['reference/diagnose'] 			= "referensi/pages/1";
@@ -63,7 +62,6 @@ $route['search']                = "search/index";
 	$route['reference/room'] 				= "referensi/pages/7";
 	$route['reference/date'] 				= "referensi/pages/8";	
 	$route['reference/label'] 				= "referensi/pages/9";
-    $route['reference/room_type'] 			= "referensi/pages/10";		
 	$route['reference/printer'] 			= "printer";	
 	$route['reference/unit'] 				= "konfigurasi/pages/1";
     $route['reference/tax'] 			    = "tax";	
@@ -105,8 +103,8 @@ $route['search']                = "search/index";
 	$route['sales/return'] 					= "transaksi/pages/4";
 	$route['sales/return/new'] 				= "transaksi/action/4/create";	
 	$route['sales/pos']			 			= "order/pages/222";
-	$route['sales/pos2']			 		= "pos";
-	// $route['sales/pos3']			 		= "pos";    
+	$route['sales/pos2']			 		= "pos2";
+	$route['sales/pos3']			 		= "pos3";    
 
 	// $route['checkup']					= "order/pages/56"; UI Bagus
 	// $route['checkup/medicine']			= "order/pages/5";
@@ -259,9 +257,10 @@ $route['search']                = "search/index";
 	// $route['product'] 
          
 /* Notify */
-	// $route['notify/bank'] 					= "notify/pages/1";
-	// $route['notify/mutation'] 				= "notify/pages/2"; 
-	// $route['notify/balance'] 				= "notify/pages/3";
-	// $route['notify/deposit'] 				= "notify/pages/4";           
+	$route['notify/bank'] 					= "notify/pages/1";
+	$route['notify/mutation'] 				= "notify/pages/2"; 
+	$route['notify/balance'] 				= "notify/pages/3";
+	$route['notify/deposit'] 				= "notify/pages/4";            
+
 /* Minio */
-	// $route['minio/shortlink'] 					= "minio";    
+	$route['minio/shortlink'] 					= "minio";    

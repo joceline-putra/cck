@@ -345,6 +345,7 @@ class Transaksi_model extends CI_Model{
     /* function to get transaksi by id */
     function get_transaksi($id){
         $this->db->select("trans.*, contacts.*, users.*, types.*, label.*, locations.*");
+        $this->db->select("references.*");
         $this->db->select("branch_2.branch_id AS branch_2_id, branch_2.branch_name AS branch_2_name");        
         // $this->db->select("sales.user_id AS sales_id, sales.user_username AS sales_username, sales.user_fullname AS sales_fullname, sales.user_phone_1 AS sales_phone");
         $this->db->select("sales.contact_id AS sales_id, sales.contact_name AS contact_username, sales.contact_name AS sales_fullname, sales.contact_phone_1 AS sales_phone");
@@ -353,6 +354,7 @@ class Transaksi_model extends CI_Model{
         // $this->db->join('users AS sales','trans.trans_sales_id=sales.user_id','left');
         $this->db->join('contacts AS sales','trans.trans_sales_id=sales.contact_id','left');
         $this->db->join('branchs AS branch_2','trans.trans_branch_id_2=branch_2.branch_id','left');
+        $this->db->join('references','trans.trans_ref_id=references.ref_id','left');        
         return $this->db->get_where('trans',array('trans_id'=>$id))->row_array();
     }
     function get_transaksi_custom($where){
