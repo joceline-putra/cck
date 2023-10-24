@@ -1849,7 +1849,6 @@
         function loadTrans(trans_data){
             let v = trans_data;
             transId = v['trans_id'];
-            console.log(trans_data);
             $("#trans_date").val(moment(v['trans_date']).format("DD-MMM-YYYY"));
             $("#trans_date").attr('data-raw',moment(v['trans_date']).format("YYYY-MM-DD"));
 
@@ -1953,23 +1952,6 @@
             transItemsList    = [];
             loadTrans(trans);
             loadTransItems(transItemsList);                            
-        }
-        function formPaymentReset(){
-            $("#transfer_number").val('');
-            $("#transfer_name").val('');
-            $("#edc_card_type").val(0).trigger('change');
-            $("#edc_year").val('');
-            $("#edc_month").val('');
-            $("#edc_card_number").val('');
-            $("#edc_name").val('');
-            $("#edc_note").val('');
-
-            $("#payment_contact_name").val('');
-            $("#payment_contact_phone").val('');
-            $("#payment_total_before").val(0);  
-            $("#payment_total").val(0);
-            $("#payment_received").val(0);
-            $("#payment_change").val(0);    
         }
         function formTransSetDisplay(value){ // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan
             if(value == 1){ var flag = true; }else{ var flag = false; }
@@ -2208,6 +2190,7 @@
                 makeConfirm(0,'Harga Jual <b>'+product_name+'</b> tidak ditemukan');
             }            
         }
+        
         // Print
         function printFromUrl(url) {
             var beforeUrl = 'intent:';
@@ -2282,160 +2265,160 @@
             $("#modal-trans-print").modal({backdrop: 'static', keyboard: false});
         }
 
-// Global Variable              
-function modalContactName(input){ //Pending Development
-    let title   = 'Nama '+contact_1_alias;
-    $.confirm({
-        title: 'Masukan '+title,
-        // icon: 'fas fa-user-check fa-1x',
-        columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
-        closeIcon: true, closeIconClass: 'fas fa-times', 
-        animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
-        content: function(){
-        },
-        onContentReady: function(e){
-            let self    = this;
-            let content = '';
-            let dsp     = '';
-            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-            dsp += '    <div class="form-group">';
-            dsp += '    <label class="form-label">'+title+'</label>';
-            dsp += '        <input id="jc_input" name="jc_input" class="form-control" value="'+input+'">';
-            dsp += '    </div>';
-            dsp += '</div>';
-            content = dsp;
-            self.setContentAppend(content);
-            self.$content.find('#jc_input').focus();
-        },
-        buttons: {
-            button_1: {
-                text: '<i class="fas fa-check white"></i> Ok',
-                btnClass: 'btn-primary',
-                keys: ['Enter'],
-                action: function(){
-                    var self = this;
-                    let inp = self.$content.find('#jc_input').val();
-                    $("#trans_contact_name").val(inp);
+        // Global Variable              
+        function modalContactName(input){ //Pending Development
+            let title   = 'Nama '+contact_1_alias;
+            $.confirm({
+                title: 'Masukan '+title,
+                // icon: 'fas fa-user-check fa-1x',
+                columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                closeIcon: true, closeIconClass: 'fas fa-times', 
+                animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                content: function(){
+                },
+                onContentReady: function(e){
+                    let self    = this;
+                    let content = '';
+                    let dsp     = '';
+                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                    dsp += '    <div class="form-group">';
+                    dsp += '    <label class="form-label">'+title+'</label>';
+                    dsp += '        <input id="jc_input" name="jc_input" class="form-control" value="'+input+'">';
+                    dsp += '    </div>';
+                    dsp += '</div>';
+                    content = dsp;
+                    self.setContentAppend(content);
+                    self.$content.find('#jc_input').focus();
+                },
+                buttons: {
+                    button_1: {
+                        text: '<i class="fas fa-check white"></i> Ok',
+                        btnClass: 'btn-primary',
+                        keys: ['Enter'],
+                        action: function(){
+                            var self = this;
+                            let inp = self.$content.find('#jc_input').val();
+                            $("#trans_contact_name").val(inp);
+                        }
+                    },
+                    button_2: {
+                        text: '<i class="fas fa-times white"></i> Batal',
+                        btnClass: 'btn-danger',
+                        keys: ['Escape'],
+                        action: function(){
+                            //Close
+                        }
+                    }                    
                 }
-            },
-            button_2: {
-                text: '<i class="fas fa-times white"></i> Batal',
-                btnClass: 'btn-danger',
-                keys: ['Escape'],
-                action: function(){
-                    //Close
-                }
-            }                    
+            });
         }
-    });
-}
-function modalContactPhone(input){ //Pending Development
-    let title   = 'Telepon '+contact_1_alias;
-    $.confirm({
-        title: 'Masukan '+title,
-        // icon: 'fas fa-user-check fa-1x',
-        columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
-        closeIcon: true, closeIconClass: 'fas fa-times', 
-        animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
-        content: function(){
-        },
-        onContentReady: function(e){
-            let self    = this;
-            let content = '';
-            let dsp     = '';
-            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-            dsp += '    <div class="form-group">';
-            dsp += '    <label class="form-label">'+title+'</label>';
-            dsp += '        <input id="jc_input" name="jc_input" class="form-control" value="'+input+'">';
-            dsp += '    </div>';
-            dsp += '</div>';
-            content = dsp;
-            self.setContentAppend(content);
-            self.$content.find('#jc_input').focus();
-        },
-        buttons: {
-            button_1: {
-                text: '<i class="fas fa-check white"></i> Ok',
-                btnClass: 'btn-primary',
-                keys: ['Enter'],
-                action: function(){
-                    var self = this;
-                    let inp = self.$content.find('#jc_input').val();
-                    $("#trans_contact_phone").val(inp);
+        function modalContactPhone(input){ //Pending Development
+            let title   = 'Telepon '+contact_1_alias;
+            $.confirm({
+                title: 'Masukan '+title,
+                // icon: 'fas fa-user-check fa-1x',
+                columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                closeIcon: true, closeIconClass: 'fas fa-times', 
+                animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                content: function(){
+                },
+                onContentReady: function(e){
+                    let self    = this;
+                    let content = '';
+                    let dsp     = '';
+                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                    dsp += '    <div class="form-group">';
+                    dsp += '    <label class="form-label">'+title+'</label>';
+                    dsp += '        <input id="jc_input" name="jc_input" class="form-control" value="'+input+'">';
+                    dsp += '    </div>';
+                    dsp += '</div>';
+                    content = dsp;
+                    self.setContentAppend(content);
+                    self.$content.find('#jc_input').focus();
+                },
+                buttons: {
+                    button_1: {
+                        text: '<i class="fas fa-check white"></i> Ok',
+                        btnClass: 'btn-primary',
+                        keys: ['Enter'],
+                        action: function(){
+                            var self = this;
+                            let inp = self.$content.find('#jc_input').val();
+                            $("#trans_contact_phone").val(inp);
+                        }
+                    },
+                    button_2: {
+                        text: '<i class="fas fa-times white"></i> Batal',
+                        btnClass: 'btn-danger',
+                        keys: ['Escape'],
+                        action: function(){
+                            //Close
+                        }
+                    }                    
                 }
-            },
-            button_2: {
-                text: '<i class="fas fa-times white"></i> Batal',
-                btnClass: 'btn-danger',
-                keys: ['Escape'],
-                action: function(){
-                    //Close
-                }
-            }                    
-        }
-    });
-}               
-function makeConfirm(action,message){
-    if(action == 0){
-        var ic = '<span class="fas fa-info-circle"></span> Informasi';
-    }else if(action == 1){
-        var ic = '<span class="fas fa-question-circle"></span> Petunjuk';
-    }
-    $.confirm({
-        title: ic,
-        content: message,
-        columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',  
-        autoClose: 'button_1|30000',
-        animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
-        buttons: {
-            button_1: {
-                text:'Tutup',
-                btnClass: 'btn-danger',
-                keys: ['enter'],
-                action: function(){
-                }
-            },
-        }
-    });
-}
-async function cartAnimation() {
-    $(".btn_cart_order").css('background-color','');
-    $(".btn_cart_order").css('background-color','var(--form-background-color)');
-    let myPromise = new Promise(function(resolve) {
-        setTimeout(function() {
-            $(".btn_cart_order").css('background-color','');
-            $(".btn_cart_order").css('background-color','var(--form-background-color-hover)');
-            resolve("Done");
-    }, 200);
-    });
-    await myPromise;
-}
-        //Sync
-function localStorage(){
-    $.ajax({
-        type: "post",
-        url: url+'/sync_product',
-        dataType: 'json', cache: 'false', 
-        beforeSend:function(){},
-        success:function(d){
-            let s = d.status;
-            let m = d.message;
-            let r = d.result;
-            if(parseInt(s) == 1){
-                local.setItem('products',JSON.stringify(r));
-                // var product_local = JSON.parse(window.localStorage.getItem('products') || "[]"); 
-                // productStorage.push(product_local);
-                // console.log(productStorage);
-            }else{
-                notif(s,m);
+            });
+        }               
+        function makeConfirm(action,message){
+            if(action == 0){
+                var ic = '<span class="fas fa-info-circle"></span> Informasi';
+            }else if(action == 1){
+                var ic = '<span class="fas fa-question-circle"></span> Petunjuk';
             }
-        },
-        error:function(xhr,status,err){
-            notif(0,err);
+            $.confirm({
+                title: ic,
+                content: message,
+                columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',  
+                autoClose: 'button_1|30000',
+                animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                buttons: {
+                    button_1: {
+                        text:'Tutup',
+                        btnClass: 'btn-danger',
+                        keys: ['enter'],
+                        action: function(){
+                        }
+                    },
+                }
+            });
         }
-    });
-} 
-localStorage();
+        async function cartAnimation() {
+            $(".btn_cart_order").css('background-color','');
+            $(".btn_cart_order").css('background-color','var(--form-background-color)');
+            let myPromise = new Promise(function(resolve) {
+                setTimeout(function() {
+                    $(".btn_cart_order").css('background-color','');
+                    $(".btn_cart_order").css('background-color','var(--form-background-color-hover)');
+                    resolve("Done");
+            }, 200);
+            });
+            await myPromise;
+        }
+                //Sync
+        function localStorage(){
+            $.ajax({
+                type: "post",
+                url: url+'/sync_product',
+                dataType: 'json', cache: 'false', 
+                beforeSend:function(){},
+                success:function(d){
+                    let s = d.status;
+                    let m = d.message;
+                    let r = d.result;
+                    if(parseInt(s) == 1){
+                        local.setItem('products',JSON.stringify(r));
+                        // var product_local = JSON.parse(window.localStorage.getItem('products') || "[]"); 
+                        // productStorage.push(product_local);
+                        // console.log(productStorage);
+                    }else{
+                        notif(s,m);
+                    }
+                },
+                error:function(xhr,status,err){
+                    notif(0,err);
+                }
+            });
+        } 
+        localStorage();
         // loadRoom({});
         /*  
             var p = {

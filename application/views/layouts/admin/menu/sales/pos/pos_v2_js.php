@@ -4,11 +4,12 @@
 
 <script>
     var identity            = "<?php echo $identity; ?>";
-    var url                 = "<?= base_url('pos'); ?>";
-    var url_print           = "<?= base_url('pos/prints'); ?>";
-    var url_print_all       = "<?= base_url('pos/report'); ?>";
+    var url                 = "<?= base_url('pos2'); ?>";
+    var url_print           = "<?= base_url('pos2/prints'); ?>";
+    var url_print_all       = "<?= base_url('pos2/report'); ?>";
     var url_trans           = "<?= base_url('transaksi/manage'); ?>";   
-    var url_search          = "<?= base_url('search/manage'); ?>"; 
+    var url_search          = "<?= base_url('search/manage'); ?>";
+    var url_report          = "<?= base_url('report'); ?>";     
     var url_contact         = "<?= base_url('kontak/manage'); ?>";  
     var url_message         = "<?= base_url('message'); ?>";          
     var base_url            = "<?= site_url(); ?>";
@@ -182,11 +183,23 @@
         const local        = window.localStorage;
         let productStorage = [];
         
+        //AutoNumeric
+        const autoNumericOption = {
+            digitGroupSeparator: ',',
+            decimalCharacter: '.',
+            decimalCharacterAlternative: '.',
+            decimalPlaces: 0,
+            watchExternalChanges: true      
+        };
+        new AutoNumeric('#payment_total_before', autoNumericOption);
+        new AutoNumeric('#payment_total', autoNumericOption);
+        new AutoNumeric('#payment_received', autoNumericOption);
+        new AutoNumeric('#payment_change', autoNumericOption);     
+
+		// Barcode scenner
         if(barcodeMode > 0){
             $("#search-produk-tab-detail").focus();
         }
-
-		// Barcode scenner
 		let scannerConfig = {
 			fps: 60,
 			qrbox: {
@@ -295,21 +308,10 @@
                 notif(1,product_name);
             }                             
             loadTransItems(transItemsList);
-        }
-
-        const autoNumericOption = {
-            digitGroupSeparator: ',',
-            decimalCharacter: '.',
-            decimalCharacterAlternative: '.',
-            decimalPlaces: 0,
-            watchExternalChanges: true //!!!        
-        };
-        new AutoNumeric('#payment_total_before', autoNumericOption);
-        new AutoNumeric('#payment_total', autoNumericOption);
-        new AutoNumeric('#payment_received', autoNumericOption);
-        new AutoNumeric('#payment_change', autoNumericOption);        
+        }   
         
-        var order_table = $("#table_order").DataTable({
+        //Datatable Order Config
+        let order_table = $("#table_order").DataTable({
             "serverSide": true,
             "ajax": {
                 url: url,
@@ -317,12 +319,12 @@
                 dataType: 'json',
                 cache: 'false',
                 data: function (d) {
-                    d.action = 'load';
-                    d.tipe = 2;
+                    d.action = 'load_order';
+                    d.tipe = identity;
                     // d.date_start = $("#start").val();
                     // d.date_end = $("#end").val();
-                    d.date_start = $("#filter_trans_date").attr('data-start');
-                    d.date_end = $("#filter_trans_date").attr('data-end');
+                    d.date_start = $("#filter_order_date").attr('data-start');
+                    d.date_end = $("#filter_order_date").attr('data-end');
                     d.filter_contact = $("#filter_trans_contact").find(':selected').val();
                     d.filter_type_paid = $("#filter_trans_type_paid").find(':selected').val();
                     d.length = $("#filter_trans_length").find(':selected').val();
@@ -337,24 +339,26 @@
             },
             "columnDefs": [
                 {"targets": 0, "title": "Tanggal", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Nomor "+trans_alias, "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Nomor "+order_alias, "searchable": true, "orderable": true},
                 {"targets": 2, "title": contact_1_alias, "searchable": false, "orderable": true, "className": "text-left"},
-                {"targets": 3, "title": "Total", "searchable": true, "orderable": true},
-                {"targets": 4, "title": "Status", "searchable": true, "orderable": true},
-                {"targets": 5, "title": "Action", "searchable": false, "orderable": false}
+                {"targets": 3, "title": contact_2_alias, "searchable": false, "orderable": true, "className": "text-left"},
+                {"targets": 4, "title": ref_alias, "searchable": false, "orderable": true, "className": "text-left"},                                
+                {"targets": 5, "title": "Total", "searchable": false, "orderable": true},
+                {"targets": 6, "title": "Status", "searchable": false, "orderable": true},
+                {"targets": 7, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
                 [0, 'desc']
             ],
             "columns": [{
-                    'data': 'trans_date_format',
+                    'data': 'order_date_format',
                     render: function (data, meta, row) {
                         var dsp = '';
                         dsp += data;
                         return dsp;
                     }
                 }, {
-                    'data': 'trans_number',
+                    'data': 'order_number',
                     render: function (data, meta, row) {
                         var dsp = '';
                         /* NOT USED
@@ -368,132 +372,110 @@
                         dsp += data;
                         return dsp;
                     }
-                }, {
+                },{
                     'data': 'contact_name',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        /*
-                            dsp += '<a class="btn-contact-info" data-id="' + row.trans_contact_id + '" data-type="trans" data-trans-type="2" style="cursor:pointer;">';
-                            dsp += '<span class="hide fas fa-user-tie"></span>&nbsp;' + row.contact_name;
-                            dsp += '</a>';
-                            if(row.contact_category_id != undefined){ 
-                                dsp += '<br><span class="label btn-label label-inverse" style="padding:1px 4px;">' + row.category_name + '</span>';                             
-                            }
-                            if(row.trans_sales_id != undefined){ 
-                                dsp += '<br><span class="label btn-label" style="padding:1px 4px;">' + row.trans_sales_name + '</span>';                             
-                            }
-                        */
-                        if(row.trans_contact_name == undefined){
-                            dsp += '<label class="label label-inverse">'+ contact_1_alias +'</label>&nbsp;';
-                            dsp += row.contact_name;
-                        }else{
-                            dsp += row.trans_contact_name;                                                                    
-                        }
+                        dsp += data;
                         return dsp;
                     }
-                }, {
-                    'data': 'trans_total', className: 'text-right',
+                },{
+                    'data': 'employee_name',
+                    render: function (data, meta, row) {
+                        var dsp = '';
+                        dsp += data;
+                        return dsp;
+                    }
+                },{
+                    'data': 'ref_name',
+                    render: function (data, meta, row) {
+                        var dsp = '';
+                        dsp += data;
+                        return dsp;
+                    }
+                },{
+                    'data': 'order_total', className: 'text-right',
                     render: function (data, meta, row) {
                         var dsp = '';
                         // dsp += addCommas(row.order_subtotal);
-                        // dsp += '<a class="btn-trans-item-info" data-id="' + row.trans_id + '" data-session="' + row.trans_session + '" data-trans-number="' + row.trans_number + '" data-contact-name="' + row.contact_name + '" data-trans-type="' + row.trans_type + '" data-type="trans" style="cursor:pointer;">';
-                        dsp += addCommas((parseFloat(row.trans_total_dpp) + parseFloat(row.trans_total_ppn)) - parseFloat(row.trans_discount));
-                        // dsp += '</a>';
+                        dsp += '<a class="btn-order-item-info" data-id="' + row.order_id + '" data-session="' + row.order_session + '" data-order-number="' + row.order_number + '" data-contact-name="' + row.contact_name + '" data-type="order" style="cursor:pointer;">';
+                        dsp += addCommas(row.order_total);
+                        dsp += '</a>';
+
+                        if (parseFloat(row.order_with_dp) > 0) {
+                            dsp += '<br><span class="label" style="color:white;background-color:#7e7e7e;padding:2px 4px;"><span class="fas fa-thumbs-up"></span>&nbsp;Down Payment</span>';
+                        }
+
                         return dsp;
                     }
                 }, {
-                    'data': 'trans_total', className: 'text-right',
+                    'data': 'order_flag', className: 'text-left',
                     render: function (data, meta, row) {
                         var dsp = '';
-
-                        if (parseInt(row.trans_paid) == 1) {
-                            var rest_of_bill = 0;
-                        } else if (parseInt(row.trans_paid) == 0) {
-                            var rest_of_bill = row.trans_total - row.trans_total_paid;
-                        }
-
-                        /*
-                            Menampilkan Jumlah Sisa Piutang
-                            dsp += '<a class="btn-trans-payment-info" data-id="' + row.trans_id + '" data-session="' + row.trans_session + '" data-trans-number="' + row.trans_number + '" data-contact-name="' + row.contact_name + '" data-trans-type="' + row.trans_type + '" data-trans-total="' + row.trans_total + '" data-type="finance" style="cursor:pointer;">';
-                            dsp += addCommas(rest_of_bill);
-                            dsp += '</a>';
-                        */
-
-                        var date_due_over = parseInt(row.date_due_over);
-                        if (row.trans_paid == 0) {
-                            if (date_due_over > 0) {
-                                dsp += '<span class="label label-danger" style="color:white;background-color:#1b3148;padding:1px 4px;"> ' + date_due_over + ' hari</span><span class="label" style="color:white;background-color:#ff6665;padding:1px 4px;">Jatuh Tempo</span>';
-                            }
-                        } else if (row.trans_paid == 1) {
-                            dsp += '<span class="label label-success" style="color:white;background-color:#ce83f5;padding:2px 4px;">Lunas</span>&nbsp;';
-
-                            if(parseInt(row.trans_paid_type) == 1){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">Cash</label>';
-                            }else if(parseInt(row.trans_paid_type) == 2){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">Bank Transfer</label>';
-                            }else if(parseInt(row.trans_paid_type) == 3){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">EDC</label>';
-                            }else if(parseInt(row.trans_paid_type) == 4){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">Gratis</label>';
-                            }else if(parseInt(row.trans_paid_type) == 5){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">QRIS</label>';
-                            }else if(parseInt(row.trans_paid_type) == 6){
-                                dsp += '<label class="label label-primary" style="padding:2px 4px;">Link Payment</label>';
-                            }else if(parseInt(row.trans_paid_type) == 7){
-                                dsp += '<label class="label label-primary" style="padding:2px 4px;">e-Wallet</label>';
-                            }else if(parseInt(row.trans_paid_type) == 8){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">Deposit</label>';
-                            }else{
-
-                            }
+                        if (parseInt(row.order_flag) == 1) {
+                            dsp += '&nbsp;<label class="label label-success">Lunas</label>';
+                        }else if (parseInt(row.order_flag) == 4) {
+                            dsp += '&nbsp;<label class="label label-danger">Batal</label>';
                         }
                         return dsp;
                     }
                 }, {
-                    'data': 'trans_id',
+                    'data': 'order_id',
                     className: 'text-left',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        dsp += '&nbsp;<button class="btn_print_payment btn btn-mini btn-success" data-id="' + row.trans_id + '" data-session="">';
+                        dsp += '<button class="btn_print_order btn btn-mini btn-info" data-id="' + data + '" data-number="' + row.order_number + '" data-session="' + row.order_session + '">';
                         dsp += '<span class="fas fa-print"></span>';
                         dsp += '</button>';
+                        
+                        if((row.order_trans_id !== undefined) || (row.order_trans_id == null)){
+                            dsp += '&nbsp;<button class="btn_print_payment btn btn-mini btn-success" data-id="' + row.order_trans_id + '" data-session="">';
+                            dsp += '<span class="fas fa-print"></span>';
+                            dsp += '</button>';
+                        }
 
                         if(whatsapp_config == 1){
-                            dsp += '&nbsp;<button class="btn btn_send_whatsapp btn-mini btn-primary"';
-                            dsp += 'data-number="'+row.trans_number+'" data-id="'+data+'" data-total="'+row.trans_total+'" data-date="'+row.trans_date_format+'" data-contact-id="'+row.contact_id+'" data-contact-name="'+row.trans_contact_name+'" data-contact-phone="'+row.trans_contact_phone+'">';
-                            dsp += '<span class="fab fa-whatsapp primary"></span></button>'
+                            // dsp += '&nbsp;<button class="btn btn-send-whatsapp btn-mini btn-primary"';
+                            // dsp += 'data-number="'+row.order_number+'" data-id="'+data+'" data-total="'+row.order_total+'" data-date="'+row.order_date_format+'" data-contact-id="'+row.contact_id+'" data-contact-name="'+row.contact_name+'" data-contact-phone="'+row.contact_phone_1+'">';
+                            // dsp += '<span class="fab fa-whatsapp primary"></span></button>';
                         }
-                        dsp += '&nbsp;<button class="btn_delete_payment btn btn-mini btn-danger" data-id="'+ data +'" data-number="'+row.trans_number+'">';
-                        dsp += '<span class="fas fa-trash"></span> ';
-                        dsp += '</button>';   
+                        // dsp += '<button class="btn-delete btn btn-mini btn-danger" data-id="'+ data +'" data-number="'+row.order_number+'">';
+                        // dsp += '<span class="fas fa-trash"></span> Hapus';
+                        // dsp += '</button>';  
+
+                        // if (parseInt(row.flag) === 1) {
+                        //   dsp += '&nbsp;<button class="btn btn-set-active-order btn-mini btn-primary"';
+                        //   dsp += 'data-nomor="'+row.trans_nomor+'" data-kode="'+row.kode+'" data-id="'+data+'" data-flag="'+row.trans_flag+'">';
+                        //   dsp += '<span class="fas fa-check-square primary"></span></button>';
+                        // }else{ 
+                        //   dsp += '&nbsp;<button class="btn btn-set-active-order btn-mini btn-danger"';
+                        //   dsp += 'data-nama="'+row.nama+'" data-kode="'+row.kode+'" data-id="'+data+'" data-flag="'+row.flag+'">';
+                        //   dsp += '<span class="fas fa-times danger"></span></button>';
+                        // }
+
                         return dsp;
                     }
                 }]
         }); 
-        //Datatable Order Config
         $("#table_order_filter").css('display', 'none');
         $("#table_order_length").css('display', 'none');  
-        $("#filter_order_length").on('change', function (e) {
-            var value = $(this).find(':selected').val();
-            $('select[name="table_trans_length"]').val(value).trigger('change');
-            trans_table.ajax.reload();
-        });
         $("#filter_order_search").on('input', function (e) {
             var ln = $(this).val().length;
             if (parseInt(ln) > 3) {
                 trans_table.ajax.reload();
             }
         });        
-        $("#filter_order_type_paid").on("change", function(e){
+        $("#filter_order_type_paid, #filter_order_contact").on("change", function(e){
             trans_table.ajax.reload();
         });
-        $("#filter_order_contact").on("change", function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        $("#filter_order_length").on('change', function (e) {
+            var value = $(this).find(':selected').val();
+            $('select[name="table_trans_length"]').val(value).trigger('change');
             trans_table.ajax.reload();
         });
 
-        var trans_table = $("#table_trans").DataTable({
+        //Datatable Trans Config        
+        let trans_table = $("#table_trans").DataTable({
             "serverSide": true,
             "ajax": {
                 url: url,
@@ -501,8 +483,8 @@
                 dataType: 'json',
                 cache: 'false',
                 data: function (d) {
-                    d.action = 'load';
-                    d.tipe = 2;
+                    d.action = 'load_trans';
+                    d.tipe = identity;
                     // d.date_start = $("#start").val();
                     // d.date_end = $("#end").val();
                     d.date_start = $("#filter_trans_date").attr('data-start');
@@ -654,7 +636,6 @@
                     }
                 }]
         }); 
-        //Datatable Trans Config
         $("#table_trans_filter").css('display', 'none');
         $("#table_trans_length").css('display', 'none');  
         $("#filter_trans_length").on('change', function (e) {
@@ -667,17 +648,14 @@
             if (parseInt(ln) > 3) {
                 trans_table.ajax.reload();
             }
-        });        
-        $("#filter_trans_type_paid").on("change", function(e){
-            trans_table.ajax.reload();
-        });
-        $("#filter_trans_contact").on("change", function(e) {
+        });  
+        $("#filter_trans_type_paid, #filter_trans_contact").on("change", function(e) {
             e.preventDefault();
             e.stopPropagation();
             trans_table.ajax.reload();
         });
 
-        $('#trans_ref_id').select2({ /* Meja / Ruangan */ 
+        $('#trans_ref_id').select2({ /* Meja or Ruangan */ 
             readonly:true,
             placeholder: '<i class="fas fa-object-group"></i> '+ref_alias,
             ajax: {
@@ -716,7 +694,7 @@
                 return '<i class="fas fa-table ' + d.id.toLowerCase() + '"></i> ' + d.text;
             },
         });
-        $('#trans_sales_id').select2({
+        $('#trans_sales_id').select2({ /* Waitress */
             placeholder: {
                 id: '0',
                 text: contact_2_alias
@@ -758,49 +736,7 @@
                 return '<i class="fas fa-user-check ' + d.id.toLowerCase() + '"></i> ' + d.text;
             },
         });
-        $('#trans_contact_id').select2({
-            placeholder: {
-                id: '0',
-                text: contact_1_alias
-            },
-            allowClear: true,
-            ajax: {
-                type: "get",
-                url: url_search,
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                        tipe: 2, //1=Supplier, 2=Asuransi
-                        source: 'contacts'
-                    }
-                    return query;
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            },
-            escapeMarkup: function (m) {
-                return m;
-            },
-            templateSelection: function (d) {
-                if (!d.id) {
-                    return d.text;
-                }
-                return '<i class="fas fa-user-check ' + d.id.toLowerCase() + '"></i> ' + d.text;
-            },
-            templateResult: function (d) {
-                if (!d.id) {
-                    return d.text;
-                }
-                return '<i class="fas fa-user-check ' + d.id.toLowerCase() + '"></i> ' + d.text;
-            },
-        });
-        $('#filter_contact').select2({
+        $('#trans_contact_id, #payment_contact_id, #filter_order_contact, #filter_trans_contact').select2({
             placeholder: {
                 id: '0',
                 text: 'Semua '+contact_1_alias+' / Non'
@@ -894,6 +830,22 @@
             //     $.redirect(url_redirect,[],"POST","_self"); 
             // }           
         }); 
+        $(document).on("click",".btn_cart",function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(".div_btn_cart").hide();
+            $(".div_btn_cart_return").show();
+            $("#product-search").hide(300);
+            $("#product-tab").hide(300);
+        });
+        $(document).on("click",".btn_cart_return",function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(".div_btn_cart_return").hide(); 
+            $(".div_btn_cart").show();
+            $("#product-search").show(300);
+            $("#product-tab").show(300);
+        });
 
         // Trans
         $(document).on("click",".btn_new_trans",function(e) {
@@ -970,7 +922,6 @@
             let content = 'Detail transaksi akan di kosongkan';
             $.confirm({
                 title: title,
-                icon: 'fas fa-check',
                 content: content,
                 columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',  
                 autoClose: 'button_2|30000',
@@ -978,7 +929,7 @@
                 animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
                 buttons: {
                     button_1: {
-                        text:'Ok',
+                        text:'<i class="fas fa-check white"></i> Ok',
                         btnClass: 'btn-primary',
                         keys: ['enter'],
                         action: function(){
@@ -986,7 +937,7 @@
                         }
                     },
                     button_2: {
-                        text: 'Tidak Jadi',
+                        text: '<i class="fas fa-times white"></i> Batal',
                         btnClass: 'btn-danger',
                         keys: ['Escape'],
                         action: function(){
@@ -996,7 +947,9 @@
                 }
             });
         });
-        $(document).on("click",".btn_save_trans_item",function(e) {
+
+        // DOM Trans
+        $(document).on("click",".btn_save_trans_item",function(e) { // DOM Add 
             e.preventDefault();
             e.stopPropagation();
             var product_id = $(this).attr('data-product-id');
@@ -1015,6 +968,7 @@
                     current_qty = transItemsList[indexs].product_qty;
                     transItemsList[indexs].product_qty = parseInt(current_qty) + 1;
                     transItemsList[indexs].product_total = parseFloat(parseInt(current_qty) + 1) * parseFloat(transItemsList[indexs].product_price); 
+                    cartAnimation();
                     notif(1,product_name);
                 }else if(indexs == -1){ //Add when not exist
                     var selected_data = {
@@ -1029,14 +983,15 @@
                         'product_type':product_type,
                     };
                     transItemsList.push(selected_data);
+                    cartAnimation();
                     notif(1,product_name);
                 }                             
                 loadTransItems(transItemsList);
             }else{
-                notif(0,'Gagal, Harga jual tidak ada');
+                makeConfirm(0,'Harga Jual <b>'+product_name+'</b> tidak ditemukan');
             }
         });
-        $(document).on("click",".btn_save_trans_item_note",function(e) {
+        $(document).on("click",".btn_save_trans_item_note",function(e) { // Dom Update-Note 
             var pid = parseInt($(this).attr('data-product-id'));
             var pnm = $(this).attr('data-product-name'); 
             var pnn = $(this).attr('data-product-note');
@@ -1109,7 +1064,7 @@
             });
 
         }); 
-        $(document).on("click",".btn_save_trans_item_plus_minus",function(e) {
+        $(document).on("click",".btn_save_trans_item_plus_minus",function(e) { // Dom Update [+] or [-]
 			var id = parseInt($(this).attr('data-product-id'));
 			var opr = $(this).attr('data-operator');
             var indexs = transItemsList.findIndex(o => {
@@ -1129,7 +1084,7 @@
             }
             loadTransItems(transItemsList);
         });         
-        $(document).on("click",".btn_delete_trans_item",function(e) {
+        $(document).on("click",".btn_delete_trans_item",function(e) { // DOM Remove 
 			var id = parseInt($(this).attr('data-product-id'));
 			var index = transItemsList.findIndex(o => {
 				return o.product_id === id;
@@ -1139,7 +1094,7 @@
 				loadTransItems(transItemsList);
 			}
         }); 
-        $(document).on("click",".btn_delete_trans_item_note",function(e) {
+        $(document).on("click",".btn_delete_trans_item_note",function(e) { // Dom Remove-Note
 			var id = parseInt($(this).attr('data-product-id'));
 			var i = transItemsList.findIndex(o => {
 				return o.product_id === id;
@@ -1670,6 +1625,163 @@
             });
         });
 
+        /* Print */
+        $(document).on("click", ".btn_print_order", function (e) { // Print Button
+            e.preventDefault();
+            var order_id = $(this).attr("data-id");
+            var order_session = $(this).attr("data-session");
+            var x = screen.width / 2 - 700 / 2;
+            var y = screen.height / 2 - 450 / 2;
+            var print_url = url_print + '/' + order_id;
+            // var print_url = url_print_payment + '/' + tsession;
+            // var win = window.open(print_url, 'Print Payment', 'width=700,height=485,left=' + x + ',top=' + y + '').print();
+            var set_print_url = url_print + '_orders/' + order_id;
+            if(parseInt(order_id) > 0){
+                $.ajax({
+                    type: "get",
+                    url: set_print_url,
+                    data: {action: 'print_raw'},
+                    dataType: 'json',cache: 'false',
+                    beforeSend: function () {
+                        notif(1, 'Perintah print dikirim');
+                    },
+                    success: function (d) {
+                        var s = d.status;
+                        var m = d.message;
+                        if (parseInt(s) == 1) {
+                            if(parseInt(d.print_to) == 0){
+                                //For Localhost
+                                window.open(d.print_url).print();
+                            }else{
+                                //For RawBT
+                                return printFromUrl(d.print_url);
+                            }
+                        } else {
+                            notif(s, m);
+                        }
+                    }, error: function (xhr, Status, err) {
+                        notif(0, 'Error');
+                    }
+                });
+            }else{
+                notif(0,'Data tidak di temukan');
+            }        
+        });
+        $(document).on("click", ".btn_print_payment", function () {
+            var trans_id = $(this).attr("data-id");
+            var trans_session = $(this).attr("data-session");
+            var x = screen.width / 2 - 700 / 2;
+            var y = screen.height / 2 - 450 / 2;
+            var print_url = url_print + '/' + trans_id;
+
+            // var print_url = url_print_payment + '/' + tsession;
+            // var win = window.open(print_url, 'Print Payment', 'width=700,height=485,left=' + x + ',top=' + y + '').print();
+            if(parseInt(trans_id) > 0){
+                var set_print_url = url_print + '_transaction/' + trans_id;
+                $.ajax({
+                    type: "get",
+                    url: set_print_url,
+                    data: {action: 'print_raw'},
+                    dataType: 'json',cache: 'false',
+                    beforeSend: function () {
+                        notif(1, 'Perintah print dikirim');
+                    },
+                    success: function (d) {
+                        var s = d.status;
+                        var m = d.message;
+                        if (parseInt(s) == 1) {
+                            if(parseInt(d.print_to) == 0){
+                                //For Localhost
+                                window.open(d.print_url).print();
+                            }else{
+                                //For RawBT                                
+                                return printFromUrl(d.print_url);                              
+                            }
+                        } else {
+                            notif(s, m);
+                        }
+                    }, error: function (xhr, Status, err) {
+                        notif(0, 'Error');
+                    }
+                });
+            }else{
+                notif(0,'Data tidak ditemukan / belum dibayar');
+            }          
+        });                
+        $(document).on("click",".btn_print_all_order",function() {
+            var id = $(this).attr("data-id"); 
+            var action = $(this).attr('data-action'); //1,2
+            var request = $(this).attr('data-request'); //report_purchase_buy_recap
+            var format = $(this).attr('data-format'); //html, xls
+            var contact = $("#filter_kontak").find(':selected').val();
+            var product = $("#filter_produk").find(':selected').val();
+
+            var order = $("#filter_order").find(':selected').val();
+            if(order == 0){
+                order = 'order_date';
+            }else if(order == 1){
+                order = 'order_number';
+            }else if(order == 3){
+                order = 'order_total';
+            }else{
+                order = 'order_date';
+            }
+
+            // var dir = $("#filter_dir").find(':selected').val();    
+            var dir = 'asc';
+            product = 0;
+            //alert('#btn-print-all on Click'+action+','+request);
+            // var x = screen.width / 2 - 700 / 2;
+            // var y = screen.height / 2 - 450 / 2;
+            // var print_url = url_print +'/'+ action + '/' +request+ '/' +contact+ '/' + $("#start").val() + '/' + $("#end").val();
+            var print_url = url_report +'/' 
+            + request + '/'
+            + $("#filter_order_date").attr('data-start') + '/'
+            + $("#filter_order_date").attr('data-end') + '/' 
+            + contact + "?product="+product+"&format="+format+"&order="+order+"&dir="+dir;    
+            window.open(print_url,'_blank');
+            // var request = $('.btn-print-all').data('request');
+            // var print_url = url_print +'/'+ request + '/'+ $("#start").val() +'/'+ $("#end").val();
+            // var win = window.open(print_url,'Print','width=700,height=485,left=' + x + ',top=' + y + '').print();   
+        });
+        $(document).on("click",".btn_print_all_trans",function() {
+            var id = $(this).attr("data-id"); 
+            var action = $(this).attr('data-action'); //1,2
+            var request = $(this).attr('data-request'); //report_purchase_buy_recap
+            var format = $(this).attr('data-format'); //html, xls
+            var contact = $("#filter_kontak_2").find(':selected').val();
+            var product = $("#filter_produk_2").find(':selected').val();
+            var type_paid = $("#filter_type_paid_2").find(':selected').val();
+
+            var order = $("#filter_order_2").find(':selected').val();
+            if(order == 0){
+                order = 'trans_date';
+            }else if(order == 1){
+                order = 'trans_number';
+            }else if(order == 3){
+                order = 'trans_total';
+            }else{
+                order = 'trans_date';
+            }
+
+            // var dir = $("#filter_dir").find(':selected').val();    
+            var dir = 'asc';
+            product = 0;
+            //alert('#btn-print-all on Click'+action+','+request);
+            // var x = screen.width / 2 - 700 / 2;
+            // var y = screen.height / 2 - 450 / 2;
+            // var print_url = url_print +'/'+ action + '/' +request+ '/' +contact+ '/' + $("#start").val() + '/' + $("#end").val();
+            var print_url = url_report +'/' 
+            + request + '/'
+            + $("#filter_trans_date").attr('data-start') + '/'
+            + $("#filter_trans_date").attr('data-end') + '/' 
+            + contact + "?product="+product+"&format="+format+"&order="+order+"&dir="+dir+"&type_paid="+type_paid;    
+            window.open(print_url,'_blank');
+            // var request = $('.btn-print-all').data('request');
+            // var print_url = url_print +'/'+ request + '/'+ $("#start").val() +'/'+ $("#end").val();
+            // var win = window.open(print_url,'Print','width=700,height=485,left=' + x + ',top=' + y + '').print();   
+        });
+
         // Other
         $(document).on("click","#trans_contact_name", function (e) {
             e.preventDefault(); e.stopPropagation();
@@ -1770,6 +1882,7 @@
                 };
                 loadDownPayment(prepare_contact);
             }
+            console.log(paymentMethod);
             //Reset Modal Down Payment
             // modal_down_payment = 0; 
             // var s = removeCommas($("#payment_total_before").val());
@@ -1787,22 +1900,6 @@
             var payment_total_change = parseFloat(payment_total_received) - parseFloat(payment_total);
             $("#payment_change").val(payment_total_change);
             console.log('Total:'+transTotal+', Bayar:'+payment_total_received+', Kembali:'+payment_total_change);
-        }); 
-        $(document).on("click",".btn_cart",function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $(".div_btn_cart").hide();
-            $(".div_btn_cart_return").show();
-            $("#product-search").hide(300);
-            $("#product-tab").hide(300);
-        });
-        $(document).on("click",".btn_cart_return",function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $(".div_btn_cart_return").hide(); 
-            $(".div_btn_cart").show();
-            $("#product-search").show(300);
-            $("#product-tab").show(300);
         });    
         $(document).on("click","#btn_save_contact", function (e) {
             e.preventDefault();
@@ -1991,7 +2088,7 @@
                 dataType: 'json',
                 cache: 'false',
                 beforeSend: function(){
-                    $("#div_room").html('Loading...');
+                    $("#div_room").html('<b style="color:var(--form-font-color);">Loading...</b>');
                 },
                 success: function (d){
                     if (parseInt(d.status) == 1) {
@@ -2012,7 +2109,7 @@
                                     console.log(a);
                                     //Create Header of Group
                                     dsp += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">';
-                                        dsp += '<div class="col-lg-12 col-md-12 col-sm-12 padding-remove-side" style=""><b>'+group_name+'</b>';
+                                        dsp += '<div class="col-lg-12 col-md-12 col-sm-12 padding-remove-side"><h5 style=""><b>'+group_name+'</b></h5>';
                                         dsp += '</div>';
                                         dsp += '<div class="col-lg-12 col-md-12 col-sm-12 padding-remove-side prs-5">';
                                             //Looping Data of Group Header
@@ -2256,12 +2353,25 @@
                 });          
         }
         function loadTrans(trans_data){
-			let total_records = trans_data.length;
-			if(parseInt(total_records) > 0){
-			}else{
-			}
-            trans = trans_data;
-            console.log(trans);           
+            let v = trans_data;
+            transId = v['trans_id'];
+            $("#trans_date").val(moment(v['trans_date']).format("DD-MMM-YYYY"));
+            $("#trans_date").attr('data-raw',moment(v['trans_date']).format("YYYY-MM-DD"));
+
+            $("#trans_number").val(v['trans_number']);
+            $("#trans_contact_name").val(v['contact_name']);
+            $("#trans_contact_phone").val(v['contact_phone']);
+
+            $("select[id='trans_contact_id']").append(''+'<option value="'+v['contact_id']+'">'+v['contact_name']+'</option>');
+            $("select[id='trans_contact_id']").val(v['contact_id']).trigger('change');
+
+            $("select[id='trans_sales_id']").append(''+'<option value="'+v['sales_id']+'">'+v['sales_fullname']+'</option>');
+            $("select[id='trans_sales_id']").val(v['sales_id']).trigger('change');    
+
+            $("select[id='trans_ref_id']").append(''+'<option value="'+v['ref_id']+'">'+v['ref_name']+'</option>');
+            $("select[id='trans_ref_id']").val(v['ref_id']).trigger('change');    
+            
+            trans = trans_data;        
         }
         function loadTransItems(trans_items){
 			let total_records = trans_items.length;
@@ -2625,6 +2735,7 @@
                     current_qty = transItemsList[indexs].product_qty;
                     transItemsList[indexs].product_qty = parseInt(current_qty) + 1;
                     transItemsList[indexs].product_total = parseFloat(parseInt(current_qty) + 1) * parseFloat(transItemsList[indexs].product_price); 
+                    cartAnimation();
                     notif(1,product_name);
                 }else if(indexs == -1){ //Add when not exist
                     var selected_data = {
@@ -2639,12 +2750,13 @@
                         'product_type':product_type,
                     };
                     transItemsList.push(selected_data);
+                    cartAnimation();
                     notif(1,product_name);
-                }                             
+                }
                 loadTransItems(transItemsList);
             }else{
-                notif(0,'Gagal, Harga jual tidak ada');
-            }            
+                makeConfirm(0,'Harga Jual <b>'+product_name+'</b> tidak ditemukan');
+            }
         }
 
         // Print
@@ -2726,21 +2838,6 @@
             .attr('data-contact-phone',d.contact_phone);            
             $("#modal-payment-print").modal({backdrop: 'static', keyboard: false});
         }
-        /*  
-        var p = {
-            trans_id:7,
-            trans_number:'Invoice-2309-00002',
-            trans_date:"05-Sep-2023, 15:27",
-            trans_session:"OKLKFNWE285RG2VZH7RY",
-            trans_total:'58500',  
-            trans_total_received:'70000',
-            trans_total_change:'11500',
-            contact_id:'7',
-            contact_name:'Joce',
-            contact_phone:'081225518118'                                                                                                                                                                                                                                  
-        }
-        paymentSuccess(p);
-        */
 
         // Global Variable              
         function globalVariableCheck(){
@@ -2915,7 +3012,7 @@
             let title   = 'Nama '+contact_1_alias;
             $.confirm({
                 title: 'Masukan '+title,
-                icon: 'fas fa-user-check fa-1x',
+                // icon: 'fas fa-user-check fa-1x',
                 columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
                 closeIcon: true, closeIconClass: 'fas fa-times', 
                 animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
@@ -2937,7 +3034,7 @@
                 },
                 buttons: {
                     button_1: {
-                        text: '<i class="fas fa-check white"></i> Lanjut',
+                        text: '<i class="fas fa-check white"></i> Ok',
                         btnClass: 'btn-primary',
                         keys: ['Enter'],
                         action: function(){
@@ -2947,7 +3044,7 @@
                         }
                     },
                     button_2: {
-                        text: '<i class="fas fa-times white"></i> Close',
+                        text: '<i class="fas fa-times white"></i> Batal',
                         btnClass: 'btn-danger',
                         keys: ['Escape'],
                         action: function(){
@@ -2961,7 +3058,7 @@
             let title   = 'Telepon '+contact_1_alias;
             $.confirm({
                 title: 'Masukan '+title,
-                icon: 'fas fa-user-check fa-1x',
+                // icon: 'fas fa-user-check fa-1x',
                 columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
                 closeIcon: true, closeIconClass: 'fas fa-times', 
                 animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
@@ -2983,7 +3080,7 @@
                 },
                 buttons: {
                     button_1: {
-                        text: '<i class="fas fa-check white"></i> Lanjut',
+                        text: '<i class="fas fa-check white"></i> Ok',
                         btnClass: 'btn-primary',
                         keys: ['Enter'],
                         action: function(){
@@ -2993,7 +3090,7 @@
                         }
                     },
                     button_2: {
-                        text: '<i class="fas fa-times white"></i> Close',
+                        text: '<i class="fas fa-times white"></i> Batal',
                         btnClass: 'btn-danger',
                         keys: ['Escape'],
                         action: function(){
@@ -3003,6 +3100,41 @@
                 }
             });
         }               
+        function makeConfirm(action,message){
+            if(action == 0){
+                var ic = '<span class="fas fa-info-circle"></span> Informasi';
+            }else if(action == 1){
+                var ic = '<span class="fas fa-question-circle"></span> Petunjuk';
+            }
+            $.confirm({
+                title: ic,
+                content: message,
+                columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',  
+                autoClose: 'button_1|30000',
+                animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                buttons: {
+                    button_1: {
+                        text:'Tutup',
+                        btnClass: 'btn-danger',
+                        keys: ['enter'],
+                        action: function(){
+                        }
+                    },
+                }
+            });
+        }
+        async function cartAnimation() {
+            $(".btn_cart").css('background-color','');
+            $(".btn_cart").css('background-color','var(--form-background-color)');
+            let myPromise = new Promise(function(resolve) {
+                setTimeout(function() {
+                    $(".btn_cart").css('background-color','');
+                    $(".btn_cart").css('background-color','var(--form-background-color-hover)');
+                    resolve("Done");
+            }, 200);
+            });
+            await myPromise;
+        }
 
         //Sync
         function localStorage(){
@@ -3031,6 +3163,21 @@
         } 
         localStorage();
         loadRoom({});
+        /*  
+            var p = {
+                trans_id:7,
+                trans_number:'Invoice-2309-00002',
+                trans_date:"05-Sep-2023, 15:27",
+                trans_session:"OKLKFNWE285RG2VZH7RY",
+                trans_total:'58500',  
+                trans_total_received:'70000',
+                trans_total_change:'11500',
+                contact_id:'7',
+                contact_name:'Joce',
+                contact_phone:'081225518118'                                                                                                                                                                                                                                  
+            }
+            paymentSuccess(p);
+        */
         // scannerResult(1,2);
         // modalNumberChoice(120);
     });    

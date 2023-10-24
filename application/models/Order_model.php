@@ -97,6 +97,33 @@ class Order_model extends CI_Model {
         
         return $this->db->get('orders')->result_array();
     }
+    function get_all_orders_pos($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
+        $this->db->select("orders.*");
+        $this->db->select("contacts.*");
+        $this->db->select("`references`.*");        
+        
+        $this->db->select("order_id AS order_id, DATE_FORMAT(`order_date`,'%d-%b-%y, %H:%i') AS order_date_format, IFNULL(order_total,0) AS order_grand_total");
+        $this->db->select('label.ref_id AS label_id, label.ref_name AS label_name, label.ref_color AS label_color, label.ref_background AS label_background, label.ref_note AS label_icon');
+        $this->db->select('order_sales_id AS employee_id, order_sales_name AS employee_code, order_sales_name AS employee_name');
+        $this->set_params($params);
+        $this->set_search($search);
+
+        $this->db->join('contacts','orders.order_contact_id=contacts.contact_id','left');
+        $this->db->join('references','orders.order_ref_id=references.ref_id','left');
+        $this->db->join('references AS label','label.ref_name=order_label','left'); 
+
+        if ($order) {
+            $this->db->order_by($order, $dir);
+        } else {
+            $this->db->order_by('order_id', "asc");
+        }
+
+        if ($limit) {
+            $this->db->limit($limit, $start);
+        }
+        
+        return $this->db->get('orders')->result_array();
+    }
     function get_all_orders_nojoin($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
         $this->db->select("*");
         $this->set_params($params);
@@ -124,7 +151,17 @@ class Order_model extends CI_Model {
         $this->set_params($params);         
         $this->set_search($search);   
         return $this->db->count_all_results();
-    }            
+    }
+    function get_all_orders_pos_count($params,$search){
+        $this->db->from('orders');   
+        $this->db->join('contacts','orders.order_contact_id=contacts.contact_id','left');
+        $this->db->join('references','orders.order_ref_id=references.ref_id','left');
+        $this->db->join('references AS label','label.ref_name=order_label','left'); 
+
+        $this->set_params($params);         
+        $this->set_search($search);   
+        return $this->db->count_all_results();
+    }                
     /* Orders Items */
     function get_all_order_items($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
         $this->db->select("*");

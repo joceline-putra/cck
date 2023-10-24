@@ -575,16 +575,16 @@
 -->
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
-        <ul class="nav nav-tabs" role="tablist" style="display:none;">
-            <li class="active" style="width:33.33%;">
+        <ul class="nav nav-tabs" role="tablist" style="display:inline;">
+            <li class="active">
                 <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="true">
                     <span class="fas fa-clipboard"></span> <?php echo $ref_alias; ?></a> <!-- Order -->
             </li> 
-            <li class="" style="width:33.33%;">
+            <li class="">
                 <a href="#tab3" role="tab" class="btn-tab-3" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
                     <span class="fas fa-shopping-cart"></span> <?php echo $order_alias; ?></a> <!-- Payment -->
             </li>  
-            <li class="" style="width:33.33%;">
+            <li class="">
                 <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
                     <span class="fas fa-cash-register"></span> <?php echo $payment_alias; ?></a> <!-- Payment -->
             </li>                                                             
@@ -598,7 +598,7 @@
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-left">
                                 <div class="pull-left">
                                     <div class="btn-group"> 
-                                        <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
+                                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
                                             <i class="fas fa-bars"></i>&nbsp;&nbsp;Menu&nbsp;&nbsp;<span class="fa fa-angle-down"></span> 
                                         </a>
                                         <ul class="dropdown-menu">
@@ -617,7 +617,7 @@
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-right">
                                 <div class="pull-right">
                                     <div class="btn-group"> 
-                                        <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
+                                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
                                             <i class="fas fa-user-lock"></i>&nbsp;&nbsp;<?php echo ucfirst($session['user_data']['user_name']); ?>&nbsp;&nbsp;<span class="fa fa-angle-down"></span> 
                                         </a>
                                         <ul class="dropdown-menu">
@@ -670,7 +670,7 @@
                         <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom:4px;">
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-left">
                                 <div class="pull-left">
-                                    <button class="btn btn_back_order btn-success btn-small" type="button" style="background-color:var(--form-background-color-hover);" >
+                                    <button class="btn btn_back_order btn-success" type="button" style="background-color:var(--form-background-color-hover);" >
                                         <i class="fas fa-arrow-left"></i> Kembali
                                     </button>           
                                 </div>
@@ -683,7 +683,7 @@
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-right">
                                 <div class="pull-right">
                                     <div class="btn-group"> 
-                                        <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
+                                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
                                             <i class="fas fa-print"></i>&nbsp;&nbsp;Cetak&nbsp;&nbsp;<span class="fa fa-angle-down"></span> 
                                         </a>
                                         <ul class="dropdown-menu">
@@ -783,7 +783,7 @@
                         <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom:4px;">
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-left">
                                 <div class="pull-left">
-                                    <button class="btn btn_back_order btn-success btn-small" type="button" style="background-color:var(--form-background-color-hover);" >
+                                    <button class="btn btn_back_order btn-success" type="button" style="background-color:var(--form-background-color-hover);" >
                                         <!-- <i class="fas fa-plus"></i> Buat <?php #echo $order_alias; ?> Baru -->
                                         <i class="fas fa-arrow-left"></i> Kembali
                                     </button>                
@@ -797,7 +797,7 @@
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-right">
                                 <div class="pull-right">
                                     <div class="btn-group"> 
-                                        <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
+                                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
                                             <i class="fas fa-print"></i>&nbsp;&nbsp;Cetak&nbsp;&nbsp;<span class="fa fa-angle-down"></span> 
                                         </a>
                                         <ul class="dropdown-menu">
@@ -889,7 +889,7 @@
             <form id="form-trans" name="form-trans" method="" action="">         
                 <div class="modal-header modal-header-order">
                     <h4 id="modal_booking_title" style="text-align:left;">Buat <?php #echo $order_alias; ?> Baru</h4>
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal"
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal"
                         style="position:relative;top:-38px;float:right;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
@@ -1149,16 +1149,16 @@
                             Buat Baru
                         </button>  
                     -->                                                         
-                    <button id="btn-save-order" class="btn btn-primary btn-small" type="button" style="">
+                    <button id="btn-save-order" class="btn btn-primary" type="button" style="">
                         <i class="fas fa-save"></i>                                 
                         Simpan <?php echo $order_alias; ?>
                     </button>                                                                             
-                    <button id="btn-cancel-order" class="btn btn-warning btn-small" type="reset" style="">
+                    <button id="btn-cancel-order" class="btn btn-warning" type="reset" style="">
                         <i class="fas fa-ban"></i> 
                         Batal <?php echo $order_alias; ?>
                     </button> 
                     <!--     
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal">
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal">
                         <i class="fas fa-times"></i>                                 
                         Tutup
                     </button>
@@ -1174,7 +1174,7 @@
             <div class="modal-header">
                 <h4 id="modal-payment-order-ref" style="text-align:left;">Daftar <?php echo $order_alias; ?> Anda</h4>
                 <b id="modal-payment-order-date">-</b>
-                <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
                     <i class="fas fa-times"></i>                                 
                     Tutup
                 </button>
@@ -1208,7 +1208,7 @@
             <div class="modal-footer flex-center">
                 <div class="row">
                     <div class="col-md-4 col-sm-12" style="margin-bottom:4px;">           
-                        <a class="btn-move-room-order btn btn-primary btn-small" href="#" data-order-id="0" data-order-number="0" data-ref-id="0" data-ref-name="0" data-dismiss="modal" style="width:45%;">
+                        <a class="btn-move-room-order btn btn-primary" href="#" data-order-id="0" data-order-number="0" data-ref-id="0" data-ref-name="0" data-dismiss="modal" style="width:45%;">
                             <i class="fas fa-arrow-right"></i> Pindah <?php echo $ref_alias; ?>
                         </a>
                         <a id="btn-addon-order" href="#" class="btn btn-primary btn-small" data-order-id="0" data-order-number="0" data-ref-name="0" data-dismiss="modal" style="width:45%;">
@@ -1216,18 +1216,18 @@
                         </a>
                     </div>
                     <div class="col-md-4 col-sm-12" style="margin-bottom:4px;">
-                        <a id="btn-print-order" href="#" class="btn btn-print btn-info btn-small" style="width:45%;">
+                        <a id="btn-print-order" href="#" class="btn btn-print btn-info" style="width:45%;">
                             <i class="fas fa-print"></i> Print
                         </a>                             
-                        <a class="btn-prepare-payment btn btn-success btn-small" href="#" data-id="0" data-grand-total="0" style="width:45%;">
+                        <a class="btn-prepare-payment btn btn-success" href="#" data-id="0" data-grand-total="0" style="width:45%;">
                             <i class="fas fa-check white"></i> Buat <?php echo $payment_alias;?>
                         </a>  
                     </div>      
                     <div class="col-md-4 col-sm-12" style="margin-bottom:4px;">
-                        <a class="btn-cancel-order btn btn-danger btn-small" href="#" data-order-id="0" data-order-number="0" data-ref-id="0" data-ref-name="0" data-dismiss="modal" style="width:45%;">
+                        <a class="btn-cancel-order btn btn-danger" href="#" data-order-id="0" data-order-number="0" data-ref-id="0" data-ref-name="0" data-dismiss="modal" style="width:45%;">
                             <i class="fas fa-ban"></i> Batal <?php echo $order_alias; ?>
                         </a>                
-                        <a type="button" class="btn btn-outline-danger waves-effect btn-small" data-dismiss="modal" style="width:45%;">
+                        <a type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" style="width:45%;">
                             <span class="fas fa-times"></span> Tutup
                         </a>
                     </div>
@@ -1244,7 +1244,7 @@
             <form id="form-payment" name="form-payment" method="" action="">         
                 <div class="modal-header">
                     <h4 id="modal_booking_title" style="text-align:left;">Daftar <?php echo $payment_alias;?></h4>
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal"
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal"
                         style="position:relative;top:-38px;float:right;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
@@ -1677,7 +1677,7 @@
                     </div>
                 </div>
                 <div class="modal-footer flex-center">
-                    <button id="btn-save-payment" class="btn btn-success btn-small" data-id="" style="width:25%;">
+                    <button id="btn-save-payment" class="btn btn-success" data-id="" style="width:25%;">
                         <span class="fas fa-cash-register white"></span> Bayar
                     </button>
                     <!--
@@ -1686,7 +1686,7 @@
                         Proses ke Pembayaran
                     </button>
                     -->                
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" style="width:25%;" data-dismiss="modal">
+                    <button class="btn btn-outline-danger waves-effect" type="button" style="width:25%;" data-dismiss="modal">
                         <i class="fas fa-times"></i>                                 
                         Tutup
                     </button>
@@ -1700,7 +1700,7 @@
         <div class="modal-content">
             <div class="modal-header" style="background-color: #f3f5f6;">
                 <h4 style="color:black;text-align:left;">Pembayaran Berhasil</h4>
-                <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
                     <i class="fas fa-times"></i>                                 
                     Tutup
                 </button>
@@ -1797,7 +1797,7 @@
             <form id="form-master" name="form-master" method="" action="">         
                 <div class="modal-header">
                     <h4 style="text-align:left;">Buat <?php echo $contact_1_alias; ?> Baru</h4>
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
                     </button>
@@ -1858,11 +1858,11 @@
                     </div>
                 </div>
                 <div class="modal-footer flex-center">
-                    <button id="btn-save-contact" onClick="" class="btn btn-primary btn-small" type="button" style="width:45%;">
+                    <button id="btn-save-contact" onClick="" class="btn btn-primary" type="button" style="width:45%;">
                         <i class="fas fa-save"></i>                                 
                         Simpan
                     </button>    
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="width:45%;">
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="width:45%;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
                     </button>                   
@@ -1877,7 +1877,7 @@
             <form id="form-product" name="form-product" method="" action="">         
                 <div class="modal-header">
                     <h4 style="text-align:left;">Buat Produk Baru</h4>
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
                     </button>
@@ -1917,11 +1917,11 @@
                     </div>
                 </div>
                 <div class="modal-footer flex-center">
-                    <button id="btn-save-product" onClick="" class="btn btn-primary btn-small" type="button" style="width:45%;">
+                    <button id="btn-save-product" onClick="" class="btn btn-primary" type="button" style="width:45%;">
                         <i class="fas fa-save"></i>                                 
                         Simpan
                     </button>    
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="width:45%;">
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="width:45%;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
                     </button>                     
@@ -1937,7 +1937,7 @@
             <form id="form-trans-item" name="form-trans-item" method="" action="">
                 <div class="modal-header">
                     <h4 id="modal-trans-addon-title" style="text-align:left;">Tambahkan Produk</h4>
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
                     </button>
@@ -1988,11 +1988,11 @@
                     </div>                                         
                 </div>
                 <div class="modal-footer flex-center">
-                    <button id="btn-save-order-item-addon" data-order-id="0" onClick="" class="btn btn-primary btn-small" type="button" style="width:45%;">
+                    <button id="btn-save-order-item-addon" data-order-id="0" onClick="" class="btn btn-primary" type="button" style="width:45%;">
                         <i class="fas fa-plus"></i>
                         Tambah
                     </button>                    
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="width:45%;">
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="width:45%;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
                     </button> 
@@ -2006,7 +2006,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 style="text-align:left;">Pasang Diskon Produk</h4>
-                <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
                     <i class="fas fa-times"></i>                                 
                     Tutup
                 </button>
@@ -2053,10 +2053,10 @@
                 </div>                                         
             </div>
             <div class="modal-footer flex-center">
-                <button id="btn-save-order-item-discount" class="btn btn-success btn-small" data-id="" style="width:45%;">
+                <button id="btn-save-order-item-discount" class="btn btn-success" data-id="" style="width:45%;">
                     <i class="fas fa-check white"></i> Pasang Diskon
                 </button>
-                <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="width:45%;">
+                <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="width:45%;">
                     <i class="fas fa-times"></i>                                 
                     Tutup
                 </button>         

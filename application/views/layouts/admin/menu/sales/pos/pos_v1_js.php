@@ -88,7 +88,7 @@
                 dataType: 'json',
                 cache: 'false',
                 data: function (d) {
-                    d.action = 'load';
+                    d.action = 'pos-load';
                     d.tipe = identity;
                     d.date_start = $("#start").val();
                     d.date_end = $("#end").val();
@@ -151,8 +151,9 @@
                         if(row.order_contact_id_2 !== undefined){
                             dsp += '&nbsp;<label class="label">'+row.employee_name+'</label>';
                         }
-
-                        dsp += '&nbsp;<label class="label label-inverse">'+row.ref_name+'</label>'
+                        if(row.ref_name !== undefined){
+                            dsp += '&nbsp;<label class="label label-inverse">'+row.ref_name+'</label>'
+                        }
 
                         if (parseInt(row.order_flag) == 1) {
                             dsp += '&nbsp;<label class="label label-success">Lunas</label>';

@@ -210,7 +210,8 @@
         }
         .scroll-order-item{
             /* height:340px!important; */
-            height:294px!important;        
+            /* height:294px!important;         */
+            height:270px!important;   
         }
         .scroll-pembayaran-daftar{
             height:560px!important;
@@ -242,18 +243,25 @@
             top:-22px;
             left:54px;
         }
-        .div_trans > div:nth-child(1){
+        /* .div_trans > div:nth-child(1){
             border-top:8px solid var(--form-background-color);
             border-left:8px solid var(--form-background-color);
             border-right:8px solid var(--form-background-color);
             border-bottom:8px solid var(--form-background-color);                                    
         }
+        .div_trans > div:nth-child(2){
+            border-top:8px solid var(--form-background-color);
+            border-left:8px solid var(--form-background-color);
+            border-right:8px solid var(--form-background-color);
+            border-bottom:8px solid var(--form-background-color);                                    
+        } */
         .div_trans > div:nth-child(2) form > div:nth-child(1), .div_trans > div:nth-child(2) form > div:nth-child(1) .form-label, .div_trans > div:nth-child(2) form > div:nth-child(1) b{
-            background-color: var(--form-background-color);       
+            /* background-color: var(--form-background-color);        */
             color:var(--form-font-color);
+            font-weight: 700;
         }        
         .div_trans > div:nth-child(2) form > div:nth-child(3), .div_trans > div:nth-child(2) form > div:nth-child(3) .form-label, .div_trans > div:nth-child(2) form > div:nth-child(3) b{
-            background-color: var(--form-background-color);            
+            /* background-color: var(--form-background-color);             */
             color:var(--form-font-color);
         }        
         .div_trans > div:nth-child(2) form > div:nth-child(3) button{
@@ -261,18 +269,20 @@
         }
 
         .div_payment > div:nth-child(1){
-            border-top:8px solid var(--form-background-color);
+            /* border-top:8px solid var(--form-background-color);
             border-left:8px solid var(--form-background-color);
             border-right:8px solid var(--form-background-color);
-            border-bottom:8px solid var(--form-background-color);                                    
+            border-bottom:8px solid var(--form-background-color);                                     */
         }
         .div_payment > div:nth-child(2) > div:nth-child(1) .grid-body, .div_payment > div:nth-child(2) > div:nth-child(1) .form-label, .div_payment > div:nth-child(2) > div:nth-child(1) b{
             background-color: var(--form-background-color)!important;       
             color:var(--form-font-color);
+            font-weight: 700;
         }        
         .div_payment > div:nth-child(2) > div:nth-child(3), .div_payment > div:nth-child(2) > div:nth-child(3) .form-label, .div_payment > div:nth-child(2) > div:nth-child(3) b{
             background-color: var(--form-background-color);            
             color:var(--form-font-color);
+            font-weight: 700;
         }        
         .div_payment > div:nth-child(2) > div:nth-child(3) button{
             border:1px solid var(--form-font-color);
@@ -349,6 +359,9 @@
             text-align: center;
         }        
     /* Tab */
+        .tab-content > .active{
+            padding:14px;   
+        }
         .nav > li > a:hover, .nav > li > a:focus {
             color: var(--form-font-color-hover)!important;
         }
@@ -438,10 +451,15 @@
             margin-bottom:0px;
         }
 
-        /* Room */    
+        /* Room */            
         #div_room{
             color:#545353;
         }
+        #div_room > div > div:nth-child(1) > h5{
+            color:var(--form-font-color);
+            margin-top:5px!important;
+            margin-bottom: 5px!important;
+        }        
         .div_room_detail{
             padding-left: 0px;
             padding-right: 0px;
@@ -451,7 +469,8 @@
             padding-right: 0px;
         } 
         .div_room_detail:hover, .div_room_detail:focus, .div_room_detail:active, .div_room_detail:visited{
-            background-color: var(--form-background-color)!important;
+            background-color: var(--form-background-color-hover)!important;
+            color: var(--form-font-color)!important;
         }                      
         .div_room_detail:hover > div, .div_room_detail:focus > div, .div_room_detail:active > div, .div_room_detail:visited > div{
             color: var(--form-font-color)!important;
@@ -491,7 +510,11 @@
             padding-top: 12px!important;
             padding-bottom: 0px!important;
         }     
-
+        .dataTables_info, .dataTables_paginate, .paginate_button{
+            color:var(--form-font-color)!important;
+        }
+    /* Room */
+      
     /* Large desktops and laptops */
     @media (min-width: 1200px) {
         /* .prs-0{
@@ -723,38 +746,37 @@
 </style>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <ul class="nav nav-tabs" role="tablist" style="display:none;">
-            <li class="active" style="width:33.33%;">
+        <ul class="nav nav-tabs" role="tablist" style="display:inline;">
+            <li class="active">
                 <a href="#tab0" role="tab" class="btn-tab-3" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
                 <span class="fas fa-table"></span> <?php echo $ref_alias; ?></a>
             </li>            
-            <li class="" style="width:33.33%;">
+            <li class="">
                 <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="true">
                 <span class="fas fa-clipboard"></span> Order</a>
             </li>
-            <li class="" style="width:33.33%;">
+            <li class="">
                 <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
                 <span class="fas fa-clipboard"></span> Payment</a>
             </li>
-            <li class="" style="width:25%;">
+            <li class="">
                 <a href="#tab3" role="tab" class="btn-tab-3" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
-                <span class="fas fa-shopping-cart"></span> DOrd</a>
+                <span class="fas fa-shopping-cart"></span> Data Order</a>
             </li> 
-            <li class="" style="width:25%;">
+            <li class="">
                 <a href="#tab4" role="tab" class="btn-tab-4" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
-                <span class="fas fa-cash-register"></span> DPay</a>
+                <span class="fas fa-cash-register"></span> Data Payment</a>
             </li>                                                                                       
         </ul>
-        <div class="tab-content">
+        <div class="tab-content" style="border: 8px solid var(--form-background-color);">
             <div class="tab-pane active" id="tab0"> <!-- Meja Tab -->
-                <!-- <div class="row visible-xs visible-sm div_mobile"> -->
                 <div class="row div_mobile">                    
                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                         <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom:4px;">
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-left">
                                 <div class="pull-left">
                                     <div class="btn-group"> 
-                                        <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
+                                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
                                             <i class="fas fa-bars"></i>&nbsp;&nbsp;Menu&nbsp;&nbsp;<span class="fa fa-angle-down"></span> 
                                         </a>
                                         <ul class="dropdown-menu">
@@ -782,26 +804,16 @@
                     <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">
                         <div class="col-md-12 col-sm-12 col-xs-12">                        
                             <div class="grid simple">
-                                <div class="hidden grid-title">
-                                    <div class="tools">
-                                        <a href="javascript:;" class="collapse"></a>
-                                        <a href="#grid-config" data-toggle="modal" class="config"></a>
-                                        <a href="javascript:;" class="reload"></a>
-                                        <a href="javascript:;" class="remove"></a>
-                                    </div>
-                                </div>
-                                <div class="grid-body" style="padding:0px;">                        
+                                <div class="grid-body" style="padding:0px;background-color:var(--form-background-color);">                        
                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                        <!-- <div id="room-tab" class="tabbable tabs-left room-tab"> -->
-                                            <div class="tab-content">
-                                                <div class="tab-pane active" style="padding-top:0px;padding-bottom:0px;">
-                                                    <div class="row">
-                                                        <div id="div_room" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                        </div>
+                                        <div class="tab-content" style="background-color:inherit;">
+                                            <div class="tab-pane active" style="padding-top:0px;padding-bottom:0px;">
+                                                <div class="row">
+                                                    <div id="div_room" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                     </div>
                                                 </div>
                                             </div>
-                                        <!-- </div> -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -815,7 +827,7 @@
                         <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom:4px;">
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-right">
                                 <div class="pull-left">
-                                    <button style="background-color:var(--form-background-color-hover);" class="btn btn_back_order btn-primary btn-small" type="button">
+                                    <button style="background-color:var(--form-background-color-hover);" class="btn btn_back_order btn-primary" type="button">
                                         <i class="fas fa-arrow-left"></i>
                                         Ganti <?php echo $ref_alias;?>
                                     </button>
@@ -827,15 +839,9 @@
                                 </div>
                             </div>                       
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-left">
-                                <!-- <div class="pull-right">
-                                    <button style="background-color:var(--form-background-color-hover);" class="btn btn_show_trans btn-primary btn-small" type="button">
-                                        <i class="fas fa-file-alt"></i>
-                                        Riwayat Transaksi
-                                    </button>                                    
-                                </div> -->
                                 <div class="div_btn_cart_return col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:none;">
                                     <div class="pull-right">
-                                        <button style="background-color:var(--form-background-color-hover);" class="btn btn_cart_return btn-primary btn-small" type="button">
+                                        <button style="background-color:var(--form-background-color-hover);" class="btn btn_cart_return btn-primary" type="button">
                                             <i class="fas fa-arrow-down"></i>
                                             Daftar Produk         
                                         </button>
@@ -843,7 +849,7 @@
                                 </div>    
                                 <div class="div_btn_cart col-md-12 col-sm-12 col-xs-12 padding-remove-side">                            
                                     <div class="pull-right">
-                                        <button style="background-color:var(--form-background-color-hover);" class="btn btn_cart btn-primary btn-small" type="button">
+                                        <button style="background-color:var(--form-background-color-hover);" class="btn btn_cart btn-primary" type="button">
                                             <i class="fas fa-cart"></i>
                                             <span class="trans_product_count_span hide">0</span> 
                                             <i class="fas fa-shopping-basket"></i> Rp. <span class="trans_product_total_span">0</span> 
@@ -857,101 +863,72 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 div_trans">
                         <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                                <div class="grid simple">
-                                    <div class="hidden grid-title">
-                                        <div class="tools">
-                                            <a href="javascript:;" class="collapse"></a>
-                                            <a href="#grid-config" data-toggle="modal" class="config"></a>
-                                            <a href="javascript:;" class="reload"></a>
-                                            <a href="javascript:;" class="remove"></a>
-                                        </div>
-                                    </div>
-                                    <div class="grid-body" style="padding:0px;">
-                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top:5px;">
-                                                <div class="col-md-6 col-sm-6 col-xs-6 padding-remove-side">
-                                                    <h5 style="margin-top:8px!important;margin-bottom:0px!important;">
-                                                        <b>
-                                                            <i class="fas fa-list"></i> Daftar Produk
-                                                        </b>
-                                                    </h5>
-                                                </div>
-                                                <!--
-                                                <div class="div_btn_cart_desktop col-md-6 col-sm-6 col-xs-6 padding-remove-side visible-md visible-lg">
-                                                    <div class="pull-right">
-                                                        <button style="background-color:var(--form-background-color-hover);" class="btn btn_cart_desktop btn-primary btn-small" type="button">
-                                                            <span class="trans_product_count_span">0</span> <i class="fas fa-shopping-basket"></i> Rp. <span class="trans_product_total_span">0</span> 
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                -->
+                            <div class="grid simple">
+                                <div class="grid-body" style="padding:0px;">
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="background-color: var(--form-background-color);">
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top:5px;margin-bottom:8px;">
+                                            <div class="col-md-6 col-sm-6 col-xs-6 padding-remove-side">
+                                                <h5 style="margin-top:8px!important;margin-bottom:0px!important;color:var(--form-font-color);">
+                                                    <b>
+                                                        <i class="fas fa-list"></i> Daftar Produk
+                                                    </b>
+                                                </h5>
                                             </div>
-                                            <!-- 
-                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top:10px;padding-left:5px;padding-right:5px;">
-                                                    <div class="col-md-12 col-xs-12 col-sm-12" style="padding-left:4px;padding-right:4px;">
-                                                        <div class="form-group">    
-                                                            <select id="search-produk" name="search-produk" class="form-control">
-                                                            </select>
-                                                        </div>
-                                                    </div>   
+                                        </div>
+                                        <div id="product-search" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top:5px;padding-left:5px;padding-right:5px;">
+                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-7" style="padding-left:4px;padding-right:4px;">
+                                                <div class="form-group">    
+                                                    <input id="search_product_tab" name="search_product_tab" type="text" class="form-control" placeholder="Cari [Kode Produk / Nama / Barcode]">
                                                 </div>
-                                            -->
-                                            <div id="product-search" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top:5px;padding-left:5px;padding-right:5px;">
-                                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-7" style="padding-left:4px;padding-right:4px;">
-                                                    <div class="form-group">    
-                                                        <input id="search_product_tab" name="search_product_tab" type="text" class="form-control" placeholder="Cari [Kode Produk / Nama / Barcode]">
+                                            </div>   
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 padding-remove-side">
+                                                <div class="form-group">
+                                                    <div class="toggles">
+                                                        <input type="checkbox" name="checkbox" id="barcode_checkbox_flag" class="ios-toggle"/>
+                                                        <label class="barcode_checkbox" data-flag="1"></label>	
                                                     </div>
-                                                </div>   
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 padding-remove-side">
-                                                    <div class="form-group">
-                                                        <div class="toggles">
-                                                            <input type="checkbox" name="checkbox" id="barcode_checkbox_flag" class="ios-toggle"/>
-                                                            <label class="barcode_checkbox" data-flag="1"></label>	
-                                                        </div>
-                                                        <label class="form-label barcode_label">Barcode Mode</label>
-                                                    </div>
-                                                </div>                                                 
-                                            </div>                                  
-                                            <div id="product-tab" class="col-md-12 col-sm-12 col-sm-12 col-xs-12 tabbable tabs-left" style="border-top: 1px solid #dddddd;border-bottom: 1px solid #dddddd;">
-                                                <ul class="nav nav-tabs scroll-nav scroll_product_tab" id="style-5" role="tablist">
-                                                    <li class="active"><a href="#" class="btn_product_tab" data-id="0" role="" data-toggle="tab" style="padding: 8px!important;">Semua</a></li>
-                                                    <?php 
-                                                    foreach($product_category as $y => $yy): 
-                                                        $class = ''; 
-                                                    ?>
-                                                    <li class="<?php echo $class; ?>"><a href="#" class="btn_product_tab" data-id="<?php echo $yy['category_id']; ?>" role="" data-toggle="tab" style="padding: 8px!important;"><?php echo $yy['category_name']; ?></a></li>                                      
-                                                    <?php endforeach; ?>
-                                                </ul>
-                                                <div class="tab-content" style="margin-bottom: 0px!important">
-                                                    <div class="tab-pane active" style="padding-top:0px;padding-bottom:0px;">
-                                                        <div class="row">                                                   
-                                                            <div id="product_tab_detail" class="col-md-12 col-xs-12 col-sm-12 scroll-track scroll-order-product">
-                                                                <?php 
-                                                                foreach($products as $p){
-                                                                    $product_price = '-'; 
-                                                                    if($p['product_price_sell'] > 0){
-                                                                        $product_price = 'Rp. '.number_format($p['product_price_sell']);
-                                                                    }
-                                                                    if(empty($p['product_image'])){
-                                                                        $pimg = site_url('upload/noimage.png');
-                                                                    }else{
-                                                                        $pimg = site_url($p['product_image']);    
-                                                                    }
-                                                                ?>
-                                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 btn_save_trans_item product_tab_detail_item" 
-                                                                    data-product-id="<?php echo $p['product_id'];?>" data-product-code="<?php echo $p['product_code'];?>" data-product-name="<?php echo $p['product_name'];?>" data-product-type="<?php echo $p['product_type'];?>" 
-                                                                    data-product-qty="1" data-product-unit="<?php echo $p['product_unit'];?>" data-product-price="<?php echo $p['product_price_sell'];?>">
-                                                                        <div class="col-md-12 col-sm-12 product-tab-color-template" style="">
-                                                                            <img src="<?php echo $pimg;?>" class="img-responsive" style="margin-top:20px;">
-                                                                        </div>
-                                                                        <div class="col-md-12 col-sm-12 product-tab-color-template">
-                                                                            <p class="product-name" style=""><?php echo $p['product_name'];?></p>
-                                                                            <p class="product-price" style=""><?php echo $product_price;?></p>
-                                                                        </div>
-                                                                    </div>                 
-                                                                <?php } ?>                                                                
-                                                            </div>
+                                                    <label class="form-label barcode_label" style="color:var(--form-font-color);">Barcode Mode</label>
+                                                </div>
+                                            </div>                                                 
+                                        </div>                                  
+                                        <div id="product-tab" class="col-md-12 col-sm-12 col-sm-12 col-xs-12 tabbable tabs-left" style="border-top: 8px solid var(--form-background-color);border-bottom: 8px solid var(--form-background-color);">
+                                            <ul class="nav nav-tabs scroll-nav scroll_product_tab" id="style-5" role="tablist" style="border-right:0!important;padding:0px 4px;margin:0px;">
+                                                <li class="active"><a href="#" class="btn_product_tab" data-id="0" role="" data-toggle="tab" style="padding: 8px!important;">Semua</a></li>
+                                                <?php 
+                                                foreach($product_category as $y => $yy): 
+                                                    $class = ''; 
+                                                ?>
+                                                <li class="<?php echo $class; ?>"><a href="#" class="btn_product_tab" data-id="<?php echo $yy['category_id']; ?>" role="" data-toggle="tab" style="padding: 8px!important;"><?php echo $yy['category_name']; ?></a></li>                                      
+                                                <?php endforeach; ?>
+                                            </ul>
+                                            <div class="tab-content" style="margin-bottom: 0px!important">
+                                                <div class="tab-pane active" style="padding-top:0px;padding-bottom:0px;">
+                                                    <div class="row">                                                   
+                                                        <div id="product_tab_detail" class="col-md-12 col-xs-12 col-sm-12 scroll-track scroll-order-product">
+                                                            <?php 
+                                                            foreach($products as $p){
+                                                                $product_price = '-'; 
+                                                                if($p['product_price_sell'] > 0){
+                                                                    $product_price = 'Rp. '.number_format($p['product_price_sell']);
+                                                                }
+                                                                if(empty($p['product_image'])){
+                                                                    $pimg = site_url('upload/noimage.png');
+                                                                }else{
+                                                                    $pimg = site_url($p['product_image']);    
+                                                                }
+                                                            ?>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 btn_save_trans_item product_tab_detail_item" 
+                                                                data-product-id="<?php echo $p['product_id'];?>" data-product-code="<?php echo $p['product_code'];?>" data-product-name="<?php echo $p['product_name'];?>" data-product-type="<?php echo $p['product_type'];?>" 
+                                                                data-product-qty="1" data-product-unit="<?php echo $p['product_unit'];?>" data-product-price="<?php echo $p['product_price_sell'];?>">
+                                                                    <div class="col-md-12 col-sm-12 product-tab-color-template" style="">
+                                                                        <img src="<?php echo $pimg;?>" class="img-responsive" style="margin-top:20px;">
+                                                                    </div>
+                                                                    <div class="col-md-12 col-sm-12 product-tab-color-template">
+                                                                        <p class="product-name" style=""><?php echo $p['product_name'];?></p>
+                                                                        <p class="product-price" style=""><?php echo $product_price;?></p>
+                                                                    </div>
+                                                                </div>                 
+                                                            <?php } ?>                                                                
                                                         </div>
                                                     </div>
                                                 </div>
@@ -963,180 +940,182 @@
                         </div>
                         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 padding-remove-right prs-0">
                             <div class="grid simple">
-                                <div class="hidden grid-title">
-                                    <div class="tools">
-                                        <a href="javascript:;" class="collapse"></a>
-                                        <a href="#grid-config" data-toggle="modal" class="config"></a>
-                                        <a href="javascript:;" class="reload"></a>
-                                        <a href="javascript:;" class="remove"></a>
-                                    </div>
-                                </div>
                                 <div class="grid-body" style="padding-left:0;padding-right:0;padding-top:0;">
-                                    <form id="form_trans" name="form_trans" method="" action="">
-                                        <div class="col-md-12 col-xs-12 padding-remove-side prs-0">
-                                            <div class="col-md-12 col-sm-12 col-xs-12" style="padding-top:8px;padding-bottom:8px;">
-                                                <h5 style="margin-top:4px!important;margin-bottom:0px!important;padding-left:0px;"><b><i class="fas fa-shopping-basket"></i> <?php echo $order_alias; ?> Detail</b></h5>                  
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                                        <div class="col-md-3 col-sm-3 col-xs-12 padding-remove-left prs-0">
-                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Tanggal</label>
-                                                                    <div class="input-append success date col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                                                                        <input name="trans_date" id="trans_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date; ?>">
-                                                                    </div>
-                                                                </div>                   
-                                                            </div>   
-                                                        </div>                                        
-                                                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 prs-0">                                                   
-                                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 padding-remove-side prs-0">
-                                                                <div class="col-md-12 col-xs-12 col-sm-12 prs-0 prs-5">
-                                                                    <div class="form-group">                        
-                                                                        <label class="form-label"><?php echo $ref_alias;?></label>
-                                                                        <select id="trans_ref_id" name="trans_ref_id" class="form-control">
-                                                                            <option value="0">-</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>   
-                                                            </div>         
-                                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 padding-remove-side prs-0">
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="background-color: var(--form-background-color);">
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top:5px;">
+                                            <div class="col-md-6 col-sm-6 col-xs-6 padding-remove-side">
+                                                <h5 style="margin-top:8px!important;margin-bottom:0px!important;padding-left:0px;color:var(--form-font-color);">
+                                                    <b>
+                                                        <i class="fas fa-shopping-basket"></i> <?php echo $order_alias; ?> Detail
+                                                    </b>
+                                                </h5>                                                
+                                            </div>
+                                        </div>                                
+                                        <form id="form_trans" name="form_trans" method="" action="">
+                                            <div class="col-md-12 col-xs-12 padding-remove-side prs-0">
+                                                <div class="col-md-12 col-sm-12 col-xs-12" style="padding-top:8px;padding-bottom:8px;">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                                            <div class="col-md-3 col-sm-3 col-xs-12 padding-remove-left prs-0">
                                                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                    <div class="form-group">                        
-                                                                        <label class="form-label"><?php echo $contact_2_alias; ?> *</label>
-                                                                        <select id="trans_sales_id" name="trans_sales_id" class="form-control">
-                                                                            <option value="0">Pilih</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>   
-                                                            </div>                                                     
-                                                        </div>
-                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 prs-0">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 padding-remove-side">
-                                                                <div class="form-group">
-                                                                    <label class="form-label"><?php echo $contact_1_alias; ?> / Non ?</label>
-                                                                    <div class="toggles">
-                                                                        <input type="checkbox" name="checkbox" id="trans_contact_checkbox_flag" class="ios-toggle"/>
-                                                                        <label class="trans_contact_checkbox" data-flag="0"></label>	
-                                                                    </div>
-                                                                </div>
-                                                            </div>                                                                
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-7 padding-remove-side prs-0 prs-5">
-                                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side prs-0">
-                                                                    <div class="form-group">                        
-                                                                        <label class="form-label"><?php echo $contact_1_alias; ?> *</label>
-                                                                        <select id="trans_contact_id" name="trans_contact_id" class="form-control" disabled readonly>
-                                                                        </select>               
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Tanggal</label>
+                                                                        <div class="input-append success date col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                                                                            <input name="trans_date" id="trans_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date; ?>">
+                                                                        </div>
                                                                     </div>                   
                                                                 </div>   
-                                                            </div>                                                        
-                                                            <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
-                                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
+                                                            </div>                                        
+                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 prs-0">                                                   
+                                                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 padding-remove-side prs-0">
+                                                                    <div class="col-md-12 col-xs-12 col-sm-12 prs-0 prs-5">
+                                                                        <div class="form-group">                        
+                                                                            <label class="form-label"><?php echo $ref_alias;?></label>
+                                                                            <select id="trans_ref_id" name="trans_ref_id" class="form-control">
+                                                                                <option value="0">-</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>   
+                                                                </div>         
+                                                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 padding-remove-side prs-0">
+                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                                        <div class="form-group">                        
+                                                                            <label class="form-label"><?php echo $contact_2_alias; ?> *</label>
+                                                                            <select id="trans_sales_id" name="trans_sales_id" class="form-control">
+                                                                                <option value="0">Pilih</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>   
+                                                                </div>                                                     
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 prs-0">
+                                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 padding-remove-side">
                                                                     <div class="form-group">
-                                                                        <label class="form-label">Nama non-<?php echo $contact_1_alias; ?></label>
-                                                                        <input id="trans_contact_name" name="trans_contact_name" type="text" value="" class="form-control" style="cursor:pointer;"/>
+                                                                        <label class="form-label"><?php echo $contact_1_alias; ?>?</label>
+                                                                        <div class="toggles">
+                                                                            <input type="checkbox" name="checkbox" id="trans_contact_checkbox_flag" class="ios-toggle"/>
+                                                                            <label class="trans_contact_checkbox" data-flag="0"></label>	
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                                
+                                                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-7 padding-remove-side prs-0 prs-5">
+                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side prs-0">
+                                                                        <div class="form-group">                        
+                                                                            <label class="form-label">Pilih <?php echo $contact_1_alias; ?> *</label>
+                                                                            <select id="trans_contact_id" name="trans_contact_id" class="form-control" disabled readonly>
+                                                                            </select>               
+                                                                        </div>                   
+                                                                    </div>   
+                                                                </div>                                                        
+                                                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label">Nama non-<?php echo $contact_1_alias; ?></label>
+                                                                            <input id="trans_contact_name" name="trans_contact_name" type="text" value="" class="form-control" style="cursor:pointer;"/>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
-                                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
-                                                                    <div class="form-group">
-                                                                        <label class="form-label">Telepon non-<?php echo $contact_1_alias; ?></label>
-                                                                        <input id="trans_contact_phone" name="trans_contact_phone" type="text" value="" class="form-control" style="cursor:pointer;"/>
+                                                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label">Telepon non-<?php echo $contact_1_alias; ?></label>
+                                                                            <input id="trans_contact_phone" name="trans_contact_phone" type="text" value="" class="form-control" style="cursor:pointer;"/>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
+                                                                <div class="clearfix"></div>
                                                             </div>
-                                                            <div class="clearfix"></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12 col-xs-12 col-sm-12 scroll-track scroll-order-item" style="padding: 0px;margin-top: 0;margin-left:0px;margin-right:0px;"> 
-                                            <table id="table_trans_item" class="table table-bordered" data-limit-start="0" data-limit-end="10">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Produk</th> 
-                                                        <th style="text-align:center;">Qty</th>
-                                                        <th style="text-align:right;">Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col-md-12 col-xs-12 padding-remove-side" style="padding-top:8px;">
-                                            <div class="col-md-12 col-xs-12 col-sm-12">
-                                                <div class="col-md-4 col-xs-6 col-sm-12 padding-remove-left hidden-xs hidden-sm">
-                                                    &nbsp;
-                                                </div>
-                                                <div class="col-md-4 col-xs-6 col-sm-6 padding-remove-side prs-0">
-                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Jumlah Produk</label>
-                                                            <input id="trans_product_count" name="trans_product_count" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
-                                                        </div>
+                                            <div class="col-md-12 col-xs-12 col-sm-12 scroll-track scroll-order-item" style="padding: 0px;margin-top: 0;margin-left:0px;margin-right:0px;"> 
+                                                <table id="table_trans_item" class="table table-bordered" style="background-color: var(--form-font-color);">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Produk</th> 
+                                                            <th style="text-align:center;">Qty</th>
+                                                            <th style="text-align:right;">Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-md-12 col-xs-12 padding-remove-side" style="padding-top:8px;padding-bottom:8px;">
+                                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                                    <div class="col-md-4 col-xs-6 col-sm-12 padding-remove-left hidden-xs hidden-sm">
+                                                        &nbsp;
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4 col-xs-6 col-sm-6 padding-remove-right prs-0">
-                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <div class="form-group">
-                                                            <label class="form-label padding-remove-left">Total (Rp)</label>
-                                                            <input id="trans_total" name="trans_total" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
-                                                        </div>
-                                                    </div>                                        
-                                                    <!--
+                                                    <div class="col-md-4 col-xs-6 col-sm-6 padding-remove-side prs-0">
                                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
                                                             <div class="form-group">
-                                                                <label class="col-md-5">Diskon %</label>
-                                                                <div class="col-md-7">
-                                                                <input id="diskon" name="diskon" type="text" value="0" class="form-control" style="cursor:pointer;text-align:right;" readonly='true'/>
-                                                                </div>
-                                                            </div>                            
-                                                        </div>                                            
-                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
-                                                            <div class="form-group">
-                                                                <label class="col-md-5">Subtotal</label>
-                                                                <div class="col-md-7">
-                                                                    <input id="subtotal" name="subtotal" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
-                                                                </div>
+                                                                <label class="form-label">Jumlah Produk</label>
+                                                                <input id="trans_product_count" name="trans_product_count" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
-                                                            <div class="form-group">
-                                                                <label class="col-md-5">Total Diskon</label>
-                                                                <div class="col-md-7">
-                                                                    <input id="total_diskon" name="total_diskon" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
-                                                                </div>
-                                                            </div>                            
-                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-xs-6 col-sm-6 padding-remove-right prs-0">
                                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                            <div class="form-group">
+                                                                <label class="form-label padding-remove-left">Total (Rp)</label>
+                                                                <input id="trans_total" name="trans_total" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
+                                                            </div>
+                                                        </div>                                        
+                                                        <!--
                                                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
                                                                 <div class="form-group">
-                                                                    <label class="col-md-5 padding-remove-side">Down Payment (Rp)</label>
-                                                                    <div class="col-md-7 padding-remove-side">
-                                                                        <input id="total_down_payment" name="total_down_payment" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
+                                                                    <label class="col-md-5">Diskon %</label>
+                                                                    <div class="col-md-7">
+                                                                    <input id="diskon" name="diskon" type="text" value="0" class="form-control" style="cursor:pointer;text-align:right;" readonly='true'/>
+                                                                    </div>
+                                                                </div>                            
+                                                            </div>                                            
+                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Subtotal</label>
+                                                                    <div class="col-md-7">
+                                                                        <input id="subtotal" name="subtotal" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    -->                                     
+                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Total Diskon</label>
+                                                                    <div class="col-md-7">
+                                                                        <input id="total_diskon" name="total_diskon" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
+                                                                    </div>
+                                                                </div>                            
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-5 padding-remove-side">Down Payment (Rp)</label>
+                                                                        <div class="col-md-7 padding-remove-side">
+                                                                            <input id="total_down_payment" name="total_down_payment" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        -->                                     
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                                    <div class="pull-right">
+                                                        <button id="btn_save_trans" class="btn btn-primary" type="button">
+                                                            <i class="fas fa-cash-register"></i>                                 
+                                                            Bayar <?php echo $order_alias; ?>
+                                                        </button>                                                                             
+                                                        <button id="btn_reset_trans" class="btn btn-danger" type="reset">
+                                                            <i class="fas fa-ban"></i> 
+                                                            Kosongkan <?php echo $order_alias; ?>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 col-xs-12 col-sm-12">
-                                                <div class="pull-right">
-                                                    <button id="btn_save_trans" class="btn btn-primary btn-small" type="button">
-                                                        <i class="fas fa-cash-register"></i>                                 
-                                                        Bayar <?php echo $order_alias; ?>
-                                                    </button>                                                                             
-                                                    <button id="btn_reset_trans" class="btn btn-danger btn-small" type="reset">
-                                                        <i class="fas fa-ban"></i> 
-                                                        Kosongkan <?php echo $order_alias; ?>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div> 
@@ -1149,7 +1128,7 @@
                         <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom:4px;">                        
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-left">
                                 <div class="pull-left">
-                                    <button style="background-color:var(--form-background-color-hover);" class="btn btn_back_trans btn-primary btn-small" type="button">
+                                    <button style="background-color:var(--form-background-color-hover);" class="btn btn_back_trans btn-primary" type="button">
                                         <i class="fas fa-arrow-left"></i>
                                         Kembali
                                     </button>
@@ -1169,19 +1148,19 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 div_payment">                      
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                                <div class="grid simple">
-                                    <div class="hidden grid-title">
-                                        <div class="tools">
-                                            <a href="javascript:;" class="collapse"></a>
-                                            <a href="#grid-config" data-toggle="modal" class="config"></a>
-                                            <a href="javascript:;" class="reload"></a>
-                                            <a href="javascript:;" class="remove"></a>
+                            <div class="grid simple" style="margin-bottom:0px;">
+                                <div class="grid-body" style="padding:0px;">   
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="background-color: var(--form-background-color);padding-bottom: 8px;">
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top:5px;margin-bottom:4px;">
+                                            <div class="col-md-6 col-sm-12 col-xs-12 padding-remove-side">                                         
+                                                <h5 style="margin-top:8px!important;margin-bottom:0px!important;color:var(--form-font-color);">
+                                                    <b>
+                                                        <i class="fas fa-list"></i> Metode Pembayaran
+                                                    </b>
+                                                </h5>                            
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="grid-body" style="padding:0px;">                                    
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">                                        
-                                            <h5 style="margin-top:8px!important;margin-bottom:0px!important;padding-left:8px;"><b><i class="fas fa-list"></i> Metode Pembayaran</b></h5>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0" style="background-color: var(--form-font-color);margin-top:5px;">                                        
                                             <div id="div_payment_method" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                 <?php 
                                                 foreach($type_paid as $p):
@@ -1351,236 +1330,234 @@
                                                     </div>
                                                 </div>
                                             </div>                                            
-                                        </div>        
-                                    </div>
+                                        </div>    
+                                    </div>    
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                                <div class="grid simple">
-                                    <div class="hidden grid-title">
-                                        <div class="tools">
-                                            <a href="javascript:;" class="collapse"></a>
-                                            <a href="#grid-config" data-toggle="modal" class="config"></a>
-                                            <a href="javascript:;" class="reload"></a>
-                                            <a href="javascript:;" class="remove"></a>
-                                        </div>
-                                    </div>
-                                    <div class="grid-body" style="padding:0px;">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">                                        
-                                            <h5 style="margin-top:8px!important;margin-bottom:0px!important;padding-left:8px;"><b><i class="fas fa-list"></i> Informasi Pembayaran</b></h5>
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 padding-remove-side">
-                                                                <div class="form-group">
-                                                                    <label class="form-label"><?php echo $contact_1_alias?> / Non ?</label>
-                                                                    <div class="toggles">
-                                                                        <input type="checkbox" name="checkbox" id="payment_contact_checkbox_flag" class="ios-toggle"/>
-                                                                        <label class="payment_contact_checkbox" data-flag="0"></label>	
-                                                                    </div>
+                            <div class="grid simple">
+                                <div class="grid-body" style="padding:0px;">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">    
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top:5px;margin-bottom:5px;">
+                                            <div class="col-md-6 col-sm-12 col-xs-12 padding-remove-side">                                         
+                                                <h5 style="margin-top:8px!important;margin-bottom:0px!important;padding-left:8px;">
+                                                    <b>
+                                                        <i class="fas fa-list"></i> Informasi Pembayaran
+                                                    </b>
+                                                </h5>                   
+                                            </div>
+                                        </div>                                                                            
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 padding-remove-side">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo $contact_1_alias?>?</label>
+                                                                <div class="toggles">
+                                                                    <input type="checkbox" name="checkbox" id="payment_contact_checkbox_flag" class="ios-toggle"/>
+                                                                    <label class="payment_contact_checkbox" data-flag="0"></label>	
                                                                 </div>
-                                                            </div>                                                                         
-                                                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 padding-remove-side">
+                                                            </div>
+                                                        </div>                                                                         
+                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 padding-remove-side">
+                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                                <div class="form-group">                        
+                                                                    <label class="form-label"><?php echo $contact_1_alias; ?></label>
+                                                                    <select id="payment_contact_id" name="payment_contact_id" class="form-control" disabled>
+                                                                    </select>               
+                                                                </div>                   
+                                                            </div>   
+                                                        </div>   
+                                                        <div class="clearfix"></div>                                                                                                               
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-6 padding-remove-side">
+                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
+                                                                <div class="form-group">
+                                                                <label class="form-label">Nama non-<?php echo $contact_1_alias?></label>
+                                                                    <input id="payment_contact_name" name="payment_contact_name" type="text" value="" class="form-control"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-6 padding-remove-side">
+                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
+                                                                <div class="form-group">
+                                                                <label class="form-label">Telepon non-<?php echo $contact_1_alias?></label>
+                                                                    <input id="payment_contact_phone" name="payment_contact_phone" type="text" value="" class="form-control"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>                                               
+                                                        <!--
+                                                            <div class="col-md-3 col-xs-6 col-sm-12 padding-remove-left">
                                                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                    <div class="form-group">                        
-                                                                        <label class="form-label"><?php echo $contact_1_alias; ?></label>
-                                                                        <select id="payment_contact_id" name="payment_contact_id" class="form-control" disabled>
-                                                                        </select>               
+                                                                    <div class="form-group">
+                                                                    <label>Tanggal</label>
+                                                                    <div class="input-append success date col-md-12 col-lg-12 no-padding">
+                                                                        <input name="tgl" id="tgl" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date; ?>">
+                                                                        <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
+                                                                    </div>
                                                                     </div>                   
                                                                 </div>   
-                                                            </div>   
-                                                            <div class="clearfix"></div>                                                                                                               
-                                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-6 padding-remove-side">
+                                                            </div>
+                                                        -->
+                                                        <!--     
+                                                            <div class="col-md-3 col-xs-6 col-sm-12 padding-remove-side">
                                                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
                                                                     <div class="form-group">
-                                                                    <label class="form-label">Nama non-<?php echo $contact_1_alias?></label>
-                                                                        <input id="payment_contact_name" name="payment_contact_name" type="text" value="" class="form-control"/>
+                                                                    <label>Nomor *</label>
+                                                                    <input id="nomor" name="nomor" type="text" value="" class="form-control" readonly='true'/>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-6 padding-remove-side">
-                                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
-                                                                    <div class="form-group">
-                                                                    <label class="form-label">Telepon non-<?php echo $contact_1_alias?></label>
-                                                                        <input id="payment_contact_phone" name="payment_contact_phone" type="text" value="" class="form-control"/>
-                                                                    </div>
-                                                                </div>
-                                                            </div>                                               
-                                                            <!--
-                                                                <div class="col-md-3 col-xs-6 col-sm-12 padding-remove-left">
-                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                        <div class="form-group">
-                                                                        <label>Tanggal</label>
-                                                                        <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                                            <input name="tgl" id="tgl" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date; ?>">
-                                                                            <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
-                                                                        </div>
-                                                                        </div>                   
-                                                                    </div>   
-                                                                </div>
-                                                            -->
-                                                            <!--     
-                                                                <div class="col-md-3 col-xs-6 col-sm-12 padding-remove-side">
-                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
-                                                                        <div class="form-group">
-                                                                        <label>Nomor *</label>
-                                                                        <input id="nomor" name="nomor" type="text" value="" class="form-control" readonly='true'/>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            -->
-                                                            <!--
-                                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-5">Diskon %</label>
-                                                                        <div class="col-md-7">
-                                                                        <input id="diskon_payment" name="diskon_payment" type="text" value="0" class="form-control" style="cursor:pointer;text-align:right;" readonly='true'/>
-                                                                        </div>
-                                                                    </div>                            
-                                                                </div>
-                                                            -->                 
-                                                            <!--
-                                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-5">Subtotal</label>
-                                                                        <div class="col-md-7">
-                                                                        <input id="subtotal_payment" name="subtotal_payment" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-5">Total Diskon</label>
-                                                                        <div class="col-md-7">
-                                                                        <input id="total_diskon_payment" name="total_diskon_payment" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
-                                                                        </div>
-                                                                    </div>                            
-                                                                </div>
-                                                            -->                                                                               
-                                                        </div>               
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                                <form id="form_modal_trans_save">
-                                                    <div class="hide col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <div class="hide col-md-12 col-xs-12 col-sm-12 padding-remove-side prs-0">
-                                                            <div id="div_payment_method" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                <?php 
-                                                                foreach($type_paid as $p):
-                                                                    if(!empty($p['paid_image'])){
-                                                                        $img = $p['paid_image'];
-                                                                    }else{
-                                                                        $img = 'upload/type_paid/noimage.png';
-                                                                    }
-                                                                ?>
-                                                                <div class="hide col-md-3 col-xs-6 col-sm-12 btn_payment_method padding-remove-side" data-id="<?php echo $p['paid_id'];?>">
-                                                                    <div class="col-md-12 col-xs-12 col-sm-12">
-                                                                        <a href="#" class="a_payment_method" data-id="<?php echo $p['paid_id'];?>">
-                                                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                                <img src="<?php echo site_url($img); ?>" class="img-responsive" style="margin:0 auto;width:64px;height:64px;">
-                                                                            </div>
-                                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
-                                                                                <b><?php echo $p['paid_name'];?></b>
-                                                                            </div>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>          
-                                                                <?php endforeach; ?>                                                                                                                                             
-                                                            </div>                                                            
-                                                        </div>
-                                                        <!-- div payment -->
-                                                    </div>
-                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <div class="col-lg-12 col-md-6 col-sm-6 col-xs-6 padding-remove-side prs-0">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Grand Total</label>
-                                                                <input id="payment_total_before" name="payment_total_before" type="text" value="" class="form-control" readonly='true'/>
-                                                            </div>
-                                                        </div>
-                                                        <!-- <div class="col-md-8 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Klaim Voucher / Promo</label>
-                                                                <input id="modal-payment-voucher" name="modal-payment-voucher" type="text" value="" class="form-control" style="border-radius:0px!important;width:60%;"/>
-                                                                <button id="btn-voucher-search" data-id="1" type="button" class="btn btn-mini btn-small" style="position:relative;top:-28px;left:246px;width:40%;height:28px;border-radius:0px;">
-                                                                    <span class="fas fa-check-double"></span> Gunakan
-                                                                </button>
-                                                            </div>                   
-                                                        </div> -->
-                                                        <!-- 
-                                                        <div class="col-md-4 col-sm-4 col-xs-12 padding-remove-side prs-0">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Klaim Voucher / Promo</label>
-                                                                <input id="voucher_code" name="voucher_code" type="text" value="" class="form-control" style=""/>
-                                                            </div>                   
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-4 col-xs-12 padding-remove-side prs-0">
-                                                            <div class="form-group">
-                                                                <label class="form-label">&nbsp;</label>
-                                                                <button id="btn_voucher_search" data-id="1" type="button" class="form-control btn btn-mini btn-small" style="">
-                                                                    <span class="fas fa-check-double"></span> Gunakan
-                                                                </button>
-                                                            </div>                   
-                                                        </div>                                                                                                                                        
-                                                        <div class="col-md-4 col-sm-4 col-xs-12 padding-remove-right prl-2">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Nilai Voucher</label>
-                                                                <input id="voucher_nominal" name="voucher_nominal" type="text" value="" class="form-control" readonly='true'/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="clearfix"></div>
-                                                        -->    
-                                                        <div class="col-md-4 col-sm-6 col-xs-6 padding-remove-side prs-0">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Total Tagihan</label>
-                                                                <input id="payment_total" name="payment_total" type="text" value="" class="form-control" readonly='true'/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6 col-xs-6 padding-remove-side prs-0">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Masukkan Jumlah (Rp)</label>
-                                                                <input id="payment_received" name="payment_received" type="text" value="" class="form-control" style="cursor:pointer;"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-6 col-xs-6 padding-remove-right prl-2">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Kembali</label>
-                                                                <input id="payment_change" name="payment_change" type="text" value="" class="form-control" readonly='true'/>
-                                                            </div>
-                                                        </div>              
-                                                    </div>
-                                                </form>
-                                            </div>              
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                                <div class="form-group">
-                                                        <button id="btn_save_payment" class="btn btn-success" style="width:100%;">
-                                                            <span class="fas fa-cash-register white"></span> Bayar
-                                                        </button> 
+                                                        -->
                                                         <!--
-                                                            <button id="btn-update" class="btn btn-info btn-small" type="button" style="">
-                                                                <i class="fas fa-edit""></i> 
-                                                                Update
-                                                            </button> 
-                                                            <button id="btn-delete" class="btn btn-danger btn-small" type="button" style="">
-                                                                <i class="fas fa-trash"></i> 
-                                                                Delete
-                                                            </button>
-                                                            <button id="btn-new-order" onClick="formTransNew();" class="btn btn-success btn-small" type="button">
-                                                                <i class="fas fa-file-medical"></i> 
-                                                                Buat Baru
-                                                            </button>                                                                 
-                                                            <button id="btn-cancel" class="btn btn-warning btn-small" type="reset" style="">
-                                                                <i class="fas fa-ban"></i> 
-                                                                Batal
-                                                            </button>  
-                                                        -->     
+                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Diskon %</label>
+                                                                    <div class="col-md-7">
+                                                                    <input id="diskon_payment" name="diskon_payment" type="text" value="0" class="form-control" style="cursor:pointer;text-align:right;" readonly='true'/>
+                                                                    </div>
+                                                                </div>                            
+                                                            </div>
+                                                        -->                 
+                                                        <!--
+                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Subtotal</label>
+                                                                    <div class="col-md-7">
+                                                                    <input id="subtotal_payment" name="subtotal_payment" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-bottom:4px;">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-5">Total Diskon</label>
+                                                                    <div class="col-md-7">
+                                                                    <input id="total_diskon_payment" name="total_diskon_payment" type="text" value="0" class="form-control" style="text-align:right;" readonly='true'/>
+                                                                    </div>
+                                                                </div>                            
+                                                            </div>
+                                                        -->                                                                               
+                                                    </div>               
                                                 </div>
                                             </div>
-                                        </div>        
-                                    </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                            <form id="form_modal_trans_save">
+                                                <div class="hide col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                    <div class="hide col-md-12 col-xs-12 col-sm-12 padding-remove-side prs-0">
+                                                        <div id="div_payment_method" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                            <?php 
+                                                            foreach($type_paid as $p):
+                                                                if(!empty($p['paid_image'])){
+                                                                    $img = $p['paid_image'];
+                                                                }else{
+                                                                    $img = 'upload/type_paid/noimage.png';
+                                                                }
+                                                            ?>
+                                                            <div class="hide col-md-3 col-xs-6 col-sm-12 btn_payment_method padding-remove-side" data-id="<?php echo $p['paid_id'];?>">
+                                                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                                                    <a href="#" class="a_payment_method" data-id="<?php echo $p['paid_id'];?>">
+                                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                            <img src="<?php echo site_url($img); ?>" class="img-responsive" style="margin:0 auto;width:64px;height:64px;">
+                                                                        </div>
+                                                                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                                                            <b><?php echo $p['paid_name'];?></b>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            </div>          
+                                                            <?php endforeach; ?>                                                                                                                                             
+                                                        </div>                                                            
+                                                    </div>
+                                                    <!-- div payment -->
+                                                </div>
+                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                    <div class="col-lg-12 col-md-6 col-sm-6 col-xs-6 padding-remove-side prs-0">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Grand Total</label>
+                                                            <input id="payment_total_before" name="payment_total_before" type="text" value="" class="form-control" readonly='true'/>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-md-8 col-sm-12 col-xs-12 padding-remove-side prs-0">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Klaim Voucher / Promo</label>
+                                                            <input id="modal-payment-voucher" name="modal-payment-voucher" type="text" value="" class="form-control" style="border-radius:0px!important;width:60%;"/>
+                                                            <button id="btn-voucher-search" data-id="1" type="button" class="btn btn-mini" style="position:relative;top:-28px;left:246px;width:40%;height:28px;border-radius:0px;">
+                                                                <span class="fas fa-check-double"></span> Gunakan
+                                                            </button>
+                                                        </div>                   
+                                                    </div> -->
+                                                    <!-- 
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 padding-remove-side prs-0">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Klaim Voucher / Promo</label>
+                                                            <input id="voucher_code" name="voucher_code" type="text" value="" class="form-control" style=""/>
+                                                        </div>                   
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 padding-remove-side prs-0">
+                                                        <div class="form-group">
+                                                            <label class="form-label">&nbsp;</label>
+                                                            <button id="btn_voucher_search" data-id="1" type="button" class="form-control btn btn-mini" style="">
+                                                                <span class="fas fa-check-double"></span> Gunakan
+                                                            </button>
+                                                        </div>                   
+                                                    </div>                                                                                                                                        
+                                                    <div class="col-md-4 col-sm-4 col-xs-12 padding-remove-right prl-2">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Nilai Voucher</label>
+                                                            <input id="voucher_nominal" name="voucher_nominal" type="text" value="" class="form-control" readonly='true'/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    -->    
+                                                    <div class="col-md-4 col-sm-6 col-xs-6 padding-remove-side prs-0">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Total Tagihan</label>
+                                                            <input id="payment_total" name="payment_total" type="text" value="" class="form-control" readonly='true'/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6 col-xs-6 padding-remove-side prs-0">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Masukkan Jumlah (Rp)</label>
+                                                            <input id="payment_received" name="payment_received" type="text" value="" class="form-control" style="cursor:pointer;"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-6 col-xs-6 padding-remove-right prl-2">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Kembali</label>
+                                                            <input id="payment_change" name="payment_change" type="text" value="" class="form-control" readonly='true'/>
+                                                        </div>
+                                                    </div>              
+                                                </div>
+                                            </form>
+                                        </div>              
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="padding:4px 0px;">
+                                            <div class="form-group">
+                                                    <button id="btn_save_payment" class="btn btn-success" style="width:100%;">
+                                                        <span class="fas fa-cash-register white"></span> Bayar
+                                                    </button> 
+                                                    <!--
+                                                        <button id="btn-update" class="btn btn-info" type="button" style="">
+                                                            <i class="fas fa-edit""></i> 
+                                                            Update
+                                                        </button> 
+                                                        <button id="btn-delete" class="btn btn-danger" type="button" style="">
+                                                            <i class="fas fa-trash"></i> 
+                                                            Delete
+                                                        </button>
+                                                        <button id="btn-new-order" onClick="formTransNew();" class="btn btn-success" type="button">
+                                                            <i class="fas fa-file-medical"></i> 
+                                                            Buat Baru
+                                                        </button>                                                                 
+                                                        <button id="btn-cancel" class="btn btn-warning" type="reset" style="">
+                                                            <i class="fas fa-ban"></i> 
+                                                            Batal
+                                                        </button>  
+                                                    -->     
+                                            </div>
+                                        </div>
+                                    </div>        
                                 </div>
                             </div>
                         </div>                        
@@ -1593,7 +1570,7 @@
                         <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom:4px;">
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-left">
                                 <div class="pull-left">
-                                    <button style="background-color:var(--form-background-color-hover);" class="btn btn_new_trans btn-primary btn-small" type="button">
+                                    <button style="background-color:var(--form-background-color-hover);" class="btn btn_new_trans btn-primary" type="button">
                                         <i class="fas fa-arrow-left"></i>
                                         Kembali
                                     </button>                                    
@@ -1607,14 +1584,14 @@
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-right">
                                 <div class="pull-right">
                                     <div class="btn-group"> 
-                                        <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
+                                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
                                             <i class="fas fa-print"></i>&nbsp;&nbsp;Cetak&nbsp;&nbsp;<span class="fa fa-angle-down"></span> 
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#" class="btn_print_all_order" data-request="order_recap" data-format="html">A4 Rekap</a></li>
+                                            <li><a href="#" class="btn_print_all_order" data-request="report_point_of_sales_recap" data-format="html">A4 Rekap</a></li>
                                             <!-- <li><a href="#" class="btn_print_all_payment" data-request="trans_detail" data-format="html">A4 Rinci</a></li> -->
                                             <!-- <li><a href="#" class="btn_print_all_payment" data-request="trans_recap" data-format="receipt">Struk Rekap</a></li> -->
-                                            <li><a href="#" class="btn_print_all_order" data-request="order_detail" data-format="receipt">Struk Rinci</a></li>                                            
+                                            <li><a href="#" class="btn_print_all_order" data-request="report_point_of_sales_detail" data-format="receipt">Struk Rinci</a></li>                                            
                                         </ul>
                                     </div>                                    
                                 </div>
@@ -1624,73 +1601,71 @@
                 </div>                
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 padding-remove-side prs-0"> -->
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                                <div class="grid simple">
-                                    <div class="grid-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-xs-12 col-sm-12" style="padding-top:8px;">
-                                                <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side prs-5">
-                                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <label class="form-label" style="margin-bottom:0px;">Periode</label>
-                                                        <div id="filter_order_date" data-start="<?php echo $first_date;?>" data-end="<?php echo $end_date;?>" class="filter-daterangepicker" style="padding-top:5px;padding-bottom:4px;height:27px;">
-                                                            <span></span> 
-                                                            &nbsp;&nbsp;&nbsp;<i class="fas fa-caret-down" style="position: absolute;right: 14px;top: 28px;"></i>
-                                                        </div>
-                                                    </div>                                                    
-                                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                            <label class="form-label"><?php echo $contact_1_alias; ?></label>
-                                                            <select id="filter_order_contact" name="filter_order_contact" class="form-control">
-                                                                <option value="0">Semua</option>
-                                                            </select>
-                                                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">
+                            <div class="grid simple">
+                                <div class="grid-body" style="background-color:var(--form-background-color);">
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12 col-sm-12" style="padding-top:8px;">
+                                            <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side prs-5">
+                                                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 padding-remove-side">
+                                                    <label class="form-label" style="margin-bottom:0px;color:var(--form-font-color);">Periode</label>
+                                                    <div id="filter_order_date" data-start="<?php echo $first_date;?>" data-end="<?php echo $end_date;?>" class="filter-daterangepicker" style="padding-top:5px;padding-bottom:4px;height:27px;">
+                                                        <span></span> 
+                                                        &nbsp;&nbsp;&nbsp;<i class="fas fa-caret-down" style="position: absolute;right: 14px;top: 28px;"></i>
+                                                    </div>
+                                                </div>                                                    
+                                                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label" style="color:var(--form-font-color);"><?php echo $contact_1_alias; ?></label>
+                                                        <select id="filter_order_contact" name="filter_order_contact" class="form-control">
+                                                            <option value="0">Semua</option>
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">
-                                                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                            <label class="form-label">Metode Bayar</label>
-                                                            <select id="filter_order_type_paid" name="filter_order_type_paid" class="form-control">
-                                                                <option value="0">Semua</option>
-                                                                <?php 
-                                                                foreach($type_paid as $v){
-                                                                    echo '<option value="'.$v['paid_id'].'">'.$v['paid_name'].'</option>';
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>                                                        
-                                                    <div class="col-lg-5 col-md-5 col-xs-6 col-sm-6 form-group padding-remove-right prs-0">
-                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">
-                                                            <label class="form-label">Cari</label>
-                                                            <input id="filter_order_search" name="filter_order_search" type="text" value="" class="form-control" placeholder="Pencarian" />
-                                                        </div>
-                                                    </div>                                 
-                                                    <div class="col-lg-3 col-md-3 col-xs-6 col-sm-6 form-group prs-0 prs-0 prs-5">
-                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">                                        
-                                                            <label class="form-label">Tampil</label>
-                                                            <select id="filter_order_length" name="filter_order_length" class="form-control">
-                                                                <option value="10">10 Baris</option>
-                                                                <option value="25">25 Baris</option>
-                                                                <option value="50">50 Baris</option>
-                                                                <option value="100">100 Baris</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>   
-                                                </div>                
-                                            </div>  
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 prs-5">
-                                                <div class="table-responsive">
-                                                    <table id="table_order" class="table table-bordered" style="width:100%;">
-                                                    </table>
-                                                </div>
                                             </div>
+                                            <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">
+                                                <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label" style="color:var(--form-font-color);">Metode Bayar</label>
+                                                        <select id="filter_order_type_paid" name="filter_order_type_paid" class="form-control">
+                                                            <option value="0">Semua</option>
+                                                            <?php 
+                                                            foreach($type_paid as $v){
+                                                                echo '<option value="'.$v['paid_id'].'">'.$v['paid_name'].'</option>';
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>                                                        
+                                                <div class="col-lg-5 col-md-5 col-xs-6 col-sm-6 form-group padding-remove-right prs-0">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">
+                                                        <label class="form-label" style="color:var(--form-font-color);">Cari</label>
+                                                        <input id="filter_order_search" name="filter_order_search" type="text" value="" class="form-control" placeholder="Pencarian" />
+                                                    </div>
+                                                </div>                                 
+                                                <div class="col-lg-3 col-md-3 col-xs-6 col-sm-6 form-group prs-0 prs-0 prs-5">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">                                        
+                                                        <label class="form-label" style="color:var(--form-font-color);">Tampil</label>
+                                                        <select id="filter_order_length" name="filter_order_length" class="form-control">
+                                                            <option value="10">10 Baris</option>
+                                                            <option value="25">25 Baris</option>
+                                                            <option value="50">50 Baris</option>
+                                                            <option value="100">100 Baris</option>
+                                                        </select>
+                                                    </div>
+                                                </div>   
+                                            </div>                
                                         </div>  
-                                    </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="table-responsive">
+                                                <table id="table_order" class="table table-bordered" style="width:100%;">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>  
                                 </div>
                             </div>
-                        <!-- </div>-->
+                        </div>
                     </div>
                 </div>        
             </div>     
@@ -1700,7 +1675,7 @@
                         <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom:4px;">
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-left">
                                 <div class="pull-left">
-                                    <button style="background-color:var(--form-background-color-hover);" class="btn btn_new_trans btn-primary btn-small" type="button">
+                                    <button style="background-color:var(--form-background-color-hover);" class="btn btn_new_trans btn-primary" type="button">
                                         <i class="fas fa-arrow-left"></i>
                                         Kembali
                                     </button>                                    
@@ -1714,14 +1689,14 @@
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-right">
                                 <div class="pull-right">
                                     <div class="btn-group"> 
-                                        <a class="btn btn-info btn-small dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
+                                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"> 
                                             <i class="fas fa-print"></i>&nbsp;&nbsp;Cetak&nbsp;&nbsp;<span class="fa fa-angle-down"></span> 
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#" class="btn_print_all_payment" data-request="trans_recap" data-format="html">A4 Rekap</a></li>
+                                            <li><a href="#" class="btn_print_all_payment" data-request="report_sales_sell_recap" data-format="html">A4 Rekap</a></li>
                                             <!-- <li><a href="#" class="btn_print_all_payment" data-request="trans_detail" data-format="html">A4 Rinci</a></li> -->
                                             <!-- <li><a href="#" class="btn_print_all_payment" data-request="trans_recap" data-format="receipt">Struk Rekap</a></li> -->
-                                            <li><a href="#" class="btn_print_all_payment" data-request="trans_detail" data-format="receipt">Struk Rinci</a></li>                                            
+                                            <li><a href="#" class="btn_print_all_payment" data-request="report_sales_sell_detail" data-format="receipt">Struk Rinci</a></li>                                            
                                         </ul>
                                     </div>                                    
                                 </div>
@@ -1731,73 +1706,71 @@
                 </div>                
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 padding-remove-side prs-0"> -->
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                                <div class="grid simple">
-                                    <div class="grid-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-xs-12 col-sm-12" style="padding-top:8px;">
-                                                <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side prs-5">
-                                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <label class="form-label" style="margin-bottom:0px;">Periode</label>
-                                                        <div id="filter_trans_date" data-start="<?php echo $first_date;?>" data-end="<?php echo $end_date;?>" class="filter-daterangepicker" style="padding-top:5px;padding-bottom:4px;height:27px;">
-                                                            <span></span> 
-                                                            &nbsp;&nbsp;&nbsp;<i class="fas fa-caret-down" style="position: absolute;right: 14px;top: 28px;"></i>
-                                                        </div>
-                                                    </div>                                                    
-                                                    <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                            <label class="form-label"><?php echo $contact_1_alias; ?></label>
-                                                            <select id="filter_trans_contact" name="filter_trans_contact" class="form-control">
-                                                                <option value="0">Semua</option>
-                                                            </select>
-                                                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0">
+                            <div class="grid simple">
+                                <div class="grid-body" style="background-color:var(--form-background-color);">
+                                    <div class="row">
+                                        <div class="col-md-12 col-xs-12 col-sm-12" style="padding-top:8px;">
+                                            <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side prs-5">
+                                                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 padding-remove-side">
+                                                    <label class="form-label" style="margin-bottom:0px;color:var(--form-font-color);">Periode</label>
+                                                    <div id="filter_trans_date" data-start="<?php echo $first_date;?>" data-end="<?php echo $end_date;?>" class="filter-daterangepicker" style="padding-top:5px;padding-bottom:4px;height:27px;">
+                                                        <span></span> 
+                                                        &nbsp;&nbsp;&nbsp;<i class="fas fa-caret-down" style="position: absolute;right: 14px;top: 28px;"></i>
+                                                    </div>
+                                                </div>                                                    
+                                                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label" style="color:var(--form-font-color);"><?php echo $contact_1_alias; ?></label>
+                                                        <select id="filter_trans_contact" name="filter_trans_contact" class="form-control">
+                                                            <option value="0">Semua</option>
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">
-                                                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                            <label class="form-label">Metode Bayar</label>
-                                                            <select id="filter_trans_type_paid" name="filter_trans_type_paid" class="form-control">
-                                                                <option value="0">Semua</option>
-                                                                <?php 
-                                                                foreach($type_paid as $v){
-                                                                    echo '<option value="'.$v['paid_id'].'">'.$v['paid_name'].'</option>';
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>                                                        
-                                                    <div class="col-lg-5 col-md-5 col-xs-6 col-sm-6 form-group padding-remove-right prs-0">
-                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">
-                                                            <label class="form-label">Cari</label>
-                                                            <input id="filter_trans_search" name="filter_trans_search" type="text" value="" class="form-control" placeholder="Pencarian" />
-                                                        </div>
-                                                    </div>                                 
-                                                    <div class="col-lg-3 col-md-3 col-xs-6 col-sm-6 form-group prs-0 prs-0 prs-5">
-                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">                                        
-                                                            <label class="form-label">Tampil</label>
-                                                            <select id="filter_trans_length" name="filter_trans_length" class="form-control">
-                                                                <option value="10">10 Baris</option>
-                                                                <option value="25">25 Baris</option>
-                                                                <option value="50">50 Baris</option>
-                                                                <option value="100">100 Baris</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>   
-                                                </div>                
-                                            </div>  
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 prs-5">
-                                                <div class="table-responsive">
-                                                    <table id="table_trans" class="table table-bordered" style="width:100%;">
-                                                    </table>
-                                                </div>
                                             </div>
+                                            <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">
+                                                <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label" style="color:var(--form-font-color);">Metode Bayar</label>
+                                                        <select id="filter_trans_type_paid" name="filter_trans_type_paid" class="form-control">
+                                                            <option value="0">Semua</option>
+                                                            <?php 
+                                                            foreach($type_paid as $v){
+                                                                echo '<option value="'.$v['paid_id'].'">'.$v['paid_name'].'</option>';
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>                                                        
+                                                <div class="col-lg-5 col-md-5 col-xs-6 col-sm-6 form-group padding-remove-right prs-0">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">
+                                                        <label class="form-label" style="color:var(--form-font-color);">Cari</label>
+                                                        <input id="filter_trans_search" name="filter_trans_search" type="text" value="" class="form-control" placeholder="Pencarian" />
+                                                    </div>
+                                                </div>                                 
+                                                <div class="col-lg-3 col-md-3 col-xs-6 col-sm-6 form-group prs-0 prs-0 prs-5">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">                                        
+                                                        <label class="form-label" style="color:var(--form-font-color);">Tampil</label>
+                                                        <select id="filter_trans_length" name="filter_trans_length" class="form-control">
+                                                            <option value="10">10 Baris</option>
+                                                            <option value="25">25 Baris</option>
+                                                            <option value="50">50 Baris</option>
+                                                            <option value="100">100 Baris</option>
+                                                        </select>
+                                                    </div>
+                                                </div>   
+                                            </div>                
                                         </div>  
-                                    </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="table-responsive">
+                                                <table id="table_trans" class="table table-bordered" style="width:100%;">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>  
                                 </div>
                             </div>
-                        <!-- </div>-->
+                        </div>
                     </div>
                 </div>             
             </div>       
@@ -1811,7 +1784,7 @@
             <form id="form-master" name="form-master" method="" action="">         
                 <div class="modal-header">
                     <h4 style="text-align:left;">Buat <?php echo $contact_1_alias; ?> Baru</h4>
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal"
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal"
                         style="position:relative;top:-38px;float:right;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
@@ -1873,11 +1846,11 @@
                     </div>
                 </div>
                 <div class="modal-footer flex-center">
-                    <button id="btn_save_contact" onClick="" class="btn btn-primary btn-small" type="button" style="width:45%;">
+                    <button id="btn_save_contact" onClick="" class="btn btn-primary" type="button" style="width:45%;">
                         <i class="fas fa-save"></i>                                 
                         Simpan
                     </button>    
-                    <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal" style="width:45%;">
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="width:45%;">
                         <i class="fas fa-times"></i>                                 
                         Tutup
                     </button>                   
@@ -1891,7 +1864,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="scanner-title" style="text-align:left;">Scanner Input</h4>
-                <button class="btn btn-outline-danger waves-effect btn-small" type="button" data-dismiss="modal"
+                <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal"
                     style="position:relative;top:-38px;float:right;">
                     <i class="fas fa-times"></i>                                 
                     Tutup
@@ -1902,7 +1875,7 @@
 					<div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="div_btn_cart col-md-6 col-sm-6 col-xs-6 padding-remove-side">                            
                             <div class="pull-left">
-                                <button style="background-color:var(--form-background-color-hover);" class="btn btn_cart btn-primary btn-small" type="button">
+                                <button style="background-color:var(--form-background-color-hover);" class="btn btn_cart btn-primary" type="button">
                                     <i class="fas fa-cart"></i>
                                     <span class="trans_product_count_span">0</span> <i class="fas fa-shopping-basket"></i> Rp. <span class="trans_product_total_span">0</span> 
                                 </button>

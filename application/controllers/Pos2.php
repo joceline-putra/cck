@@ -68,11 +68,109 @@ class Pos2 extends MY_Controller{
             $post_data  = $this->input->post('data');
             $get        = $this->input->get();
             $action     = !empty($this->input->post('action')) ? $this->input->post('action') : false;
-            $identity   = 2;
+            $identity   = $this->form_type;
             $datas      = json_decode($post_data, TRUE);
 
             switch($action){
-                case "load": //Works
+                case "load_order": //Works
+                    $columns = array(
+                        '0' => 'order_date',
+                        '1' => 'order_number',
+                        '2' => 'contact_name',
+                        '3' => 'employee_name',
+                        '4' => 'order_ref_id'
+                    );                
+                    $limit      = $this->input->post('length');
+                    $start      = $this->input->post('start');
+                    $order      = $columns[$this->input->post('order')[0]['column']];
+                    $dir        = $this->input->post('order')[0]['dir'];
+                    $search     = [];
+                    if ($this->input->post('search')['value']) {
+                        $s = $this->input->post('search')['value'];
+                        foreach ($columns as $v) {
+                            $search[$v] = $s;
+                        }
+                    }
+
+                    /*
+                        if($this->input->post('other_column') && $this->input->post('other_column') > 0) {
+                            $params['other_column'] = $this->input->post('other_column');
+                        }
+                    */
+                    //Datepicker
+                    // $date_start     = date('Y-m-d H:i:s', strtotime($this->input->post('date_start').' 00:00:00'));
+                    // $date_end       = date('Y-m-d H:i:s', strtotime($this->input->post('date_end').' 23:59:59'));
+
+                    //Moment Date
+                    $date_start     = date('Y-m-d H:i:s', strtotime($this->input->post('date_start')));
+                    $date_end       = date('Y-m-d H:i:s', strtotime($this->input->post('date_end')));
+
+                    // $location_from  = !empty($this->input->post('location_from')) ? $this->input->post('location_from') : 0;
+                    // $location_to    = !empty($this->input->post('location_to')) ? $this->input->post('location_to') : 0;
+                    $contact        = !empty($this->input->post('filter_contact')) ? $this->input->post('filter_contact') : 0;
+                    $type_paid      = !empty($this->input->post('filter_type_paid')) ? $this->input->post('filter_type_paid') : 0;
+
+                    $params_datatable = array(
+                        'orders.order_date >' => $date_start,
+                        'orders.order_date <' => $date_end,
+                        'orders.order_type' => intval($identity),
+                        'orders.order_flag <' => 4,
+                        'orders.order_branch_id' => intval($session_branch_id)
+                    );
+                    if($contact > 0){
+                        $params_datatable = array(
+                            'orders.order_date >' => $date_start,
+                            'orders.order_date <' => $date_end,
+                            'orders.order_type' => intval($identity),
+                            'orders.order_flag <' => 4,
+                            'orders.order_branch_id' => intval($session_branch_id),
+                            'orders.order_contact_id' => intval($contact)
+                        );
+                    }
+
+                    // if(intval($location_from) > 0){
+                    //     $params_datatable['trans.trans_location_id'] = $location_from;
+                    // }
+
+                    // if(intval($location_to) > 0){
+                    //     $params_datatable['trans.trans_location_to_id'] = $location_to;
+                    // }
+                    
+                    if(intval($type_paid) > 0){
+                        // $params_datatable['trans.trans_paid_type'] = intval($type_paid);
+                    }
+                    /*
+                        Transaksi.php
+                        1 Pembelian
+                        2 Penjualan
+                        3 Retur Beli
+                        4 Retur Jual
+                        8 Produksi
+                        5 Transfer Stok
+                        6 Stok Opname
+
+                        Inventory.php
+                        9 Pemakaian Produk
+                    */
+                    $datas_count = $this->Order_model->get_all_orders_pos_count($params_datatable,$search);
+                    if($datas_count > 0){
+                        $datas = $this->Order_model->get_all_orders_pos($params_datatable, $search, $limit, $start, $order, $dir);
+                        
+                        $return->status=1; 
+                        $return->message='Loaded'; 
+                        $return->total_records=$datas_count;
+                        $return->result=$datas;
+                    }else{
+                        $return->message='No data'; 
+                        $return->total_records=$datas_count;
+                        $return->result=0;
+                    }
+                    $return->recordsTotal       = $datas_count;
+                    $return->recordsFiltered    = $datas_count;
+                    $return->params             = $params_datatable;
+                    $return->search             = $search;
+                    break;
+                case "load_trans": //Works
                     $columns = array(
                         '0' => 'trans_date',
                         '1' => 'trans_number',

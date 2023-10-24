@@ -45,7 +45,7 @@ class Order extends MY_Controller{
         ),
         '222' => array(
             'parent_id' => 39,             
-            'title' => 'Billing',
+            'title' => 'POS 1',
             'view' => 'layouts/admin/menu/sales/pos/pos_v1',
             'javascript' => 'layouts/admin/menu/sales/pos/pos_v1_js'
         ),        
@@ -2087,6 +2087,62 @@ class Order extends MY_Controller{
                         }
                     }           
                     break;
+                case "pos-load":
+                    $limit = $this->input->post('length');
+                    $start = $this->input->post('start');
+                    $order = $columns[$this->input->post('order')[0]['column']];
+                    $dir = $this->input->post('order')[0]['dir'];
+                    $kontak = $this->input->post('kontak');
+                    $search = [];
+                    if ($this->input->post('search')['value']) {
+                        $s = $this->input->post('search')['value'];
+                        foreach ($columns as $v) {
+                            $search[$v] = $s;                            
+                        }
+                    }
+                    $date_start = date('Y-m-d H:i:s', strtotime($this->input->post('date_start').' 00:00:00'));
+                    $date_end = date('Y-m-d H:i:s', strtotime($this->input->post('date_end').' 23:59:59'));
+                    $params_datatable = array(
+                        'orders.order_date >' => $date_start,
+                        'orders.order_date <' => $date_end,
+                        'orders.order_type' => intval($identity),
+                        'orders.order_branch_id' => intval($session_branch_id)
+                    );
+                    if($kontak > 0){
+                        $params_datatable = array(
+                            'orders.order_date >' => $date_start,
+                            'orders.order_date <' => $date_end,
+                            'orders.order_type' => intval($identity),
+                            'orders.order_branch_id' => intval($session_branch_id),
+                            'orders.order_contact_id' => intval($kontak)                   
+                        );                    
+                    }
+
+                    //POS Filter
+                    if($identity == 222){
+                        // $params_datatable['orders.order_flag >'] = 0;
+                    }else{
+                        $params_datatable['orders.order_flag <'] = 4;
+                    }
+                    $datas_count = $this->Order_model->get_all_orders_pos_count($params_datatable,$search);                               
+                    if($datas_count > 0){ //Data exist
+                        $datas       = $this->Order_model->get_all_orders_pos($params_datatable, $search, $limit, $start, $order, $dir);
+                        
+                        $return->status=1; 
+                        $return->message='Loaded'; 
+                        $return->total_records=$datas_count;
+                        $return->result=$datas;        
+                    }else{ 
+                        $return->status=0; 
+                        $return->message='No data'; 
+                        $return->total_records=$datas_count;
+                        $return->result=array();    
+                    }
+                    $return->recordsTotal       = $datas_count;
+                    $return->recordsFiltered    = $datas_count;
+                    $return->params             = $params_datatable;
+                    $return->search             = $search;                       
+                    break;                        
                 case "pos-load-product-tab":
                     $start = 0;
                     $limit = 100;

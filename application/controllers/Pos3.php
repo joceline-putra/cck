@@ -44,7 +44,7 @@ class Pos3 extends MY_Controller{
         $this->product_alias    = 'Jasa';     
         
         $this->form_title       = 'POS 3';
-        $this->form_type        = 2222;    
+        $this->form_type        = 222;    
 
         $this->file_view        = 'layouts/admin/menu/sales/pos/pos_v3';
         $this->file_js          = 'layouts/admin/menu/sales/pos/pos_v3_js';
