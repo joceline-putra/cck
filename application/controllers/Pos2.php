@@ -26,6 +26,7 @@ class Pos2 extends MY_Controller{
         $this->load->model('User_model');  
         $this->load->model('Kontak_model');   
         $this->load->model('Type_model');
+        $this->load->model('Type_paid_model');
         $this->load->model('Account_map_model'); 
         $this->load->model('Referensi_model');         
 
@@ -839,20 +840,23 @@ class Pos2 extends MY_Controller{
                                     'order_ref_id' => intval($v['ref_id'])
                                 );
                                 $get_order = $this->Order_model->get_order_ref_custom($where);
-                                $set_data = array(
-                                    'order_id' => intval($get_order['order_id']),
-                                    'order_number' => $get_order['order_number'],
-                                    'order_total' => $get_order['order_total'],
-                                    'order_flag' => $get_order['order_flag'],
-                                    'ref_id' => intval($get_order['order_ref_id']),
-                                    'ref_name' => $get_order['ref_name'],
-                                    'contact_id' => intval($get_order['order_contact_id']),
-                                    'contact_type' => intval($get_order['contact_type']),                                    
-                                    'contact_name' => $get_order['contact_name'],
-                                    'contact_session' => $get_order['contact_session'],                                                                        
-                                    'sales_id' => intval($get_order['order_sales_id']),
-                                    'sales_name' => $get_order['order_sales_name'],                                    
-                                );
+                                $set_data = [];
+                                if($get_order > 0){
+                                    $set_data = array(
+                                        'order_id' => intval($get_order['order_id']),
+                                        'order_number' => $get_order['order_number'],
+                                        'order_total' => $get_order['order_total'],
+                                        'order_flag' => $get_order['order_flag'],
+                                        'ref_id' => intval($get_order['order_ref_id']),
+                                        'ref_name' => $get_order['ref_name'],
+                                        'contact_id' => intval($get_order['order_contact_id']),
+                                        'contact_type' => intval($get_order['contact_type']),                                    
+                                        'contact_name' => $get_order['contact_name'],
+                                        'contact_session' => $get_order['contact_session'],                                                                        
+                                        'sales_id' => intval($get_order['order_sales_id']),
+                                        'sales_name' => $get_order['order_sales_name'],                                    
+                                    );
+                                }
                             }
                             $datas = array(
                                 'ref_id' => intval($v['ref_id']),
@@ -1041,6 +1045,9 @@ class Pos2 extends MY_Controller{
                         if($set_account_id == 0){
                             $next = false;
                             $message = 'Batal tersimpan, Akun belum terpilih';
+                        }else{
+                            $get_paid_type = $this->Type_paid_model->get_type_paid($payment_method);
+                            $paid_type_name = $get_paid_type['paid_name'];
                         }
                         //Check Data Exist
                         /*
@@ -1168,10 +1175,12 @@ class Pos2 extends MY_Controller{
                                         'trans_total_change' => floatVal($total_change),
                                         'contact_id' => $set_contact_id,
                                         'contact_name' => $set_contact_name,
-                                        'contact_phone' => $set_contact_phone
+                                        'contact_phone' => $set_contact_phone,
+                                        'paid_type_id' => $payment_method,
+                                        'paid_type_name' => $paid_type_name
                                     );                                 
                                 }else{
-                                    $return->message='Gagal Simpan';
+                                    $return->message='Gagal Smpan';
                                 }
                             }else{
                                 $return->message='Data sudah ada';

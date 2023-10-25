@@ -221,7 +221,7 @@
 		let scanner = new Html5QrcodeScanner(
 			"scanner-div", scannerConfig
 		);
-        function scannerResult(decodedText, decodedResult) {     
+        function scannerResult(decodedText, decodedResult) {
             // var encodeStr = btoa('String');
             // var decodeStr = atob('ewoicHJvZHVjdF9jb2RlIjoiQSIsCiJwcm9kdWN0X2lkIjoxLAoicHJvZHVjdF9uYW1lIjoiQW5la2EgR2V0dWsiLAoicHJvZHVjdF9ub3RlIjoiQiIsCiJwcm9kdWN0X3ByaWNlIjoxNzUwMDAsCiJwcm9kdWN0X3F0eSI6MSwKInByb2R1Y3RfdG90YWwiOjE3NTAwMCwKInByb2R1Y3RfdHlwZSI6IjEiLAoicHJvZHVjdF91bml0IjoiUGNzIgp9');            
             
@@ -1128,6 +1128,7 @@
 
             if(parseInt(trans_item_count) < 1){
                 notif(0,order_alias+' Detail masih kosong');
+                next = false;
                 return false;
             }
 
@@ -1225,9 +1226,12 @@
                                 trans_total_change:d.result.trans_total_change,
                                 contact_id:d.result.contact_id,
                                 contact_name:d.result.contact_name,
-                                contact_phone:d.result.contact_phone                                                                                                                                                                                                                                  
+                                contact_phone:d.result.contact_phone,
+                                paid_type_id:d.result.paid_type_id,
+                                paid_type_name:d.result.paid_type_name
                             }
                             paymentSuccess(p);
+                            activeTab("tab0");
                         }else{
                             notif(s,m);
                         }
@@ -2495,6 +2499,7 @@
             $("#edc_name").val('');
             $("#edc_note").val('');
 
+            $("#payment_contact_id").val(0).trigger('change');
             $("#payment_contact_name").val('');
             $("#payment_contact_phone").val('');
             $("#payment_total_before").val(0);  
@@ -2819,7 +2824,7 @@
             // $("#modal-trans-save").modal('toggle');
 
             //Set Text
-            $(".modal-print-trans-number").html(' :' + d.trans_number);
+            $(".modal-print-trans-number").html(': ' + d.trans_number);
             $(".modal-print-trans-date").html(': ' + d.trans_date);                                            
             $(".modal-print-trans-paid-type-name").html(': ' + d.paid_type_name);
             $(".modal-print-trans-total").html(': ' + addCommas(d.trans_total));
@@ -2863,7 +2868,6 @@
                 let title   = 'Jumlah Yang Diterima';
                 $.confirm({
                     title: title,
-                    icon: 'fas fa-check fa-1x',
                     columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
                     closeIcon: true, closeIconClass: 'fas fa-times', 
                     animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
@@ -2997,8 +3001,8 @@
                     },
                     buttons: {
                         button_1: {
-                            text: '<i class="fas fa-check white"></i> Close',
-                            btnClass: 'btn-danger',
+                            text: ' ',
+                            // btnClass: 'btn-danger',
                             keys: ['Escape'],
                             action: function(){
                                 //Close
@@ -3135,7 +3139,6 @@
             });
             await myPromise;
         }
-
         //Sync
         function localStorage(){
             $.ajax({

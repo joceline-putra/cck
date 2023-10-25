@@ -186,7 +186,7 @@ class Inventory extends MY_Controller{
                     '2' => 'unit',
                     '3' => 'price'
                 );                                   
-            }else if($identity == 9){ //Pemakaian Barang
+            }else if(($identity == 9) or ($identity == 99)){ //Pemakaian Barang
                 $set_tipe = 9;
                 /*
                 $params = array(

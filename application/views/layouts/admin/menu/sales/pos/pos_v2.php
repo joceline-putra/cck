@@ -211,7 +211,7 @@
         .scroll-order-item{
             /* height:340px!important; */
             /* height:294px!important;         */
-            height:270px!important;   
+            height:318px!important;   
         }
         .scroll-pembayaran-daftar{
             height:560px!important;
@@ -334,7 +334,7 @@
             padding-bottom:10px;
         }
         .btn_payment_method:hover, .btn_payment_method.active{
-            background-color:var(--form-background-color);
+            background-color:var(--form-background-color-hover);
         }        
         .btn_payment_method:hover b, .btn_payment_method.active b{
             color:var(--form-font-color);
@@ -789,7 +789,7 @@
                             </div> 
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-side">
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="padding-left: 0;padding-right:0;margin-top:0px;">
-                                    <h5 style="text-align:center;margin-top:6px;"><b><?php echo $ref_alias; ?></b></h5>
+                                    <h5 style="text-align:center;font-size: large;margin-top:6px;"><b><?php echo $ref_alias; ?></b></h5>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-4 padding-remove-right">
@@ -818,6 +818,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12 col-xs-12 ">
+                            <p style="color:var(--form-font-color-2);"><span class="fas fa-info"></span> Pilih <?php echo $ref_alias; ?> untuk memulai</p>
+                        </div>                        
                     </div>  
                 </div>
             </div>            
@@ -1101,24 +1104,22 @@
                                                         -->                                     
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                                    <div class="pull-right">
-                                                        <button id="btn_save_trans" class="btn btn-primary" type="button">
-                                                            <i class="fas fa-cash-register"></i>                                 
-                                                            Bayar <?php echo $order_alias; ?>
-                                                        </button>                                                                             
-                                                        <button id="btn_reset_trans" class="btn btn-danger" type="reset">
-                                                            <i class="fas fa-ban"></i> 
-                                                            Kosongkan <?php echo $order_alias; ?>
-                                                        </button>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div> 
+                        <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0" style="margin-top: 10px;"> 
+                            <button id="btn_save_trans" class="btn btn-primary" type="button" style="width: 100%;margin-bottom:8px;">
+                                <i class="fas fa-cash-register"></i>
+                                Bayar
+                            </button> 
+                            <button id="btn_reset_trans" class="btn btn-danger" type="reset" style="width: 100%;">
+                                <i class="fas fa-ban"></i>
+                                Kosongkan
+                            </button>
+                        </div>                         
                     </div>
                 </div>
             </div>

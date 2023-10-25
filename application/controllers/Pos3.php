@@ -1165,7 +1165,7 @@ class Pos3 extends MY_Controller{
                 'product_unit' => $v['product_unit'],   
                 'product_category_id' => intval($v['product_category_id']),                             
                 'product_image' => !empty($v['product_image']) ? $v['product_image'] : 'upload/noimage.png',
-                'product_price_sell_format' => $v['product_price_sell_format'],
+                'product_price_sell_format' => !empty($v['product_price_sell_format']) ? $v['product_price_sell_format'] : '0',
                 'product_price_sell' => $v['product_price_sell'],
                 'product_price_promo' => $v['product_price_promo'],
                 'product_type' => $v['product_type']
