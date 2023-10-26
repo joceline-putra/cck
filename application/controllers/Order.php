@@ -1653,7 +1653,7 @@ class Order extends MY_Controller{
                             $this->save_activity($params);    
                             /* End Activity */       
                             $return->status=1;
-                            $return->message='Berhasil menambah '.$get_product['product_name'];
+                            $return->message=$get_product['product_name'];
                             $return->result= array(
                                 'id' => $set_data
                                 // 'kode' => $data['kode']
@@ -1666,9 +1666,9 @@ class Order extends MY_Controller{
                             'order_item_total' => floatval($get_order_item['order_item_price'] * floatval($get_order_item['order_item_qty'] + 1))
                         );
                         $this->Order_model->update_order_item($get_order_item['order_item_id'],$params_update);
-                        $return->status=1;
-                        $return->message='Memperbarui Quantity';
-                        $return->result= array(
+                        $return->status = 1;
+                        $return->message = 'Memperbarui Data';
+                        $return->result = array(
                             'id' => $get_order_item['order_item_id']
                             // 'kode' => $data['kode']
                         );

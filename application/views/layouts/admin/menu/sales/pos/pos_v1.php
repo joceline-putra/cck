@@ -1135,34 +1135,36 @@
                     </div>
                 </div>
                 <div class="modal-footer flex-center">
-                    <!--
-                        <button id="btn-update-order" class="btn btn-info btn-small" type="button" style="">
-                            <i class="fas fa-edit""></i> 
-                            Update
+                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side prs-0" style="margin-top: 10px;">                    
+                        <!--
+                            <button id="btn-update-order" class="btn btn-info btn-small" type="button" style="">
+                                <i class="fas fa-edit""></i> 
+                                Update
+                            </button> 
+                            <button id="btn-delete-order" class="btn btn-danger btn-small" type="button" style="">
+                                <i class="fas fa-trash"></i> 
+                                Delete
+                            </button>
+                            <button id="btn-new-order" onClick="formTransNew();" class="btn btn-success btn-small" type="button">
+                                <i class="fas fa-file-medical"></i> 
+                                Buat Baru
+                            </button>  
+                        -->                                                         
+                        <button id="btn-save-order" class="btn btn-primary" type="button" style="width:100%;margin-bottom:8px;">
+                            <i class="fas fa-save"></i>                                 
+                            Simpan <?php echo $order_alias; ?>
+                        </button>                                                                             
+                        <button id="btn-cancel-order" class="btn btn-danger" type="reset" style="width:100%;margin-left:0px;">
+                            <i class="fas fa-ban"></i> 
+                            Reset <?php echo $order_alias; ?>
                         </button> 
-                        <button id="btn-delete-order" class="btn btn-danger btn-small" type="button" style="">
-                            <i class="fas fa-trash"></i> 
-                            Delete
+                        <!--     
+                        <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal">
+                            <i class="fas fa-times"></i>                                 
+                            Tutup
                         </button>
-                        <button id="btn-new-order" onClick="formTransNew();" class="btn btn-success btn-small" type="button">
-                            <i class="fas fa-file-medical"></i> 
-                            Buat Baru
-                        </button>  
-                    -->                                                         
-                    <button id="btn-save-order" class="btn btn-primary" type="button" style="">
-                        <i class="fas fa-save"></i>                                 
-                        Simpan <?php echo $order_alias; ?>
-                    </button>                                                                             
-                    <button id="btn-cancel-order" class="btn btn-warning" type="reset" style="">
-                        <i class="fas fa-ban"></i> 
-                        Batal <?php echo $order_alias; ?>
-                    </button> 
-                    <!--     
-                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal">
-                        <i class="fas fa-times"></i>                                 
-                        Tutup
-                    </button>
-                    -->                             
+                        -->           
+                    </div>                  
                 </div>
             </form>      
         </div>

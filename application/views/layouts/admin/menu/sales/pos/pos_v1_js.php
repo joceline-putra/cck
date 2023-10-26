@@ -998,8 +998,8 @@
                         closeIconClass: 'fas fa-times',
                         buttons: {
                             button_1: {
-                                text: 'Simpan',
                                 btnClass: 'btn-primary',
+                                text: '<span class="fas fa-check"></span> Simpan',
                                 keys: ['enter'],
                                 action: function () {
 
@@ -1073,8 +1073,8 @@
                                 }
                             },
                             button_2: {
-                                text: 'Batal',
                                 btnClass: 'btn-danger',
+                                text: '<span class="fas fa-times"></span> Batal',
                                 keys: ['Escape'],
                                 action: function () {
                                     //Close
@@ -1226,8 +1226,8 @@
                 content: 'Apakah anda ingin menghapus <b>' + number + '</b> ?',
                 buttons: {
                     confirm: {
-                        btnClass: 'btn-danger',
-                        text: 'Ya',
+                        btnClass: 'btn-primary',
+                        text: '<span class="fas fa-check"></span> Hapus',
                         action: function () {
                             var data = {
                                 action: 'delete',
@@ -1251,8 +1251,8 @@
                         }
                     },
                     cancel: {
-                        btnClass: 'btn-success',
-                        text: 'Batal',
+                        btnClass: 'btn-danger',
+                        text: '<span class="fas fa-times"></span> Batal',
                         action: function () {
                             // $.alert('Canceled!');
                         }
@@ -1263,14 +1263,14 @@
         $(document).on("click", "#btn-cancel-order", function () { // NOT USED Cancel Button
             event.preventDefault();
             var ref_id = $("#ref").find(":selected").val();
-            alert('Not Used');
+            console.log('#btn-cancel-order Not Used');
             $.confirm({
                 title: 'Yakin membatalkan!',
                 content: 'Apakah anda ingin membatalkan transaksi ?',
                 buttons: {
                     confirm: {
-                        btnClass: 'btn-danger',
-                        text: 'Batalkan',
+                        btnClass: 'btn-primary',
+                        text: '<span class="fas fa-check"></span> Batalkan',
                         action: function () {
                             var data = {
                                 action: 'cancel',
@@ -1293,8 +1293,8 @@
                         }
                     },
                     cancel: {
-                        btnClass: 'btn-success',
-                        text: 'Tidak Jadi',
+                        btnClass: 'btn-danger',
+                        text: '<span class="fas fa-times"></span> Tidak Jadi',
                         action: function () {
                             // $.alert('Canceled!');
                         }
@@ -1324,8 +1324,8 @@
                 closeIconClass: 'fas fa-times',
                 buttons: {
                     button_1: {
-                        text: 'Ok',
                         btnClass: 'btn-primary',
+                        text: '<span class="fas fa-check"></span> Ok',
                         keys: ['enter'],
                         action: function () {
                             var data = {
@@ -1357,8 +1357,8 @@
                         }
                     },
                     button_2: {
-                        text: 'Batal',
                         btnClass: 'btn-danger',
+                        text: '<span class="fas fa-times"></span> Batal',
                         keys: ['Escape'],
                         action: function () {
                             //Close
@@ -1452,8 +1452,8 @@
                 },                
                 buttons: {
                     button_1: {
-                        text:'Proses',
                         btnClass: 'btn-primary',
+                        text: '<span class="fas fa-check"></span> Proses',
                         keys: ['enter'],
                         action: function(){
                             if (parseInt(order_id) > 0) {
@@ -1505,8 +1505,8 @@
                         }
                     },
                     button_2: {
-                        text: 'Batal',
                         btnClass: 'btn-danger',
+                        text: '<span class="fas fa-times"></span> Batal',
                         keys: ['Escape'],
                         action: function(){
                             //Close
@@ -1584,8 +1584,8 @@
                 },                                
                 buttons: {
                     button_1: {
-                        text:'Proses',
                         btnClass: 'btn-primary',
+                        text: '<span class="fas fa-check"></span> Proses',
                         keys: ['enter'],
                         action: function(e){
                             let self      = this;
@@ -1642,8 +1642,8 @@
                         }
                     },      
                     button_2: {
-                        text: 'Tidak Jadi',
                         btnClass: 'btn-danger',
+                        text: '<span class="fas fa-times"></span> Tidak Jadi',
                         keys: ['Escape'],
                         action: function(){
                             //Close
@@ -1728,7 +1728,8 @@
                         }
                     });
                 }else{
-                    notif(0,'Gagal, Harga Jual tidak ada');
+                    makeConfirm(0,'Harga Jual tidak ditemukan');
+                    // notif(0,'Gagal, Harga Jual tidak ada');
                 }
             }
         });
@@ -1763,7 +1764,7 @@
             }
 
             if (next == true) {
-                if(parseFloat($("#harga").val()) > 0){
+                if(parseFloat(harga) > 0){
                     var prepare = {
                         tipe: identity,
                         produk: id,
@@ -1799,7 +1800,7 @@
                         }
                     });
                 }else{
-                    notif(0,'Gagal, Harga Jual tidak ada');
+                    makeConfirm(0,'Harga Jual tidak ditemukan');
                 }
             }
         });
@@ -2056,8 +2057,8 @@
                 closeIconClass: 'fas fa-times',
                 buttons: {
                     button_1: {
-                        text: 'Ok',
                         btnClass: 'btn-primary',
+                        text: '<span class="fas fa-check"></span> Ok',
                         keys: ['enter'],
                         action: function () {
 
@@ -2108,8 +2109,8 @@
                         }
                     },
                     button_2: {
-                        text: 'Batal',
                         btnClass: 'btn-danger',
+                        text: '<span class="fas fa-times"></span> Batal',
                         keys: ['Escape'],
                         action: function () {
                             //Close
@@ -2256,8 +2257,8 @@
                 content: 'Apakah anda ingin menghapus <b>' + nama + '</b> ini?',
                 buttons: {
                     confirm: {
-                        btnClass: 'btn-danger',
-                        text: 'Ya',
+                        btnClass: 'btn-primary',
+                        text: '<span class="fas fa-check"></span> Ya',
                         action: function () {
                             var data = {
                                 action: 'delete-item',
@@ -2288,8 +2289,8 @@
                         }
                     },
                     cancel: {
-                        btnClass: 'btn-success',
-                        text: 'Batal',
+                        btnClass: 'btn-danger',
+                        text: '<span class="fas fa-times"></span> Batal',
                         action: function () {
                             // $.alert('Canceled!');
                         }
@@ -2314,8 +2315,8 @@
                     content: 'Apakah anda ingin menghapus <b>' + note + '</b> ini?',
                     buttons: {
                         confirm: {
-                            btnClass: 'btn-danger',
-                            text: 'Ya',
+                            btnClass: 'btn-primary',
+                            text: '<span class="fas fa-check"></span> Ya',
                             action: function () {
                                 var prepare = {
                                     tipe: identity,
@@ -2349,8 +2350,8 @@
                             }
                         },
                         cancel: {
-                            btnClass: 'btn-success',
-                            text: 'Batal',
+                            btnClass: 'btn-danger',
+                            text: '<span class="fas fa-times"></span> Batal',
                             action: function () {
                                 // $.alert('Canceled!');
                             }
@@ -2382,8 +2383,8 @@
                     content: 'Apakah anda ingin menghapus Diskon <b>' + discount + '</b> yang tertera di <b>' + name + '</b> ini?',
                     buttons: {
                         confirm: {
-                            btnClass: 'btn-danger',
-                            text: 'Ya',
+                            btnClass: 'btn-primary',
+                            text: '<span class="fas fa-check"></span> Ya',
                             action: function () {
                                 var prepare = {
                                     tipe: identity,
@@ -2422,8 +2423,8 @@
                             }
                         },
                         cancel: {
-                            btnClass: 'btn-success',
-                            text: 'Batal',
+                            btnClass: 'btn-danger',
+                            text: '<span class="fas fa-times"></span> Batal',
                             action: function () {
                                 // $.alert('Canceled!');
                             }
@@ -2561,8 +2562,8 @@
                 content: 'Apakah anda ingin membatalkan <b>' + number + ' - ' + ref + '</b> dari daftar '+payment_alias+'?',
                 buttons: {
                     confirm: {
-                        btnClass: 'btn-danger',
-                        text: 'Batalkan',
+                        btnClass: 'btn-primary',
+                        text: '<span class="fas fa-check"></span> Batalkan',
                         action: function () {
                             var data = {
                                 action: 'bill-remove',
@@ -2579,6 +2580,9 @@
                                     if (parseInt(d.status) == 1) {
                                         notif(1, d.message);
                                         loadPaymentItem();
+                                        setTimeout(() => {
+                                            loadRoom({});
+                                        }, 1000);
                                         // $("#modal-payment-form").modal('hide');
                                     } else {
                                         notif(0, d.message);
@@ -2588,8 +2592,8 @@
                         }
                     },
                     cancel: {
-                        btnClass: 'btn-success',
-                        text: 'Tidak Jadi',
+                        btnClass: 'btn-danger',
+                        text: '<span class="fas fa-check"></span> Tidak Jadi',
                         action: function () {
                             // $.alert('Canceled!');
                         }
@@ -2785,8 +2789,8 @@
                         closeIconClass: 'fas fa-times',
                         buttons: {
                             button_1: {
-                                text: 'Bayar',
                                 btnClass: 'btn-primary',
+                                text: '<span class="fas fa-check"></span> Bayar',
                                 keys: ['enter'],
                                 action: function () {
                                     // var discount = $("#method-payment-discount");
@@ -2910,8 +2914,8 @@
                                 }
                             },
                             button_2: {
-                                text: 'Tidak Jadi',
                                 btnClass: 'btn-danger',
+                                text: '<span class="fas fa-times"></span> Tidak Jadi',
                                 keys: ['Escape'],
                                 action: function () {
                                     //Close
@@ -3182,8 +3186,8 @@
                 },
                 buttons: {
                     button_1: {
-                        text: 'Terapkan',
                         btnClass: 'btn-primary',
+                        text: '<span class="fas fa-check"></span> Terapkan',
                         keys: ['enter'],
                         action: function () {
                             var self = this;
@@ -3219,8 +3223,8 @@
                         }
                     },
                     button_2: {
-                        text: 'Batal',
                         btnClass: 'btn-danger',
+                        text: '<span class="fas fa-times"></span> Batal',
                         keys: ['Escape'],
                         action: function () {
                             //Close
@@ -4346,7 +4350,7 @@
                             }
                         });
                     }
-                }, 1000);
+                }, 500);
             }else{
                 notif(0,order_alias+' tidak ditemukan');
             }
@@ -4483,8 +4487,8 @@
                 },
                 buttons: {
                     button_2: {
-                        text: 'Tutup',
                         btnClass: 'btn-danger',
+                        text: '<span class="fas fa-times"></span> Tutup',
                         keys: ['Escape'],
                         action: function(){
                             //Close
@@ -4697,8 +4701,8 @@
             },
             buttons: {
                 button_1: {
-                    text: 'Kirim',
                     btnClass: 'btn-primary',
+                    text: '<span class="fas fa-check"></span> Kirim',
                     keys: ['enter'],
                     action: function (e) {
                         let self = this;
@@ -4743,8 +4747,8 @@
                     }
                 },
                 button_2: {
-                    text: 'Tidak Jadi',
                     btnClass: 'btn-danger',
+                    text: '<span class="fas fa-times"></span> Tidak Jadi',
                     keys: ['Escape'],
                     action: function () {
                         //Close
@@ -4763,8 +4767,8 @@
             closeIconClass: 'fas fa-times',
             buttons: {
                 button_1: {
-                    text: 'Kirim',
                     btnClass: 'btn-primary',
+                    text: '<span class="fas fa-check"></span> Kirim',
                     keys: ['enter'],
                     action: function () {
                         var data = {
@@ -4797,8 +4801,8 @@
                     }
                 },
                 button_2: {
-                    text: 'Batal',
                     btnClass: 'btn-danger',
+                    text: '<span class="fas fa-times"></span> Batal',
                     keys: ['Escape'],
                     action: function () {
                         //Close
@@ -4970,4 +4974,27 @@
         }
         var fl = $(".payment_contact_checkbox").attr('data-flag');   
     }
+    function makeConfirm(action,message){
+        if(action == 0){
+            var ic = '<span class="fas fa-info-circle"></span> Informasi';
+        }else if(action == 1){
+            var ic = '<span class="fas fa-question-circle"></span> Petunjuk';
+        }
+        $.confirm({
+            title: ic,
+            content: message,
+            columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',  
+            autoClose: 'button_1|30000',
+            animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+            buttons: {
+                button_1: {
+                    text:'Tutup',
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                    action: function(){
+                    }
+                },
+            }
+        });
+    }    
 </script>
