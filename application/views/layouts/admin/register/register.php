@@ -56,8 +56,8 @@ $image_base_64 = base64_encode(ob_get_clean());
         <link href="<?php echo base_url(); ?>assets/core/plugins/bootstrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url(); ?>assets/core/plugins/toastr/toastr.min.css"> 
         <link href="<?php echo base_url(); ?>assets/core/plugins/sweetalert2/sweetalert2.min.css"  rel="stylesheet" type="text/css"/>
-        <link href="<?php echo base_url(); ?>assets/webarch/css/custom.css" rel="stylesheet" type="text/css" />        
-        <link href="<?php echo base_url(); ?>assets/webarch/css/webarch.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url(); ?>assets/core/css/custom.css" rel="stylesheet" type="text/css" />        
+        <link href="<?php echo base_url(); ?>assets/core/css/webarch.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url(); ?>assets/core/plugins/jconfirm-3.3.4/dist/jquery-confirm.min.css" rel="stylesheet">        
     </head>
     <style>
@@ -239,7 +239,7 @@ $image_base_64 = base64_encode(ob_get_clean());
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/core/plugins/jquery-notifications/js/demo/demo.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/core/plugins/notifications.js"></script>
         <script src="<?php echo base_url(); ?>assets/core/plugins/toastr/toastr.min.js"></script>
-        <script src="<?php echo base_url(); ?>assets/core/plugins/sweetalert2/dist/sweetalert2.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/core/plugins/sweetalert2/sweetalert2.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/core/plugins/jquery.redirect.js" type="text/javascript"></script>  
         <script src="<?php echo base_url(); ?>assets/core/plugins/jconfirm-3.3.4/dist/jquery-confirm.min.js"></script>
     </body>

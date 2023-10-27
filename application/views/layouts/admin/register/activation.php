@@ -19,7 +19,7 @@ $branch_logo = !empty($branch['branch_logo_login']) ? $branch['branch_logo_login
         <link href="<?php echo base_url(); ?>assets/core/plugins/bootstrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url(); ?>assets/core/plugins/toastr/toastr.min.css"> 
         <link href="<?php echo base_url(); ?>assets/core/plugins/sweetalert2/sweetalert2.min.css"  rel="stylesheet" type="text/css"/>
-        <link href="<?php echo base_url(); ?>assets/webarch/css/webarch.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url(); ?>assets/core/css/webarch.css" rel="stylesheet" type="text/css" />
         <script src="<?php echo base_url(); ?>assets/core/plugins/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>
     </head>
     <style>
@@ -117,8 +117,8 @@ $branch_logo = !empty($branch['branch_logo_login']) ? $branch['branch_logo_login
         <script src="<?php echo base_url(); ?>assets/core/plugins/jquery-notifications/js/messenger-theme-future.js" type="text/javascript"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/core/plugins/jquery-notifications/js/demo/demo.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/core/plugins/notifications.js"></script>
-        <script src="<?php echo base_url(); ?>assets/plugins/plugins/toastr/toastr.min.js"></script>
-        <script src="<?php echo base_url(); ?>assets/plugins/plugins/sweetalert2/dist/sweetalert2.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/core/plugins/toastr/toastr.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/core/plugins/sweetalert2/dist/sweetalert2.min.js"></script>
         <script>
             $(document).ready(function () {
                 $(document).on("click", "#btnBack", function (e) {

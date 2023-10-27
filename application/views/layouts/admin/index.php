@@ -46,9 +46,9 @@ $switch_do = !empty($this->session->flashdata('switch_branch')) ?  intval($this-
 	<!-- Core CSS -->
 	<link href="<?php echo base_url();?>assets/core/plugins/bootstrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link href="<?php echo base_url();?>assets/core/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet" type="text/css"/>
-	<link href="<?php echo base_url();?>assets/webarch/css/<?php echo !empty($theme['user_theme']) ? $theme['user_theme'] : 'white'; ?>.css" rel="stylesheet" type="text/css"/>
-	<link href="<?php echo base_url();?>assets/webarch/css/custom.css" rel="stylesheet" type="text/css"/>
-	<link href="<?php echo base_url();?>assets/webarch/css/webarch.css" rel="stylesheet" type="text/css"/>
+	<link href="<?php echo base_url();?>assets/core/css/<?php echo !empty($theme['user_theme']) ? $theme['user_theme'] : 'white'; ?>.css" rel="stylesheet" type="text/css"/>
+	<link href="<?php echo base_url();?>assets/core/css/custom.css" rel="stylesheet" type="text/css"/>
+	<link href="<?php echo base_url();?>assets/core/css/webarch.css" rel="stylesheet" type="text/css"/>
 	<!-- <link href="<?php #echo base_url();?>assets/webarch/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen" /> -->
 	<!-- <link href="<?php #echo base_url();?>assets/webarch/plugins/animate.min.css" rel="stylesheet" type="text/css"/> -->
 	<!-- <link href="<?php #echo base_url();?>assets/webarch/css/dark.css" rel="stylesheet" type="text/css"/>	 -->
@@ -72,6 +72,11 @@ $switch_do = !empty($this->session->flashdata('switch_branch')) ?  intval($this-
 
 	<!-- Datatable -->
 	<link href="<?php echo base_url();?>assets/core/plugins/datatables-1.10.24/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+	
+	<!-- <link href="<?php #echo base_url();?>assets/core/plugins/datatables-1.13.6/DataTables-1.13.6/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>		 -->
+	<!-- <link href="<?php #echo base_url();?>assets/core/plugins/datatables-1.13.6/DataTables-1.13.6/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>	 -->
+	<link href="<?php echo base_url();?>assets/core/plugins/datatables-1.13.6/FixedColumns-4.3.0/css/fixedColumns.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
 	<!-- <link href="<?php #echo base_url();?>assets/core/plugins/datatables-1.10.24/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/> -->
 	<!-- <link href="<?php #echo base_url();?>assets/core/plugins/datatables-1.10.24/css/rowReorder.dataTables.min.css" rel="stylesheet" type="text/css"/> -->
 	<!-- <link href="<?php #echo base_url();?>assets/core/plugins/datatables-1.10.24/css/datatables.checbox.min.css" rel="stylesheet" type="text/css"/> -->
@@ -460,13 +465,13 @@ $switch_do = !empty($this->session->flashdata('switch_branch')) ?  intval($this-
 	<!-- END CONTAINER -->
 
 	<!-- Core JS -->
-	<script src="<?php echo base_url();?>assets/webarch/plugins/pace/pace.min.js" type="text/javascript"></script>
+	<script src="<?php echo base_url();?>assets/core/plugins/pace/pace.min.js" type="text/javascript"></script>
 	<script src="<?php echo base_url();?>assets/core/plugins/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>  
 	<!-- <script src="<?php #echo base_url();?>assets/core/plugins/jquery/jquery-3.6.3.min.js" type="text/javascript"></script>  	 -->
 	<script src="<?php echo base_url();?>assets/core/plugins/bootstrapv3/js/bootstrap.min.js" type="text/javascript"></script>
 	<!-- <script src="<?php #echo base_url();?>assets/core/plugins/jquery-scrollbar/jquery.scrollbar.min.js" type="text/javascript"></script> -->
 	<!-- <script src="<?php #echo base_url();?>assets/core/plugins/jquery-block-ui/jqueryblockui.min.js" type="text/javascript"></script> -->
-	<script src="<?php echo base_url();?>assets/webarch/js/webarch.js" type="text/javascript"></script>	
+	<script src="<?php echo base_url();?>assets/core/js/webarch.js" type="text/javascript"></script>	
 
 	<!-- Icon & Notification -->
 	<script src="<?php echo base_url();?>assets/core/plugins/jquery-notifications/js/messenger.min.js" type="text/javascript"></script>
@@ -488,7 +493,11 @@ $switch_do = !empty($this->session->flashdata('switch_branch')) ?  intval($this-
 
 	<!-- Datatable -->
 	<script src="<?php echo base_url();?>assets/core/plugins/datatables-1.10.24/jquery.dataTables.js" type="text/javascript"></script>
-	<script src="<?php echo base_url();?>assets/core/plugins/datatables-1.10.24/dataTables.rowGroup.js" type="text/javascript"></script>  
+	<script src="<?php echo base_url();?>assets/core/plugins/datatables-1.10.24/dataTables.rowGroup.js" type="text/javascript"></script>
+	
+	<!-- <script src="<?php #echo base_url();?>assets/core/plugins/datatables-1.13.6/DataTables-1.13.6/js/jquery.dataTables.min.js" type="text/javascript"></script> -->
+	<script src="<?php echo base_url();?>assets/core/plugins/datatables-1.13.6/FixedColumns-4.3.0/js/dataTables.fixedColumns.min.js" type="text/javascript"></script> 
+
 	<!-- <script src="<?php #echo base_url();?>assets/core/plugins/datatables-1.10.24/dataTables.rowReorder.min.js" type="text/javascript"></script> -->
 	<!-- <script src="<?php #echo base_url();?>assets/core/plugins/datatables-1.10.24/dataTables.responsive.min.js" type="text/javascript"></script> -->
 
