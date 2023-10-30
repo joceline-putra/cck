@@ -125,94 +125,32 @@ $sidebar_logo = !empty($session['user_data']['branch']['branch_logo_sidebar']) ?
                     <li class="quicklinks m-l-10 m-r-10">
                         <img src="<?php echo $sidebar_logo; ?>" class="logo" id="horizontal-logo" style="<?php echo $horizontal_logo_style;?>" data-src="<?php echo $sidebar_logo; ?>" data-src-retina="<?php echo $sidebar_logo; ?>"/>
                     </li>
-                    <li class="quicklinks m-l-10 m-r-10">
+                    <li class="hide quicklinks m-l-10 m-r-10">
                         <a href="#" class="" id="btn-header-stock">
                             <i class="fas fa-cubes"></i>
                             <span style="position: relative;">Cari Stok</span>
                         </a>
                     </li>
-                    <li class="quicklinks m-l-10 m-r-10">
+                    <li class="hide quicklinks m-l-10 m-r-10">
                         <a href="#" class="" id="btn-header-product-history">
                             <i class="fas fa-search-dollar"></i>
                             <span style="position: relative;">Riwayat Harga</span>
                         </a>
                     </li>
-                    <!--
-                        <li class="quicklinks m-l-10 m-r-10">
-                            <a href="#" class="" id="btn-header-report">
-                            <i class="fas fa-file-alt"></i>
-                                    <span style="position: relative;">Laporan</span>
-                            </a>
-                        </li>
-                        <li class="quicklinks m-l-10 m-r-10">
-                                <a href="#" class="" id="btn-header-purchase">
-                                <i class="fas fa-shopping-basket"></i>
-                                        <span style="position: relative;">Beli</span>
-                                </a>
-                        </li>
-                        <li class="quicklinks m-l-10 m-r-10">
-                                <a href="#" class="" id="btn-header-sell">
-                                <i class="fas fa-cash-register"></i>
-                                        <span style="position: relative;">Jual</span>
-                                </a>
-                        </li>
-                        <li class="quicklinks m-l-10 m-r-10">
-                                <a href="#" class="" id="btn-header-product">
-                                <i class="fas fa-cubes"></i>
-                                        <span style="position: relative;">Produk</span>
-                                </a>
-                        </li>
-                        <li class="quicklinks m-l-10 m-r-10">
-                                <a href="#" class="" id="btn-header-cost-out">
-                                <i class="fas fa-coins"></i>
-                                        <span style="position: relative;">Biaya</span>
-                                </a>
-                        </li>
-                        <li class="quicklinks m-l-10 m-r-10">
-                                <a href="#" class="" id="btn-header-account-payable">
-                                <i class="fas fa-file-upload"></i>
-                                        <span style="position: relative;">Hutang</span>
-                                </a>
-                        </li>
-                        <li class="quicklinks m-l-10 m-r-10">
-                                <a href="#" class="" id="btn-header-account-receivable">
-                                <i class="fas fa-file-download"></i>
-                                        <span style="position: relative;">Piutang</span>
-                                </a>
-                        </li>
-                    -->
-                    <li class="quicklinks m-l-10 m-r-10">
+                    <li class="hide quicklinks m-l-10 m-r-10">
                         <a href="#" class="" id="btn-header-stock-minimal">
                             <span id="badge-product-stock-min" style="display:none;" class="badge badge-important">0</span>
                             <i class="fas fa-file-upload"></i>
                             <span style="position: relative;">Stok Habis</span>
                         </a>
                     </li>
-                    <li class="quicklinks m-l-10 m-r-10">
+                    <li class="hide quicklinks m-l-10 m-r-10">
                         <a href="#" class="" id="btn-header-trans-over-due">
                             <span id="badge-trans-due-date" class="badge badge-important"></span>
                             <i class="fas fa-calendar-week"></i>
                             <span style="position: relative;">Jatuh Tempo</span>
                         </a>
-                    </li>                     
-                    <!--
-                    <li class="quicklinks m-l-10 m-r-10">
-                        <a href="#" class="" id="btn-header-down-payment">
-                            <i class="fas fa-money-bill"></i>
-                            <span style="position: relative;">Cari Down Payment</span>
-                        </a>
-                    </li>
-                        <li class="quicklinks m-l-10 m-r-10">
-                            <a href="#" class="" id="btn-header-supplier">
-                                <i class="fas fa-user-tie"></i><span style="position: relative;">Supplier</span>
-                            </a>
-                        </li>
-                        <li class="quicklinks m-l-10 m-r-10">
-                            <a href="#" class="" id="btn-header-customer">
-                                <i class="fas fa-user-tag"></i><span style="position: relative;">Customer</span>
-                            </a>
-                        </li>
-                    -->
+                    </li>     
                     <li class="hide quicklinks m-l-10 m-r-10">
                         <div class="col-lg-4 col-md-12 col-xs-12 padding-remove-side">
                             <div class="form-group">

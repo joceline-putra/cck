@@ -27,7 +27,7 @@ $next = true;
                     <i class="fas fa-home"></i>
                     <span class="title">Beranda</span> <span class="selected"></span>
                 </a>
-                <li class="start open visible-xs visible-sm hidden-md hidden-lg"> 
+                <li class="hide start open"> 
                     <ul class="open sub-menu" style="display:block;">
                         <li> 
                             <a href="#" class="btn-header-stock">
