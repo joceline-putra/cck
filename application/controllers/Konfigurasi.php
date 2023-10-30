@@ -507,13 +507,13 @@ class Konfigurasi extends MY_Controller{
                         );   
                         if($this->input->post('filter_parent') > 0){
                             // $params_datatable['menu_parent_id'] = intval($this->input->post('filter_parent'));
-                            $params_datatable['parent_id'] = intval($this->input->post('filter_parent'));                        
+                            $params_datatable['parent.menu_id'] = intval($this->input->post('filter_parent'));                        
                         }   
 
                         if($this->input->post('filter_flag') !== 'ALL'){
-                            $params_datatable['child_flag'] = intval($this->input->post('filter_flag'));
+                            $params_datatable['menu_flag'] = intval($this->input->post('filter_flag'));
                         }else{
-                            $params_datatable['child_flag <'] = 5; 
+                            $params_datatable['menu_flag <'] = 5; 
                         }                               
                     
                         $datas = $this->Menu_model->get_all_menus_custom($params_datatable, $search, $limit, $start, $order, $dir);

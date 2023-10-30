@@ -21,21 +21,23 @@
                         </li>                
                     ';
                 }else{
-                    echo '
-                        <li class="" data-name="'.$v['menu_link'].'">
-                            <a href="'.base_url($v['menu_link']).'">
-                                <span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
-                            </a>
-                        </li>                
-                    ';                    
-                    if($v['menu_id'] == 30){ // Akun Perkiraan -> Pemetaan Akun
+                    if($v['user_menu_flag'] == 1){
                         echo '
-                            <li class="" data-name="configuration/mapping">
-                                <a href="'.base_url('configuration/account_map').'">
-                                    <span class="fas fa-swatchbook"></span> Pemetaan Akun
+                            <li class="" data-name="'.$v['menu_link'].'">
+                                <a href="'.base_url($v['menu_link']).'">
+                                    <span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
                                 </a>
                             </li>                
-                        ';
+                        ';                    
+                        if($v['menu_id'] == 30){ // Akun Perkiraan -> Pemetaan Akun
+                            echo '
+                                <li class="" data-name="configuration/mapping">
+                                    <a href="'.base_url('configuration/account_map').'">
+                                        <span class="fas fa-swatchbook"></span> Pemetaan Akun
+                                    </a>
+                                </li>                
+                            ';
+                        }
                     }
                 }
             }

@@ -769,15 +769,17 @@ class Login extends My_Controller{
                         $menu_group = $this->Login_model->get_menu_group_by_user_menu($user_info['user_id']);
                         $menus = array();
                         foreach ($menu_group as $r) {
-                            $menus[] = array(
-                                'menu_group_id' => $r['menu_parent_id'],
-                                'menu_group_name' => $r['menu_name'],     
-                                'menu_group_icon' => $r['menu_icon'],
-                                'menu_group_link' => $r['menu_link'],
-                                'menu_group_sorting' => $r['menu_sorting'],                                                
-                                'menu_group_flag' => $r['menu_flag'],                                                                                
-                                'sub_menu' => $this->Login_model->get_menu_child_by_user_menu($r['menu_parent_id'],$user_info['user_id'])             
-                            );                        
+                            if(intval($r['menu_active_count']) > 0){
+                                $menus[] = array(
+                                    'menu_group_id' => $r['menu_id'],
+                                    'menu_group_name' => $r['menu_name'],     
+                                    'menu_group_icon' => $r['menu_icon'],
+                                    'menu_group_link' => $r['menu_link'],
+                                    'menu_group_sorting' => $r['menu_sorting'],
+                                    'menu_group_flag' => $r['menu_flag'],
+                                    'sub_menu' => $this->Login_model->get_menu_child_by_user_menu($r['menu_id'],$user_info['user_id'])             
+                                );
+                            }
                         }    
                         $menu_result = $menus;
                         
@@ -947,16 +949,19 @@ class Login extends My_Controller{
                         // Prepare Menu & Submenu by Session
                         $menu_group = $this->Login_model->get_menu_group_by_user_menu($user_info['user_id']);
                         $menus = array();
+                        // var_dump($menu_group);die;
                         foreach ($menu_group as $r) {
-                            $menus[] = array(
-                                'menu_group_id' => $r['menu_parent_id'],
-                                'menu_group_name' => $r['menu_name'],     
-                                'menu_group_icon' => $r['menu_icon'],
-                                'menu_group_link' => $r['menu_link'],
-                                'menu_group_sorting' => $r['menu_sorting'],                                                
-                                'menu_group_flag' => $r['menu_flag'],                                                                                
-                                'sub_menu' => $this->Login_model->get_menu_child_by_user_menu($r['menu_parent_id'],$user_info['user_id'])             
-                            );                        
+                            if(intval($r['menu_active_count']) > 0){
+                                $menus[] = array(
+                                    'menu_group_id' => $r['menu_id'],
+                                    'menu_group_name' => $r['menu_name'],     
+                                    'menu_group_icon' => $r['menu_icon'],
+                                    'menu_group_link' => $r['menu_link'],
+                                    'menu_group_sorting' => $r['menu_sorting'],                                                
+                                    'menu_group_flag' => $r['menu_flag'],                                                                                
+                                    'sub_menu' => $this->Login_model->get_menu_child_by_user_menu($r['menu_id'],$user_info['user_id'])             
+                                );                        
+                            }
                         }    
                         $menu_result = $menus;
                         
@@ -1103,15 +1108,17 @@ class Login extends My_Controller{
                     $menu_group = $this->Login_model->get_menu_group_by_user_menu($user_info['user_id']);
                     $menus = array();
                     foreach ($menu_group as $r) {
-                        $menus[] = array(
-                            'menu_group_id' => $r['menu_parent_id'],
-                            'menu_group_name' => $r['menu_name'],     
-                            'menu_group_icon' => $r['menu_icon'],
-                            'menu_group_link' => $r['menu_link'],
-                            'menu_group_sorting' => $r['menu_sorting'],                                                
-                            'menu_group_flag' => $r['menu_flag'],                                                                                
-                            'sub_menu' => $this->Login_model->get_menu_child_by_user_menu($r['menu_parent_id'],$user_info['user_id'])             
-                        );                        
+                        if(intval($r['menu_active_count']) > 0){
+                            $menus[] = array(
+                                'menu_group_id' => $r['menu_id'],
+                                'menu_group_name' => $r['menu_name'],     
+                                'menu_group_icon' => $r['menu_icon'],
+                                'menu_group_link' => $r['menu_link'],
+                                'menu_group_sorting' => $r['menu_sorting'],                                                
+                                'menu_group_flag' => $r['menu_flag'],                                                                                
+                                'sub_menu' => $this->Login_model->get_menu_child_by_user_menu($r['menu_id'],$user_info['user_id'])             
+                            );                        
+                        }
                     }    
                     $menu_result = $menus;
                     

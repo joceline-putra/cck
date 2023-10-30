@@ -55,11 +55,18 @@ class Menu_model extends CI_Model{
         return $this->db->get('menus')->result_array();
     }
     function get_all_menus_custom($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
-        $this->db->select("parent_id, parent_name, parent_icon, child_id, child_name, child_link, child_flag");
+        // $sub_query = 'SELECT menu_id AS parent_id, menu_icon AS parent_icon, menu_name AS parent_name FROM menus WHERE menu_parent_id=0 AS parent';
+        
+        $this->db->select("parent.menu_id AS parent_id, parent.menu_name AS parent_name, parent.menu_icon AS parent_icon");
+        $this->db->select("child.menu_parent_id AS child_parent_id, child.menu_id AS child_id, child.menu_name AS child_name, child.menu_link AS child_link, child.menu_flag AS child_flag");
+
         $this->set_params($params);
         $this->set_search($search);
-        $this->db->from("(SELECT menu_id AS parent_id, menu_icon AS parent_icon, menu_name AS parent_name FROM menus WHERE menu_parent_id=0) AS parent");
-        $this->db->join("(SELECT menu_parent_id AS child_parent_id, menu_id AS child_id, menu_name AS child_name, menu_link AS child_link, menu_flag AS child_flag FROM menus) AS child","parent.parent_id=child.child_parent_id","LEFT OUTER");
+        $this->db->from("menus AS child");
+        $this->db->join("(SELECT menu_id, menu_icon, menu_name FROM menus WHERE menu_parent_id=0) AS parent","parent.menu_id=child.menu_parent_id","RIGHT");
+        // $this->db->from("(SELECT menu_id AS parent_id, menu_icon AS parent_icon, menu_name AS parent_name FROM menus WHERE menu_parent_id=0) AS parent");
+        // $this->db->join("(SELECT menu_parent_id AS child_parent_id, menu_id AS child_id, menu_name AS child_name, menu_link AS 
+        // child_link, menu_flag AS child_flag FROM menus) AS child","parent.parent_id=child.child_parent_id","LEFT OUTER");
 
         if ($order) {
             $this->db->order_by($order, $dir);
@@ -100,10 +107,17 @@ class Menu_model extends CI_Model{
     }
     function get_all_menus_custom_count($params,$search){
         // $this->db->from('menus');   
-        $this->db->select("parent_id, parent_name, child_id, child_name, child_link, child_flag");
+        $this->db->select("parent.menu_id AS parent_id, parent.menu_name AS parent_name, parent.menu_icon AS parent_icon");
+        $this->db->select("child.menu_parent_id AS child_parent_id, child.menu_id AS child_id, child.menu_id AS child_name, child.menu_link AS child_link, child.menu_flag AS child_flag");
+
         $this->set_params($params);
-        $this->db->from("(SELECT menu_id AS parent_id, menu_name AS parent_name FROM menus WHERE menu_parent_id=0) AS parent");
-        $this->db->join("(SELECT menu_parent_id AS child_parent_id, menu_id AS child_id, menu_name AS child_name, menu_link AS child_link, menu_flag AS child_flag FROM menus) AS child","parent.parent_id=child.child_parent_id","LEFT OUTER");
+        $this->db->from("menus AS child");
+        $this->db->join("(SELECT menu_id, menu_icon, menu_name FROM menus WHERE menu_parent_id=0) AS parent","parent.menu_id=child.menu_parent_id","LEFT OUTER");
+
+        // $this->db->select("parent_id, parent_name, child_id, child_name, child_link, child_flag");
+        // $this->set_params($params);
+        // $this->db->from("(SELECT menu_id AS parent_id, menu_name AS parent_name FROM menus WHERE menu_parent_id=0) AS parent");
+        // $this->db->join("(SELECT menu_parent_id AS child_parent_id, menu_id AS child_id, menu_name AS child_name, menu_link AS child_link, menu_flag AS child_flag FROM menus) AS child","parent.parent_id=child.child_parent_id","LEFT OUTER");
         $this->set_search($search);
         return $this->db->count_all_results();
     }

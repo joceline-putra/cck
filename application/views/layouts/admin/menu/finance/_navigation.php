@@ -10,14 +10,16 @@
 
 				if($i['menu_group_id'] == 43){
 					foreach($i['sub_menu'] as $v){
-						$menu_icon = !empty($v['menu_icon']) ? $v['menu_icon'] : 'fas fa-file';
-						echo '
-							<li class="" data-name="'.$v['menu_link'].'">
-								<a href="'.base_url($v['menu_link']).'">
-									<span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
-								</a>
-							</li>                
-						';          
+						if($v['user_menu_flag'] == 1){
+							$menu_icon = !empty($v['menu_icon']) ? $v['menu_icon'] : 'fas fa-file';
+							echo '
+								<li class="" data-name="'.$v['menu_link'].'">
+									<a href="'.base_url($v['menu_link']).'">
+										<span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
+									</a>
+								</li>                
+							';          
+						}
 					}
 				}
 			endforeach;

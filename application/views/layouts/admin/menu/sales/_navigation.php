@@ -10,19 +10,21 @@
 
         if($i['menu_group_id'] == 39){
             foreach($i['sub_menu'] as $v){
-                $menu_icon = !empty($v['menu_icon']) ? $v['menu_icon'] : 'fas fa-folder-open';
-                echo '
-                    <li class="" data-name="'.$v['menu_link'].'">
-                        <a href="'.base_url($v['menu_link']).'">
-                            <span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
-                        </a>
-                    </li>                
-                ';          
+                if($v['user_menu_flag'] == 1){
+                    $menu_icon = !empty($v['menu_icon']) ? $v['menu_icon'] : 'fas fa-folder-open';
+                    echo '
+                        <li class="" data-name="'.$v['menu_link'].'">
+                            <a href="'.base_url($v['menu_link']).'">
+                                <span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
+                            </a>
+                        </li>                
+                    ';          
+                }
             }
         }
     endforeach;
     ?>			
-	<li class="" data-name="finance/down_payment">
+	<li class="hide" data-name="finance/down_payment">
 		<a href="<?php echo base_url('finance/down_payment'); ?>">
 			<span class="fas fa-folder-open"></span> Down Payment
 		</a>

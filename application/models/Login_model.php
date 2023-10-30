@@ -110,6 +110,7 @@ class Login_model extends CI_Model
         return $this->db->get()->result_array();
     }
 
+    /* Move to Below 30 Oktober 2023
     function get_menu_group_by_user_menu($user){
         $query= $this->db->query("
             SELECT mm.menu_parent_id, mr.menu_name, mr.menu_link, mr.menu_icon, mr.menu_flag, mr.menu_sorting FROM 
@@ -131,6 +132,27 @@ class Login_model extends CI_Model
 
         return $query->result_array();                   
     }
+    */
+    function get_menu_group_by_user_menu($user){
+        $prepare = "SELECT m.menu_id, m.menu_name, m.menu_link, m.menu_icon, m.menu_flag, m.menu_sorting,
+        um.user_menu_flag, IFNULL(um.menu_active_count,0) AS menu_active_count
+        FROM menus AS m
+        LEFT JOIN (
+            SELECT m.menu_parent_id, m.menu_id, m.menu_name, um.`user_menu_flag`, COUNT(*) AS menu_active_count
+            FROM users_menus AS um
+            LEFT JOIN menus AS m ON um.user_menu_menu_id = m.menu_id
+            WHERE um.user_menu_user_id = $user
+            AND um.user_menu_action = 1 AND um.user_menu_flag > 0
+            GROUP BY menu_parent_id
+            ORDER BY menu_parent_id
+        ) AS um ON m.`menu_id`=um.menu_parent_id
+        WHERE m.menu_parent_id=0 AND menu_flag=1
+        ORDER BY m.`menu_sorting` ASC";
+        // log_message('debug',$prepare);
+        $query= $this->db->query($prepare);
+
+        return $query->result_array();                   
+    }    
     function get_menu_child_by_user_menu($parent,$user){
         $query= $this->db->query("
             SELECT menu_parent_id, menu_id, menu_name, menu_link, menu_flag, menu_sorting, menu_icon, users_menus.user_menu_flag
