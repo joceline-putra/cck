@@ -351,8 +351,8 @@ class Konfigurasi extends MY_Controller{
                     'user_menu_menu_parent_id' => $group,
                 );                                  
                 $columns = array(
-                    '0' => 'parent_name',
-                    '1' => 'child_name'
+                    '0' => 'parent.menu_name',
+                    '1' => 'child.menu_name'
                 ); 
                 $table = 'menus';         
                 $table_user_menu = 'user_menus';                            
