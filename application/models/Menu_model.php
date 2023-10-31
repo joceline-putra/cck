@@ -58,7 +58,7 @@ class Menu_model extends CI_Model{
         // $sub_query = 'SELECT menu_id AS parent_id, menu_icon AS parent_icon, menu_name AS parent_name FROM menus WHERE menu_parent_id=0 AS parent';
         
         $this->db->select("parent.menu_id AS parent_id, parent.menu_name AS parent_name, parent.menu_icon AS parent_icon");
-        $this->db->select("child.menu_parent_id AS child_parent_id, child.menu_id AS child_id, child.menu_name AS child_name, child.menu_link AS child_link, child.menu_flag AS child_flag");
+        $this->db->select("child.menu_parent_id AS child_parent_id, child.menu_id AS child_id, child.menu_name AS child_name, child.menu_link AS child_link, child.menu_flag AS child_flag,  child.menu_icon AS child_icon");
 
         $this->set_params($params);
         $this->set_search($search);

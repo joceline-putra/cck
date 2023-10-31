@@ -113,88 +113,11 @@
             <div class="tab-pane active" id="tab1">
                 <div id="div-form-trans" style="display: none;" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                     <div class="grid simple">
-                        <div class="hidden grid-title">
-                            <div class="tools">
-                                <a href="javascript:;" class="collapse"></a>
-                                <a href="#grid-config" data-toggle="modal" class="config"></a>
-                                <a href="javascript:;" class="reload"></a>
-                                <a href="javascript:;" class="remove"></a>
-                            </div>
-                        </div>
                         <div class="grid-body">
                             <h5><b>Form <?php echo $title; ?></b></h5>                            
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                    <form id="form-master" name="form-master" method="" action="">    
-                                        <input id="tipe" type="hidden" value="<?php echo $identity; ?>">
-                                        <div class="col-md-12">
-                                            <input id="id_document" name="id_document" type="hidden" value="" placeholder="id" readonly>
-                                        </div>
-                                        <div class="col-md-12 col-sm-12 col-xs-12">   
-                                            <div class="col-lg-3 col-md-3 col-xs-12 padding-remove-left">
-                                                <div class="form-group">                        
-                                                    <label>Group Menu*</label>
-                                                    <select id="group" name="group" class="form-control" disabled readonly>
-                                                        <option value="0">-- Pilih --</option>
-                                                    </select>
-                                                </div>
-                                            </div>                                           
-                                            <div class="col-lg-3 col-md-3 col-xs-12 padding-remove-side">
-                                                <div class="form-group">
-                                                    <label>Nama *</label>
-                                                    <input id="nama" name="nama" type="text" value="" class="form-control" readonly='true'/>
-                                                </div>
-                                            </div> 
-                                            <div class="col-lg-3 col-md-3 col-xs-12 padding-remove-right">
-                                                <div class="form-group">
-                                                    <label>Link</label>
-                                                    <input id="link" name="link" type="text" value="" class="form-control" readonly='true'/>
-                                                </div>
-                                            </div>                                       
-                                            <div class="col-lg-3 col-md-3 col-xs-12 padding-remove-right">
-                                                <div class="form-group">
-                                                    <label>Status</label>
-                                                    <select id="status" name="status" class="form-control" disabled readonly>
-                                                        <!-- <option value="">select</option> -->
-                                                        <?php
-                                                        $status_values = array(
-                                                            '1' => 'Aktif',
-                                                            '0' => 'Nonaktif',
-                                                            '4' => 'Terhapus'
-                                                        );
-
-                                                        foreach ($status_values as $value => $display_text) {
-                                                            echo '<option value="' . $value . '" ' . $selected . '>' . $display_text . '</option>';
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>         
-                                            </div>
-                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top: 12px;">
-                                                <div class="form-group">
-                                                    <div class="pull-right">
-                                                        <button id="btn-cancel" onClick="formCancel();" class="btn btn-warning btn-small" type="reset" style="display: none;">
-                                                            <i class="fas fa-ban"></i> 
-                                                            Cancel
-                                                        </button>                                                                  
-                                                        <button id="btn-save" onClick="" class="btn btn-primary btn-small" type="button" style="display:none;">
-                                                            <i class="fas fa-save"></i>                                 
-                                                            Save
-                                                        </button>                                        
-                                                        <button id="btn-update" class="btn btn-info btn-small" type="button" style="display: none;">
-                                                            <i class="fas fa-edit""></i> 
-                                                            Update
-                                                        </button> 
-                                                        <button id="btn-delete" class="btn btn-danger btn-small" type="button" style="display: none;">
-                                                            <i class="fas fa-trash"></i> 
-                                                            Delete
-                                                        </button>                                   
-                                                    </div>
-                                                </div>
-                                            </div>                                                                                                                       
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </form>                  
+            
                                 </div>
                             </div>
                         </div>
@@ -276,5 +199,128 @@
             <div class="tab-pane" id="tab2">          
             </div>
         </div>	
+    </div>
+</div>
+<div class="modal fade" id="modal-menu" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form id="form-master" name="form-master" method="" action="">         
+                <div class="modal-header" style="background-color: #6F7A8A;">
+                    <h4 style="color:white;">Buat Menu</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">  
+                            <form id="form-master" name="form-master" method="" action="">    
+                                <div class="col-md-12">
+                                    <input id="id_document" name="id_document" type="hidden" value="" placeholder="id" readonly>
+                                    <input id="tipe" type="hidden" value="<?php echo $identity; ?>">
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">  
+                                      
+                                    <div class="col-lg-12 col-md-12 col-xs-6 padding-remove-side prr-5 prs-0">
+                                        <div class="form-group">
+                                            <label class="form-label">Jenis Menu</label>
+                                            <div class="radio radio-primary">
+                                                <?php
+                                                $status_values = array(
+                                                    '0' => 'Parent Menu',
+                                                    '1' => 'Child Menu',
+                                                );
+
+                                                foreach ($status_values as $value => $display_text) {
+                                                    $checked = '';
+                                                    if($value == 0){
+                                                        $checked = 'checked="checked"';
+                                                    }                                                
+                                                    // echo '<option value="' . $value . '" ' . $selected . '>' . $display_text . '</option>';
+                                                    echo '<input id="'.strtolower($display_text).'" type="radio" name="parent" value="'.intval($value).'" '.$checked.'><label for="'.strtolower($display_text).'">'.$display_text.'</label>';                                                
+                                                }
+                                                ?>
+                                            </div>
+                                            <!-- </select> -->
+                                        </div>         
+                                    </div>  
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">   
+                                        <div class="col-lg-6 col-md-6 col-xs-12 padding-remove-left">
+                                            <div class="form-group">                        
+                                                <label class="form-label">Parent Menu*</label>
+                                                <select id="group" name="group" class="form-control" disabled readonly>
+                                                    <option value="0">-- Pilih --</option>
+                                                </select>
+                                            </div>
+                                        </div>                                           
+                                        <div class="col-lg-6 col-md-6 col-xs-12 padding-remove-side">
+                                            <div class="form-group">
+                                                <label class="form-label">Nama *</label>
+                                                <input id="nama" name="nama" type="text" value="" class="form-control" readonly='true'/>
+                                            </div>
+                                        </div> 
+                                        <div class="col-lg-6 col-md-6 col-xs-12 padding-remove-left">
+                                            <div class="form-group">
+                                                <label class="form-label">Link</label>
+                                                <input id="link" name="link" type="text" value="" class="form-control" readonly='true'/>
+                                            </div>
+                                        </div>      
+                                        <div class="col-lg-6 col-md-6 col-xs-12 padding-remove-side">
+                                            <div class="form-group">
+                                                <label class="form-label">Icon</label>
+                                                <input id="icon" name="icon" type="text" value="" class="form-control" readonly='true'/>
+                                            </div>
+                                        </div>                                                                                                                
+                                    </div>            
+                                    <div class="col-lg-12 col-md-12 col-xs-6 padding-remove-side prs-0">
+                                        <div class="form-group">
+                                            <label class="form-label">Status Akun</label>
+                                            <div class="radio radio-success">
+                                                <?php
+                                                $status_values = array(
+                                                    '1' => 'Aktif',
+                                                    '0' => 'Nonaktif',
+                                                    '4' => 'Hapus'
+                                                );
+
+                                                foreach ($status_values as $value => $display_text) {
+                                                    $checked = '';
+                                                    if($value == 1){
+                                                        $checked = 'checked="checked"';
+                                                    }
+                                                    // echo '<option value="' . $value . '" ' . $selected . '>' . $display_text . '</option>';
+                                                    echo '<input id="'.strtolower($display_text).'" type="radio" name="status" value="'.intval($value).'" '.$checked.'><label for="'.strtolower($display_text).'">'.$display_text.'</label>';
+                                                }
+                                                ?>
+                                            <!-- </select> -->
+                                            </div>                                        
+                                        </div>         
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer flex-center">
+                    <button id="btn-cancel" onClick="formCancel();" class="btn btn-warning btn-small" type="reset" style="display: none;">
+                        <i class="fas fa-ban"></i> 
+                        Batal
+                    </button>                                                                  
+                    <button id="btn-save" onClick="" class="btn btn-primary btn-small" type="button" style="display:none;">
+                        <i class="fas fa-save"></i>                                 
+                        Simpan
+                    </button>                                        
+                    <button id="btn-update" class="btn btn-info btn-small" type="button" style="display: none;">
+                        <i class="fas fa-edit"></i> 
+                        Perbarui
+                    </button> 
+                    <button id="btn-delete" class="btn btn-danger btn-small" type="button" style="display: none;">
+                        <i class="fas fa-trash"></i> 
+                        Hapus
+                    </button>                    
+                </div>
+            </form>      
+        </div>
     </div>
 </div>

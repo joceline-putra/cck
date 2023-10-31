@@ -16,17 +16,7 @@
             todayHighlight: true,
             weekStart: 1
         });
-
-        /* 
-         const autoNumericOption = {
-         digitGroupSeparator : '.', 
-         decimalCharacter  : ',', 
-         decimalCharacterAlternative: ',', 
-         decimalPlaces: 0,
-         watchExternalChanges: true //!!!        
-         };
-         new AutoNumeric('#harga_jual', autoNumericOption);  
-         */
+        // $("#modal-menu").modal('toggle');
         var index = $("#table-data").DataTable({
             "serverSide": true,
             "ajax": {
@@ -49,8 +39,8 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Group Menu", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Menu", "searchable": true, "orderable": true},
+                {"targets": 0, "title": "Parent Menu", "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Child Menu", "searchable": true, "orderable": true},
                 {"targets": 2, "title": "Link", "searchable": true, "orderable": true},
                 {"targets": 3, "title": "Action", "searchable": false, "orderable": false},
             ],
@@ -74,7 +64,9 @@
                         // }else{ 
                         // dsp += '&nbsp;&nbsp;&nbsp;&nbsp-&nbsp;'+row.menu_name;
                         // }
-                        dsp += row.child_name;
+                        dsp += '<span class="' + row.child_icon + '"></span> ' + row.child_name;
+                        
+                        // dsp += row.child_name;
                         return dsp;
                     }
                 },
@@ -210,25 +202,32 @@
                 return data.text;
             }
         });
-        // $('#filter_status').select2();
         $("#filter_parent, #filter_flag").on('change', function (e) {
             index.ajax.reload();
+        });
+
+        $('input:radio[name="parent"]').on('change', function(e){
+            var v = $(this).val();
+            $("input[name=parent][value!='"+v+"']").removeAttr('checked');
+            $("input[name=parent][value='"+v+"'").attr('checked', 'checked');
+            if(v == 0){
+                $("#group").val(0).trigger('change');
+                $("#group").attr('disabled',true);                
+            }else{
+                $("#group").removeAttr('disabled');                
+            }
         });
 
         // New Button
         $(document).on("click", "#btn-new", function (e) {
             formNew();
-            // $("#div-form-trans").show(300);
-            $("#div-form-trans").show(300);
-            $(this).hide();
-            // animateCSS('#btn-new', 'backOutLeft','true');
-
-            // btnNew.classList.add('animate__animated', 'animate__fadeOutRight');
+            $("#modal-menu").modal('toggle');            
         });
         // Cancel Button
         $(document).on("click", "#btn-cancel", function (e) {
             e.preventDefault();
             formCancel();
+            $("#modal-menu").modal('toggle');              
         });
 
         // Save Button
@@ -238,6 +237,7 @@
 
             var nama = $("#form-master input[name='nama']");
             var link = $("#form-master input[name='link']");
+            var parent = $("input[name=parent]:checked").val();
 
             if (next == true) {
                 if ($("input[id='nama']").val().length == 0) {
@@ -256,9 +256,11 @@
             }
 
             if (next == true) {
-                if ($("select[id='group']").find(':selected').val() == 0) {
-                    notif(0, 'Group wajib dipilih');
-                    next = false;
+                if(parent == 1){
+                    if ($("select[id='group']").find(':selected').val() == 0) {
+                        notif(0, 'Parent wajib dipilih');
+                        next = false;
+                    }
                 }
             }
 
@@ -267,17 +269,16 @@
                     tipe: identity,
                     nama: $("input[id='nama']").val(),
                     link: $("input[id='link']").val(),
+                    icon: $("input[id='icon']").val(),
                     group: $("select[id='group']").find(':selected').val(),
-                    status: $("select[id='status']").find(':selected').val()
+                    status:$("input[name=status]:checked").val(),
+                    parent:$("input[name=parent]:checked").val()                    
                 }
                 var prepare_data = JSON.stringify(prepare);
                 var data = {
                     action: 'create',
                     data: prepare_data
-                };
-                // console.log(prepare);
-                // console.log(prepare_data);	  
-                // console.log(data);      
+                };      
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -288,6 +289,7 @@
                     success: function (d) {
                         if (parseInt(d.status) == 1) { /* Success Message */
                             notif(1, d.message);
+                            $("#modal-menu").modal('toggle');
                             index.ajax.reload();
                         } else { //Error
                             notif(0, d.message);
@@ -303,8 +305,6 @@
         // Edit Button
         $(document).on("click", ".btn-edit", function (e) {
             formMasterSetDisplay(0);
-            $("#form-master input[name='kode']").attr('readonly', true);
-            $("#div-form-trans").show(300);
             e.preventDefault();
             var id = $(this).data("id");
             var data = {
@@ -326,20 +326,30 @@
                         $("#form-master input[name='id_document']").val(d.result.menu_id);
                         $("#form-master input[name='nama']").val(d.result.menu_name);
                         $("#form-master input[name='link']").val(d.result.menu_link);
-                        $("#form-master select[name='status']").val(d.result.menu_flag).trigger('change');
+                        $("#form-master input[name='icon']").val(d.result.menu_icon);                        
+                        // $("#form-master select[name='status']").val(d.result.menu_flag).trigger('change');
 
                         // $("#form-master select[name='group']").val(d.result.menu_parent_id).trigger('change');
-                        $("select[id='group']").append('' +
-                                '<option value="' + d.parent.menu_id + '">' +
-                                d.parent.menu_name +
-                                '</option>');
-                        $("select[id='group']").val(d.parent.menu_id).trigger('change');
+                        if(parseInt(d.result.menu_parent_id) > 0){
+                            $("select[id='group']").append('' +
+                                    '<option value="' + d.parent.menu_id + '">' +
+                                    d.parent.menu_name +
+                                    '</option>');
+                            $("select[id='group']").val(d.parent.menu_id).trigger('change');
+                            $("input[name=parent][value=1]").attr('checked', 'checked');
+                        }else{
+                            $("select[id='group']").val(0).trigger('change');
+                            $("input[name=parent][value=0]").attr('checked', 'checked');                        
+                        }
+
+                        $("input[name=status][value="+parseInt(d.result.menu_flag)+"]").attr('checked', 'checked');
 
                         $("#btn-new").hide();
                         $("#btn-save").hide();
                         $("#btn-update").show();
                         $("#btn-cancel").show();
-                        scrollUp('content');
+                        // scrollUp('content');
+                        $("#modal-menu").modal('toggle');
                     } else {
                         notif(0, d.message);
                     }
@@ -357,7 +367,8 @@
             var id = $("#form-master input[name='id_dokumen']").val();
             var nama = $("#form-master input[name='nama']");
             var link = $("#form-master input[name='link']");
-
+            var parent = $("input[name=parent]:checked").val();
+            
             if (id == '') {
                 notif(0, 'ID tidak ditemukan');
                 next = false;
@@ -374,14 +385,15 @@
                 link.focus();
                 next = false;
             }
-            /*
-             if(next==true){
-             if($("select[id='status']").find(':selected').val() == 0){
-             notif(0,'Status wajib dipilih');
-             next=false;
-             }   
-             }
-             */
+
+            if (next == true) {
+                if(parent == 1){
+                    if ($("select[id='group']").find(':selected').val() == 0) {
+                        notif(0, 'Parent wajib dipilih');
+                        next = false;
+                    }
+                }
+            }
 
             if (next == true) {
                 var prepare = {
@@ -390,8 +402,10 @@
                     kode: $("input[id='kode']").val(),
                     nama: $("input[id='nama']").val(),
                     link: $("input[id='link']").val(),
+                    icon: $("input[id='icon']").val(),
                     group: $("select[id='group']").find(':selected').val(),
-                    status: $("select[id='status']").find(':selected').val()
+                    status:$("input[name=status]:checked").val(),
+                    parent:$("input[name=parent]:checked").val()                        
                 }
                 var prepare_data = JSON.stringify(prepare);
                 var data = {
@@ -407,14 +421,14 @@
                     beforeSend: function () {},
                     success: function (d) {
                         if (parseInt(d.status) == 1) {
-                            $("#btn-new").show();
                             $("#btn-save").hide();
-                            $("#btn-update").hide();
-                            $("#btn-cancel").hide();
+                            // $("#btn-update").hide();
+                            // $("#btn-cancel").hide();
                             $("#form-master input").val();
                             formMasterSetDisplay(1);
                             notif(1, d.message);
                             index.ajax.reload(null, false);
+                            $("#modal-menu").modal('toggle');
                         } else {
                             // notif(0,d.message);  
                         }
@@ -581,19 +595,20 @@
 
     function formNew() {
         formMasterSetDisplay(0);
+        $("input[name=status][value=1]").attr('checked', 'checked');
+        $("input[name=parent][value=0]").attr('checked', 'checked');        
         $("#form-master input").val();
-        $("#btn-new").hide();
+        // $("#btn-new").hide();
         $("#btn-save").show();
         $("#btn-cancel").show();
     }
     function formCancel() {
         formMasterSetDisplay(1);
         $("#form-master input").val();
-        $("#btn-new").css('display', 'inline');
+        // $("#btn-new").css('display', 'inline');
         $("#btn-save").hide();
         $("#btn-update").hide();
         $("#btn-cancel").hide();
-        $("#div-form-trans").hide(300);
     }
     function formMasterSetDisplay(value) { // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan
         if (value == 1) {
@@ -606,6 +621,7 @@
         var attrInput = [
             "nama",
             "link",
+            "icon"
         ];
         //$("input[name='kode']").val(0);
 

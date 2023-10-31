@@ -327,7 +327,8 @@ class Konfigurasi extends MY_Controller{
                 $kode = !empty($data['kode']) ? $data['kode'] : null;
                 $nama = !empty($data['nama']) ? $data['nama'] : null;   
                 $link = !empty($data['link']) ? $data['link'] : null;  
-                $group = !empty($data['group']) ? $data['group'] : null;                  
+                $icon = !empty($data['icon']) ? $data['icon'] : null;                  
+                $group = !empty($data['group']) ? $data['group'] : 0;                  
                 $status = !empty($data['status']) ? $data['status'] : null;      
 
                 $params_check = array(
@@ -337,19 +338,26 @@ class Konfigurasi extends MY_Controller{
                     'menu_parent_id' => $group,
                     'menu_name' => $nama,
                     'menu_link' => $link, 
+                    'menu_icon' => $icon,
                     'menu_date_created' => date("YmdHis"),
                     'menu_flag' => $status
                 );
-                // var_dump($params);die;
                 $params_update = array(
                     'menu_parent_id' => $group,
                     'menu_name' => $nama,
                     'menu_link' => $link,
+                    'menu_icon' => $icon,                    
                     'menu_flag' => $status
                 );   
+                // var_dump($params_update);die;
                 $params_update_user_menu = array(
                     'user_menu_menu_parent_id' => $group,
                 );                                  
+
+                if($group > 0){
+                    $params['menu_sorting'] = 99;
+                }
+                
                 $columns = array(
                     '0' => 'parent.menu_name',
                     '1' => 'child.menu_name'
