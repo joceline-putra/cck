@@ -1175,8 +1175,13 @@ class Pos3 extends MY_Controller{
         // encode array to json
         $json = json_encode($datas);
 
+        $path = FCPATH . 'download';
+        if (!file_exists($path)) {
+            mkdir($path, 0775, true);
+        }
+
         //write json to file
-        if (file_put_contents("data_products.json", $json)){
+        if (file_put_contents($path."/"."products.json", $json)){
             $return->message = "JSON file created successfully...";
             $return->result = $datas;
             $return->status = 1;
