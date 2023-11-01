@@ -172,30 +172,7 @@ $next = true;
                 </li> 
 
             <?php } ?>
-
-            <?php
-            //Start of Only Joe
-            if($session['user_data']['user_name'] == 'root'){
-            ?>
-            <li class="start"> 
-                <a href="#">
-                    <i class="fas fa-wallet"></i>
-                    <span class="title">Kasir</span> <span class="selected"></span>
-                </a>
-                <!-- <li class="start open visible-xs visible-sm hidden-md hidden-lg">  -->
-                <li class="start open">
-                    <ul class="open sub-menu" style="display:block;">
-                        <li><a href="<?php echo site_url('sales/pos')?>">POS</a></li>
-                        <li><a href="<?php echo site_url('sales/pos2')?>">POS 2</a></li>
-                        <li><a href="<?php echo site_url('sales/pos3')?>">POS 3</a></li>
-                        <li><a href="<?php echo site_url('inventory/goods_out_request')?>">Pemakaian Produk</a></li>
-                        <!-- <li><a href="<?php #echo site_url('sales/pos3')?>"><i class="fas fa-hdd" style=""></i> POS 3</a></li> -->
-                    </ul>
-                </li>
-            </li>
-            <?php                
-            }
-            //End of Only Joe
+            <?php  
             if ($next) {
                 ?>
                 <?php
