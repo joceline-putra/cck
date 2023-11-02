@@ -208,8 +208,7 @@
 
         $('input:radio[name="parent"]').on('change', function(e){
             var v = $(this).val();
-            $("input[name=parent][value!='"+v+"']").removeAttr('checked');
-            $("input[name=parent][value='"+v+"'").attr('checked', 'checked');
+            // $('input[name=parent][value='+v+']').prop("checked", true).change();      
             if(v == 0){
                 $("#group").val(0).trigger('change');
                 $("#group").attr('disabled',true);                
@@ -342,7 +341,8 @@
                             $("input[name=parent][value=0]").attr('checked', 'checked');                        
                         }
 
-                        $("input[name=status][value="+parseInt(d.result.menu_flag)+"]").attr('checked', 'checked');
+                        // $("input[name=status][value="+parseInt(d.result.menu_flag)+"]").attr('checked', 'checked');
+                        $('input[name=status][value='+d.result.menu_flag+']').prop("checked", true).change();                         
 
                         $("#btn-new").hide();
                         $("#btn-save").hide();
@@ -595,8 +595,10 @@
 
     function formNew() {
         formMasterSetDisplay(0);
-        $("input[name=status][value=1]").attr('checked', 'checked');
-        $("input[name=parent][value=0]").attr('checked', 'checked');        
+        // $("input[name=status][value=1]").attr('checked', 'checked');
+        // $("input[name=parent][value=0]").attr('checked', 'checked');  
+        $("input[name=status][value=1]").prop("checked", true).change();
+        $("input[name=parent][value=0]").prop("checked", true).change();      
         $("#form-master input").val();
         // $("#btn-new").hide();
         $("#btn-save").show();
