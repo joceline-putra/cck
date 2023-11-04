@@ -14,6 +14,7 @@ class Kontak_model extends CI_Model
         }
     }
 
+    /*
     function set_search($search) { 
         if ($search) {
             $n = 0;
@@ -36,7 +37,24 @@ class Kontak_model extends CI_Model
             $this->db->group_end();
         }
     }
+    */
+    
+    function set_search($search) {
+        if ($search) {
+            $n = 0;
+            $this->db->group_start();
+            foreach ($search as $key => $val) {
+                if ($n == 0) {
+                    $this->db->like($key, $val);
+                } else {
+                    $this->db->or_like($key, $val);
+                }
 
+                $n++;
+            }
+            $this->db->group_end();
+        }
+    }
     function set_join() {
         $this->db->join('accounts AS ar', 'contacts.contact_account_receivable_account_id=ar.account_id','left');
         $this->db->join('accounts AS ap', 'contacts.contact_account_payable_account_id=ap.account_id','left');        
@@ -108,7 +126,8 @@ class Kontak_model extends CI_Model
     function get_all_kontak_count($params,$search){   
         $this->db->from('contacts');     
         $this->set_params($params);
-        $this->set_search($search);        
+        $this->set_search($search);  
+        $this->set_join();              
         return $this->db->count_all_results();
     }
 
