@@ -647,7 +647,7 @@ class Produk extends MY_Controller{
                             'activity_flag' => 0
                         );
                     }
-                    $this->save_activity($params);              
+                    // $this->save_activity($params);              
                     $return->status   = 1;
                     $return->message  = 'Success';
                     $return->result   = $datas;
