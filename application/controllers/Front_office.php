@@ -655,7 +655,7 @@ class Front_office extends MY_Controller{
             $data['reference'] = $this->Reference_model->get_all_reference();
             */
             $data['identity'] = 100;
-            $data['title'] = 'Front';
+            $data['title'] = 'Booking';
             $data['_view'] = 'layouts/admin/menu/front_office/booking';
             $this->load->view('layouts/admin/index',$data);
             $this->load->view('layouts/admin/menu/front_office/booking_js.php',$data);
