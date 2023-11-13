@@ -412,6 +412,18 @@ class Order_model extends CI_Model {
         // return $this->db->get_where('trans_item',array('trans_item_id_user'=>$user_id))->result_array();
         return $this->db->get()->result_array();
     }
+    function check_unsaved_order_item_count($identity,$user_id,$branch_id){
+        // $this->db->select("orders_items.*, products.*");        
+        $this->db->from('orders_items');   
+        $this->db->join('products','orders_items.order_item_product_id=products.product_id','left');
+        $this->db->where('order_item_user_id',$user_id);      
+        $this->db->where('order_item_branch_id',$branch_id);          
+        $this->db->where('order_item_type',$identity);  
+        $this->db->where('order_item_flag',0);
+        $this->db->where('order_item_order_id',null);        
+        $this->db->order_by('order_item_id','desc');        
+        return $this->db->count_all_results();
+    }  
     /* function to get order by id */
     function reset_order_item($user_id){   
         return $this->db->delete('orders_items',array('order_item_flag'=>0,'order_item_user_id'=>$user_id));

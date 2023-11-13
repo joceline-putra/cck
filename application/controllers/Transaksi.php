@@ -2880,8 +2880,10 @@ class Transaksi extends MY_Controller{
                         $total_diskon_baris = 0;
                         foreach($get_data as $v){
 
-                            $get_product_price = $this->Product_price_model->get_all_product_price(array('product_price_product_id'=>$v['product_id']),null,null,null,null,null);
                             $product_price_list = array();
+                            /*
+                                MEMBUAT LEMOT
+                            $get_product_price = $this->Product_price_model->get_all_product_price(array('product_price_product_id'=>$v['product_id']),null,null,null,null,null);
                             foreach($get_product_price as $pp){
                                 $product_price_list[] = array(
                                     'product_price_id' => $pp['product_price_id'],
@@ -2890,6 +2892,7 @@ class Transaksi extends MY_Controller{
                                     'product_price_price' => $pp['product_price_price']
                                 );
                             }
+                            */
                             
                             //If Transfer Stok
                             $location_froms = array();
