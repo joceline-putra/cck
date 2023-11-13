@@ -376,7 +376,8 @@ class Referensi extends MY_Controller{
                     //Check Data Exist
                     $params_check = array(
                         'ref_type' => $data['tipe'],
-                        'ref_code' => $data['kode'],
+                        // 'ref_code' => $data['kode'],
+                        'ref_name' => $data['nama'],                        
                         'ref_branch_id' => intval($session_branch_id)                        
                     );
                     $check_exists = $this->Referensi_model->check_data_exist($params_check);
@@ -390,17 +391,17 @@ class Referensi extends MY_Controller{
                                 'activity_action' => 2,
                                 'activity_table' => 'reference',
                                 'activity_table_id' => $set_data,                            
-                                'activity_text_1' => strtoupper($data['kode']),
+                                'activity_text_1' => !empty($data['kode']) ? strtoupper($data['kode']) : '',
                                 'activity_text_2' => ucwords(strtolower($data['nama'])),                        
                                 'activity_date_created' => date('YmdHis'),
                                 'activity_flag' => 1
                             );
                             $this->save_activity($params);                
                             $return->status=1;
-                            $return->message='Berhasil menyimpan '.$nama;
+                            $return->message='Berhasil menyimpan '.$data['nama'];
                             $return->result= array(
                                 'id' => $set_data,
-                                'kode' => $data['kode']
+                                'kode' => !empty($data['kode']) ? strtoupper($data['kode']) : ''
                             );                         
                         }
                     }else{
@@ -454,7 +455,7 @@ class Referensi extends MY_Controller{
                             'activity_action' => 4,
                             'activity_table' => 'reference',
                             'activity_table_id' => $id,
-                            'activity_text_1' => strtoupper($data['kode']),
+                            'activity_text_1' => !empty($data['kode']) ? strtoupper($data['kode']) : '',
                             'activity_text_2' => ucwords(strtolower($data['nama'])),
                             'activity_date_created' => date('YmdHis'),
                             'activity_flag' => 0

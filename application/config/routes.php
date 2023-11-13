@@ -47,7 +47,7 @@ $route['search']                = "search/index";
 	$route['product/product'] 				= "produk/pages/1";
 	// $route['product/goods'] 				= "produk/pages/1";
 	// $route['product/properti'] 			= "produk/pages/1";	//BestPro
-	$route['product/service'] 				= "produk/pages/2";
+	$route['product/room'] 				    = "produk/pages/2";
 	$route['product/asset'] 				= "produk/pages/3";
 	// $route['product/tindakan']	 		= "produk/pages/4"; //Deprecated
 	$route['product/laboratory'] 			= "produk/pages/5";
@@ -65,6 +65,7 @@ $route['search']                = "search/index";
 	$route['reference/printer'] 			= "printer";	
 	$route['reference/unit'] 				= "konfigurasi/pages/1";
     $route['reference/tax'] 			    = "tax";	
+	$route['reference/room_type'] 			= "referensi/pages/10";
 
 	$route['configuration/statistic'] 		= "konfigurasi";
 	$route['product/warehouse'] 			= "konfigurasi/pages/2";
