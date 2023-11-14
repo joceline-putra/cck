@@ -182,18 +182,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side"> 
                                         <form id="form_booking" name="form_booking" method="" action="">
-                                            <div class="col-lg-12 col-md-12 col-xs-12">
-                                                <div class="form-group">
-                                                    <input id="booking_id" name="booking_id" type="hidden" value="" placeholder="id" readonly>
-                                                    <input id="booking_session" name="booking_session" type="hidden" value="" placeholder="session" readonly>
-                                                </div>
-                                            </div>
                                             <div class="col-md-6 col-sm-12 col-xs-12">
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">

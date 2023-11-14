@@ -18,8 +18,8 @@ class Front_office extends MY_Controller{
         }
         $this->load->helper('form');
         $this->load->library('form_validation');
-        $this->load->model('Front_model');
         */
+        $this->load->model('Front_model');
         $this->load->model('User_model');
     }
     function booking(){
@@ -94,111 +94,86 @@ class Front_office extends MY_Controller{
                     $return->recordsFiltered     = $return->total_records;
                     break;
                 case "create":
-                    // $data = base64_decode($post);
-                    // $data = json_decode($post, TRUE);
-
-                    $this->form_validation->set_rules('booking_name', 'booking_name', 'required');
+                    $this->form_validation->set_rules('booking_id', 'booking_name', 'required');
                     $this->form_validation->set_message('required', '{field} wajib diisi');
                     if ($this->form_validation->run() == FALSE){
                         $return->message = validation_errors();
                     }else{
-
-                        $booking_name = !empty($post['booking_name']) ? $post['booking_name'] : null;
-                        $booking_flag = !empty($post['booking_flag']) ? $post['booking_flag'] : 0;
-                        $booking_session = $this->random_code(20);
-
-                        $params = array(
-                            'booking_name' => $booking_name,
-                            'booking_flag' => $booking_flag
-                        );
-
                         //Check Data Exist
                         $params_check = array(
-                            'booking_name' => $booking_name
+                            'booking_name' => !empty($post['booking_name']) ? $post['booking_name'] : null
                         );
-                        $check_exists = $this->Front_model->check_data_exist($params_check);
-                        if(!$check_exists){
 
-                            $set_data=$this->Front_model->add_booking($params);
-                            if($set_data){
+                        if(intval($post['booking_id']) > 0){ /* Update if Exist */ // if( (!empty($post['booking_session'])) && (strlen($post['booking_session']) > 10) ){ /* Update if Exist */      
 
-                                $booking_id = $set_data;
-                                $data = $this->Front_model->get_booking($booking_id);
+                            /* Check Existing Data */
+                            $params_check = [
+                                'booking_name' => !empty($post['booking_name']) ? $post['booking_name'] : null
+                            ];
 
-                                // Image Save Upload
-                                $post_files = !empty($_FILES) ? $_FILES['files'] : "";
-                                if(!empty($post_files)){
-                                    //Save Image if Exist
-                                    $config['image_library'] = 'gd2';
-                                    $config['upload_path'] = $upload_path_directory;
-                                    $config['allowed_types'] = 'gif|jpg|png|jpeg';
-                                    $this->upload->initialize($config);
-                                    if ($this->upload->do_upload('files')) {
-                                        $upload = $this->upload->data();
-                                        $raw_photo = time() . $upload['file_ext'];
-                                        $old_name = $upload['full_path'];
-                                        $new_name = $upload_path_directory . $raw_photo;
-                                        if (rename($old_name, $new_name)) {
-                                            $compress['image_library'] = 'gd2';
-                                            $compress['source_image'] = $upload_path_directory . $raw_photo;
-                                            $compress['create_thumb'] = FALSE;
-                                            $compress['maintain_ratio'] = TRUE;
-                                            $compress['width'] = $this->image_width;
-                                            $compress['height'] = $this->image_height;
-                                            $compress['new_image'] = $upload_path_directory . $raw_photo;
-                                            $this->load->library('image_lib', $compress);
-                                            $this->image_lib->resize();
+                            $where_not = [
+                                'booking_id' => intval($post['booking_id']),                   
+                            ];                            
+                            $where_new = [
+                                'booking_name' => 'Sel',
+                                'booking_flag' => 1
+                            ];
+                            $check_exists = $this->Front_model->check_data_exist_two_condition($where_not,$where_new);
 
-                                            if ($data && $data['booking_id']) {
-                                                $params_image = array(
-                                                    'booking_image' => $upload_directory . $raw_photo
-                                                );
-                                                if (!empty($data['booking_image'])) {
-                                                    if (file_exists($upload_path_directory . $data['booking_image'])) {
-                                                        unlink($upload_path_directory . $data['booking_image']);
-                                                    }
-                                                }
-                                                $stat = $this->Front_model->update_booking_custom(array('booking_id' => $set_data), $params_image);
-                                            }
-                                        }
-                                    }
+                            /* Continue Update if not exist */
+                            if(!$check_exists){
+                                $params = array(
+                                    'booking_name' => !empty($post['booking_name']) ? $post['booking_name'] : null,
+                                    'booking_flag' => !empty($post['booking_flag']) ? $post['booking_flag'] : 0
+                                );
+                                $create = $this->Front_model->add_booking($params);   
+                                if($create){
+                                    $get_booking = $this->Front_model->get_booking($create);
+                                    $return->status  = 1;
+                                    $return->message = 'Berhasil menambahkan '.$post['booking_name'];
+                                    $return->result= array(
+                                        'booking_id' => $create,
+                                        'booking_name' => $get_booking['booking_name'],
+                                        'booking_session' => $get_booking['booking_session']
+                                    );                                
+                                }else{
+                                    $return->message = 'Gagal menambahkan '.$post['booking_name'];
                                 }
-                                //End of Save Image
-
-                                //Croppie Upload Image
-                                $post_upload = !empty($this->input->post('upload1')) ? $this->input->post('upload1') : "";
-                                if(!empty($post_upload)){
-                                    $upload_process = $this->file_upload_image($this->folder_upload,$post_upload);
-                                    if($upload_process->status == 1){
-                                        if ($data && $data['booking_id']) {
-                                            $params_image = array(
-                                                'booking_url' => $upload_process->result['file_location']
-                                            );
-                                            if (!empty($data['booking_url'])) {
-                                                if (file_exists($upload_path_directory . $data['booking_url'])) {
-                                                    unlink($upload_path_directory . $data['booking_url']);
-                                                }
-                                            }
-                                            $stat = $this->Front_model->update_booking_custom(array('booking_id' => $set_data), $params_image);
-                                        }
-                                    }else{
-                                        $return->message = 'Fungsi Gambar gagal';
-                                    }
-                                }
-                                //End of Croppie
-
-                                $return->status=1;
-                                $return->message='Berhasil menambahkan '.$post['booking_name'];
-                                $return->result= array(
-                                    'id' => $set_data,
-                                    'name' => $post['booking_name'],
-                                    'session' => $booking_session
-                                ); 
                             }else{
-                                $return->message='Gagal menambahkan '.$post['booking_name'];
+                                $return->message = 'Data sudah digunakan';
                             }
-                        }else{
-                            $return->message='Data sudah ada';
+                        }else{ /* Save New Data */
+
+                            /* Check Existing Data */
+                            $params_check = [
+                                'booking_name' => !empty($post['booking_name']) ? $post['booking_name'] : null
+                            ];
+                            $check_exists = $this->Front_model->check_data_exist($params_check);
+
+                            /* Continue Save if not exist */
+                            if(!$check_exists){
+                                $booking_session = $this->random_session(20);
+                                $params = array(
+                                    'booking_session' => $booking_session,
+                                    'booking_name' => !empty($post['booking_name']) ? $post['booking_name'] : null,
+                                    'booking_flag' => !empty($post['booking_flag']) ? $post['booking_flag'] : 0
+                                );
+                                $create = $this->Front_model->add_booking($params);   
+                                if($create){
+                                    $get_booking = $this->Front_model->get_booking($create);
+                                    $return->status  = 1;
+                                    $return->message = 'Berhasil menambahkan '.$post['booking_name'];
+                                    $return->result= array(
+                                        'booking_id' => $create,
+                                        'booking_name' => $get_booking['booking_name'],
+                                        'booking_session' => $get_booking['booking_session']
+                                    );                                
+                                }else{
+                                    $return->message = 'Gagal menambahkan '.$post['booking_name'];
+                                }
+                            }else{
+                                $return->message = 'Data sudah ada';
+                            }                         
                         }
                     }
                     break;
@@ -1301,5 +1276,4 @@ class Front_office extends MY_Controller{
         }
     }    
 }
-
 ?>

@@ -371,7 +371,7 @@
         // });
 
         //CRUD
-        $(document).on("click","#btn_save_booking",function(e) {
+        $(document).on("click","#btn_save_booking2",function(e) {
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -421,6 +421,76 @@
                     }
                 });
             }
+        });
+        $(document).on("click","#btn_save_booking", function(e) {
+            e.preventDefault(); e.stopPropagation();
+            let next = true;
+            let bookingId = 0;
+            let booking_id  = 0; /* From header */
+
+            /* If id not exist, UPDATE if id exist */
+            /*
+            if ($("#booking_id").val().length === 0 || parseInt($("#booking_id").val()) === 0) {
+                if ($("#booking_id").val().length === 0) {
+                    next = false;
+                    notif(0,'ID wajib diisi');
+                }
+            }
+
+            if(next){
+                if ($("#booking_input").val().length === 0) {
+                    next = false;
+                    notif(0,'Input_id wajib diisi');
+                }
+            }
+            
+            if(next){
+                if ($("#booking_select").find(':selected').val() === 0) {
+                    next = false;
+                    notif(0,'Select_id wajib dipilih');
+                }
+            }
+            */
+
+            /* Prepare ajax for UPDATE */
+            /* If Form Validation Complete checked */
+            if(next){
+                /* let url = "services/controls/booking.php?action=action_name";*/ //Native
+                /* let url = "<?= base_url('booking'); ?>"; */ //CI
+                
+                var form = new FormData($("#form_booking")[0]);
+                form.append('action', 'create');
+                form.append('booking_id', booking_id);
+
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,   
+                    beforeSend:function(x){
+                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            notif(s,m);
+                            index.ajax.reload();
+                            $("#modal_booking").modal("hide");
+                            /* hint zz_for or zz_each */
+                            
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        notif(0,err);
+                    }
+                });
+            }   
         });
         $(document).on("click",".btn_edit_booking",function(e) {
             e.preventDefault();
