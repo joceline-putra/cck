@@ -44,4 +44,9 @@
         }
     endforeach;
     ?>
+	<li class="" data-name="user/group">
+		<a href="<?php echo base_url('user/group');?>">
+			<span class="fas fa-filter"></span> Group User
+		</a>
+	</li>		    
 </ul>

@@ -7,7 +7,7 @@
         var url_preview = "<?php echo site_url(); ?>"+"article/";        
         var view = "<?php echo $_view; ?>";
         $(".nav-tabs").find('li[class="active"]').removeClass('active');
-        $(".nav-tabs").find('li[data-name="' + view + '"]').addClass('active');
+        $(".nav-tabs").find('li[data-name="category/article"]').addClass('active');
         // console.log(view);   
         $("select").select2();
         $(".date").datepicker({

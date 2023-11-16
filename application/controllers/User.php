@@ -11,7 +11,8 @@ class User extends MY_Controller{
         }
         $this->load->model('User_model');
         $this->load->model('Menu_model');        
-        $this->load->model('User_menu_model');                
+        $this->load->model('User_menu_model');  
+        $this->load->model('User_group_model');                        
         // $this->load->model('Satuan_model');
         // $this->load->model('Gudang_model');
         // $this->load->model('Golongan_obat_model');
@@ -607,5 +608,224 @@ class User extends MY_Controller{
         }
         $return->action=$action;
         echo json_encode($return);
+    }
+    function group(){
+        if ($this->input->post()) {    
+            $return = new \stdClass();
+            $return->status = 0;
+            $return->message = '';
+            $return->result = '';
+
+            $data['session'] = $this->session->userdata();  
+            $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+
+            $post = $this->input->post();
+            $get  = $this->input->get();
+            $action = !empty($this->input->post('action')) ? $this->input->post('action') : false;
+            
+            switch($action){
+                case "load":
+                    $columns = array(
+                        '0' => 'user_group_id',
+                        '1' => 'user_group_name'
+                    );
+
+                    $limit     = !empty($post['length']) ? $post['length'] : 10;
+                    $start     = !empty($post['start']) ? $post['start'] : 0;
+                    $order     = !empty($post['order']) ? $columns[$post['order'][0]['column']] : $columns[0];
+                    $dir       = !empty($post['order'][0]['dir']) ? $post['order'][0]['dir'] : "asc";
+                    
+                    $search    = [];
+                    if(!empty($post['search']['value'])) {
+                        $s = $post['search']['value'];
+                        foreach ($columns as $v) {
+                            $search[$v] = $s;
+                        }
+                    }
+
+                    $params = array();
+                    $params['user_group_flag'] = 1;
+                    $get_count = $this->User_group_model->get_all_user_group_count($params, $search);
+                    if($get_count > 0){
+                        $get_data = $this->User_group_model->get_all_user_group($params, $search, $limit, $start, $order, $dir);
+                        $return->total_records   = $get_count;
+                        $return->status          = 1; 
+                        $return->result          = $get_data;
+                    }else{
+                        $return->total_records   = 0;
+                        $return->result          = [];
+                    }
+                    $return->message             = 'Load '.$return->total_records.' data';
+                    $return->recordsTotal        = $return->total_records;
+                    $return->recordsFiltered     = $return->total_records;
+                    break;
+                case "create_update":
+                    $this->form_validation->set_rules('group_id', 'group_id', 'required');
+                    $this->form_validation->set_message('required', '{field} wajib diisi');
+                    if ($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{
+
+                        $group_name = !empty($post['group_name']) ? $post['group_name'] : null;
+
+                        //Check Data Exist
+                        $params_check = array(
+                            'user_group_name' => $group_name
+                        );
+
+                        if(intval($post['group_id']) > 0){ /* Update if Exist */ // if( (!empty($post['group_session'])) && (strlen($post['group_session']) > 10) ){ /* Update if Exist */
+
+                            /* Check Existing Data */
+                            $where_not = [
+                                'user_group_id' => intval($post['group_id']),
+                            ];
+                            $where_new = [
+                                'user_group_name' => $group_name
+                            ];
+                            $check_exists = $this->User_group_model->check_data_exist_two_condition($where_not,$where_new);
+
+                            /* Continue Update if not exist */
+                            if(!$check_exists){
+                                $where = array(
+                                    'user_group_id' => intval($post['group_id']),
+                                );
+                                $params = array(
+                                    'user_group_name' => $group_name,
+                                    'user_group_flag' => !empty($post['group_flag']) ? $post['group_flag'] : 1,
+                                    'user_group_date_updated' => date("YmdHis")
+                                );
+                                $update = $this->User_group_model->update_user_group_custom($where,$params);
+                                if($update){
+                                    $get_group = $this->User_group_model->get_user_group_custom($where);
+                                    $return->status  = 1;
+                                    $return->message = 'Berhasil memperbarui '.$group_name;
+                                    $return->result= array(
+                                        'group_id' => $update,
+                                        'group_name' => $get_group['user_group_name']
+                                    );
+                                }else{
+                                    $return->message = 'Gagal memperbarui '.$group_name;
+                                }
+                            }else{
+                                $return->message = 'Data sudah digunakan';
+                            }
+                        }else{ /* Save New Data */
+
+                            /* Check Existing Data */
+                            $params_check = [
+                                'user_group_name' => $group_name
+                            ];
+                            $check_exists = $this->User_group_model->check_data_exist($params_check);
+
+                            /* Continue Save if not exist */
+                            if(!$check_exists){
+                                $group_session = $this->random_session(20);
+                                $params = array(
+                                    'user_group_name' => $group_name,
+                                    'user_group_flag' => !empty($post['group_flag']) ? $post['group_flag'] : 1,
+                                    'user_group_date_created' => date("YmdHis")
+                                );
+                                $create = $this->User_group_model->add_user_group($params);
+                                if($create){
+                                    $get_group = $this->User_group_model->get_user_group($create);
+                                    $return->status  = 1;
+                                    $return->message = 'Berhasil menambahkan '.$group_name;
+                                    $return->result= array(
+                                        'group_id' => $create,
+                                        'group_name' => $get_group['user_group_name']
+                                    );
+                                }else{
+                                    $return->message = 'Gagal menambahkan '.$group_name;
+                                }
+                            }else{
+                                $return->message = 'Data sudah ada';
+                            }
+                        }
+                    }
+                    break;
+                case "read":
+                    $this->form_validation->set_rules('group_id', 'group_id', 'required');
+                    if ($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{                
+                        $group_id   = !empty($post['group_id']) ? $post['group_id'] : 0;
+                        if(intval(strlen($group_id)) > 0){        
+                            $datas = $this->User_group_model->get_user_group($group_id);
+                            if($datas){
+                                $return->status=1;
+                                $return->message='Berhasil mendapatkan data';
+                                $return->result=$datas;
+                            }else{
+                                $return->message = 'Data tidak ditemukan';
+                            }
+                        }else{
+                            $return->message='Data tidak ada';
+                        }
+                    }
+                    break;
+                case "delete":
+                    $this->form_validation->set_rules('group_id', 'group_id', 'required');
+                    if ($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{
+                        $group_id   = !empty($post['group_id']) ? $post['group_id'] : 0;
+                        $group_name = !empty($post['group_name']) ? $post['group_name'] : null;
+
+                        if(strlen($group_id) > 0){
+                            //Check Count of users have this group
+                            $check = $this->User_model->get_all_users_count(['user_user_group_id' => $group_id]);
+                            if($check < 1){
+                                $get_data=$this->User_group_model->get_user_group($group_id);
+                                // $set_data=$this->User_group_model->delete_user_group($group_id);
+                                $set_data = $this->User_group_model->update_user_group_custom(array('user_group_id'=>$group_id),array('user_group_flag'=>4));                
+                                if($set_data){
+                                    /*
+                                    $file = FCPATH.$this->folder_upload.$get_data['group_image'];
+                                    if (file_exists($file)) {
+                                        unlink($file);
+                                    }
+                                    */
+                                    $return->status=1;
+                                    $return->message='Berhasil menghapus '.$group_name;
+                                }else{
+                                    $return->message='Gagal menghapus '.$group_name;
+                                } 
+                            }else{
+                                $return->message = 'Gagal, Group "'.$group_name.'" digunakan '.$check.' orang'; 
+                            }
+                        }else{
+                            $return->message='Data tidak ditemukan';
+                        }
+                    }
+                    break;
+                default:
+                    $return->message='No Action';
+                    break; 
+            }
+            echo json_encode($return);
+        }else{
+            // Default First Date & End Date of Current Month
+            $firstdate = new DateTime('first day of this month');
+            $firstdateofmonth = $firstdate->format('d-m-Y');
+
+            $data['session'] = $this->session->userdata();  
+            $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+
+            $data['first_date'] = $firstdateofmonth;
+            $data['end_date'] = date("d-m-Y");
+            $data['hour'] = date("H:i");
+            $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
+
+            /*
+            // Reference Model
+            $this->load->model('Reference_model');
+            $data['reference'] = $this->Reference_model->get_all_reference();
+            */
+
+            $data['title'] = 'Group User';
+            $data['_view'] = 'layouts/admin/menu/configuration/group_user';
+            $this->load->view('layouts/admin/index',$data);
+            $this->load->view('layouts/admin/menu/configuration/group_user_js.php',$data);
+        }
     }
 }

@@ -9,7 +9,7 @@
         var url_preview = '<?php echo site_url(); ?>' + 'article/';
         var view = "<?php echo $_view; ?>";
         $(".nav-tabs").find('li[class="active"]').removeClass('active');
-        $(".nav-tabs").find('li[data-name="' + view + '"]').addClass('active');
+        $(".nav-tabs").find('li[data-name="article/article"]').addClass('active');
         // console.log(view);
         $("#img-preview1").attr('src', url_image);
         $("select").select2();
