@@ -146,7 +146,7 @@
 
             if ($ci->upload->do_upload('source')) {
                 $upload = $ci->upload->data();
-                $raw_file = time() . $upload['file_ext']; //1231232.png
+                $raw_file = date("YmdHis") . $upload['file_ext']; //1231232.png
                 // $old_name = $upload['full_path']; // abc/uoload/ABC.png
                 // $new_name = $path . $raw_photo; // abc/upload/1231232.png
 
@@ -206,7 +206,7 @@
     
         if ($ci->upload->do_upload($file)) {
             $file_data = $ci->upload->data();
-            $raw_photo = time() . $file_data['file_ext'];
+            $raw_photo = date("YmdHis") . $file_data['file_ext'];
             $old_name = $file_data['full_path'];
             $new_name = $path_data . $raw_photo;
     

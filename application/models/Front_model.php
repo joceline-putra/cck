@@ -56,22 +56,22 @@ class Front_model extends CI_Model{
         if ($order) {
             $this->db->order_by($order, $dir);
         } else {
-            $this->db->order_by('booking_id', "asc");
+            $this->db->order_by('order_did', "asc");
         }
 
         if ($limit) {
             $this->db->limit($limit, $start);
         }
         
-        return $this->db->get('bookings')->result_array();
+        return $this->db->get('orders')->result_array();
     }  
-    function get_all_booking_count($params,$search){
-        $this->db->from('bookings');
+    function get_all_order_dcount($params,$search){
+        $this->db->from('orders');
         $this->set_params($params);
         $this->set_search($search);
         return $this->db->count_all_results();
     }
-    function get_all_booking_item($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
+    function get_all_order_ditem($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
         $this->set_select_item();
         $this->set_params($params);
         $this->set_search($search);
@@ -80,17 +80,17 @@ class Front_model extends CI_Model{
         if ($order) {
             $this->db->order_by($order, $dir);
         } else {
-            $this->db->order_by('booking_item_id', "asc");
+            $this->db->order_by('order_ditem_id', "asc");
         }
 
         if ($limit) {
             $this->db->limit($limit, $start);
         }
         
-        return $this->db->get('booking_items')->result_array();
+        return $this->db->get('order_ditems')->result_array();
     }  
-    function get_all_booking_item_count($params,$search){
-        $this->db->from('booking_items');
+    function get_all_order_ditem_count($params,$search){
+        $this->db->from('order_ditems');
         $this->set_params($params);
         $this->set_search($search);
         return $this->db->count_all_results();
@@ -104,7 +104,7 @@ class Front_model extends CI_Model{
     
     /* function to add new booking */
     function add_booking($params){
-        $this->db->insert('bookings',$params);
+        $this->db->insert('orders',$params);
         return $this->db->insert_id();
     }
     
@@ -112,41 +112,41 @@ class Front_model extends CI_Model{
     function get_booking($id){
         $this->set_select();
         $this->set_join();
-        return $this->db->get_where('bookings',array('booking_id'=>$id))->row_array();
+        return $this->db->get_where('orders',array('order_did'=>$id))->row_array();
     }
-    function get_booking_custom($where){
+    function get_order_dcustom($where){
         $this->set_select();
         $this->set_join();
-        return $this->db->get_where('bookings',$where)->row_array();
+        return $this->db->get_where('orders',$where)->row_array();
     }
-    function get_booking_custom_result($where){
+    function get_order_dcustom_result($where){
         $this->set_select();
         $this->set_join();
-        return $this->db->get_where('bookings',$where)->result_array();
+        return $this->db->get_where('orders',$where)->result_array();
     }
 
     /* function to update booking */
     function update_booking($id,$params){
-        $this->db->where('booking_id',$id);
-        return $this->db->update('bookings',$params);
+        $this->db->where('order_did',$id);
+        return $this->db->update('orders',$params);
     }
-    function update_booking_custom($where,$params){
+    function update_order_dcustom($where,$params){
         $this->db->where($where);
-        return $this->db->update('bookings',$params);
+        return $this->db->update('orders',$params);
     }
 
     /* function to delete booking */
     function delete_booking($id){
-        return $this->db->delete('bookings',array('booking_id'=>$id));
+        return $this->db->delete('orders',array('order_did'=>$id));
     }
-    function delete_booking_custom($where){
-        return $this->db->delete('bookings',$where);
+    function delete_order_dcustom($where){
+        return $this->db->delete('orders',$where);
     }
 
     /* function to check data exists booking */
     function check_data_exist($params){
         $this->db->where($params);
-        $query = $this->db->get('bookings');
+        $query = $this->db->get('orders');
         if ($query->num_rows() > 0){
             return true;
         }
@@ -157,13 +157,13 @@ class Front_model extends CI_Model{
     /* function to check data exists booking of two condition */
     function check_data_exist_two_condition2($param_1,$param_2){
         // if(strlen($session) > 2){ //When update data
-            // $this->db->where('booking_session !=',$session);
-            $this->db->where('(`booking_column_1="'.$param_2.'" OR `booking_column_2`="'.$param_2.'")');
+            // $this->db->where('order_dsession !=',$session);
+            $this->db->where('(`order_dcolumn_1="'.$param_2.'" OR `order_dcolumn_2`="'.$param_2.'")');
         // }else{ //When create data
             $this->db->where($param_1);
         // }
 
-        $query = $this->db->get('bookings');
+        $query = $this->db->get('orders');
         if ($query->num_rows() > 0){
             return true;
         }
@@ -191,7 +191,7 @@ class Front_model extends CI_Model{
             $this->db->group_end();
         }        
         $this->db->limit(1,0);
-        $query = $this->db->get('bookings');
+        $query = $this->db->get('orders');
         if ($query->num_rows() > 0){
             return true;
         }else{
@@ -205,50 +205,50 @@ class Front_model extends CI_Model{
     */
     
     /* function to add new booking items */
-    function add_booking_item($params){
-        $this->db->insert('booking_items',$params);
+    function add_order_ditem($params){
+        $this->db->insert('order_ditems',$params);
         return $this->db->insert_id();
     }
     
     /* function to get booking items by id */
-    function get_booking_item($id){
+    function get_order_ditem($id){
         $this->set_select_item();
         $this->set_join_item();
-        return $this->db->get_where('booking_items',array('booking_item_id'=>$id))->row_array();
+        return $this->db->get_where('order_ditems',array('order_ditem_id'=>$id))->row_array();
     }
-    function get_booking_item_custom($where){
+    function get_order_ditem_custom($where){
         $this->set_select_item();
         $this->set_join_item();
-        return $this->db->get_where('booking_items',$where)->row_array();
+        return $this->db->get_where('order_ditems',$where)->row_array();
     }
-    function get_booking_item_custom_result($where){
+    function get_order_ditem_custom_result($where){
         $this->set_select_item();
         $this->set_join_item();
-        return $this->db->get_where('booking_items',$where)->result_array();
+        return $this->db->get_where('order_ditems',$where)->result_array();
     }
 
     /* function to update booking items */
-    function update_booking_item($id,$params){
-        $this->db->where('booking_item_id',$id);
-        return $this->db->update('booking_items',$params);
+    function update_order_ditem($id,$params){
+        $this->db->where('order_ditem_id',$id);
+        return $this->db->update('order_ditems',$params);
     }
-    function update_booking_item_custom($where,$params){
+    function update_order_ditem_custom($where,$params){
         $this->db->where($where);
-        return $this->db->update('booking_items',$params);
+        return $this->db->update('order_ditems',$params);
     }    
     
     /* function to delete booking items */
-    function delete_booking_item($id){
-        return $this->db->delete('booking_items',array('booking_item_id'=>$id));
+    function delete_order_ditem($id){
+        return $this->db->delete('order_ditems',array('order_ditem_id'=>$id));
     }
-    function delete_booking_item_custom($where){
-        return $this->db->delete('booking_items',$where);
+    function delete_order_ditem_custom($where){
+        return $this->db->delete('order_ditems',$where);
     }
 
-    /* function to check data exists booking_items */
+    /* function to check data exists order_ditems */
     function check_data_exist_items($params){
         $this->db->where($params);
-        $query = $this->db->get('booking_items');
+        $query = $this->db->get('order_ditems');
         if ($query->num_rows() > 0){
             return true;
         }
@@ -259,13 +259,13 @@ class Front_model extends CI_Model{
     /* function to check data exists booking of two condition */
     function check_data_exist_items_two_condition($param_1,$param_2,$session){
         if(strlen($session) > 2){ //When update data
-            $this->db->where('booking_item_session !=',$session);
-            $this->db->where('(`booking_item_column_1="'.$param_2.'" OR `booking_item_column_2`="'.$param_2.'")');
+            $this->db->where('order_ditem_session !=',$session);
+            $this->db->where('(`order_ditem_column_1="'.$param_2.'" OR `order_ditem_column_2`="'.$param_2.'")');
         }else{ //When create data
             $this->db->where($param_1);
         }
 
-        $query = $this->db->get('booking_items');
+        $query = $this->db->get('order_ditems');
         if ($query->num_rows() > 0){
             return true;
         }

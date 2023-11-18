@@ -17,7 +17,7 @@ class Test extends MY_Controller{
         $this->group_access = array(1); //Super Admin               
     }
     function index(){
-        $q = $this->db->query("SELECT * FROM `contacts` ORDER BY contact_id DESC LIMIT 1");        
+        $q = $this->db->query("SELECT * FROM `orders` ORDER BY order_id DESC LIMIT 1");        
         $d = $q->row_array(); 
 
         $print = '';
