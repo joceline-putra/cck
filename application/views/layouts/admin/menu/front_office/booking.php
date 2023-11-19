@@ -12,6 +12,9 @@
         overflow-y: auto;
         text-align: justify;
     }
+    .popover {
+        z-index: 9999;
+    }    
 </style>
 <link
     rel="stylesheet"
@@ -21,7 +24,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <?php include '_navigation.php'; ?>
         <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
+            <div class="tab-pane active" id="tab1">
                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                         <div class="grid simple">
@@ -38,6 +41,10 @@
                                                         <i class="fas fa-file-excel"></i>
                                                         Ekspor Excel
                                                     </button> -->
+                                                    <button id="btn_new_order_2" class="btn btn-success btn-small" type="button" style="display: inline;">
+                                                        <i class="fas fa-check-double"></i>
+                                                        Status Kamar
+                                                    </button>
                                                     <button id="btn_new_order" class="btn btn-success btn-small" type="button" style="display: inline;">
                                                         <i class="fas fa-plus"></i>
                                                         Buat <?php echo $title; ?> Baru
@@ -46,53 +53,109 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
-                                            <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
-                                                <label class="form-label">Periode Awal</label>
-                                                <div class="col-md-12 col-sm-12 padding-remove-side">
-                                                    <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                        <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $first_date;?>">
-                                                        <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
-                                                <label class="form-label">Periode Akhir</label>
-                                                <div class="col-md-12 col-sm-12 padding-remove-side">
-                                                    <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                        <input name="filter_end_date" id="filter_end_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
-                                                        <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <div class="clearfix"></div>
-                                            <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group padding-remove-right prs-15">
-                                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                    <label class="form-label">Cari</label>
-                                                    <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
-                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                    <label class="form-label">Status</label>
-                                                    <select id="filter_flag" name="filter_flag" class="form-control">
-                                                        <option value="All">Semua</option>
-                                                        <option value="1">Aktif</option>
-                                                        <option value="0">Nonaktif</option>
-                                                        <option value="4">Terhapus</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group">
-                                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                    <label class="form-label">Tampil</label>
-                                                    <select id="filter_length" name="filter_length" class="form-control">
-                                                        <option value="10">10 Baris</option>
-                                                        <option value="25">25 Baris</option>
-                                                        <option value="50">50 Baris</option>
-                                                        <option value="100">100 Baris</option>
-                                                        <option value="-1">Semuanya</option>
-                                                    </select>
-                                                </div>
+                                            <div class="col-lg-12 col-md-12 col-xs-16 col-sm-16 form-group">
+                                                <div class="panel-group" id="accordion" data-toggle="collapse" style="background-color: #eaeaea;border: 1px solid #eaeaea;margin-bottom:0px;">
+                                                    <div id="panel-one" class="panel panel-default" style="display:inline;">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a class="" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                                    <i class="fa fa-filter"></i> 
+                                                                    Filter
+                                                                </a>
+                                                            </h4>                                                       
+                                                        </div>
+                                                        <div id="collapseOne" class="panel-collapse collapse">
+                                                            <div class="panel-body" style="padding:0px;">
+                                                                <div class="col-md-12 col-xs-12">
+
+                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                                        <label class="form-label">Periode Awal</label>
+                                                                        <div class="col-md-12 col-sm-12 padding-remove-side">
+                                                                            <div class="input-append success date col-md-12 col-lg-12 no-padding">
+                                                                                <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $first_date;?>">
+                                                                                <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                                        <label class="form-label">Periode Akhir</label>
+                                                                        <div class="col-md-12 col-sm-12 padding-remove-side">
+                                                                            <div class="input-append success date col-md-12 col-lg-12 no-padding">
+                                                                                <input name="filter_end_date" id="filter_end_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
+                                                                                <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group prs-15">
+                                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                                            <label class="form-label">Cari</label>
+                                                                            <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
+                                                                        </div>
+                                                                    </div>                                                                    
+                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                                            <label class="form-label">Cabang</label>
+                                                                            <select id="filter_flag" name="filter_flag" class="form-control">
+                                                                                <option value="All">Semua</option>
+                                                                                <option value="1">Aktif</option>
+                                                                                <option value="0">Nonaktif</option>
+                                                                                <option value="4">Terhapus</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>    
+
+                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                                            <label class="form-label">Type</label>
+                                                                            <select id="filter_flag" name="filter_flag" class="form-control">
+                                                                                <option value="All">Semua</option>
+                                                                                <option value="1">Aktif</option>
+                                                                                <option value="0">Nonaktif</option>
+                                                                                <option value="4">Terhapus</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>  
+
+                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                                            <label class="form-label">Jenis Kamar</label>
+                                                                            <select id="filter_flag" name="filter_flag" class="form-control">
+                                                                                <option value="All">Semua</option>
+                                                                                <option value="1">Aktif</option>
+                                                                                <option value="0">Nonaktif</option>
+                                                                                <option value="4">Terhapus</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>    
+                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                                            <label class="form-label">Status</label>
+                                                                            <select id="filter_flag" name="filter_flag" class="form-control">
+                                                                                <option value="All">Semua</option>
+                                                                                <option value="1">Aktif</option>
+                                                                                <option value="0">Nonaktif</option>
+                                                                                <option value="4">Terhapus</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group">
+                                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                                            <label class="form-label">Tampil</label>
+                                                                            <select id="filter_length" name="filter_length" class="form-control">
+                                                                                <option value="10">10 Baris</option>
+                                                                                <option value="25">25 Baris</option>
+                                                                                <option value="50">50 Baris</option>
+                                                                                <option value="100">100 Baris</option>
+                                                                                <option value="-1">Semuanya</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                                                   
                                             </div>
                                         </div>
                                         <div class="col-md-12 col-xs-12 col-sm-12" style="padding-top:10px;">
@@ -158,7 +221,7 @@
                                                                     $c = 'checked';
                                                                 }
                                                             ?>
-                                                                <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="order_branch" value="<?php echo $v['branch_id']; ?>" <?php echo $c; ?>><label for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
+                                                                <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="order_branch_id" class="order_branch_id" value="branch_<?php echo $v['branch_id']; ?>" <?php echo $c; ?>><label for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
                                                             <?php 
                                                             } 
                                                             ?>
@@ -170,19 +233,19 @@
                                                     <div class="form-group">
                                                         <label class="form-label">Jenis (order_type_2)</label>
                                                         <div class="radio radio-success">
-                                                            <input id="Bulanan" type="radio" name="order_type_2" value="1" checked><label for="Bulanan">Bulanan</label>
-                                                            <input id="Transit" type="radio" name="order_type_2" value="2"><label for="Transit">Transit</label>
+                                                            <input id="Bulanan" type="radio" name="order_type_2" class="order_type_2" value="Bulanan" checked><label for="Bulanan">Bulanan</label>
+                                                            <input id="Transit" type="radio" name="order_type_2" class="order_type_2" value="Transit"><label for="Transit">Transit</label>
                                                         </div>
                                                     </div>
                                                 </div>                                                          
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
-                                                        <label class="form-label">Type (order_type_3)</label>
+                                                        <label class="form-label">Type (order_ref_price_id)</label>
                                                         <div class="radio radio-success">
-                                                            <input id="Harian" type="radio" name="order_type_3" value="1" checked><label for="Harian">Harian</label>
-                                                            <input id="Midnight" type="radio" name="order_type_3" value="2"><label for="Midnight">Midnight</label>
-                                                            <input id="4Jam" type="radio" name="order_type_3" value="3"><label for="4Jam">4 Jam</label>
-                                                            <input id="2Jam" type="radio" name="order_type_3" value="4"><label for="2Jam">2 Jam</label>                                                            
+                                                            <input id="Harian" type="radio" name="order_ref_price_id" class="order_ref_price_id" value="1" checked><label for="Harian">Harian</label>
+                                                            <input id="Midnight" type="radio" name="order_ref_price_id" class="order_ref_price_id" value="2"><label for="Midnight">Midnight</label>
+                                                            <input id="4Jam" type="radio" name="order_ref_price_id" class="order_ref_price_id" value="3"><label for="4Jam">4 Jam</label>
+                                                            <input id="2Jam" type="radio" name="order_ref_price_id" class="order_ref_price_id" value="4"><label for="2Jam">2 Jam</label>                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -197,7 +260,7 @@
                                                                     $c = 'checked';
                                                                 }
                                                             ?>
-                                                                <input id="ref_<?php echo $v['ref_id']; ?>" type="radio" name="order_ref" value="<?php echo $v['ref_id']; ?>" <?php echo $c; ?>><label for="ref_<?php echo $v['ref_id']; ?>"><?php echo $v['ref_name']; ?></label>
+                                                                <input id="ref_<?php echo $v['ref_id']; ?>" type="radio" name="order_ref_id" class="order_ref_id" value="<?php echo $v['ref_id']; ?>" <?php echo $c; ?>><label for="ref_<?php echo $v['ref_id']; ?>"><?php echo $v['ref_name']; ?></label>
                                                             <?php 
                                                             } 
                                                             ?>
@@ -214,12 +277,21 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">
+                                                    <label class="form-label">Tanggal (order_end_date)</label>
+                                                    <div class="col-md-12 col-sm-12 padding-remove-side">
+                                                        <div class="input-append success date col-md-12 col-lg-12 no-padding">
+                                                            <input name="order_end_date" id="order_end_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
+                                                            <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>                                                
                                                 <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">
-                                                        <label class="form-label">Jam (order_start_date)</label>
+                                                        <label class="form-label">Jam (order_start_hour)</label>
                                                         <div class="col-md-12 col-sm-12 padding-remove-side">
                                                             <div class="input-group transparent clockpicker col-md-12">
-                                                                <input name="order_hour" id="order_hour" type="text" class="form-control input-sm" value="<?php echo $hour; ?>" >
+                                                                <input name="order_start_hour" id="order_start_hour" type="text" class="form-control input-sm" value="<?php echo $hour; ?>" >
                                                                 <span class="input-group-addon clock-add"><i class="fas fa-clock"></i></span>
                                                             </div>
                                                         </div>  

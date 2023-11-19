@@ -1,7 +1,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#modal_order").modal('show');
+        // $("#modal_order").modal('show');
         
         //Identity
         var identity = "<?php echo $identity; ?>";
@@ -128,7 +128,7 @@
         // $("select").select2();
 
         //Date Clock Picker
-        $("#order_date").datepicker({
+        $("#order_start_date, #order_end_date").datepicker({
             // defaultDate: new Date(),
             format: 'dd-mm-yyyy',
             autoclose: true,
@@ -167,10 +167,9 @@
             decimalPlaces: 0,
             watchExternalChanges: true
         };
-        // new AutoNumeric('#some_id', autoNumericOption);
+        new AutoNumeric('#order_price', autoNumericOption);
 
         //Datatable
-        /*
         let order_table = $("#table_order").DataTable({
             // "processing": true,
             // "rowReorder": { selector: 'td:nth-child(1)'},
@@ -195,29 +194,115 @@
             },
             "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             "columnDefs": [
-                {"targets":0, "width":"30%", "title":"Name", "searchable":true, "orderable":true},
-                {"targets":1, "width":"20%", "title":"Note", "searchable":true, "orderable":true},
-                {"targets":2, "width":"20%", "title":"Flag", "searchable":true, "orderable":true},
+                {"targets":0, "title":"Tgl", "searchable":true, "orderable":true},
+                {"targets":1, "title":"Nomor", "searchable":true, "orderable":true},
+                {"targets":2, "title":"Type", "searchable":true, "orderable":true},
+                {"targets":3, "title":"Kamar", "searchable":true, "orderable":true},            
+                {"targets":4, "title":"Kontak", "searchable":true, "orderable":true},
+                {"targets":5, "title":"Total", "searchable":true, "orderable":true},
+                {"targets":6, "title":"Pembayaran", "searchable":true, "orderable":true},                    
+                {"targets":7, "title":"Status", "searchable":false, "orderable":true},    
+                {"targets":8, "title":"Attachment", "searchable":false, "orderable":true},                                
+                {"targets":9, "title":"Action", "searchable":true, "orderable":true},                
             ],
             "order": [[0, 'ASC']],
             "columns": [
                 {
-                    'data': 'order_id',
+                    'data': 'order_item_start_date',
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        dsp += row.order_name;
+                        dsp += moment(row.order_item_start_date).format("DD-MMM-YYYY");
                         return dsp;
                     }
                 },{
-                    'data': 'order_id',
+                    'data': 'order_number',
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        dsp += row.order_note;
+                        dsp += row.order_number;
                         // if(row.contact_email_1 != undefined){
                             // dsp += '<br>'+row.contact_email_1;
                         // }
+                        return dsp;
+                    }
+                },{
+                    'data': 'price_name',
+                    className: 'text-left',
+                    render: function(data, meta, row) {
+                        var dsp = '';
+                        dsp += row.price_name;
+                        return dsp;
+                    }
+                },{
+                    'data': 'ref_name',
+                    className: 'text-left',
+                    render: function(data, meta, row) {
+                        var dsp = '';
+                        dsp += row.product_name + '['+row.ref_name+']';
+                        return dsp;
+                    }
+                },{
+                    'data': 'order_contact_name',
+                    className: 'text-left',
+                    render: function(data, meta, row) {
+                        var dsp = '';
+                        dsp += row.order_contact_name;
+                        return dsp;
+                    }
+                },{
+                    'data': 'order_total',
+                    className: 'text-left',
+                    render: function(data, meta, row) {
+                        var dsp = '';
+                        dsp += addCommas(row.order_total);
+                        return dsp;
+                    }
+                },{
+                    'data': 'product_name',
+                    className: 'text-left',
+                    render: function(data, meta, row) {
+                        var dsp = '';
+                        if(parseInt(row.order_paid) == 0){
+                            var sts = 'Belum Lunas';
+                            var ic = 'fas fa-thumbs-down';
+                            var lg = 'danger';
+                        }else if(parseInt(row.order_paid) == 1){
+                            var sts = 'Lunas';
+                            var ic = 'fas fa-thumbs-up';
+                            var lg = 'success';
+                        }
+                        var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.price_name;
+                        var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
+                        dsp += '<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="'+ic+'"></span>&nbsp;'+sts+'</span>';
+                        return dsp;
+                    }
+                },{
+                    'data': 'order_item_flag_checkin',
+                    className: 'text-left',
+                    render: function(data, meta, row) {
+                        var dsp = '';
+                        if(parseInt(row.order_item_flag_checkin) == 0){
+                            dsp += '<label class="label" style="background-color:#ff9019;color:white;">Waiting</label>';
+                        }else if(parseInt(row.order_item_flag_checkin) == 1){
+                            dsp += '<label class="label" style="background-color:#0aa699;color:white;">Check-In</label>';
+                        }else if(parseInt(row.order_item_flag_checkin) == 2){
+                            dsp += '<label class="label" style="background-color:#f35958;color:white;">Check-Out</label>';
+                        } else if(parseInt(row.order_item_flag_checkin) == 4){
+                            dsp += '<label class="label" style="background-color:#f35958;color:white;">Batal</label>';
+                        }                       
+                        return dsp;
+                    }
+                },{
+                    'data': 'order_item_flag_checkin',
+                    className: 'text-left',
+                    render: function(data, meta, row) {
+                        var dsp = '';
+                        if(parseInt(row.order_files_count) > 0){
+                            var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.price_name;
+                            var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
+                            dsp += '<span '+st+' class="btn-attachment-info-2 label label-inverse" style="cursor:pointer;color:white;"><span class="fas fa-paperclip"></span>&nbsp;'+row.order_files_count+' Attachment</span>';
+                        }         
                         return dsp;
                     }
                 },{
@@ -243,56 +328,39 @@
                         bgcolor = '#ff9019';
                         }
 
-                            /* Button Action Concept 1 */
-                            // dsp += '&nbsp;<button class="btn btn_edit_order btn-mini btn-primary"';
-                            // dsp += 'data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
-                            // dsp += '<span class="fas fa-edit primary"></span> Edit</button>';
-
-                            // dsp += '&nbsp;<button class="btn btn_delete_order btn-mini btn-danger"';
-                            // dsp += 'data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="4" data-order-session="'+row.order_session+'">';
-                            // dsp += '<span class="fas fa-trash danger"></span> Hapus</button>';
-
-                            // if (parseInt(row.order_flag) === 1) {
-                            //   dsp += '&nbsp;<button class="btn btn_update_flag_order btn-mini btn-primary" style="background-color:#ff9019;"';
-                            //   dsp += 'data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="0" data-order-session="'+row.order_session+'">';
-                            //   dsp += '<span class="fas fa-ban"></span> Nonaktifkan</button>';                      
-                            // }else if (parseInt(row.order_flag) === 0) {
-                            //   dsp += '&nbsp;<button class="btn btn_update_flag_order btn-mini btn-primary" style="background-color:#6273df;"';
-                            //   dsp += 'data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="1" data-order-session="'+row.order_session+'">';
-                            //   dsp += '<span class="fas fa-check primary"></span> Aktifkan</button>';
-                            // }
-
-                        /* Button Action Concept 2
+                        /* Button Action Concept 2 */
                         dsp += '&nbsp;<div class="btn-group">';
                         // dsp += '    <button class="btn btn-mini btn-default"><span class="fas fa-cog"></span></button>';
-                        dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" data-toggle="dropdown" aria-expanded="true"><span class="fas fa-cog"></span><span class="caret"></span> </button>';
+                        dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" data-toggle="dropdown" aria-expanded="true"><span class="fas fa-cog"></span><span class="caret"></span> Aksi</button>';
                         dsp += '    <ul class="dropdown-menu">';
                         dsp += '        <li>';
                         dsp += '            <a class="btn_edit_order" style="cursor:pointer;"';
-                        dsp += '                data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
-                        dsp += '                <span class="fas fa-edit"></span> Edit';
+                        dsp += '                data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
+                        dsp += '                <span class="fas fa-eye"></span> Lihat';
                         dsp += '            </a>';
                         dsp += '        </li>';
-                        // if(parseInt(row.order_flag) === 0) {
-                                dsp += '<li>'; 
-                                dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
-                                dsp += '        data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="1" data-order-session="'+row.order_session+'">';
-                                dsp += '        <span class="fas fa-lock"></span> Aktifkan';
-                                dsp += '    </a>';
-                                dsp += '</li>';
-                        // }else if(parseInt(row.order_flag) === 1){
+                        if(parseInt(row.order_flag) < 4) {
+                            // if(parseInt(row.order_flag) === 0) {
+                                    dsp += '<li>'; 
+                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
+                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="1" data-order-session="'+row.order_session+'">';
+                                    dsp += '        <span class="fas fa-lock"></span> CheckIn';
+                                    dsp += '    </a>';
+                                    dsp += '</li>';
+                            // }else if(parseInt(row.order_flag) === 1){
+                                    dsp += '<li>';
+                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
+                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="2" data-order-session="'+row.order_session+'">';
+                                    dsp += '        <span class="fas fa-ban"></span> Checkout';
+                                    dsp += '    </a>';
+                                    dsp += '</li>';
+                            // }
+                        }
+                        if(parseInt(row.order_flag) == 0) {                        
                                 dsp += '<li>';
                                 dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
-                                dsp += '        data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="0" data-order-session="'+row.order_session+'">';
-                                dsp += '        <span class="fas fa-ban"></span> Nonaktifkan';
-                                dsp += '    </a>';
-                                dsp += '</li>';
-                        // }
-                        if((parseInt(row.order_flag) < 1) || (parseInt(row.order_flag) == 4)) {
-                                dsp += '<li>';
-                                dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
-                                dsp += '        data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="4" data-order-session="'+row.order_session+'">';
-                                dsp += '        <span class="fas fa-trash"></span> Hapus';
+                                dsp += '        data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="4" data-order-session="'+row.order_session+'">';
+                                dsp += '        <span class="fas fa-trash"></span> Batal';
                                 dsp += '    </a>';
                                 dsp += '</li>';
                         }
@@ -304,57 +372,10 @@
                         dsp += '        </li>';
                         dsp += '    </ul>';
                         dsp += '</div>';
-
-                        /* Button Action Concept 2
-                        dsp += '&nbsp;<div class="btn-group">';
-                        // dsp += '    <button class="btn btn-mini btn-default" style="background-color:'+bgcolor+';color:'+color+'"><span class="'+icon+'"></span> '+label+'</button>';
-                        dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" style="background-color:'+bgcolor+';color:'+color+';" data-toggle="dropdown" aria-expanded="true"><span class="'+icon+'"></span> '+label+' <span class="caret" style="color:'+color+'"></span> </button>';
-                        dsp += '    <ul class="dropdown-menu">';
-                        if(parseInt(row.order_flag) == 1){
-                                dsp += '<li>';
-                                dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
-                                dsp += '        data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
-                                dsp += '        <span class="fas fa-ban"></span> Nonaktifkan';
-                                dsp += '    </a>';
-                                dsp += '</li>';
-                        }else if(parseInt(row.order_flag) == 0) {
-                                dsp += '<li>'; 
-                                dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
-                                dsp += '        data-order-id="'+data+'" data-order-name="'+row.order_name+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
-                                dsp += '        <span class="fas fa-lock"></span> Aktifkan';
-                                dsp += '    </a>';
-                                dsp += '</li>';
-                        }
-                        dsp += '    </ul>';
-                        dsp += '</div>';
                         return dsp;
                     }
                 }
-            ],
-            "language": {
-                "sProcessing":    "Sedang memuat",
-                "sLengthMenu":    "Tampil _MENU_ data",
-                "sZeroRecords":   "Data tidak ada",
-                "sEmptyTable":    "Data tidak ada",
-                "sInfo":          "Data _START_ sampai _END_ dari _TOTAL_ data",
-                "sInfoEmpty":     "Data 0 sampai 0 dari 0 data",
-                "sInfoFiltered":  "(saring total _MAX_ data)",
-                "sInfoPostFix":   "",
-                "sSearch":        "Cari:",
-                "sUrl":           "",
-                "sInfoThousands":  ",",
-                "sLoadingRecords": "Loading...",
-                "oPaginate": {
-                    "sFirst":    "Pertama",
-                    "sLast":    "Terakhir",
-                    "sNext":    "Selanjutnya",
-                    "sPrevious": "Sebelumnya"
-                },
-                "oAria": {
-                    "sSortAscending":  ": Mengurutkan A-Z / 0-9",
-                    "sSortDescending": ": Mengurutkan Z-A / 9-0"
-                }
-            }
+            ]
         });
         $("#table_order_filter").css('display','none');
         $("#table_order_length").css('display','none');
@@ -365,7 +386,7 @@
         });
         $("#filter_flag").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_search").on('input', function(e){ var ln = $(this).val().length; if(parseInt(ln) > 3){ order_table.ajax.reload(); }else if(parseInt(ln) < 1){ order_table.ajax.reload();} });
-        */
+
 
         //CRUD
         $(document).on("click","#btn_save_order2",function(e) {
@@ -451,13 +472,21 @@
             if(next){
                 /* let url = "services/controls/order.php?action=action_name";*/ //Native
                 /* let url = "<?= base_url('order'); ?>"; */ //CI
-                
+                /*
+                    Datepicker
+                    - Get Value
+                    - Set Value
+                 */
+                // $("#order_date_start").datepicker("getFormattedDate","yyyy-mm-dd");
+                // $("#order_date_start").datepicker("update", variable_date_dd_mm_yyyy);
                 var form = new FormData($("#form_order")[0]);
                 form.append('action', 'create_update');
+                form.append('order_type', identity);                
+                form.set('order_start_date', $("#order_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
+                form.set('order_end_date', $("#order_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));                
                 if(orderID > 0){
                     form.append('order_id', orderID);
                 }
-
                 $.ajax({
                     type: "post",
                     url: url,
@@ -493,14 +522,14 @@
             e.stopPropagation();
             e.stopImmediatePropagation();
             var id       = $(this).attr('data-order-id');
-            var session  = $(this).attr('data-order-session');
-            var name     = $(this).attr('data-order-name');
+            // var session  = $(this).attr('data-order-session');
+            var number     = $(this).attr('data-order-number');
 
             var form = new FormData();
             form.append('action', 'read');
             form.append('order_id', id);
-            form.append('order_session', session);
-            form.append('order_name', name);
+            // form.append('order_session', session);
+            form.append('order_number', number);
             $.ajax({
                 type: "post",
                 url: url,
@@ -512,30 +541,37 @@
                     var m = d.message;
                     var r = d.result;
                     if(parseInt(s)==1){ /* Success Message */
-                        $("#div_form_order").show(300);
-                        
+
                         $("#order_id").val(d.result.order_id);
                         $("#order_session").val(d.result.order_session);
                         $("#order_type").val(d.result.order_type).trigger('change');
                         $("#order_name").val(d.result.order_name);
                         // $("#order_note").val(d.result.order_note);
-                        $('#order_note').summernote('code', d.result.order_note);
+                        // $('#order_note').summernote('code', d.result.order_note);
                         $("#order_flag").val(d.result.order_flag).trigger('change');
                         // $("#order_date_created").val(d.result.order_date_created);
 
-                        $("#files_preview").attr('src',d.result.Booking_image);
-                        $(".files_link").attr('href',d.result.Booking_image);
+                        // $("#files_preview").attr('src',d.result.Booking_image);
+                        // $(".files_link").attr('href',d.result.Booking_image);
+                        $(".order_branch_id[value=branch_"+d.result_item.order_item_branch_id+"]").prop("checked", true).change();
+                        $(".order_type_2[value="+d.result_item.price_name+"]").prop("checked", true).change();                        
+                        $(".order_ref[value="+d.result_item.ref_id+"]").prop("checked", true).change();  
 
-                        $("#btn_new_order").hide();
-                        $("#btn_save_order").hide();
-                        $("#btn_update_order").show();
-                        $("#btn_cancel_order").show();
-                        // scrollUp('content');
+                        $("#order_start_date").datepicker("update", moment(d.result_item.order_item_start_date).format("DD-MM-YYYY"));
+                        $("#order_end_date").datepicker("update", moment(d.result_item.order_item_end_date).format("DD-MM-YYYY")); 
+                        var set_hour = d.result_item.order_item_start_hour;
+                        $("#order_start_hour").val(set_hour.substring(0,5));
+                        $("#order_price").val(d.result_item.order_item_price);
+                        $("#order_contact_code").val(d.result_item.order_contact_code);
+                        $("#order_contact_name").val(d.result_item.order_contact_name);
+                        $("#order_contact_phone").val(d.result_item.order_contact_phone);                                                                                                                                   
+
+
+                        orderID = d.result.order_id;
+                        $("#modal_order").modal('show');
+                        loadAttachment(d.result.order_id);
                         formBookingSetDisplay(0);
-                        //loadBookingItem(r.order_id);
-                        //formBookingItemSetDisplay(0);
                     }else{
-                        $("#div_form_order").hide(300);
                         notif(0,d.message);
                     }
                 },
@@ -603,37 +639,37 @@
             e.stopPropagation();
             e.stopImmediatePropagation();
             var next     = true;
-            var id       = $(this).attr('data-order-id');
-            var session  = $(this).attr('data-order-session');
-            var name     = $(this).attr('data-order-name');
-            var flag     = $(this).attr('data-order-flag');
+            var oid       = $(this).attr('data-order-id');       
+            var oss     = $(this).attr('data-order-session');
+            var onu     = $(this).attr('data-order-number');
+            var oflag     = $(this).attr('data-order-flag');
 
-            if(parseInt(flag) == 0){
+            if(parseInt(oflag) == 0){
                 var set_flag = 0;
                 var msg = 'menonaktifkan';
-            }else if(parseInt(flag) == 1){
+            }else if(parseInt(oflag) == 1){
                 var set_flag = 1;
                 var msg = 'mengaktifkan';
             }else{
                 var set_flag = 4;
-                var msg = 'menghapus';
+                var msg = 'membatalkan';
             }
 
             $.confirm({
                 title: 'Konfirmasi!',
-                content: 'Apakah anda ingin '+msg+' <b>'+name+'</b> ?',
+                content: 'Apakah anda ingin '+msg+' <b>'+onu+'</b> ?',
                 buttons: {
                     confirm:{ 
                         btnClass: 'btn-danger',
-                        text: 'Ya',
+                        text: 'Batalkan',
                         action: function () {
                             
                             var form = new FormData();
                             form.append('action', 'update_flag');
-                            form.append('order_id', id);
-                            form.append('order_session', session);
-                            form.append('order_name', name);
-                            form.append('order_flag', set_flag);
+                            form.append('order_id', oid);                          
+                            form.append('order_session', oss);
+                            form.append('order_number', onu);
+                            form.append('order_flag', oflag);
 
                             $.ajax({
                                 type: "POST",
@@ -655,7 +691,77 @@
                         }
                     },
                     cancel:{
-                        btnClass: 'btn-success',
+                        btnClass: 'btn-default',
+                        text: 'Tutup', 
+                        action: function () {
+                            // $.alert('Canceled!');
+                        }
+                    }
+                }
+            });
+        }); 
+
+        //CRUD ITEM
+        $(document).on("click",".btn_update_flag_order_item",function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            var next     = true;
+            var oid       = $(this).attr('data-order-id');
+            var otd       = $(this).attr('data-order-item-id');            
+            var oss     = $(this).attr('data-order-session');
+            var onu     = $(this).attr('data-order-number');
+            var oflag     = $(this).attr('data-order-flag');
+
+            if(parseInt(oflag) == 0){
+                var set_flag = 0;
+                var msg = 'menonaktifkan';
+            }else if(parseInt(oflag) == 1){
+                var set_flag = 1;
+                var msg = 'mengaktifkan';
+            }else{
+                var set_flag = 4;
+                var msg = 'menghapus';
+            }
+
+            $.confirm({
+                title: 'Konfirmasi!',
+                content: 'Apakah anda ingin '+msg+' <b>'+onu+'</b> ?',
+                buttons: {
+                    confirm:{ 
+                        btnClass: 'btn-primary',
+                        text: 'Ya',
+                        action: function () {
+                            
+                            var form = new FormData();
+                            form.append('action', 'update_flag_item');
+                            form.append('order_id', oid);
+                            form.append('order_item_id', otd);                            
+                            form.append('order_session', oss);
+                            form.append('order_number', onu);
+                            form.append('order_item_flag_checkin', oflag);
+
+                            $.ajax({
+                                type: "POST",
+                                url : url,
+                                data: form,
+                                dataType:'json',
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success:function(d){
+                                    if(parseInt(d.status)==1){ 
+                                        notif(d.status,d.message); 
+                                        order_table.ajax.reload(null,false);
+                                    }else{ 
+                                        notif(d.status,d.message); 
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    cancel:{
+                        btnClass: 'btn-danger',
                         text: 'Batal', 
                         action: function () {
                             // $.alert('Canceled!');
@@ -663,9 +769,7 @@
                     }
                 }
             });
-        });
-
-        //CRUD ITEM
+        });        
         /*
         $(document).on("click",".btn_save_order_item",function(e) {
             e.preventDefault();
@@ -813,401 +917,531 @@
         function loadPlugin(){
         }
         function formBookingReset(){
-            $("#form_order input")
-            .not("input[id='order_hour']")
-            .not("input[id='order_date']")
-            .not("input[id='order_date_start']")
-            .not("input[id='order_date_end']").val('');
-            $("#form_order textarea").val('');
+            // $("#form_order input")
+            // .not("input[id='order_hour']")
+            // .not("input[id='order_date']")
+            // .not("input[id='order_date_start']")
+            // .not("input[id='order_date_end']").val('');
+            // $("#form_order textarea").val('');
 
-            $("#files_link").attr('href',url_image);
-            $("#files_preview").attr('src',url_image);
-            $("#files_preview").attr('data-save-img',url_image);
+            // $("#files_link").attr('href',url_image);
+            // $("#files_preview").attr('src',url_image);
+            // $("#files_preview").attr('data-save-img',url_image);
 
-            // $("#btn_save_order").show();
-            // $("#btn_update_order").hide();
-            // $("#btn_cancel_order").show();
-            // $("#div_form_order").hide(300);
+            loadAttachment(0);
         } 
 
-    //Approval Button
-    var approval_table = 'orders';
-    $(document).on("click", "#btn_approval_add", function(e){ //Not Used
-        e.preventDefault();
-        e.stopPropagation();
-        var next = true;
-        var id = $("#id_document").val();
-        id = orderID;
-        notif(1,'Memuat Persetujuan');
-        if (parseInt(id) > 0) {
-            $.ajax({
-                type: "post",
-                url: url,
-                data: {
-                    action: 'read',
-                    tipe: identity,
-                    id: id
-                },
-                dataType: 'json',
-                cache: 'false',
-                success: function (d) {
-                    if (parseInt(d.status) === 1) {
-                        // notif(1,d.message);
-                        var approval_flag = parseInt(d.result.trans_approval_flag);
-                        if (approval_flag > 0) {
-                            notif(1, 'Dokumen ' + d.result.order_number + ' sudah di setujui');
-                        } else {
-                            var trans_id = d.result.order_id;
-                            var trans_session = d.result.order_session;
-                            var trans_number = d.result.order_number;                        
-                            $.confirm({
-                                title: 'Pilih User Persetujuan',
-                                icon: 'fas fa-lock',                            
-                                columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
-                                autoClose: 'button_2|60000',
-                                closeIcon: true,
-                                closeIconClass: 'fas fa-times',
-                                animation: 'zoom',
-                                closeAnimation: 'bottom',
-                                animateFromElement: false,
-                                content: function () {
-                                    var self = this;
-                                },
-                                onContentReady: function () {
-                                    let self = this;
-                                    var dsp = '';
-                                    dsp += '<form id="jc_form">';
-                                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                                        dsp += '<input type="hidden" id="approval_trans_id" name="approval_trans_id" value="' + trans_id + '">';
-                                        dsp += '<input type="hidden" id="approval_trans_session" name="approval_trans_session" value="' + trans_session + '">';
-                                        dsp += '</div>';
-                                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                                        dsp += '    <p>Dokumen <b>'+trans_number+'</b> akan diajukan persetujuan.</p>';
-                                        dsp += '</div>';                                            
-                                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                                        dsp += '    <div class="form-group">';
-                                        dsp += '    <label class="form-label">Urutan Persetujuan</label>';
-                                        dsp += '        <select id="approval_level" name="approval_level" class="form-control">';
-                                        dsp += '            <option value="1">User Pertama</option>';
-                                        dsp += '            <option value="2">User Kedua</option>';
-                                        dsp += '            <option value="3">User Ketiga</option>';
-                                        dsp += '            <option value="4">User Keempat</option>';                                                                                        
-                                        dsp += '        </select>';
-                                        dsp += '    </div>';
-                                        dsp += '</div>';
-                                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                                        dsp += '    <div class="form-group">';
-                                        dsp += '    <label class="form-label">Kepada User</label>';
-                                        dsp += '        <select id="approval_contact" name="approval_contact" class="form-control">';
-                                        dsp += '            <option value="0">Pilih User Persetujuan</option>';
-                                        dsp += '        </select>';
-                                        dsp += '    </div>';
-                                        dsp += '</div>';
-                                    dsp += '</form>';
-                                    content = dsp;
-                                    self.setContentAppend(content);
-                                    $('#approval_contact').select2({
-                                        dropdownParent:$(".jconfirm-box-container"),
-                                        width:'100%',
-                                        minimumInputLength: 0,
-                                        placeholder: {
-                                            id: '0',
-                                            text: '-- Pilih --'
-                                        },
-                                        allowClear: true,
-                                        ajax: {
-                                            type: "get",
-                                            url: "<?= base_url('search/manage');?>",
-                                            dataType: 'json',
-                                            delay: 250,
-                                            data: function (params) {
-                                                var query = {
-                                                    search: params.term,
-                                                    tipe: 1,
-                                                    source: 'users'
-                                                };
-                                                return query;
-                                            },
-                                            processResults: function (data){
-                                                var datas = [];
-                                                $.each(data, function(key, val){
-                                                    datas.push({
-                                                        'id' : val.id,
-                                                        'text' : val.text
-                                                    });
-                                                });
-                                                return {
-                                                    results: datas
-                                                };
-                                            },
-                                            cache: true
-                                        },
-                                        escapeMarkup: function(markup){ 
-                                            return markup; 
-                                        },
-                                        templateResult: function(datas){ //When Select on Click
-                                            if($.isNumeric(datas.id) == true){
-                                                return datas.text;
-                                            }
-                                        },
-                                        templateSelection: function(datas) { //When Option on Click
-                                            if($.isNumeric(datas.id) == true){
-                                                return datas.text;
-                                            }
-                                        }
-                                    });
-                                },
-                                buttons: {
-                                    button_1: {
-                                        text: '<span class="fas fa-thumbs-up"></span> Proses',
-                                        btnClass: 'btn-primary',
-                                        keys: ['enter'],
-                                        action: function () {
-                                            var trans_id = this.$content.find('#approval_trans_id').val();
-                                            var trans_session = this.$content.find('#approval_trans_session').val();
-                                            var user_id = this.$content.find('#approval_contact').find(':selected').val();
-                                            var level = this.$content.find('#approval_level').find(':selected').val();                                                
-                                            if (parseInt(user_id) == 0) {
-                                                notif(0, 'User harus dipilih');
-                                                return false;
-                                            } else {
-                                                var data = {
-                                                    action: 'create',
-                                                    trans_id: trans_id,
-                                                    trans_session: trans_session,
-                                                    user_id: user_id,
-                                                    from_table: approval_table,
-                                                    approval_level: level
-                                                };
-                                                $.ajax({
-                                                    type: "post",
-                                                    url: "<?= base_url('approval'); ?>",
-                                                    data: data,
-                                                    dataType: 'json',
-                                                    cache: 'false',
-                                                    beforeSend: function () {},
-                                                    success: function (d) {
-                                                        if (parseInt(d.status) === 1) {
-                                                            notif(d.status, d.message);
-                                                            loadApproval(trans_id);
-                                                            index.ajax.reload(null,false);
-                                                        } else { //No Data
-                                                            notif(d.status, d.message);
-                                                        }
-                                                    },
-                                                    error: function (xhr, Status, err) {
-                                                        notif(0, err);
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    },
-                                    button_2: {
-                                        text: '<span class="fas fa-times"></span> Batal',
-                                        btnClass: 'btn-default',
-                                        keys: ['Escape'],
-                                        action: function () {
-                                            //Close
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    } else {
-                        notif(0, d.message);
-                    }
-                }, error: function (xhr, Status, err) {
-                    notif(0, err);
-                }
-            });
-        } else {
-            notif(0, 'Simpan data terlebih dahulu');
-        }
-    });
-    $(document).on("click","#btn_attachment_add", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        var next = true;
-        var id = $("#id_document").val();
-        id = orderID;
-        // notif(1,'Memuat Attachment');
-        if(parseInt(id)){
-            let title   = 'Browse File';
-            $.confirm({
-                title: title,
-                icon: 'fas fa-check',
-                columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',      
-                closeIcon: true, closeIconClass: 'fas fa-times', 
-                animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
-                content: function(){
-                },
-                onContentReady: function(e){
-                    let self    = this;
-                    let content = '';
-                    let dsp     = '';
-            
-                    dsp += '<form id="jc_form" method="post" enctype="multipart/form-data">';
-                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                        dsp += '    <div class="form-group">';
-                        dsp += '    <label class="form-label">Pilih File yg akan di upload (maks 2 MB)</label>';
-                        dsp += '        <input id="jc_input" name="jc_input" type="file" class="form-control">';
-                        dsp += '    </div>';
-                        dsp += '</div>';
-                    dsp += '</form>';
-                    content = dsp;
-                    self.setContentAppend(content);
-                },
-                buttons: {
-                    button_1: {
-                        text:'<i class="fas fa-upload white"></i> Upload',
-                        btnClass: 'btn-primary',
-                        keys: ['enter'],
-                        action: function(e){
-                            let self      = this;
-            
-                            // let input     = self.$content.find('#jc_input').val();
-                            let input     = self.$content.find('#jc_input')[0].files[0];                        
-                            // if(!input){
-                                // $.alert('File belum dipilih');
-                                // return false;
-                            // } else{
-                                // $('#upload1')[0].files[0]
-                                let form = new FormData();
-                                form.append('action', 'file_create');
-                                form.append('from_table',approval_table);
-                                form.append('trans_id',id);
-                                form.append('source', input);
-                                $.ajax({
-                                    type: "post",
-                                    url: "<?= base_url('approval'); ?>",
-                                    data: form, dataType: 'json',
-                                    cache: 'false', contentType: false, processData: false,
-                                    beforeSend: function() {},
-                                    success: function(d) {
-                                        let s = d.status;
-                                        let m = d.message;
-                                        let r = d.result;
-                                        if(parseInt(s) == 1){
-                                            notif(s, m);
-                                            loadAttachment(id);
-                                            index.ajax.reload(null,false);
-                                        }else{
-                                            notif(s,m);
-                                            // notifSuccess(m);
-                                        }
-                                    },
-                                    error: function(xhr, status, err) {
-                                        notif(0,err);
-                                    }
-                                });
-                            // }
-                        }
+        //Approval Button
+        var approval_table = 'orders';
+        $(document).on("click", "#btn_approval_add", function(e){ //Not Used
+            e.preventDefault();
+            e.stopPropagation();
+            var next = true;
+            var id = $("#id_document").val();
+            id = orderID;
+            notif(1,'Memuat Persetujuan');
+            if (parseInt(id) > 0) {
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: {
+                        action: 'read',
+                        tipe: identity,
+                        id: id
                     },
-                    button_2: {
-                        text: '<i class="fas fa-times white"></i> Batal',
-                        btnClass: 'btn-success',
-                        keys: ['Escape'],
-                        action: function(){
-                            //Close
-                        }
-                    }
-                }
-            });
-        }else{
-            notif(0,'Simpan data terlebih dahulu');
-        }
-    });
-    $(document).on("click","#btn_link_add", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        var next = true;
-        var id = $("#id_document").val();
-        id = orderID;
-        // notif(1,'Memuat Attachment');
-        if(parseInt(id)){
-            let title   = 'Link URL Share';
-            $.confirm({
-                title: title,
-                icon: 'fas fa-link',
-                columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',      
-                closeIcon: true, closeIconClass: 'fas fa-times', 
-                animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
-                content: function(){
-                },
-                onContentReady: function(e){
-                    let self    = this;
-                    let content = '';
-                    let dsp     = '';
-            
-                    dsp += '<form id="jc_form" method="post" enctype="multipart/form-data">';
-                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                        dsp += '    <div class="form-group">';
-                        dsp += '    <label class="form-label">URL Sharing</label>';
-                        dsp += '        <input id="jc_input" name="jc_input" type="text" class="form-control">';
-                        dsp += '    </div>';
-                        dsp += '</div>';
-                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                        dsp += '    <div class="form-group">';
-                        dsp += '    <label class="form-label">Nama File</label>';
-                        dsp += '        <input id="jc_input2" name="jc_input2" type="text" class="form-control">';
-                        dsp += '    </div>';
-                        dsp += '</div>';                    
-                    dsp += '</form>';
-                    content = dsp;
-                    self.setContentAppend(content);
-                    setTimeout(() => {
-                        $("#jc_input").focus();
-                    }, 1000);
-                },
-                buttons: {
-                    button_1: {
-                        text:'<i class="fas fa-save white"></i> Simpan',
-                        btnClass: 'btn-primary',
-                        keys: ['enter'],
-                        action: function(e){
-                            let self      = this;
-            
-                            let input     = self.$content.find('#jc_input').val();
-                            let input2     = self.$content.find('#jc_input2').val();                                                
-                            if(!input){
-                                $.alert('URL belum diisi');
-                                return false;
-                            } else{
-                                let form = new FormData();
-                                form.append('action', 'file_create_link');
-                                form.append('from_table',approval_table);
-                                form.append('trans_id',id);
-                                form.append('file_url',input);
-                                form.append('file_name',input2);                            
-                                $.ajax({
-                                    type: "post",
-                                    url: "<?= base_url('approval'); ?>",
-                                    data: form, dataType: 'json',
-                                    cache: 'false', contentType: false, processData: false,
-                                    beforeSend: function() {},
-                                    success: function(d) {
-                                        let s = d.status;
-                                        let m = d.message;
-                                        let r = d.result;
-                                        if(parseInt(s) == 1){
-                                            notif(s, m);
-                                            loadAttachment(id);
-                                            index.ajax.reload(null,false);
-                                        }else{
-                                            notif(s,m);
-                                            // notifSuccess(m);
-                                        }
+                    dataType: 'json',
+                    cache: 'false',
+                    success: function (d) {
+                        if (parseInt(d.status) === 1) {
+                            // notif(1,d.message);
+                            var approval_flag = parseInt(d.result.trans_approval_flag);
+                            if (approval_flag > 0) {
+                                notif(1, 'Dokumen ' + d.result.order_number + ' sudah di setujui');
+                            } else {
+                                var trans_id = d.result.order_id;
+                                var trans_session = d.result.order_session;
+                                var trans_number = d.result.order_number;                        
+                                $.confirm({
+                                    title: 'Pilih User Persetujuan',
+                                    icon: 'fas fa-lock',                            
+                                    columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                                    autoClose: 'button_2|60000',
+                                    closeIcon: true,
+                                    closeIconClass: 'fas fa-times',
+                                    animation: 'zoom',
+                                    closeAnimation: 'bottom',
+                                    animateFromElement: false,
+                                    content: function () {
+                                        var self = this;
                                     },
-                                    error: function(xhr, status, err) {
-                                        notif(0,err);
+                                    onContentReady: function () {
+                                        let self = this;
+                                        var dsp = '';
+                                        dsp += '<form id="jc_form">';
+                                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                                            dsp += '<input type="hidden" id="approval_trans_id" name="approval_trans_id" value="' + trans_id + '">';
+                                            dsp += '<input type="hidden" id="approval_trans_session" name="approval_trans_session" value="' + trans_session + '">';
+                                            dsp += '</div>';
+                                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                                            dsp += '    <p>Dokumen <b>'+trans_number+'</b> akan diajukan persetujuan.</p>';
+                                            dsp += '</div>';                                            
+                                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                                            dsp += '    <div class="form-group">';
+                                            dsp += '    <label class="form-label">Urutan Persetujuan</label>';
+                                            dsp += '        <select id="approval_level" name="approval_level" class="form-control">';
+                                            dsp += '            <option value="1">User Pertama</option>';
+                                            dsp += '            <option value="2">User Kedua</option>';
+                                            dsp += '            <option value="3">User Ketiga</option>';
+                                            dsp += '            <option value="4">User Keempat</option>';                                                                                        
+                                            dsp += '        </select>';
+                                            dsp += '    </div>';
+                                            dsp += '</div>';
+                                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                                            dsp += '    <div class="form-group">';
+                                            dsp += '    <label class="form-label">Kepada User</label>';
+                                            dsp += '        <select id="approval_contact" name="approval_contact" class="form-control">';
+                                            dsp += '            <option value="0">Pilih User Persetujuan</option>';
+                                            dsp += '        </select>';
+                                            dsp += '    </div>';
+                                            dsp += '</div>';
+                                        dsp += '</form>';
+                                        content = dsp;
+                                        self.setContentAppend(content);
+                                        $('#approval_contact').select2({
+                                            dropdownParent:$(".jconfirm-box-container"),
+                                            width:'100%',
+                                            minimumInputLength: 0,
+                                            placeholder: {
+                                                id: '0',
+                                                text: '-- Pilih --'
+                                            },
+                                            allowClear: true,
+                                            ajax: {
+                                                type: "get",
+                                                url: "<?= base_url('search/manage');?>",
+                                                dataType: 'json',
+                                                delay: 250,
+                                                data: function (params) {
+                                                    var query = {
+                                                        search: params.term,
+                                                        tipe: 1,
+                                                        source: 'users'
+                                                    };
+                                                    return query;
+                                                },
+                                                processResults: function (data){
+                                                    var datas = [];
+                                                    $.each(data, function(key, val){
+                                                        datas.push({
+                                                            'id' : val.id,
+                                                            'text' : val.text
+                                                        });
+                                                    });
+                                                    return {
+                                                        results: datas
+                                                    };
+                                                },
+                                                cache: true
+                                            },
+                                            escapeMarkup: function(markup){ 
+                                                return markup; 
+                                            },
+                                            templateResult: function(datas){ //When Select on Click
+                                                if($.isNumeric(datas.id) == true){
+                                                    return datas.text;
+                                                }
+                                            },
+                                            templateSelection: function(datas) { //When Option on Click
+                                                if($.isNumeric(datas.id) == true){
+                                                    return datas.text;
+                                                }
+                                            }
+                                        });
+                                    },
+                                    buttons: {
+                                        button_1: {
+                                            text: '<span class="fas fa-thumbs-up"></span> Proses',
+                                            btnClass: 'btn-primary',
+                                            keys: ['enter'],
+                                            action: function () {
+                                                var trans_id = this.$content.find('#approval_trans_id').val();
+                                                var trans_session = this.$content.find('#approval_trans_session').val();
+                                                var user_id = this.$content.find('#approval_contact').find(':selected').val();
+                                                var level = this.$content.find('#approval_level').find(':selected').val();                                                
+                                                if (parseInt(user_id) == 0) {
+                                                    notif(0, 'User harus dipilih');
+                                                    return false;
+                                                } else {
+                                                    var data = {
+                                                        action: 'create',
+                                                        trans_id: trans_id,
+                                                        trans_session: trans_session,
+                                                        user_id: user_id,
+                                                        from_table: approval_table,
+                                                        approval_level: level
+                                                    };
+                                                    $.ajax({
+                                                        type: "post",
+                                                        url: "<?= base_url('approval'); ?>",
+                                                        data: data,
+                                                        dataType: 'json',
+                                                        cache: 'false',
+                                                        beforeSend: function () {},
+                                                        success: function (d) {
+                                                            if (parseInt(d.status) === 1) {
+                                                                notif(d.status, d.message);
+                                                                loadApproval(trans_id);
+                                                                index.ajax.reload(null,false);
+                                                            } else { //No Data
+                                                                notif(d.status, d.message);
+                                                            }
+                                                        },
+                                                        error: function (xhr, Status, err) {
+                                                            notif(0, err);
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        },
+                                        button_2: {
+                                            text: '<span class="fas fa-times"></span> Batal',
+                                            btnClass: 'btn-default',
+                                            keys: ['Escape'],
+                                            action: function () {
+                                                //Close
+                                            }
+                                        }
                                     }
                                 });
                             }
+                        } else {
+                            notif(0, d.message);
                         }
+                    }, error: function (xhr, Status, err) {
+                        notif(0, err);
+                    }
+                });
+            } else {
+                notif(0, 'Simpan data terlebih dahulu');
+            }
+        });
+        $(document).on("click","#btn_attachment_add", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var next = true;
+            var id = $("#id_document").val();
+            id = orderID;
+            // notif(1,'Memuat Attachment');
+            if(parseInt(id)){
+                let title   = 'Browse File';
+                $.confirm({
+                    title: title,
+                    icon: 'fas fa-check',
+                    columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',      
+                    closeIcon: true, closeIconClass: 'fas fa-times', 
+                    animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                    content: function(){
                     },
+                    onContentReady: function(e){
+                        let self    = this;
+                        let content = '';
+                        let dsp     = '';
+                
+                        dsp += '<form id="jc_form" method="post" enctype="multipart/form-data">';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Pilih File yg akan di upload (maks 2 MB)</label>';
+                            dsp += '        <input id="jc_input" name="jc_input" type="file" class="form-control">';
+                            dsp += '    </div>';
+                            dsp += '</div>';
+                        dsp += '</form>';
+                        content = dsp;
+                        self.setContentAppend(content);
+                    },
+                    buttons: {
+                        button_1: {
+                            text:'<i class="fas fa-upload white"></i> Upload',
+                            btnClass: 'btn-primary',
+                            keys: ['enter'],
+                            action: function(e){
+                                let self      = this;
+                
+                                // let input     = self.$content.find('#jc_input').val();
+                                let input     = self.$content.find('#jc_input')[0].files[0];                        
+                                // if(!input){
+                                    // $.alert('File belum dipilih');
+                                    // return false;
+                                // } else{
+                                    // $('#upload1')[0].files[0]
+                                    let form = new FormData();
+                                    form.append('action', 'file_create');
+                                    form.append('from_table',approval_table);
+                                    form.append('trans_id',id);
+                                    form.append('source', input);
+                                    $.ajax({
+                                        type: "post",
+                                        url: "<?= base_url('approval'); ?>",
+                                        data: form, dataType: 'json',
+                                        cache: 'false', contentType: false, processData: false,
+                                        beforeSend: function() {},
+                                        success: function(d) {
+                                            let s = d.status;
+                                            let m = d.message;
+                                            let r = d.result;
+                                            if(parseInt(s) == 1){
+                                                notif(s, m);
+                                                loadAttachment(id);
+                                                index.ajax.reload(null,false);
+                                            }else{
+                                                notif(s,m);
+                                                // notifSuccess(m);
+                                            }
+                                        },
+                                        error: function(xhr, status, err) {
+                                            notif(0,err);
+                                        }
+                                    });
+                                // }
+                            }
+                        },
+                        button_2: {
+                            text: '<i class="fas fa-times white"></i> Batal',
+                            btnClass: 'btn-success',
+                            keys: ['Escape'],
+                            action: function(){
+                                //Close
+                            }
+                        }
+                    }
+                });
+            }else{
+                notif(0,'Simpan data terlebih dahulu');
+            }
+        });
+        $(document).on("click","#btn_link_add", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var next = true;
+            var id = $("#id_document").val();
+            id = orderID;
+            // notif(1,'Memuat Attachment');
+            if(parseInt(id)){
+                let title   = 'Link URL Share';
+                $.confirm({
+                    title: title,
+                    icon: 'fas fa-link',
+                    columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',      
+                    closeIcon: true, closeIconClass: 'fas fa-times', 
+                    animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                    content: function(){
+                    },
+                    onContentReady: function(e){
+                        let self    = this;
+                        let content = '';
+                        let dsp     = '';
+                
+                        dsp += '<form id="jc_form" method="post" enctype="multipart/form-data">';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">URL Sharing</label>';
+                            dsp += '        <input id="jc_input" name="jc_input" type="text" class="form-control">';
+                            dsp += '    </div>';
+                            dsp += '</div>';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Nama File</label>';
+                            dsp += '        <input id="jc_input2" name="jc_input2" type="text" class="form-control">';
+                            dsp += '    </div>';
+                            dsp += '</div>';                    
+                        dsp += '</form>';
+                        content = dsp;
+                        self.setContentAppend(content);
+                        setTimeout(() => {
+                            $("#jc_input").focus();
+                        }, 1000);
+                    },
+                    buttons: {
+                        button_1: {
+                            text:'<i class="fas fa-save white"></i> Simpan',
+                            btnClass: 'btn-primary',
+                            keys: ['enter'],
+                            action: function(e){
+                                let self      = this;
+                
+                                let input     = self.$content.find('#jc_input').val();
+                                let input2     = self.$content.find('#jc_input2').val();                                                
+                                if(!input){
+                                    $.alert('URL belum diisi');
+                                    return false;
+                                } else{
+                                    let form = new FormData();
+                                    form.append('action', 'file_create_link');
+                                    form.append('from_table',approval_table);
+                                    form.append('trans_id',id);
+                                    form.append('file_url',input);
+                                    form.append('file_name',input2);                            
+                                    $.ajax({
+                                        type: "post",
+                                        url: "<?= base_url('approval'); ?>",
+                                        data: form, dataType: 'json',
+                                        cache: 'false', contentType: false, processData: false,
+                                        beforeSend: function() {},
+                                        success: function(d) {
+                                            let s = d.status;
+                                            let m = d.message;
+                                            let r = d.result;
+                                            if(parseInt(s) == 1){
+                                                notif(s, m);
+                                                loadAttachment(id);
+                                                index.ajax.reload(null,false);
+                                            }else{
+                                                notif(s,m);
+                                                // notifSuccess(m);
+                                            }
+                                        },
+                                        error: function(xhr, status, err) {
+                                            notif(0,err);
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        button_2: {
+                            text: '<i class="fas fa-times white"></i> Batal',
+                            btnClass: 'btn-default',
+                            keys: ['Escape'],
+                            action: function(){
+                                //Close
+                            }
+                        }
+                    }
+                });
+            }else{
+                notif(0,'Simpan data terlebih dahulu');
+            }
+        });   
+        $(document).on("click",".btn_attachment_preview", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var params = {
+                file_id:$(this).attr('data-file-id'),
+                file_type:$(this).attr('data-file-type'),        
+                file_session:$(this).attr('data-file-session'),
+                file_format:$(this).attr('data-file-format'),
+                file_name:$(this).attr('data-file-name'),
+                file_src:$(this).attr('data-file-src')
+            };
+            attachmentPreview(params);
+        });
+        $(document).on("click","#btn_attachment_delete", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var id = $(this).attr('data-id');
+            console.log("#btn_attachment_delete");
+        });  
+
+        //Attachment Info
+        $(document).on("click",".btn-attachment-info-2",function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var fid = $(this).attr('data-id');
+            var ffrom = $(this).attr('data-from');
+            var fnum = $(this).attr('data-number');
+            var fcnm = $(this).attr('data-contact-name');
+            var fcid = $(this).attr('data-contact-id');
+            var fdt = $(this).attr('data-date');		
+            var ftt = $(this).attr('data-total');						
+            var ftpe = $(this).attr('data-type');
+            var ftp = $(this).attr('data-contact-type');	
+            var fp = $(this).attr('data-product');	            																							
+
+            var title   = 'Info Attachment '+ffrom;
+            $.confirm({
+                title: title,
+                columnClass: 'col-lg-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                closeIcon: true,
+                closeIconClass: 'fas fa-times',    
+                animation:'zoom',
+                closeAnimation:'bottom',
+                animateFromElement:false,      
+                content: function(){
+                    var self = this;
+                    var url = "<?= base_url('approval'); ?>"; //CI
+
+                    var form = new FormData();
+                    form.append('action','load_file_history');
+                    form.append('file_from_id',fid);
+                    form.append('file_from_table',ffrom);
+
+                    return $.ajax({
+                        url: url,
+                        data: form,
+                        dataType: 'json',
+                        type: 'post',
+                        cache: 'false', contentType: false, processData: false,
+                    }).done(function (d) {
+                        var s = d.status;
+                        var m = d.message;
+                        var r = d.result;
+                        var tr = d.total_records;
+                        if(parseInt(s) == 1){
+                            var dsp = '';
+                            dsp += '<table class="table-default">';
+                            dsp += '<tr><td><b>Nomor</b></td><td>: '+fnum+'</td></tr>';
+                            dsp += '<tr><td><b>Tanggal</b></td><td>: '+fdt+'</td></tr>';
+                            dsp += '<tr><td><b>Kamar</b></td><td>: '+fp+'</td></tr>';                            
+                            dsp += '<tr><td><b>Kontak</b></td><td>: '+fcnm+'</td></tr>';
+                            dsp += '<tr><td><b>Total</b></td><td>: '+ftt+'</td></tr>';			                  	                  
+                            dsp += '</table>';
+                            dsp += '<br><b>Attachment Terkait</b>';
+
+                            dsp += '<table id="table-order" class="table table-bordered">';
+                            dsp += '  <thead>';
+                            dsp += '    <th>Name</th>';
+                            dsp += '    <th style="text-align:right;">Size</th>';
+                            dsp += '    <th>Date Created</th>';
+                            dsp += '    <th>Format</th>';
+                            dsp += '  </thead>';
+                            dsp += '  <tbody>';
+                            if(parseInt(tr) > 0){
+                                r.forEach(async (v, i) => {
+                            
+                                    var siz = '1 kb';
+                                    if(v['file_type'] == 1){
+                                        siz = v['file']['size_unit'];
+                                    }
+
+                                    var attr = 'data-file-type="'+v['file_type']+'" data-file-id="'+v['file_id']+'" data-file-session="'+v['file_session']+'" data-file-name="'+v['file']['name']+'" data-file-format="'+v['file']['format']+'" data-file-src="'+v['file']['src']+'"';                                                                                      
+                                    dsp += '<tr>';
+                                    dsp += '<td><a class="btn_attachment_preview" href="#" '+attr+'>'+v['file']['name']+'</a></td>';
+                                    dsp += '<td style="text-align:right;">'+siz+'</td>';
+                                    dsp += '<td>'+ moment(v['date']['date_created']).format("DD-MMM-YY, HH:mm")+'</td>';
+                                        dsp += '<td>'+v['file']['format_label']+'</td>';
+                                        // dsp += '<td>';
+                                        //     dsp += '<button type="button" class="btn-action btn btn-primary" data-id="'+v['approval_id']+'">';
+                                        //     dsp += 'Action';
+                                        //     dsp += '</button>';
+                                        // dsp += '</td>';
+                                dsp += '</tr>';       
+                                });
+                            }else{
+                                dsp += '    <tr><td colspan="3">Tidak ada data</td></tr>';
+                            }
+                            dsp += '  </tbody>';
+                            dsp += '</table>';
+                        }else{
+                            // notif(s,m);
+                        }            
+                        self.setTitle('Info Attachment');
+                        self.setContentAppend(dsp);
+                    }).fail(function(){
+                        self.setContent('Something went wrong, Please try again.');
+                    });
+                },
+                buttons: {
                     button_2: {
-                        text: '<i class="fas fa-times white"></i> Batal',
-                        btnClass: 'btn-default',
+                        text: 'Tutup',
+                        btnClass: 'btn-danger',
                         keys: ['Escape'],
                         action: function(){
                             //Close
@@ -1215,29 +1449,8 @@
                     }
                 }
             });
-        }else{
-            notif(0,'Simpan data terlebih dahulu');
-        }
-    });   
-    $(document).on("click",".btn_attachment_preview", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        var params = {
-            file_id:$(this).attr('data-file-id'),
-            file_type:$(this).attr('data-file-type'),        
-            file_session:$(this).attr('data-file-session'),
-            file_format:$(this).attr('data-file-format'),
-            file_name:$(this).attr('data-file-name'),
-            file_src:$(this).attr('data-file-src')
-        };
-        attachmentPreview(params);
-    });
-    $(document).on("click","#btn_attachment_delete", function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        var id = $(this).attr('data-id');
-        console.log("#btn_attachment_delete");
-    });        
+        });
+                
         //Approval Function
         // loadAttachment() on btn-save, btn-read
         function loadApproval(data_id){
@@ -1319,7 +1532,7 @@
                                 var dsp = '';
                                 r.forEach(async (v, i) => {      
                                     
-                                    var siz = '';
+                                    var siz = '0 kb';
                                     if(v['file_type'] == 1){
                                         siz = v['file']['size_unit'];
                                     }
@@ -1561,7 +1774,17 @@
         function attachmentOpenTab(params){
             window.open(params.file_src,'Print','width=700,height=485,left=200,top=100').print();    
         }  
-        
+
+        $(document).on("click","#btn_paid_add", function(e){ });
+        $(document).on("click","#btn_paid_preview", function(e){ });
+        $(document).on("click","#btn_paid_delete", function(e){ });
+        $(document).on("click",".btn_paid_info", function(e){ });
+
+        function loadPaid(data_id){}
+        function paidPreview(params){}
+        function paidRemoveForm(params){}
+        function paidOpenTab(params){}
+
     }); //End of Document Ready
     function formBookingSetDisplay(value){ // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan
         if(value == 1){ var flag = true; }else{ var flag = false; }
