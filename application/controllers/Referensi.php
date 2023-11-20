@@ -20,7 +20,7 @@ class Referensi extends MY_Controller{
             redirect(base_url("login"));
         }
         $this->load->model('User_model');           
-        // $this->load->model('Produk_model');                   
+        $this->load->model('Branch_model');                   
         // $this->load->model('Satuan_model');
         $this->load->model('Referensi_model');     
         $this->load->model('Ref_model');             
@@ -109,6 +109,7 @@ class Referensi extends MY_Controller{
         $datenow            = date("Y-m-d"); 
         $data['first_date'] = $firstdateofmonth;
         $data['end_date']   = $datenow;
+        $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
         
         $this->load->view('layouts/admin/index',$data);
         $this->load->view($file_js,$data);
@@ -308,15 +309,18 @@ class Referensi extends MY_Controller{
                 $set_tipe = 10;
                 $data['nama'] = !empty($data['nama']) ? $data['nama'] : null;
                 $data['keterangan'] = !empty($data['keterangan']) ? $data['keterangan'] : null;  
-                $data['status'] = !empty($data['status']) ? $data['status'] : null;                   
+                $data['status'] = !empty($data['status']) ? $data['status'] : null;     
+                $data['ref_branch_id'] = !empty($data['ref_branch_id']) ? $data['ref_branch_id'] : null;                                   
 
                 $params = array(
                     'ref_type' => $identity,
+                    'ref_branch_id' => $data['ref_branch_id'],
                     'ref_name' => $data['nama'],
                     'ref_note' => $data['keterangan'],         
                     'ref_date_created' => date("YmdHis"),
                 );
                 $params_update = array(
+                    'ref_branch_id' => $data['ref_branch_id'],
                     'ref_name' => $data['nama'],
                     'ref_note' => $data['keterangan'],  
                     'ref_date_updated' => date("YmdHis"),
@@ -324,7 +328,8 @@ class Referensi extends MY_Controller{
                 );                        
                 $columns = array(
                     '0' => 'ref_name',
-                    '1' => 'ref_note'
+                    '1' => 'ref_note',
+                    '2' => 'branch_name',
                 );
                 $table = 'reference';
             }
@@ -372,19 +377,74 @@ class Referensi extends MY_Controller{
                     $return->total_records      = $datas_count;
                     $return->params             = $params;
                     $return->search             = $search;
-                    break;                
+                    break;              
+                case "load_ref_room_type":
+                    $limit      = $this->input->post('length');
+                    $start      = $this->input->post('start');
+                    $order      = $columns[$this->input->post('order')[0]['column']];
+                    $dir        = $this->input->post('order')[0]['dir'];
+
+                    $search = [];
+                    if (isset($this->input->post('search')['value'])) {
+                        $s = $this->input->post('search')['value'];
+                        foreach ($columns as $v) {
+                            $search[$v] = $s;
+                        }
+                    }
+
+                    $params = array(
+                        'ref_type' => $set_tipe
+                    );
+
+                    if($identity == 7){ //Room / Table
+                        //Root Access
+                        // if($session_group_id > 1){ //If Not Root
+                            $params['ref_branch_id'] = intval($session_branch_id);
+                        // }
+                    }
+
+                    $datas_result = array();
+                    $datas_count = $this->Referensi_model->get_all_referensis_count($params,$search);
+                    
+                    if($datas_count > 0){
+                        $datas = $this->Referensi_model->get_all_referensis($params, $search, $limit, $start, $order, $dir);
+                        $return->status         = 1; 
+                        $return->message        = 'Loaded'; 
+                        $return->result         = $datas;        
+                    }else{ 
+                        $return->message        = 'No data'; 
+                        $return->result         = $datas_result;    
+                    }
+                    $return->recordsTotal       = $datas_count;
+                    $return->recordsFiltered    = $datas_count;
+                    $return->total_records      = $datas_count;
+                    $return->params             = $params;
+                    $return->search             = $search;
+                    break;                                          
                 case "create":
                     //Check Data Exist
                     $params_check = array(
                         'ref_type' => $data['tipe'],
                         // 'ref_code' => $data['kode'],
-                        'ref_name' => $data['nama'],                        
-                        'ref_branch_id' => intval($session_branch_id)                        
+                        'ref_name' => $data['nama']
                     );
+
+                    if($identity == 10){
+                        $params_check = $params_check;
+                    }else{
+                        $params_check['ref_branch_id'] = intval($session_branch_id);
+                    }
                     $check_exists = $this->Referensi_model->check_data_exist($params_check);
                     if($check_exists==false){
                         $set_data=$this->Referensi_model->add_referensi($params);
                         if($set_data==true){
+                            if($identity == 10){ //Room Type update price
+                                $do0 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => 'Bulanan', 'price_sort' => 0, 'price_value' => $data['order_ref_price_id_0']]);
+                                $do1 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => 'Harian', 'price_sort' => 1, 'price_value' => $data['order_ref_price_id_1']]);                            
+                                $do2 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => 'Midnight', 'price_sort' => 2, 'price_value' => $data['order_ref_price_id_2']]);
+                                $do3 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => '4 Jam', 'price_sort' => 3, 'price_value' => $data['order_ref_price_id_3']]);
+                                $do4 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => '2 Jam', 'price_sort' => 4, 'price_value' => $data['order_ref_price_id_4']]);                                                                                    
+                            }                            
                             //Aktivitas
                             $params = array(
                                 'activity_user_id' => $session_user_id,
@@ -453,6 +513,15 @@ class Referensi extends MY_Controller{
                     // var_dump($params_update);
                     $set_update=$this->Referensi_model->update_referensi($id,$params_update);
                     if($set_update==true){
+                        
+                        if($identity == 10){ //Room Type update price
+                            $do0 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 0],['price_value' => $data['order_ref_price_id_0']]);
+                            $do1 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 1],['price_value' => $data['order_ref_price_id_1']]);                            
+                            $do2 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 2],['price_value' => $data['order_ref_price_id_2']]);
+                            $do3 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 3],['price_value' => $data['order_ref_price_id_3']]);
+                            $do4 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 4],['price_value' => $data['order_ref_price_id_4']]);                                                                                    
+                        }
+
                         //Aktivitas
                         $params = array(
                             'activity_user_id' => $session_user_id,

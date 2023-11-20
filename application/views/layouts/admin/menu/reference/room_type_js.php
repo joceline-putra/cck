@@ -27,7 +27,7 @@
                 dataType: 'json',
                 cache: 'false',
                 data: function (d) {
-                    d.action = 'load';
+                    d.action = 'load_ref_room_type';
                     d.tipe = identity;
                     d.length = $("#filter_length").find(':selected').val();
                     d.search = {
@@ -39,8 +39,8 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Nama", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Keterangan", "searchable": true, "orderable": true},
+                {"targets": 0, "title": "Jenis Kamar", "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Cabang", "searchable": true, "orderable": true},
                 {"targets": 2, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
@@ -49,7 +49,7 @@
             "columns": [{
                     'data': 'ref_name'
                 }, {
-                    'data': 'ref_note'
+                    'data': 'branch_name'
                 }, {
                     'data': 'ref_id',
                     className: 'text-left',
@@ -139,7 +139,8 @@
                     order_ref_price_id_1: $("#order_ref_price_id_1").val(),
                     order_ref_price_id_2: $("#order_ref_price_id_2").val(),
                     order_ref_price_id_3: $("#order_ref_price_id_3").val(),
-                    order_ref_price_id_4: $("#order_ref_price_id_4").val(),                                                                                
+                    order_ref_price_id_4: $("#order_ref_price_id_4").val(),         
+                    ref_branch_id: $("input[name='ref_branch_id']:checked").val()                                                                                           
                 }
                 var prepare_data = JSON.stringify(prepare);
                 var data = {
@@ -196,6 +197,8 @@
                         $("#form-master input[name='nama']").val(d.result.ref_name);
                         $("#form-master input[name='keterangan']").val(d.result.ref_note);
                         $("#form-master select[name='status']").val(d.result.ref_flag).trigger('change');
+
+                        $("input[name='ref_branch_id'][value="+d.result.ref_branch_id+"]").prop("checked", true).change();
 
                         price_data = d.result_price;
                         if(price_data.length > 0){
@@ -266,7 +269,8 @@
                     order_ref_price_id_1: $("#order_ref_price_id_1").val(),
                     order_ref_price_id_2: $("#order_ref_price_id_2").val(),
                     order_ref_price_id_3: $("#order_ref_price_id_3").val(),
-                    order_ref_price_id_4: $("#order_ref_price_id_4").val(),                    
+                    order_ref_price_id_4: $("#order_ref_price_id_4").val(),   
+                    ref_branch_id: $("input[name='ref_branch_id']:checked").val()                 
                 }
                 var prepare_data = JSON.stringify(prepare);
                 var data = {

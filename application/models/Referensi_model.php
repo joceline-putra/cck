@@ -27,14 +27,15 @@ class Referensi_model extends CI_Model{
         }
     }
     function set_join() {
-        
+        $this->db->join("branchs","ref_branch_id=branch_id","left");
     }
 
     function get_all_referensis($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
-        $this->db->select("*");
+        $this->db->select("references.*");
+        $this->db->select("branch_id, branch_code, branch_name");
         $this->set_params($params);
         $this->set_search($search);
-        // $this->set_join();
+        $this->set_join();
 
         if ($order) {
             $this->db->order_by($order, $dir);
@@ -67,15 +68,22 @@ class Referensi_model extends CI_Model{
     }      
     function get_all_referensis_count($params,$search){
         $this->db->from('references');   
+        $this->set_join();
         $this->set_params($params);            
         $this->set_search($search);        
         return $this->db->count_all_results();
     }
 
     function get_referensi($id){
+        $this->db->select("references.*");        
+        $this->db->select("branch_id, branch_code, branch_name");    
+        $this->set_join();            
         return $this->db->get_where('references',array('ref_id'=>$id))->row_array();
     }
     function get_referensi_custom($where){
+        $this->db->select("references.*");        
+        $this->db->select("branch_id, branch_code, branch_name");    
+        $this->set_join();                    
         return $this->db->get_where('references',$where)->row_array();
     }
     function get_all_referensi($params){

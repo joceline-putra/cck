@@ -558,13 +558,15 @@
                         // $("#files_preview").attr('src',d.result.Booking_image);
                         // $(".files_link").attr('href',d.result.Booking_image);
                         $(".order_branch_id[value=branch_"+d.result_item.order_item_branch_id+"]").prop("checked", true).change();
-                        $(".order_type_2[value="+d.result_item.price_name+"]").prop("checked", true).change();                        
+                        // $(".order_type_2[value="+d.result_item.price_name+"]").prop("checked", true).change();                        
                         $(".order_ref[value="+d.result_item.ref_id+"]").prop("checked", true).change();  
 
                         $("#order_start_date").datepicker("update", moment(d.result_item.order_item_start_date).format("DD-MM-YYYY"));
                         $("#order_end_date").datepicker("update", moment(d.result_item.order_item_end_date).format("DD-MM-YYYY")); 
-                        var set_hour = d.result_item.order_item_start_hour;
-                        $("#order_start_hour").val(set_hour.substring(0,5));
+                        
+                        $("#order_start_hour").val(moment(d.result_item.order_item_start_date).format("HH:mm")).trigger("change");
+                        $("#order_end_hour").val(moment(d.result_item.order_item_end_date).format("HH:mm")).trigger("change");
+
                         $("#order_price").val(d.result_item.order_item_price);
                         $("#order_contact_code").val(d.result_item.order_contact_code);
                         $("#order_contact_name").val(d.result_item.order_contact_name);
@@ -921,16 +923,13 @@
         */
 
         //Additional
-        $("input[type=radio][name=order_branch_id], input[type=radio][name=order_type_2], input[type=radio][name=order_ref_price_id], input[type=radio][name=order_ref_id]").on("change", function(e) {
+        $("input[type=radio][name=order_branch_id]").on("change", function(e) {
             e.preventDefault();
             e.stopPropagation();
             if(orderID == 0){
                 let form = new FormData();
-                form.append('action', 'room_price');
-                form.append('branch_id',  $("input[name=order_branch_id]:checked").val());
-                form.append('type_2',  $("input[name=order_type_2]:checked").val());
-                form.append('ref_id',  $("input[name=order_ref_id]:checked").val());                                                
-                form.append('ref_price_id',  $("input[name=order_ref_price_id]:checked").val());
+                form.append('action', 'room_ref');
+                form.append('branch_id', $("input[name='order_branch_id']:checked").val());                
                 $.ajax({
                     type: "post",
                     url: url,
@@ -946,8 +945,18 @@
                         let m = d.message;
                         let r = d.result;
                         if(parseInt(s) == 1){
-                            // notif(s,m);
-                            $("#order_price").val(r.price_value);
+                            let total_records = r.length;
+                            if(parseInt(total_records) > 0){
+                                $("#order_ref_id").html('');
+                            
+                                var dsp = '';
+                                r.forEach(async (v, i) => {
+                                    dsp += '<input id="ref_'+v['ref_id']+'" name="order_ref_id" value="'+v['ref_id']+'" type="radio"><label for="ref_'+v['ref_id']+'">'+v['ref_name']+'</label>';
+                                });
+                                $("#order_ref_id").html(dsp);
+                            }else{
+                                $("#order_ref_id").html('<input id="ref_0" name="order_ref_id" value="0" type="radio"><label for="ref_0">Data tidak ditemukan</label>');                                
+                            }
                         }else{
                             notif(s,m);
                         }
@@ -956,8 +965,54 @@
                         notif(0,err);
                     }
                 });
-            }
-        });
+            }            
+        }); 
+        $(document).on("change", "input[type=radio][name=order_ref_price_id]", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if(orderID == 0){
+                loadRefPrice();
+            }            
+        });   
+        $(document).on("change", "input[type=radio][name=order_ref_id]", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if(orderID == 0){
+                loadRefPrice();
+            }            
+        });                
+        function loadRefPrice(){
+            let form = new FormData();
+            form.append('action', 'room_price');
+            form.append('branch_id',  $("input[name=order_branch_id]:checked").val());
+            form.append('ref_id',  $("input[name=order_ref_id]:checked").val());                                                
+            form.append('ref_price_sort',  $("input[name=order_ref_price_id]:checked").val());
+            $.ajax({
+                type: "post",
+                url: url,
+                data: form, 
+                dataType: 'json', cache: 'false', 
+                contentType: false, processData: false,
+                beforeSend:function(x){
+                    // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                    // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                },
+                success:function(d){
+                    let s = d.status;
+                    let m = d.message;
+                    let r = d.result;
+                    if(parseInt(s) == 1){
+                        // notif(s,m);
+                        $("#order_price").val(r.price_value);
+                    }else{
+                        notif(s,m);
+                    }
+                },
+                error:function(xhr,status,err){
+                    notif(0,err);
+                }
+            });
+        }
         
         $(document).on("click","#btn_new_order",function(e) {
             formBookingReset();
@@ -1092,7 +1147,7 @@
             // $("#files_link").attr('href',url_image);
             // $("#files_preview").attr('src',url_image);
             // $("#files_preview").attr('data-save-img',url_image);
-
+            orderID = 0;
             loadAttachment(0);
         } 
 
@@ -1970,7 +2025,9 @@
             var ftpe = $(this).attr('data-type');
             var ftp = $(this).attr('data-contact-type');	
             var fp = $(this).attr('data-product');	            																							
-
+            
+            orderID = fid;
+            
             var stitle   = 'Riwayat Pembayaran '+fnum;
             $.confirm({
                 title: stitle,

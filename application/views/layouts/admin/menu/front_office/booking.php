@@ -212,7 +212,7 @@
                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
-                                                        <label class="form-label">Cabang</label>
+                                                        <label class="form-label">Cabang (order_branch_id)</label>
                                                         <div class="radio radio-success">
                                                             <?php 
                                                             foreach($branch as $i => $v){
@@ -231,28 +231,29 @@
                                                 </div>  
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
-                                                        <label class="form-label">Jenis</label>
+                                                        <label class="form-label">Type (order_ref_price_id)</label>
                                                         <div class="radio radio-success">
-                                                            <input id="Bulanan" type="radio" name="order_type_2" value="Bulanan" checked><label for="Bulanan">Bulanan</label>
-                                                            <input id="Transit" type="radio" name="order_type_2" value="Transit"><label for="Transit">Transit</label>
+                                                        <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0"><label for="order_ref_price_id_0">Bulanan</label>                                                            
+                                                            <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" checked><label for="order_ref_price_id_1">Harian</label>
+                                                            <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2"><label for="order_ref_price_id_2">Midnight</label>
+                                                            <input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3"><label for="order_ref_price_id_3">4 Jam</label>
+                                                            <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4"><label for="order_ref_price_id_4">2 Jam</label>                                                            
                                                         </div>
                                                     </div>
-                                                </div>                                                          
-                                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                </div>                                                
+                                                <!-- <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
-                                                        <label class="form-label">Type</label>
+                                                        <label class="form-label">Jenis (order_type_2)</label>
                                                         <div class="radio radio-success">
-                                                            <input id="Harian" type="radio" name="order_ref_price_id" value="1" checked><label for="Harian">Harian</label>
-                                                            <input id="Midnight" type="radio" name="order_ref_price_id" value="2"><label for="Midnight">Midnight</label>
-                                                            <input id="4Jam" type="radio" name="order_ref_price_id" value="3"><label for="4Jam">4 Jam</label>
-                                                            <input id="2Jam" type="radio" name="order_ref_price_id" value="4"><label for="2Jam">2 Jam</label>                                                            
+                                                            <input id="bulanan" type="radio" name="order_type_2" value="Bulanan" checked><label for="bulanan">Bulanan</label>
+                                                            <input id="transit" type="radio" name="order_type_2" value="Transit"><label for="transit">Transit</label>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>-->
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
-                                                        <label class="form-label">Jenis Kamar</label>
-                                                        <div class="radio radio-success">
+                                                        <label class="form-label">Jenis Kamar (order_ref_id)</label>
+                                                        <div id="order_ref_id" class="radio radio-success">
                                                             <?php 
                                                             foreach($ref as $i => $v){
                                                                 $c = '';
@@ -269,34 +270,71 @@
                                                     </div>
                                                 </div>                                                  
                                                 <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
-                                                    <label class="form-label">Tanggal CheckIn</label>
+                                                    <label class="form-label">Tanggal Mulai</label>
                                                     <div class="col-md-12 col-sm-12 padding-remove-side">
                                                         <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                            <input name="order_start_date" id="order_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
+                                                            <input name="order_start_date" id="order_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $booking_start_date;?>" data-original="<?php echo $booking_start_date;?>">
                                                             <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
-                                                    <label class="form-label">Tanggal CheckOut</label>
+                                                    <label class="form-label">Tanggal Akhir</label>
                                                     <div class="col-md-12 col-sm-12 padding-remove-side">
                                                         <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                            <input name="order_end_date" id="order_end_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
+                                                            <input name="order_end_date" id="order_end_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $booking_end_date;?>" data-original="<?php echo $booking_end_date;?>">
                                                             <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>                                                
                                                 <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 form-group padding-remove-side">
-                                                        <label class="form-label">Jam</label>
-                                                        <div class="col-md-12 col-sm-12 padding-remove-side">
-                                                            <div class="input-group transparent clockpicker col-md-12">
-                                                                <input name="order_start_hour" id="order_start_hour" type="text" class="form-control input-sm" value="<?php echo $hour; ?>" >
-                                                                <span class="input-group-addon clock-add"><i class="fas fa-clock"></i></span>
+                                                    <div class="col-md-4 col-xs-4 padding-remove-side">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Jam Check-In</label>
+                                                            <div class="controls">
+                                                                <select name="order_start_hour" id="order_start_hour" class="form-control" style="width:100%">
+                                                                    <?php
+                                                                    $clock = array(
+                                                                        "01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00",
+                                                                        "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00",
+                                                                        "21:00","22:00","23:00"                                                                        
+                                                                    );
+                                                                    foreach($clock as $val){
+                                                                        $checked = '';
+                                                                        if($val == "14:00"){
+                                                                            $checked = "selected";
+                                                                        }
+                                                                        echo '<option value="'.$val.'" '.$checked.'>'.$val.'</option>';
+                                                                    }
+                                                                    ?>
+                                                                </select>
                                                             </div>
-                                                        </div>  
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                                                        </div>
+                                                    </div>  
+                                                    <div class="col-md-4 col-xs-4 padding-remove-side">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Jam Check-Out</label>
+                                                            <div class="controls">
+                                                                <select name="order_end_hour" id="order_end_hour" class="form-control" style="width:100%">
+                                                                    <?php
+                                                                    $clock = array(
+                                                                        "01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00",
+                                                                        "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00",
+                                                                        "21:00","22:00","23:00"                                                                        
+                                                                    );
+                                                                    foreach($clock as $val){
+                                                                        $checked = '';
+                                                                        if($val == "12:00"){
+                                                                            $checked = "selected";
+                                                                        }                                                                        
+                                                                        echo '<option value="'.$val.'" '.$checked.'>'.$val.'</option>';
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>                                                      
+                                                    <div class="col-lg-4 col-md-4 col-xs-6 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Harga</label>
                                                             <input id="order_price" name="order_price" type="text" value="" class="form-control" readonly/>

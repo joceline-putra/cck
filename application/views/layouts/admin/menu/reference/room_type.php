@@ -180,7 +180,26 @@
                                         <div class="col-md-12">
                                             <input id="id_document" name="id_document" type="hidden" value="" placeholder="id" readonly>
                                         </div>
-                                        <div class="col-md-12 col-sm-12 col-xs-12">                  
+                                        <div class="col-md-12 col-sm-12 col-xs-12">       
+                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                <div class="form-group">
+                                                    <label class="form-label">Cabang</label>
+                                                    <div class="radio radio-success">
+                                                        <?php 
+                                                        foreach($branch as $i => $v){
+                                                            $c = '';
+                                                            if($i==0){
+                                                                $c = 'checked';
+                                                            }
+                                                        ?>
+                                                            <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="ref_branch_id" value="<?php echo $v['branch_id']; ?>" <?php echo $c; ?>><label for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
+                                                        <?php 
+                                                        } 
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                                     
                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                 <div class="form-group">
                                                     <label>Nama *</label>

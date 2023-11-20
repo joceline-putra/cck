@@ -100,15 +100,17 @@ class Front_office extends MY_Controller{
                         $return->result          = $get_data;
                     }else{
                         $return->total_records   = 0;
-                        $return->result          = $get_data;
+                        $return->result          = [];
                     }
                     $return->message             = 'Load '.$return->total_records.' data';
                     $return->recordsTotal        = $return->total_records;
                     $return->recordsFiltered     = $return->total_records;
                     break;
                 case "create_update":
-                    $this->form_validation->set_rules('order_type', 'order_type', 'required');
+                    $this->form_validation->set_rules('order_type', 'Type', 'required');
+                    $this->form_validation->set_rules('order_ref_id', 'Jenis Kamar', 'greater_than[0]');                    
                     $this->form_validation->set_message('required', '{field} wajib diisi');
+                    $this->form_validation->set_message('greater_than', '{field} wajib dipilih');                    
                     if ($this->form_validation->run() == FALSE){
                         $return->message = validation_errors();
                     }else{
@@ -202,8 +204,16 @@ class Front_office extends MY_Controller{
                                 );
                                 // var_dump($params);die;
                                 $create = $this->Front_model->add_booking($params);   
+                                // $create = true;
                                 if($create){
                                     $get_booking = $this->Front_model->get_booking($create);
+                                    
+                                    $params_price = array(
+                                        'price_ref_id' => $post['order_ref_id'],
+                                        'price_sort' => $post['order_ref_price_id']
+                                    );
+                                    $get_price = $this->Ref_model->get_ref_price_custom($params_price);
+                                    $order_ref_price_id = $get_price['price_id'];
                                     
                                     //Save Item
                                     $params_items = array(
@@ -214,7 +224,7 @@ class Front_office extends MY_Controller{
                                         // 'order_item_product_id' => !empty($post['order_item_product_id']) ? $post['order_item_contact_id_2'] : null,
                                         'order_item_qty' => !empty($post['order_item_qty']) ? intval($post['order_item_qty']) : 1,
                                         // 'order_item_unit' => !empty($post['order_item_unit']) ? $post['order_item_contact_id_2'] : null,
-                                        'order_item_price' => !empty($post['order_price']) ? floatval($post['order_price']) : "0.00",
+                                        'order_item_price' => !empty($post['order_price']) ? str_replace(",","",$post['order_price']) : "0.00",
                                         // 'order_item_total' => !empty($post['order_item_total']) ? intval($post['order_item_total']) : null,
                                         // 'order_item_note' => !empty($post['order_item_note']) ? $post['order_item_contact_id_2'] : null,
                                         'order_item_user_id' => $session_user_id,
@@ -226,20 +236,34 @@ class Front_office extends MY_Controller{
                                         // 'order_item_ppn' => !empty($post['order_item_ppn']) ? intval($post['order_item_ppn']) : null,
                                         'order_item_order_session' => $order_session,
                                         // 'order_item_session' => !empty($post['order_item_session']) ? $post['order_item_contact_id_2'] : null,
-                                        'order_item_type_2' => !empty($post['order_type_2']) ? $post['order_type_2'] : null,
                                         'order_item_ref_id' => !empty($post['order_ref_id']) ? intval($post['order_ref_id']) : null,
-                                        'order_item_ref_price_id' => !empty($post['order_ref_price_id']) ? intval($post['order_ref_price_id']) : null,
+                                        'order_item_ref_price_id' => $order_ref_price_id,
                                         'order_item_flag_checkin' => 0,
                                     );                      
-                                    $params_items['order_item_start_date'] = $post['order_start_date']; 
-                                    $params_items['order_item_end_date'] = $post['order_end_date'];
     
-                                    if($post['order_type_2'] == "Bulanan"){
-                                        $params_items['order_item_start_hour'] = '14:00:00';
-                                    }else if($post['order_type_2'] == "Transit"){
-                                        $params_items['order_item_start_hour'] = $post['order_start_hour']; 
+                                    if($post['order_ref_price_id'] == "0"){
+                                        // $params_items['order_item_start_hour'] = '14:00:00';
+                                        $params_items['order_item_type_2'] = 'Bulanan';
+                                        $set_start_hour = '14:00:00';
+                                        $set_end_hour = '12:00:00';                                        
+                                    }else {
+                                        $params_items['order_item_type_2'] = 'Transit';                                        
+                                        // $params_items['order_item_start_hour'] = $post['order_start_hour'];
+
+                                        if($post['order_ref_price_id'] == "1"){
+                                            // Harian
+                                            $set_start_hour = '14:00:00';
+                                            $set_end_hour = '12:00:00';                                                
+                                        }else{
+                                            // Midnight, 4 Jam, 2 Jam
+                                            $set_start_hour = $post['order_start_hour'].':00';
+                                            $set_end_hour = $post['order_end_hour'].':00';                                       
+                                        }                                                                                 
                                     }
-    
+
+                                    $params_items['order_item_start_date'] = $post['order_start_date'] .' '.$set_start_hour; 
+                                    $params_items['order_item_end_date'] = $post['order_end_date'] .' '.$set_end_hour;
+
                                     // var_dump($params_items);die;          
                                     $create_item = $this->Front_model->add_booking_item($params_items);
                                     //End Save Item                                    
@@ -703,11 +727,22 @@ class Front_office extends MY_Controller{
                     $get_ref = $this->Produk_model->get_all_produks($params,$search,$limit,$start,$order,$dir);
                     $return->result = $get_ref;
                     $return->status = 1;
-                    break;   
+                    break;  
+                case "room_ref":
+                    $params = array(
+                        'references.ref_type' => 10,
+                        'references.ref_branch_id' => $post['branch_id']       
+                    );
+                    // $params = null;
+                    $search = null; $limit = null; $start = null; $order  = 'ref_name'; $dir = 'ASC';
+                    $get_ref = $this->Ref_model->get_all_ref($params,$search,$limit,$start,$order,$dir);
+                    $return->result = $get_ref;
+                    $return->status = 1;
+                    break;                       
                 case "room_price":
                     $params = array(
-                        'price_ref_id' => 480,
-                        'price_name' => 'Bulanan'                       
+                        'price_ref_id' => $post['ref_id'],
+                        'price_sort' => $post['ref_price_sort']                       
                     );
                     // $params = null;
                     $search = null; $limit = null; $start = null; $order  = 'price_name'; $dir = 'ASC';
@@ -723,6 +758,7 @@ class Front_office extends MY_Controller{
         }else{
             // Default First Date & End Date of Current Month
             $firstdate = new DateTime('first day of this month');
+
             $firstdateofmonth = $firstdate->format('d-m-Y');
 
             $data['session'] = $this->session->userdata();  
@@ -730,6 +766,15 @@ class Front_office extends MY_Controller{
 
             $data['first_date'] = $firstdateofmonth;
             $data['end_date'] = date("d-m-Y");
+            
+            $now = new DateTime();
+            $date3 = $now->modify('+1 day')->format('Y-m-d H:i:s');
+
+            $data['booking_start_date'] = date("d-m-Y");
+            $data['booking_end_date'] = date("d-m-Y", strtotime($date3));            
+            
+            // var_dump($data['booking_end_date']);die;
+            
             $data['hour'] = date("H:i");
             $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
 
@@ -744,7 +789,7 @@ class Front_office extends MY_Controller{
             $data['reference'] = $this->Reference_model->get_all_reference();
             */
             $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
-            $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10],null,null,null,'ref_name','asc');            
+            $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10, 'references.ref_branch_id' => 1],null,null,null,'ref_name','asc');            
             // $data['ref'] = $this->Ref_model->get_all_ref_price(['price_flag' => 1],null,null,null,'price_name','asc');    
 
             $params = array(
