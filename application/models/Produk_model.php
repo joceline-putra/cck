@@ -35,7 +35,8 @@ class Produk_model extends CI_Model{
         $this->db->join('references', 'product_ref_id=ref_id','left');
         $this->db->join('categories', 'product_category_id=category_id','left');
         $this->db->join('cities', 'product_city_id=city_id','left');            
-        $this->db->join('provinces', 'product_province_id=province_id','left');                        
+        $this->db->join('provinces', 'product_province_id=province_id','left');      
+        $this->db->join('branchs', 'product_branch_id=branch_id','left');                                
     }
 
     function get_all_produks($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
@@ -45,7 +46,7 @@ class Produk_model extends CI_Model{
         $this->db->select('categories.*');
         $this->db->select('references.*');
         $this->db->select('users.user_username');
-        
+        $this->db->select('branchs.branch_id, branchs.branch_name');        
         // if(($params['product_type']==4) or ($params['product_type']==5)){ //Tindakan relasi ke Referensi
         //     $this->db->select("ref_id AS referensi_id, ref_code AS referensi_kode, ref_name AS referensi_nama");
         // }

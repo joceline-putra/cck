@@ -23,6 +23,7 @@ class Referensi extends MY_Controller{
         // $this->load->model('Produk_model');                   
         // $this->load->model('Satuan_model');
         $this->load->model('Referensi_model');     
+        $this->load->model('Ref_model');             
         $this->group_access = array(1,2); //Root, Admin
     } 
     function index(){
@@ -430,6 +431,10 @@ class Referensi extends MY_Controller{
                         $return->status=1;
                         $return->message='Success';
                         $return->result=$datas;
+
+                        if($identity == 10){
+                            $return->result_price = $this->Ref_model->get_ref_price_custom_result(['price_ref_id' => $data['id']]);
+                        }
                     }                
                     break;
                 case "update":

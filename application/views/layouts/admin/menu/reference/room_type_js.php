@@ -134,7 +134,12 @@
                     // kode: $("input[id='kode']").val(),
                     nama: $("input[id='nama']").val(),
                     keterangan: $("input[id='keterangan']").val(),
-                    status: $("select[id='status']").find(':selected').val()
+                    status: $("select[id='status']").find(':selected').val(),
+                    order_ref_price_id_0: $("#order_ref_price_id_0").val(),
+                    order_ref_price_id_1: $("#order_ref_price_id_1").val(),
+                    order_ref_price_id_2: $("#order_ref_price_id_2").val(),
+                    order_ref_price_id_3: $("#order_ref_price_id_3").val(),
+                    order_ref_price_id_4: $("#order_ref_price_id_4").val(),                                                                                
                 }
                 var prepare_data = JSON.stringify(prepare);
                 var data = {
@@ -192,6 +197,23 @@
                         $("#form-master input[name='keterangan']").val(d.result.ref_note);
                         $("#form-master select[name='status']").val(d.result.ref_flag).trigger('change');
 
+                        price_data = d.result_price;
+                        if(price_data.length > 0){
+                            for(var i = 0; i < price_data.length; i++){
+                                $("#order_ref_price_id_"+i).val(d.result_price[i].price_value);
+                            }
+                        }else{
+                            for(var i = 0; i < 5; i++){
+                                $("#order_ref_price_id_"+i).val(0);
+                            }
+                        }
+                        
+                        // $("#order_ref_price_id_0").val(d.result_price[0].price_value);
+                        // $("#order_ref_price_id_1").val(d.result_price[1].price_value);
+                        // $("#order_ref_price_id_2").val(d.result_price[2].price_value);
+                        // $("#order_ref_price_id_3").val(d.result_price[3].price_value);
+                        // $("#order_ref_price_id_4").val(d.result_price[4].price_value);   
+                                
                         $("#btn-new").hide();
                         $("#btn-save").hide();
                         $("#btn-update").show();
@@ -239,7 +261,12 @@
                     // kode: $("input[id='kode']").val(),
                     nama: $("input[id='nama']").val(),
                     keterangan: $("input[id='keterangan']").val(),
-                    status: $("select[id='status']").find(':selected').val()
+                    status: $("select[id='status']").find(':selected').val(),
+                    order_ref_price_id_0: $("#order_ref_price_id_0").val(),
+                    order_ref_price_id_1: $("#order_ref_price_id_1").val(),
+                    order_ref_price_id_2: $("#order_ref_price_id_2").val(),
+                    order_ref_price_id_3: $("#order_ref_price_id_3").val(),
+                    order_ref_price_id_4: $("#order_ref_price_id_4").val(),                    
                 }
                 var prepare_data = JSON.stringify(prepare);
                 var data = {
@@ -414,7 +441,8 @@
         var attrInput = [
             // "kode",
             "nama",
-            "keterangan"
+            "keterangan",
+            "order_ref_price_id_0", "order_ref_price_id_1", "order_ref_price_id_2", "order_ref_price_id_3", "order_ref_price_id_4"
         ];
 
         for (var i = 0; i <= attrInput.length; i++) {

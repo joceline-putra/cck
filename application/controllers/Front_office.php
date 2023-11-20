@@ -3,9 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Front_office extends MY_Controller{
 
-    var $folder_upload = 'upload/booking/';
-    var $image_width   = 250;
-    var $image_height  = 250;
+    public $folder_upload = 'upload/booking/';
+    public $image_width   = 250;
+    public $image_height  = 250;
+    public $file_size_limit = 2097152; //in Byte
 
     function __construct(){
         parent::__construct();
@@ -24,6 +25,7 @@ class Front_office extends MY_Controller{
         $this->load->model('Branch_model');
         $this->load->model('Front_model');
         $this->load->model('User_model');
+        $this->load->model('Produk_model');        
 
         $this->print_to         = 1; //0 = Local, 1 = Bluetooth
         $this->whatsapp_config  = 1;
@@ -156,9 +158,11 @@ class Front_office extends MY_Controller{
 
                             /* Check Existing Data */
                             $params_check = [
-                                'order_id' => !empty($post['order_id']) ? $post['order_id'] : null
+                                'order_item_type_2' => !empty($post['order_type_2']) ? $post['order_type_2'] : null,
+                                'order_item_ref_id' => !empty($post['order_ref_id']) ? $post['order_ref_id'] : null ,
+                                'order_item_start_date' => $post['order_start_date'],                               
                             ];
-                            $check_exists = $this->Front_model->check_data_exist($params_check);
+                            $check_exists = $this->Front_model->check_data_exist_items($params_check);
 
                             /* Continue Save if not exist */
                             if(!$check_exists){
@@ -185,7 +189,7 @@ class Front_office extends MY_Controller{
                                     'order_date' => date("YmdHis"),
                                     'order_date_created' => date("YmdHis"),
                                     // 'order_date_updated' => !empty($post['order_date_updated']) ? $post['order_files_count'] : null,
-                                    // 'order_flag' => !empty($post['order_flag']) ? intval($post['order_flag']) : null,
+                                    'order_flag' => !empty($post['order_flag']) ? intval($post['order_flag']) : 0,
                                     // 'order_trans_id' => !empty($post['order_trans_id']) ? $post['order_files_count'] : null,
                                     // 'order_ref_number' => !empty($post['order_ref_number']) ? $post['order_files_count'] : null,
                                     // 'order_approval_flag' => !empty($post['order_approval_flag']) ? intval($post['order_approval_flag']) : null,
@@ -217,7 +221,7 @@ class Front_office extends MY_Controller{
                                         // 'order_item_date' => !empty($post['order_item_date']) ? $post['order_item_contact_id_2'] : null,
                                         'order_item_date_created' => date("YmdHis"),
                                         // 'order_item_date_updated' => !empty($post['order_item_date_updated']) ? $post['order_item_contact_id_2'] : null,
-                                        // 'order_item_flag' => !empty($post['order_item_flag']) ? $post['order_item_contact_id_2'] : null,
+                                        'order_item_flag' => 0,
                                         // 'order_item_product_price_id' => !empty($post['order_item_product_price_id']) ? $post['order_item_contact_id_2'] : null,
                                         // 'order_item_ppn' => !empty($post['order_item_ppn']) ? intval($post['order_item_ppn']) : null,
                                         'order_item_order_session' => $order_session,
@@ -225,6 +229,7 @@ class Front_office extends MY_Controller{
                                         'order_item_type_2' => !empty($post['order_type_2']) ? $post['order_type_2'] : null,
                                         'order_item_ref_id' => !empty($post['order_ref_id']) ? intval($post['order_ref_id']) : null,
                                         'order_item_ref_price_id' => !empty($post['order_ref_price_id']) ? intval($post['order_ref_price_id']) : null,
+                                        'order_item_flag_checkin' => 0,
                                     );                      
                                     $params_items['order_item_start_date'] = $post['order_start_date']; 
                                     $params_items['order_item_end_date'] = $post['order_end_date'];
@@ -467,6 +472,7 @@ class Front_office extends MY_Controller{
                                 $set_msg = 'waiting';
                             }else if($post['order_item_flag_checkin']== 1){
                                 $set_msg = 'checkin';
+                                $params['order_item_product_id'] = $post['product_id'];
                             }else if($post['order_item_flag_checkin']== 2){
                                 $set_msg = 'checkout';
                             }else if($post['order_item_flag_checkin']== 4){
@@ -492,7 +498,7 @@ class Front_office extends MY_Controller{
                                         */
                                     }
                                     $return->status  = 1;
-                                    $return->message = 'Berhasil '.$set_msg.' '.$get_data['order_number'];
+                                    $return->message = 'Berhasil '.$set_msg;
                                 }else{
                                     $return->message='Gagal '.$set_msg;
                                 }
@@ -504,6 +510,211 @@ class Front_office extends MY_Controller{
                         } 
                     }
                     break;
+                case "load_paid_history":
+                    $this->form_validation->set_rules('paid_order_id', 'Paid Order ID', 'required');                                                                        
+                    $this->form_validation->set_message('required', '{field} wajib diisi');
+                    if ($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{
+                        $from_id = !empty($this->input->post('paid_order_id')) ? $this->input->post('paid_order_id') : null;
+                        $params = array(
+                            'paid_order_id' => $from_id
+                        );
+                        $search = null; $limit = null; $start = null; $order  = 'paid_id'; $dir = 'ASC';
+                        $get_count = $this->Front_model->get_all_paid_count($params,$search);
+                        if($get_count > 0){
+                            $get_file = $this->Front_model->get_all_paid($params,$search,0,1,$order,$dir);
+                            foreach($get_file as $v){
+                                if($v['paid_format'] == 'pdf'){
+                                    $set_color = 'color:white;background-color:#d96a00!important;';
+                                }else if(($v['paid_format'] == 'jpg') or ($v['paid_format'] == 'png')){
+                                    $set_color = 'color:white;background-color:#3f69c7!important;';
+                                }else if(($v['paid_format'] == 'xls') or ($v['paid_format'] == 'xlsx')){
+                                    $set_color = 'color:white;background-color:#0aa65e!important;';
+                                }else if($v['paid_format'] == 'link'){
+                                    $set_color = 'color:white;background-color:#4a4a4a!important;';
+                                }else{
+                                    $set_color = 'color:white;background-color:#0aa65e!important;';
+                                }
+
+                                $paid_src = site_url() . $this->folder_upload . $v['paid_url'];
+                                // if($v['file_type'] == 2){
+                                    // $file_src = $v['file_url'];
+                                // }
+
+                                $datas[] = array(
+                                    'paid_id' => intval($v['paid_id']),
+                                    'paid_order_id' => intval($v['paid_order_id']),                                    
+                                    'paid_number' => $v['paid_number'],
+                                    // 'file_from_id' => $v['file_from_id'],
+                                    'paid_name' => $v['paid_name'],
+                                    // 'file_url' => $v['file_url'],
+                                    'paid_total' => $v['paid_total'],
+                                    'paid_payment_type' => $v['paid_payment_type'],
+                                    'paid_payment_method' => $v['paid_payment_method'],                                    
+                                    'paid_session' => $v['paid_session'],
+                                    'paid_flag' => intval($v['paid_flag']),
+                                    'paid' => array(
+                                        // 'name' => $v['file_name'],
+                                        'src' => $paid_src,
+                                        'format' => $v['paid_format'],
+                                        'size' => $v['paid_size'],
+                                        'size_unit' => $this->file_unit_size($v['paid_size']),                                        
+                                        'format_label' => '<label class="label" style="'.$set_color.'">'.$v['paid_format'].'</label>'
+                                    ),
+                                    'order' => array(
+                                        'order_id' => intval($v['order_id']),
+                                        'order_session' => $v['order_session'],
+                                        'order_number' => $v['order_number']
+                                    ),     
+                                    'date' => array(
+                                        'time_ago' => $v['time_ago'],
+                                        'date_created' => $v['paid_date_created'],
+                                        'date' => $v['paid_date'],                                                                          
+                                    ),    
+                                    'user' => array(
+                                        'id' => $v['user_id'],
+                                        'user_name' => $v['user_username'],
+                                        'full_name' => $v['user_fullname']                                                                                  
+                                    ),
+                                );                                
+                            }
+                            $return->status  = 1;
+                            $return->message = 'Menemukan data pembayaran';
+                            $return->result  = $datas;
+                        }else{
+                            $return->status  = 0;
+                            $return->message = 'Data pembayaran kosong';
+                            $return->result  = [];
+                        }
+                        $return->total_records = $get_count;
+                    }
+                    break;
+                case "paid_rename":
+                    $file_id = !empty($this->input->post('paid_id')) ? $this->input->post('paid_id') : null;
+                    $file_name = !empty($this->input->post('paid_name')) ? $this->input->post('paid_name') : null;
+                    if(intval($file_id) > 0){
+                        $where = array(
+                            'paid_id' => $file_id
+                        );
+                        $params = array(
+                            'paid_name' => $file_name
+                        );
+                        $set_update=$this->Front_model->update_paid_custom($where,$params);
+                        if($set_update==true){
+                            $get_data = $this->Front_model->get_paid($file_id);
+                            $return->status  = 1;
+                            $return->message = 'Berhasil ganti nama';
+                            $return->result  = $get_data;
+                        }else{
+                            $return->message='Gagal ganti nama';
+                        }                        
+                    }
+                    $return->action=$action;                               
+                    break;          
+                case "paid_delete":
+                    $file_id = !empty($this->input->post('paid_id')) ? $this->input->post('paid_id') : null;
+                    $file_name = !empty($this->input->post('file_name')) ? $this->input->post('file_name') : null;                        
+
+                    if(intval($file_id) > 0){
+                        $get_data=$this->Front_model->get_paid($file_id);
+                        $set_data=$this->Front_model->delete_paid($file_id);                
+                        if($set_data){    
+                            $file = FCPATH . $this->folder_upload . $get_data['paid_url'];
+                            if (file_exists($file)) {
+                                unlink($file);
+                            }
+                            $return->status=1;
+                            $return->message='Berhasil menghapus '. $get_data['paid_name'];
+                        }else{
+                            $return->message='Gagal menghapus '. $get_data['paid_name'];
+                        } 
+                        }else{
+                            $return->message='Data tidak ditemukan';
+                        }
+                    $return->action=$action;                               
+                    break;      
+                case "paid_create":
+                    $this->form_validation->set_rules('paid_order_id', 'ID Dokumen', 'required');                                                                                          
+                    $this->form_validation->set_message('required', '{field} wajib diisi');
+                    if ($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{                 
+                        //Save File if Exist        
+                        if(!empty($_FILES['source'])){
+                            if(intval($_FILES['source']['size']) > 0){
+                                //Save Data First
+                                $file_session = $this->random_session(20);
+                                $paid_number = $this->request_number_for_order_paid();
+                                $params = array(
+                                    // 'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : null,
+                                    'paid_order_id' => !empty($post['paid_order_id']) ? $post['paid_order_id'] : null,
+                                    'paid_number' => $paid_number,
+                                    'paid_session' => $file_session,
+                                    'paid_date_created' => date("YmdHis"),
+                                    'paid_date' => date("YmdHis"),                                    
+                                    'paid_user_id' => $session_user_id,
+                                    'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_payment_method'] : null,
+                                    'paid_total' => !empty($post['paid_total']) ? str_replace(",","",$post['paid_total']) : null                           
+                                );
+                                $save_data = $this->Front_model->add_paid($params);
+
+                                // Call Helper for upload
+                                $upload_helper = upload_file($this->folder_upload, $this->input->post('source'));
+                                if ($upload_helper['status'] == 1) {
+                                    $params_image = array(
+                                        'paid_name' => $upload_helper['result']['client_name'],
+                                        'paid_format' => str_replace(".","",$upload_helper['result']['file_ext']),
+                                        'paid_url' => $upload_helper['file'],
+                                        'paid_size' => $upload_helper['result']['file_size']
+                                    );
+                                    /*
+                                    if (!empty($data['file_url'])) {
+                                        if (file_exists(FCPATH . $data['file_url'])) {
+                                            unlink(FCPATH . $data['file_url']);
+                                        }
+                                    }
+                                    */
+                                    $stat = $this->Front_model->update_paid($save_data, $params_image);
+                                    
+                                    $return->message    = $upload_helper['message'];
+                                    $return->status     = $upload_helper['status'];
+                                    $return->raw_file   = $upload_helper['file'];
+                                    $return->return     = $upload_helper;                            
+                                }else{
+                                    $return->message = 'Error: '.$upload_helper['message'];
+                                }     
+                            }else{                           
+                                $return->message = 'File lebih dari '.($this->file_size_limit / 1048576) .' MB';
+                            }
+                        }else{
+                            $return->message = 'File tidak terbaca';
+                        }
+                    }   
+                    break;
+                case "room_get":
+                    $params = array(
+                        'product_type' => 2,
+                        'product_category_id' => 2,                        
+                        'product_flag' => 1,                        
+                    );
+                    // $params = null;
+                    $search = null; $limit = null; $start = null; $order  = 'product_name'; $dir = 'ASC';
+                    $get_ref = $this->Produk_model->get_all_produks($params,$search,$limit,$start,$order,$dir);
+                    $return->result = $get_ref;
+                    $return->status = 1;
+                    break;   
+                case "room_price":
+                    $params = array(
+                        'price_ref_id' => 480,
+                        'price_name' => 'Bulanan'                       
+                    );
+                    // $params = null;
+                    $search = null; $limit = null; $start = null; $order  = 'price_name'; $dir = 'ASC';
+                    $get_ref = $this->Ref_model->get_ref_price_custom($params);
+                    $return->result = $get_ref;
+                    $return->status = 1;                    
+                    break;                                                                                          
                 default:
                     $return->message='No Action';
                     break; 
@@ -1233,6 +1444,34 @@ class Front_office extends MY_Controller{
         $auto_number = 'PAY' . '-' . $tahun2 . $bulan . '-' . $nomor;
         return $auto_number;
     }       
+    function file_unit_size($bytes){
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 0) . ' TB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 0) . ' GB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 0) . ' MB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' KB';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' KB';
+        }
+        else
+        {
+            $bytes = '0 KB';
+        }
+
+        return $bytes;
+    }    
     function test(){
         echo json_encode($this->Front_model->get_all_paid(null,null,null,null,'paid_id','asc'));
 

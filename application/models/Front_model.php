@@ -53,7 +53,7 @@ class Front_model extends CI_Model{
     }
 
     function set_select_item(){
-        $this->db->select("orders.order_id, orders.order_number, orders.order_date, orders.order_session, orders.order_contact_code, orders.order_contact_name, orders.order_contact_phone, orders.order_files_count, orders.order_total, orders.order_paid, orders.order_total_paid");        
+        $this->db->select("orders.order_id, orders.order_number, orders.order_date, orders.order_session, orders.order_contact_code, orders.order_contact_name, orders.order_contact_phone, orders.order_files_count, orders.order_total, orders.order_paid, orders.order_total_paid, orders.order_flag");        
         $this->db->select("orders_items.order_item_id, orders_items.order_item_branch_id, orders_items.order_item_type, orders_items.order_item_type_name, orders_items.order_item_order_id, orders_items.order_item_qty, orders_items.order_item_price, orders_items.order_item_total, orders_items.order_item_date_created, orders_items.order_item_flag, orders_items.order_item_order_session");
         $this->db->select("orders_items.order_item_type_2, orders_items.order_item_ref_id, orders_items.order_item_ref_price_id, orders_items.order_item_start_date, orders_items.order_item_end_date, orders_items.order_item_start_hour, orders_items.order_item_flag_checkin");
         $this->db->select("references.ref_id, references.ref_name");
@@ -62,8 +62,8 @@ class Front_model extends CI_Model{
     }
     
     function set_select_paid(){
-        $this->db->select("orders_paids.*");
-        $this->db->select("orders.order_id, orders.order_number, orders.order_total");      
+        $this->db->select("orders_paids.*, fn_time_ago(orders_paids.paid_date) AS time_ago");
+        $this->db->select("orders.order_id, orders.order_number, orders.order_total, orders.order_session");      
         $this->db->select("users.user_id, users.user_username, users.user_fullname"); 
         $this->db->select("branchs.branch_id, branchs.branch_name");         
     }
