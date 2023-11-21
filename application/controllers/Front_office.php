@@ -157,129 +157,193 @@ class Front_office extends MY_Controller{
                                 $return->message = 'Data sudah digunakan';
                             }
                         }else{ /* Save New Data */
+                            $next = true; $message = '';
 
-                            /* Check Existing Data */
-                            $params_check = [
-                                'order_item_type_2' => !empty($post['order_type_2']) ? $post['order_type_2'] : null,
-                                'order_item_ref_id' => !empty($post['order_ref_id']) ? $post['order_ref_id'] : null ,
-                                'order_item_start_date' => $post['order_start_date'],                               
-                            ];
-                            $check_exists = $this->Front_model->check_data_exist_items($params_check);
+                            //Check Ref Price ID
+                            /*
+                            $start_date = $post['order_start_date'];
+                            $end_date   = $post['order_end_date'];                            
+                            if($post['order_ref_price_id'] == 0){ //Bulanan
 
-                            /* Continue Save if not exist */
-                            if(!$check_exists){
-                                $order_session = $this->random_session(20);
-                                $order_number  = $this->request_number_for_order($post['order_type']);
-                                $params = array(
-                                    'order_branch_id' => !empty($post['order_branch_id']) ? intval($post['order_branch_id']) : null,
-                                    'order_type' => !empty($post['order_type']) ? intval($post['order_type']) : null,
-                                    'order_number' => $order_number,
-                                    'order_session' => $order_session,
-                                    // 'order_date_due' => !empty($post['order_date_due']) ? $post['order_files_count'] : null,
-                                    // 'order_contact_id' => !empty($post['order_contact_id']) ? $post['order_files_count'] : null,
-                                    // 'order_contact_id_2' => !empty($post['order_contact_id_2']) ? $post['order_files_count'] : null,
-                                    // 'order_ppn' => !empty($post['order_ppn']) ? $post['order_files_count'] : null,
-                                    // 'order_total_dpp' => !empty($post['order_total_dpp']) ? intval($post['order_total_dpp']) : null,
-                                    // 'order_discount' => !empty($post['order_discount']) ? intval($post['order_discount']) : null,
-                                    // 'order_voucher' => !empty($post['order_voucher']) ? intval($post['order_voucher']) : null,
-                                    // 'order_with_dp' => !empty($post['order_with_dp']) ? intval($post['order_with_dp']) : null,
-                                    // 'order_total' => !empty($post['order_total']) ? intval($post['order_total']) : null,
-                                    // 'order_with_dp_account' => !empty($post['order_with_dp_account']) ? $post['order_files_count'] : null,
-                                    // 'order_note' => !empty($post['order_note']) ? $post['order_files_count'] : null,
-                                    'order_user_id' => $session_user_id,
-                                    'order_ref_id' => !empty($post['order_ref_id']) ? intval($post['order_ref_id']) : null,
-                                    'order_date' => date("YmdHis"),
-                                    'order_date_created' => date("YmdHis"),
-                                    // 'order_date_updated' => !empty($post['order_date_updated']) ? $post['order_files_count'] : null,
-                                    'order_flag' => !empty($post['order_flag']) ? intval($post['order_flag']) : 0,
-                                    // 'order_trans_id' => !empty($post['order_trans_id']) ? $post['order_files_count'] : null,
-                                    // 'order_ref_number' => !empty($post['order_ref_number']) ? $post['order_files_count'] : null,
-                                    // 'order_approval_flag' => !empty($post['order_approval_flag']) ? intval($post['order_approval_flag']) : null,
-                                    // 'order_label' => !empty($post['order_label']) ? $post['order_files_count'] : null,
-                                    // 'order_sales_id' => !empty($post['order_sales_id']) ? $post['order_files_count'] : null,
-                                    // 'order_sales_name' => !empty($post['order_sales_name']) ? $post['order_files_count'] : null,
-                                    'order_contact_code' => !empty($post['order_contact_code']) ? str_replace(' ','',$post['order_contact_code']) : null,
-                                    'order_contact_name' => !empty($post['order_contact_name']) ? $post['order_contact_name'] : null,
-                                    'order_contact_phone' => !empty($post['order_contact_phone']) ? $this->contact_number($post['order_contact_phone']) : null,
-                                );
-                                // var_dump($params);die;
-                                $create = $this->Front_model->add_booking($params);   
-                                // $create = true;
-                                if($create){
-                                    $get_booking = $this->Front_model->get_booking($create);
-                                    
-                                    $params_price = array(
-                                        'price_ref_id' => $post['order_ref_id'],
-                                        'price_sort' => $post['order_ref_price_id']
-                                    );
-                                    $get_price = $this->Ref_model->get_ref_price_custom($params_price);
-                                    $order_ref_price_id = $get_price['price_id'];
-                                    
-                                    //Save Item
-                                    $params_items = array(
-                                        'order_item_branch_id' => !empty($post['order_branch_id']) ? intval($post['order_branch_id']) : null,
-                                        'order_item_type' => !empty($post['order_type']) ? intval($post['order_type']) : null,
-                                        'order_item_type_name' => !empty($post['order_item_type_name']) ? $post['order_item_contact_id_2'] : null,
-                                        'order_item_order_id' => $create,
-                                        // 'order_item_product_id' => !empty($post['order_item_product_id']) ? $post['order_item_contact_id_2'] : null,
-                                        'order_item_qty' => !empty($post['order_item_qty']) ? intval($post['order_item_qty']) : 1,
-                                        // 'order_item_unit' => !empty($post['order_item_unit']) ? $post['order_item_contact_id_2'] : null,
-                                        'order_item_price' => !empty($post['order_price']) ? str_replace(",","",$post['order_price']) : "0.00",
-                                        // 'order_item_total' => !empty($post['order_item_total']) ? intval($post['order_item_total']) : null,
-                                        // 'order_item_note' => !empty($post['order_item_note']) ? $post['order_item_contact_id_2'] : null,
-                                        'order_item_user_id' => $session_user_id,
-                                        // 'order_item_date' => !empty($post['order_item_date']) ? $post['order_item_contact_id_2'] : null,
-                                        'order_item_date_created' => date("YmdHis"),
-                                        // 'order_item_date_updated' => !empty($post['order_item_date_updated']) ? $post['order_item_contact_id_2'] : null,
-                                        'order_item_flag' => 0,
-                                        // 'order_item_product_price_id' => !empty($post['order_item_product_price_id']) ? $post['order_item_contact_id_2'] : null,
-                                        // 'order_item_ppn' => !empty($post['order_item_ppn']) ? intval($post['order_item_ppn']) : null,
-                                        'order_item_order_session' => $order_session,
-                                        // 'order_item_session' => !empty($post['order_item_session']) ? $post['order_item_contact_id_2'] : null,
-                                        'order_item_ref_id' => !empty($post['order_ref_id']) ? intval($post['order_ref_id']) : null,
-                                        'order_item_ref_price_id' => $order_ref_price_id,
-                                        'order_item_flag_checkin' => 0,
-                                    );                      
-    
-                                    if($post['order_ref_price_id'] == "0"){
-                                        // $params_items['order_item_start_hour'] = '14:00:00';
-                                        $params_items['order_item_type_2'] = 'Bulanan';
-                                        $set_start_hour = '14:00:00';
-                                        $set_end_hour = '12:00:00';                                        
-                                    }else {
-                                        $params_items['order_item_type_2'] = 'Transit';                                        
-                                        // $params_items['order_item_start_hour'] = $post['order_start_hour'];
-
-                                        if($post['order_ref_price_id'] == "1"){
-                                            // Harian
-                                            $set_start_hour = '14:00:00';
-                                            $set_end_hour = '12:00:00';                                                
-                                        }else{
-                                            // Midnight, 4 Jam, 2 Jam
-                                            $set_start_hour = $post['order_start_hour'].':00';
-                                            $set_end_hour = $post['order_end_hour'].':00';                                       
-                                        }                                                                                 
-                                    }
-
-                                    $params_items['order_item_start_date'] = $post['order_start_date'] .' '.$set_start_hour; 
-                                    $params_items['order_item_end_date'] = $post['order_end_date'] .' '.$set_end_hour;
-
-                                    // var_dump($params_items);die;          
-                                    $create_item = $this->Front_model->add_booking_item($params_items);
-                                    //End Save Item                                    
-                                    $return->status  = 1;
-                                    $return->message = 'Berhasil menambahkan '.$order_number;
-                                    $return->result= array(
-                                        'order_id' => $create,
-                                        'order_number' => $get_booking['order_number'],
-                                        'order_session' => $get_booking['order_session']
-                                    );                                
-                                }else{
-                                    $return->message = 'Gagal menambahkan '.$post['order_number'];
+                            }else if($post['order_ref_price_id'] == 1){ //harian
+                                
+                            }else if($post['order_ref_price_id'] == 2){ //midnight
+                                $start_date  = $start_date.$post['order_start_hour'].':00';
+                                $end_date    = $end_date.$post['order_end_hour'].':00';                                
+                                $check_date  = $this->hour_diff($start_date,$end_date);
+                                if(intval($check_date) < 0){
+                                    $message = 'Jam tidak boleh mundur';
+                                    $next = false;
+                                }else if(intval($check_date) > 4){
+                                    $message = 'Tidak boleh lebih dari 4 jam';
+                                    $next = false;
+                                }                                
+                            }else if($post['order_ref_price_id'] == 3){ //4jam
+                                $start_date  = $start_date.$post['order_start_hour'].':00';
+                                $end_date    = $end_date.$post['order_end_hour'].':00';                                
+                                $check_date  = $this->hour_diff($start_date,$end_date);
+                                if(intval($check_date) < 0){
+                                    $message = 'Jam tidak boleh mundur';
+                                    $next = false;
+                                }else if(intval($check_date) > 4){
+                                    $message = 'Tidak boleh lebih dari 4 jam';
+                                    $next = false;
                                 }
+                            }else if($post['order_ref_price_id'] == 4){ //2jam
+                                $start_date  = $start_date.$post['order_start_hour'].':00';
+                                $end_date    = $end_date.$post['order_end_hour'].':00';                                
+                                $check_date  = $this->hour_diff($start_date,$end_date);
+                                if(intval($check_date) < 0){
+                                    $message = 'Jam tidak boleh mundur';
+                                    $next = false;
+                                }else if(intval($check_date) > 2){
+                                    $message = 'Tidak boleh lebih dari 2 jam';
+                                    $next = false;
+                                }
+                            }
+                            var_dump($message);die;
+                            */
+
+                            $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");
+                            if(intval($check_date_is_past) < 0){
+                                $next = false;
+                                $message = 'Tanggal Mulai tidak boleh mundur';
+                            }
+
+                            if($next){
+                                $check_date_is_past2 =$this->day_diff($post['order_start_date']." 00:00:00", $post['order_end_date']." 00:00:00");
+                                if(intval($check_date_is_past2) < 0){
+                                    $next = false;
+                                    $message = 'Tanggal Akhir sudah lewat';
+                                }         
+                            }
+                            
+                            if($next){
+                                /* Check Existing Data */
+                                $params_check = [
+                                    'order_item_type_2' => !empty($post['order_type_2']) ? $post['order_type_2'] : null,
+                                    'order_item_ref_id' => !empty($post['order_ref_id']) ? $post['order_ref_id'] : null ,
+                                    'order_item_start_date' => $post['order_start_date'],                               
+                                ];
+                                $check_exists = $this->Front_model->check_data_exist_items($params_check);
+
+                                /* Continue Save if not exist */
+                                if(!$check_exists){
+                                    $order_session = $this->random_session(20);
+                                    $order_number  = $this->request_number_for_order($post['order_type']);
+                                    $params = array(
+                                        'order_branch_id' => !empty($post['order_branch_id']) ? intval($post['order_branch_id']) : null,
+                                        'order_type' => !empty($post['order_type']) ? intval($post['order_type']) : null,
+                                        'order_number' => $order_number,
+                                        'order_session' => $order_session,
+                                        // 'order_date_due' => !empty($post['order_date_due']) ? $post['order_files_count'] : null,
+                                        // 'order_contact_id' => !empty($post['order_contact_id']) ? $post['order_files_count'] : null,
+                                        // 'order_contact_id_2' => !empty($post['order_contact_id_2']) ? $post['order_files_count'] : null,
+                                        // 'order_ppn' => !empty($post['order_ppn']) ? $post['order_files_count'] : null,
+                                        // 'order_total_dpp' => !empty($post['order_total_dpp']) ? intval($post['order_total_dpp']) : null,
+                                        // 'order_discount' => !empty($post['order_discount']) ? intval($post['order_discount']) : null,
+                                        // 'order_voucher' => !empty($post['order_voucher']) ? intval($post['order_voucher']) : null,
+                                        // 'order_with_dp' => !empty($post['order_with_dp']) ? intval($post['order_with_dp']) : null,
+                                        // 'order_total' => !empty($post['order_total']) ? intval($post['order_total']) : null,
+                                        // 'order_with_dp_account' => !empty($post['order_with_dp_account']) ? $post['order_files_count'] : null,
+                                        // 'order_note' => !empty($post['order_note']) ? $post['order_files_count'] : null,
+                                        'order_user_id' => $session_user_id,
+                                        'order_ref_id' => !empty($post['order_ref_id']) ? intval($post['order_ref_id']) : null,
+                                        'order_date' => date("YmdHis"),
+                                        'order_date_created' => date("YmdHis"),
+                                        // 'order_date_updated' => !empty($post['order_date_updated']) ? $post['order_files_count'] : null,
+                                        'order_flag' => !empty($post['order_flag']) ? intval($post['order_flag']) : 0,
+                                        // 'order_trans_id' => !empty($post['order_trans_id']) ? $post['order_files_count'] : null,
+                                        // 'order_ref_number' => !empty($post['order_ref_number']) ? $post['order_files_count'] : null,
+                                        // 'order_approval_flag' => !empty($post['order_approval_flag']) ? intval($post['order_approval_flag']) : null,
+                                        // 'order_label' => !empty($post['order_label']) ? $post['order_files_count'] : null,
+                                        // 'order_sales_id' => !empty($post['order_sales_id']) ? $post['order_files_count'] : null,
+                                        // 'order_sales_name' => !empty($post['order_sales_name']) ? $post['order_files_count'] : null,
+                                        'order_contact_code' => !empty($post['order_contact_code']) ? str_replace(' ','',$post['order_contact_code']) : null,
+                                        'order_contact_name' => !empty($post['order_contact_name']) ? $post['order_contact_name'] : null,
+                                        'order_contact_phone' => !empty($post['order_contact_phone']) ? $this->contact_number($post['order_contact_phone']) : null,
+                                    );
+                                    
+                                    $create = $this->Front_model->add_booking($params);   
+                                    // $create = true;
+                                    if($create){
+                                        $get_booking = $this->Front_model->get_booking($create);
+                                        
+                                        $params_price = array(
+                                            'price_ref_id' => $post['order_ref_id'],
+                                            'price_sort' => $post['order_ref_price_id']
+                                        );
+                                        $get_price = $this->Ref_model->get_ref_price_custom($params_price);
+                                        $order_ref_price_id = $get_price['price_id'];
+                                        
+                                        //Save Item
+                                        $params_items = array(
+                                            'order_item_branch_id' => !empty($post['order_branch_id']) ? intval($post['order_branch_id']) : null,
+                                            'order_item_type' => !empty($post['order_type']) ? intval($post['order_type']) : null,
+                                            'order_item_type_name' => !empty($post['order_item_type_name']) ? $post['order_item_contact_id_2'] : null,
+                                            'order_item_order_id' => $create,
+                                            // 'order_item_product_id' => !empty($post['order_item_product_id']) ? $post['order_item_contact_id_2'] : null,
+                                            'order_item_qty' => !empty($post['order_item_qty']) ? intval($post['order_item_qty']) : 1,
+                                            // 'order_item_unit' => !empty($post['order_item_unit']) ? $post['order_item_contact_id_2'] : null,
+                                            'order_item_price' => !empty($post['order_price']) ? str_replace(",","",$post['order_price']) : "0.00",
+                                            // 'order_item_total' => !empty($post['order_item_total']) ? intval($post['order_item_total']) : null,
+                                            // 'order_item_note' => !empty($post['order_item_note']) ? $post['order_item_contact_id_2'] : null,
+                                            'order_item_user_id' => $session_user_id,
+                                            // 'order_item_date' => !empty($post['order_item_date']) ? $post['order_item_contact_id_2'] : null,
+                                            'order_item_date_created' => date("YmdHis"),
+                                            // 'order_item_date_updated' => !empty($post['order_item_date_updated']) ? $post['order_item_contact_id_2'] : null,
+                                            'order_item_flag' => 0,
+                                            // 'order_item_product_price_id' => !empty($post['order_item_product_price_id']) ? $post['order_item_contact_id_2'] : null,
+                                            // 'order_item_ppn' => !empty($post['order_item_ppn']) ? intval($post['order_item_ppn']) : null,
+                                            'order_item_order_session' => $order_session,
+                                            // 'order_item_session' => !empty($post['order_item_session']) ? $post['order_item_contact_id_2'] : null,
+                                            'order_item_ref_id' => !empty($post['order_ref_id']) ? intval($post['order_ref_id']) : null,
+                                            'order_item_ref_price_id' => $order_ref_price_id,
+                                            'order_item_flag_checkin' => 0,
+                                        );                      
+        
+                                        if($post['order_ref_price_id'] == "0"){
+                                            // $params_items['order_item_start_hour'] = '14:00:00';
+                                            $params_items['order_item_type_2'] = 'Bulanan';
+                                            $set_start_hour = '14:00:00';
+                                            $set_end_hour = '12:00:00';                                        
+                                        }else {
+                                            $params_items['order_item_type_2'] = 'Transit';                                        
+                                            // $params_items['order_item_start_hour'] = $post['order_start_hour'];
+
+                                            if($post['order_ref_price_id'] == "1"){
+                                                // Harian
+                                                $set_start_hour = '14:00:00';
+                                                $set_end_hour = '12:00:00';                                                
+                                            }else{
+                                                // Midnight, 4 Jam, 2 Jam
+                                                $set_start_hour = $post['order_start_hour'].':00';
+                                                $set_end_hour = $post['order_end_hour'].':00';                                       
+                                            }                                                                                 
+                                        }
+
+                                        $params_items['order_item_start_date'] = $post['order_start_date'] .' '.$set_start_hour; 
+                                        $params_items['order_item_end_date'] = $post['order_end_date'] .' '.$set_end_hour;
+
+                                        // var_dump($params_items);die;          
+                                        $create_item = $this->Front_model->add_booking_item($params_items);
+                                        //End Save Item                                    
+                                        $return->status  = 1;
+                                        $return->message = 'Berhasil menambahkan '.$order_number;
+                                        $return->result= array(
+                                            'order_id' => $create,
+                                            'order_number' => $get_booking['order_number'],
+                                            'order_session' => $get_booking['order_session']
+                                        );                                
+                                    }else{
+                                        $return->message = 'Gagal menambahkan '.$post['order_number'];
+                                    }
+                                }else{
+                                    $return->message = 'Data sudah ada';
+                                }  
                             }else{
-                                $return->message = 'Data sudah ada';
-                            }                         
+                                $return->message = $message;
+                            }                       
                         }
                     }
                     break;
@@ -806,7 +870,7 @@ class Front_office extends MY_Controller{
             $this->load->view('layouts/admin/menu/front_office/booking_js.php',$data);
         }
     }
-    function resto(){
+    function resto(){ 
         if ($this->input->post()) {
             $return = new \stdClass();
             $return->status = 0;
@@ -1517,6 +1581,30 @@ class Front_office extends MY_Controller{
 
         return $bytes;
     }    
+    function hour_diff($d,$p){ //Tgl Terkecil, Tgl Terbesar
+        $date1 = new DateTime($d);
+        $date2 = new DateTime($p);
+
+        $diff   = $date2->diff($date1);
+        // var_dump($diff);die;
+        $hours  = $diff->h;
+        $mins   = $diff->i;
+        // $hours = $hours + ($diff->days*24);
+        // $mins = $mins + ($diff->hours*60);
+        // return "$hours"." jam"." $mins"." menit";
+        if($diff->invert == 1){
+            $in = '';
+        }else{
+            $in = '-';
+        }
+        return intval($in.$hours);
+    }    
+    function day_diff($d1, $d2){ //Tgl Terbesar, Tgl Terkecil 
+        // var_dump($d1,$d2);die;
+        $d1 = strtotime($d1);
+        $d2 = strtotime($d2);
+        return intVal(($d2 - $d1) / (24 *3600));
+    }        
     function test(){
         echo json_encode($this->Front_model->get_all_paid(null,null,null,null,'paid_id','asc'));
 
@@ -1534,6 +1622,9 @@ class Front_office extends MY_Controller{
             'paid_size' => !empty($post['paid_size']) ? intval($post['paid_size']) : null,
             'paid_session' => !empty($post['paid_session']) ? $post['paid_session'] : null,
         );        
+    }
+    function test2(){
+        var_dump($this->day_diff("2023-01-02 12:00:00","2023-01-02 13:00:00"));die;
     }
 }
 ?>

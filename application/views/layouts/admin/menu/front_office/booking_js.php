@@ -167,7 +167,7 @@
             decimalPlaces: 0,
             watchExternalChanges: true
         };
-        new AutoNumeric('#order_price', autoNumericOption);
+        let orderPrice = new AutoNumeric('#order_price', autoNumericOption);
 
         //Datatable
         let order_table = $("#table_order").DataTable({
@@ -455,39 +455,49 @@
                     notif(0,'ID wajib diisi');
                 }
             }
-
+            */
             if(next){
-                if ($("#order_input").val().length === 0) {
+                if (!$("input[name='order_branch_id']:checked").val()) {
                     next = false;
-                    notif(0,'Input_id wajib diisi');
+                    notif(0,'Cabang wajib pilih');
                 }
             }
+            if(next){
+                if (!$("input[name='order_ref_price_id']:checked").val()) {
+                    next = false;
+                    notif(0,'Tipe Pesanan wajib pilih');
+                }
+            }
+            if(next){
+                if (!$("input[name='order_ref_id']:checked").val()) {
+                    next = false;
+                    notif(0,'Jenis Kamar wajib pilih');
+                }
+            }  
             
             if(next){
-                if ($("#order_select").find(':selected').val() === 0) {
+                if ($("input[name='order_contact_name']").val().length == 0) {
                     next = false;
-                    notif(0,'Select_id wajib dipilih');
+                    notif(0,'Nama Pemesan wajib diisi');
+                }
+            }             
+            if(next){
+                if (orderPrice.rawValue < 1) {
+                    next = false;
+                    notif(0,'Harga tidak boleh kosong');
                 }
             }
-            */
 
             /* Prepare ajax for UPDATE */
             /* If Form Validation Complete checked */
             if(next){
-                /* let url = "services/controls/order.php?action=action_name";*/ //Native
-                /* let url = "<?= base_url('order'); ?>"; */ //CI
-                /*
-                    Datepicker
-                    - Get Value
-                    - Set Value
-                 */
-                // $("#order_date_start").datepicker("getFormattedDate","yyyy-mm-dd");
-                // $("#order_date_start").datepicker("update", variable_date_dd_mm_yyyy);
                 var form = new FormData($("#form_order")[0]);
                 form.append('action', 'create_update');
                 form.append('order_type', identity);                
+                // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
                 form.set('order_start_date', $("#order_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
-                form.set('order_end_date', $("#order_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));                
+                form.set('order_end_date', $("#order_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
+                form.set('order_price', orderPrice.rawValue);                       
                 if(orderID > 0){
                     form.append('order_id', orderID);
                 }
@@ -924,6 +934,9 @@
 
         //Additional
         $("input[type=radio][name=order_branch_id]").on("change", function(e) {
+            
+            $("#order_price").val(0);
+            
             e.preventDefault();
             e.stopPropagation();
             if(orderID == 0){
@@ -982,6 +995,9 @@
             }            
         });                
         function loadRefPrice(){
+
+            $("#order_price").val(0);
+
             let form = new FormData();
             form.append('action', 'room_price');
             form.append('branch_id',  $("input[name=order_branch_id]:checked").val());
@@ -1082,60 +1098,7 @@
 
             }
         }
-        /*
-        $('#files').change(function(e) {
-            var fileName = e.target.files[0].name;
-            var fileReader = new FileReader();
-            fileReader.onload = function(e) {
-                $('#files_preview').attr('src', e.target.result).width(150).height(150);
-                $('.files_link').attr('href', e.target.result);
-            };
-            fileReader.readAsDataURL(this.files[0]);
-        });
-        */
 
-        //Image Croppie
-        $(document).on('change', '#files', function(e) {
-            if($("#files").val() == ''){
-                $("#files_preview").attr('src', url_image);
-                $("#files_link").attr('href', url_image);
-                $("#files_preview").attr('data-save-img', '');
-                return;
-            }
-            var reader = new FileReader();
-            reader.onload = function(e) {
-            upload_crop_img.croppie('bind', {
-                url: e.target.result
-                }).then(function () {
-                    $("#modal-croppie").modal("show");
-                        setTimeout(function(){$('#modal_croppie_canvas').croppie('bind');}, 300);
-                });
-            };
-            reader.readAsDataURL(this.files[0]);
-        });
-        $(document).on('click', '#modal_croppie_cancel', function(e){
-            e.preventDefault(); e.stopPropagation();
-            $("#files").val('');
-            $("#files_preview").attr('data-save-img', '');
-            $("#files_preview").attr('src', url_image);
-            $("#files_link").attr('href', url_image);
-        });
-        $(document).on('click', '#modal_croppie_save', function(e){
-            e.preventDefault(); e.stopPropagation();
-            upload_crop_img.croppie('result', {
-                type: 'canvas',
-                size: 'viewport',
-            }).then(function (resp) {
-                $("#files_preview").attr('src', resp);
-                $("#files_link").attr('href', resp);
-                $("#files_preview").attr('data-save-img', resp);
-                $("#modal-croppie").modal("hide");
-            });
-        });
-
-        // window.setInterval(loadPlugin(),3000);
-        function loadPlugin(){
-        }
         function formBookingReset(){
             // $("#form_order input")
             // .not("input[id='order_hour']")
