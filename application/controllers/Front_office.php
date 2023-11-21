@@ -783,6 +783,8 @@ class Front_office extends MY_Controller{
                 case "room_get":
                     $params = array(
                         'product_type' => 2,
+                        'product_branch_id' => $post['branch_id'],
+                        'product_ref_id' => $post['ref_id'],                        
                         'product_category_id' => 2,                        
                         'product_flag' => 1,                        
                     );
@@ -834,8 +836,8 @@ class Front_office extends MY_Controller{
             $now = new DateTime();
             $date3 = $now->modify('+1 day')->format('Y-m-d H:i:s');
 
-            $data['booking_start_date'] = date("d-m-Y");
-            $data['booking_end_date'] = date("d-m-Y", strtotime($date3));            
+            $data['booking_start_date'] = date("d-M-Y");
+            $data['booking_end_date'] = date("d-M-Y", strtotime($date3));            
             
             // var_dump($data['booking_end_date']);die;
             

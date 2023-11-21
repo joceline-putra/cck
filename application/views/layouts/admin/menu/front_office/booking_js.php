@@ -1,9 +1,6 @@
 
 <script>
     $(document).ready(function () {
-        // $("#modal_order").modal('show');
-        
-        //Identity
         var identity = "<?php echo $identity; ?>";
         $(".nav-tabs").find('li[class="active"]').removeClass('active');
         $(".nav-tabs").find('li[data-name="front_office/booking"]').addClass('active');
@@ -130,12 +127,13 @@
         //Date Clock Picker
         $("#order_start_date, #order_end_date").datepicker({
             // defaultDate: new Date(),
-            format: 'dd-mm-yyyy',
+            format: 'dd-M-yyyy',
             autoclose: true,
             enableOnReadOnly: true,
             language: "id",
             todayHighlight: true,
-            weekStart: 1 
+            weekStart: 1,
+            // timezone:"+0700"
         }).on('change', function(e){
         });
         $('.clockpicker').clockpicker({
@@ -167,7 +165,7 @@
             decimalPlaces: 0,
             watchExternalChanges: true
         };
-        let orderPrice = new AutoNumeric('#order_price', autoNumericOption);
+        let orderPRICE = new AutoNumeric('#order_price', autoNumericOption);
 
         //Datatable
         let order_table = $("#table_order").DataTable({
@@ -346,7 +344,7 @@
                             if(parseInt(row.order_item_flag_checkin) === 0){
                                     dsp += '<li>'; 
                                     dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
-                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="1" data-order-session="'+row.order_session+'">';
+                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="1" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'">';
                                     dsp += '        <span class="fas fa-lock"></span> CheckIn';
                                     dsp += '    </a>';
                                     dsp += '</li>';
@@ -482,7 +480,7 @@
                 }
             }             
             if(next){
-                if (orderPrice.rawValue < 1) {
+                if (orderPRICE.rawValue < 1) {
                     next = false;
                     notif(0,'Harga tidak boleh kosong');
                 }
@@ -497,7 +495,7 @@
                 // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
                 form.set('order_start_date', $("#order_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
                 form.set('order_end_date', $("#order_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
-                form.set('order_price', orderPrice.rawValue);                       
+                form.set('order_price', orderPRICE.rawValue);                       
                 if(orderID > 0){
                     form.append('order_id', orderID);
                 }
@@ -745,6 +743,8 @@
             }
 
             if(do_checkin){
+                var obranch       = $(this).attr('data-order-branch-id');   
+                var oref          = $(this).attr('data-order-ref-id');             
                 // 'Apakah anda ingin '+msg+' <b>'+onu+'</b> ?'
                 let title   = 'Konfirmasi Check-IN';
                 $.confirm({
@@ -756,6 +756,8 @@
                         let self = this;
                         let form = new FormData();
                         form.append('action','room_get');
+                        form.append('branch_id',obranch);                        
+                        form.append('ref_id',oref);                        
                 
                         return $.ajax({
                             url: url,
@@ -998,36 +1000,38 @@
 
             $("#order_price").val(0);
 
-            let form = new FormData();
-            form.append('action', 'room_price');
-            form.append('branch_id',  $("input[name=order_branch_id]:checked").val());
-            form.append('ref_id',  $("input[name=order_ref_id]:checked").val());                                                
-            form.append('ref_price_sort',  $("input[name=order_ref_price_id]:checked").val());
-            $.ajax({
-                type: "post",
-                url: url,
-                data: form, 
-                dataType: 'json', cache: 'false', 
-                contentType: false, processData: false,
-                beforeSend:function(x){
-                    // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
-                    // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
-                },
-                success:function(d){
-                    let s = d.status;
-                    let m = d.message;
-                    let r = d.result;
-                    if(parseInt(s) == 1){
-                        // notif(s,m);
-                        $("#order_price").val(r.price_value);
-                    }else{
-                        notif(s,m);
+            if(parseInt($("input[name='order_ref_id']:checked").val()) > 0){
+                let form = new FormData();
+                form.append('action', 'room_price');
+                form.append('branch_id',  $("input[name=order_branch_id]:checked").val());
+                form.append('ref_id',  $("input[name=order_ref_id]:checked").val());                                                
+                form.append('ref_price_sort',  $("input[name=order_ref_price_id]:checked").val());
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,
+                    beforeSend:function(x){
+                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            // notif(s,m);
+                            $("#order_price").val(r.price_value);
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        notif(0,err);
                     }
-                },
-                error:function(xhr,status,err){
-                    notif(0,err);
-                }
-            });
+                });
+            }
         }
         
         $(document).on("click","#btn_new_order",function(e) {
@@ -1100,11 +1104,16 @@
         }
 
         function formBookingReset(){
-            // $("#form_order input")
-            // .not("input[id='order_hour']")
-            // .not("input[id='order_date']")
-            // .not("input[id='order_date_start']")
-            // .not("input[id='order_date_end']").val('');
+            $("#form_order input[type='text']")
+            .not("input[id='order_start_date']")
+            .not("input[id='order_end_date']").val('');
+
+            $("#order_start_hour").val("14:00").trigger('change');
+            $("#order_end_hour").val("12:00").trigger('change');
+
+            // $("#order_start_date").datepicker("update", moment().format("d-M-yyyy"));
+            // $("#order_end_date").datepicker("update", moment().add(365, "days").format("d-M-yyyy"));            
+
             // $("#form_order textarea").val('');
 
             // $("#files_link").attr('href',url_image);
