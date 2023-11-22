@@ -245,38 +245,37 @@ $next = true;
                                                     <?php
                                                     $submenu = $sub_menu['menu_name'];
                                                     switch ($submenu) {
-                                                        case "Bisnis":
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/journal') . '" style=""><span class="title">Jurnal</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/ledger') . '" style=""><span class="title">Buku Besar</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/trial_balance') . '" style=""><span class="title">Neraca Saldo</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/worksheet') . '" style=""><span class="title">Kertas Kerja</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/profit_loss') . '" style=""><span class="title">Laba Rugi</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/balance') . '" style=""><span class="title">Neraca</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="#"><span class="title">&nbsp;</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/cash_in') . '" style=""><span class="title">Pemasukan Uang</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/cash_out') . '" style=""><span class="title">Pengeluaran Uang</span> <span class="selected"></span></a></li>';
-                                                            break;
-                                                        case "Pembelian":
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/buy/recap') . '" style=""><span class="title">Pembelian Rekap</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/buy/detail') . '" style=""><span class="title">Pembelian Rinci</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/buy/account_payable') . '" style=""><span class="title">Hutang Supplier</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/order/detail') . '" style=""><span class="title">Purchase Order Rinci</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/return/detail') . '" style=""><span class="title">Retur Pembelian</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Usia Hutang</span> <span class="selected"></span></a></li>';
-                                                            break;
+                                                        // case "Bisnis":
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/journal') . '" style=""><span class="title">Jurnal</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/ledger') . '" style=""><span class="title">Buku Besar</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/trial_balance') . '" style=""><span class="title">Neraca Saldo</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/worksheet') . '" style=""><span class="title">Kertas Kerja</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/profit_loss') . '" style=""><span class="title">Laba Rugi</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/balance') . '" style=""><span class="title">Neraca</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="#"><span class="title">&nbsp;</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/cash_in') . '" style=""><span class="title">Pemasukan Uang</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/cash_out') . '" style=""><span class="title">Pengeluaran Uang</span> <span class="selected"></span></a></li>';
+                                                        //     break;
+                                                        // case "Pembelian":
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/buy/recap') . '" style=""><span class="title">Pembelian Rekap</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/buy/detail') . '" style=""><span class="title">Pembelian Rinci</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/buy/account_payable') . '" style=""><span class="title">Hutang Supplier</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/order/detail') . '" style=""><span class="title">Purchase Order Rinci</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/return/detail') . '" style=""><span class="title">Retur Pembelian</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Usia Hutang</span> <span class="selected"></span></a></li>';
+                                                        //     break;
                                                         case "Penjualan":
                                                             echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/sell/recap') . '" style=""><span class="title">Penjualan Rekap</span> <span class="selected"></span></a></li>';
                                                             echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/sell/detail') . '" style=""><span class="title">Penjualan Rinci</span> <span class="selected"></span></a></li>';
                                                             echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/sell/account_receivable') . '" style=""><span class="title">Piutang Customer</span> <span class="selected"></span></a></li>';
                                                             echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/order/detail') . '" style=""><span class="title">Sales Order Rinci</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/prepare/detail') . '" style=""><span class="title">Prepare Rinci</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/return/detail') . '" style=""><span class="title">Retur Penjualan</span> <span class="selected"></span></a></li>';
+                                                            // echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/return/detail') . '" style=""><span class="title">Retur Penjualan</span> <span class="selected"></span></a></li>';
                                                             echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Usia Piutang</span> <span class="selected"></span></a></li>';
                                                             break;
-                                                        case "Produksi":
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/production/product/detail') . '" style=""><span class="title">Produk Jadi Rinci</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Usia Piutang</span> <span class="selected"></span></a></li>';
-                                                            break;
+                                                        // case "Produksi":
+                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/production/product/detail') . '" style=""><span class="title">Produk Jadi Rinci</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Usia Piutang</span> <span class="selected"></span></a></li>';
+                                                        //     break;
                                                         case "Stok":
                                                             echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Ringkasan Persediaan</span> <span class="selected"></span></a></li>';
                                                             echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Nilai Persediaan</span> <span class="selected"></span></a></li>';
@@ -285,14 +284,14 @@ $next = true;
                                                             echo '<li class="start"><a id="" data-id="" href="' . base_url('report/inventory/product/stock_valuation') . '" style=""><span class="title">Nilai Stok Gudang</span> <span class="selected"></span></a></li>';
                                                             echo '<li class="start"><a id="" data-id="" href="' . base_url('report/inventory/product/stock_moving') . '" style=""><span class="title">Pergerakan Stok</span> <span class="selected"></span></a></li>';
                                                             break;
-                                                        case "Asset":
-                                                            echo '<li class="start"><a id="" data-id="" href="" style=""><span class="title">Ringkasan Aset</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="" style=""><span class="title">Detail Aset</span> <span class="selected"></span></a></li>';
-                                                            break;
-                                                        case "Pajak":
-                                                            echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Pajak Pemotongan</span><span class="selected"></span></a></li>';
-                                                            echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Pajak Penjualan</span><span class="selected"></span></a></li>';
-                                                            break;
+                                                        // case "Asset":
+                                                        //     echo '<li class="start"><a id="" data-id="" href="" style=""><span class="title">Ringkasan Aset</span> <span class="selected"></span></a></li>';
+                                                        //     echo '<li class="start"><a id="" data-id="" href="" style=""><span class="title">Detail Aset</span> <span class="selected"></span></a></li>';
+                                                        //     break;
+                                                        // case "Pajak":
+                                                        //     echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Pajak Pemotongan</span><span class="selected"></span></a></li>';
+                                                        //     echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Pajak Penjualan</span><span class="selected"></span></a></li>';
+                                                        //     break;
                                                     }
                                                     ?>
                                                     <!-- <li class="start"> 

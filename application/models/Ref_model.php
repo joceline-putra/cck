@@ -33,6 +33,7 @@ class Ref_model extends CI_Model{
 
     function set_join(){
         $this->db->join('references AS parent','references.ref_parent_id=parent.ref_id','left');
+        $this->db->join('branchs','branchs.branch_id=references.ref_branch_id','left');        
     }
 
     function set_join_price(){
@@ -42,6 +43,7 @@ class Ref_model extends CI_Model{
     function set_select(){
         $this->db->select("references.*");
         $this->db->select("parent.ref_id AS parent_id, parent.ref_name AS parent_name");
+        $this->db->select("branch_id, branch_name");
     }
 
     function set_select_price(){

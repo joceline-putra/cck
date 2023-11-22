@@ -4410,3 +4410,40 @@ BEGIN
 
 END$$
 DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `sp_booking_list_test`$$
+CREATE PROCEDURE `sp_booking_list_test`()
+BEGIN
+    SELECT
+    b.branch_name,
+    r.ref_name, rp.price_name, rp.price_sort,
+    oi.order_item_start_date, oi.order_item_end_date, 
+    oi.order_item_price, oi.order_item_qty, 
+    oi.order_item_flag_checkin, 
+    (
+        CASE 
+        WHEN oi.order_item_flag_checkin = 0 THEN 'Waiting' 
+        WHEN oi.order_item_flag_checkin = 1 THEN 'Check-IN'
+        WHEN oi.order_item_flag_checkin = 2 THEN 'Check-OUT'
+        WHEN oi.order_item_flag_checkin = 4 THEN 'Batal'
+        ELSE '' END
+    ) AS order_item_flag_name,
+    p.product_name,
+    o.order_number, o.order_date, o.`order_contact_name`, o.order_contact_phone,
+    oi.order_item_ref_id, order_item_ref_price_id, o.order_id, o.order_paid,
+    (
+        CASE 
+        WHEN o.order_paid = 0 THEN 'Belum Lunas' 
+        WHEN o.order_paid = 1 THEN 'Lunas'
+        ELSE '' END
+    ) AS order_paid_name
+    FROM orders_items AS oi
+    LEFT JOIN `references` AS r ON oi.order_item_ref_id=r.ref_id
+    LEFT JOIN `references_prices` AS rp ON oi.order_item_ref_price_id=rp.price_id
+    LEFT JOIN orders AS o ON oi.order_item_order_id=o.order_id
+    LEFT JOIN branchs AS b ON oi.order_item_branch_id=b.branch_id
+    LEFT JOIN products AS p ON oi.order_item_product_id=p.product_id
+    ORDER BY oi.`order_item_start_date` DESC;
+END $$
+DELIMITER ;

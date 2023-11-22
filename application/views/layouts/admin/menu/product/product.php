@@ -140,24 +140,9 @@
                                                         <!-- <label class="custom-file-label">Pilih Gambar</label> -->
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4 padding-remove-side">
-                                                <div class="form-group">
-                                                    <label class="form-label" style="color:red;">Jenis <?php echo $title; ?> *</label>
-                                                    <select id="product_type" name="product_type" class="form-control" disabled readonly>
-                                                        <option value="1" selected>Barang</option>
-                                                        <!-- <option value="2">Jasa</option> -->
-                                                    </select>
-                                                </div>
-                                            </div>									
-                                            <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8 padding-remove-side">
-                                                <div class="col-md-8 col-xs-12 col-sm-12 padding-remove-left">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Kode <?php echo $title; ?> / SKU / Barcode</label>
-                                                        <input id="kode" name="kode" type="text" value="" class="form-control" readonly="true"/>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            </div>                                                       
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8 padding-remove-side">
                                                 <div class="form-group">
                                                     <label class="form-label">Nama <?php echo $title; ?> *</label>
@@ -173,247 +158,27 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>              
-                                            <!-- <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8 padding-remove-side"> -->
-
-                                                <!-- <div class="col-md-4 col-xs-12 col-sm-12 padding-remove-side">-->
-                                                <!-- <div class="form-group"> -->
-                                                <!-- <label>Stok Maksimal</label> -->
-                                                <input id="stok_maksimal" name="stok_maksimal" type="hidden" value="" class="form-control" readonly='true'/>
-                                                <!-- </div>-->
-                                                <!-- </div>-->
-                                            <!-- </div> -->
-                                            <!--
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                                  <div class="form-group">
-                                                    <label>Jenis Produk *</label>
-                                                    <select id="manufacture" name="manufacture" class="form-control" disabled readonly>
-                                                          <option value="">-- Pilih --</option>
-                                                          <option value="Food">Food</option>
-                                                          <option value="Drink">Drink</option>
-                                                          <option value="Snack">Snack</option>
-                                                          <option value="Topping">Topping</option>
-                                                          <option value="Paket">Paket</option>
-                                                          <option value="Bahan Baku">Bahan Baku</option>
-                                                    </select>
-                                                  </div>
-                                            </div>
-                                            -->
-                                            <!--
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
                                                     <div class="form-group">
-                                                            <label>Referensi</label>
-                                                            <select id="referensi" name="referensi" class="form-control" disabled readonly>
-                                                                    <option value="">-- Pilih --</option>
-                                                            </select>
+                                                        <label class="form-label">Harga Jual</label>
+                                                        <input id="harga_jual" name="harga_jual" type="text" value="" class="form-control"/>
                                                     </div>
-                                            </div>
-                                            -->                                                                                
+                                                </div> 
+                                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Stock Minimal</label>
+                                                        <input id="stok_minimal" name="stok_minimal" type="text" value="" class="form-control"/>
+                                                    </div>
+                                                </div>                                                                                                
+                                            </div>                                               
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                                <div class="form-group">
-                                                    <label class="form-label" style="color:red;">Kategori *</label>
-                                                    <select id="categories" name="categories" class="form-control" disabled readonly>
-                                                        <option value="0">-- Pilih --</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                        <div class="col-md-5 col-sm-12 col-xs-12">
                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:14px;">
                                                 <div class="form-group">
                                                     <label class="form-label">Deskripsi</label>
                                                     <textarea id="keterangan" name="keterangan" type="text" class="form-control" readonly='true' rows="4"/></textarea>
                                                 </div>
-                                            </div>   
-                                            <!-- 
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                                    <div class="form-group">
-                                                    <label>Label *</label>
-                                                    <input id="manufacture" name="manufacture" type="text" value="" class="form-control" readonly='true'/>
-                                                    </div>
-                                            </div> 
-                                            -->                      
-                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-
-                                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-top:0px;">
-                                                    <div class="form-group" style="margin-bottom: 0px;">                     
-                                                        <label class="form-label" style="cursor:pointer;"><input id="checkbox_buy" type="checkbox" value="">&nbsp;Saya beli produk ini</label>
-                                                        <p style="
-                                                           margin-bottom: 0px;
-                                                           color: #9e9e9e;
-                                                           ">Jika diisi, harga akan muncul saat Pembelian kepada Supplier</p>
-                                                    </div>
-                                                    <div class="col-md-8 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <div class="form-group">
-                                                            <label class="form-label" style="color:red;">Akun Pembelian *</label>
-                                                            <select id="account_buy" name="account_buy" class="form-control" disabled>
-                                                                <?php echo '<option value="' . $account_purchase['account_id'] . '">' . $account_purchase['account_code'] . ' - ' . $account_purchase['account_name'] . '</option>'; ?>                            
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-12 padding-remove-right">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Harga Beli</label>
-                                                            <input id="harga_beli" name="harga_beli" type="text" value="" class="form-control" readonly='true'/>
-                                                        </div>
-                                                    </div>	
-                                                </div>		
-
-                                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-top:12px;">
-                                                    <div class="form-group" style="margin-bottom: 0px;">                     
-                                                        <label class="form-label" style="cursor:pointer;"><input id="checkbox_sell" type="checkbox" value="">&nbsp;Saya jual produk ini</label>
-                                                        <p style="
-                                                           margin-bottom: 0px;
-                                                           color: #9e9e9e;
-                                                           ">Jika diisi, harga akan muncul saat Penjualan kepada Customer</p>
-                                                    </div>
-                                                    <div class="col-md-8 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <div class="form-group">
-                                                            <label class="form-label" style="color:red;">Akun Penjualan *</label>
-                                                            <select id="account_sell" name="account_sell" class="form-control" disabled>
-                                                                <?php echo '<option value="' . $account_sales['account_id'] . '">' . $account_sales['account_code'] . ' - ' . $account_sales['account_name'] . '</option>'; ?>     
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 col-xs-12 col-sm-12 padding-remove-right">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Harga Jual</label>
-                                                            <input id="harga_jual" name="harga_jual" type="text" value="" class="form-control" readonly='true'/>
-                                                        </div>
-                                                    </div>  
-                                                </div>
-
-                                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-top:12px;">
-                                                    <div class="form-group" style="margin-bottom: 0px;">                     
-                                                        <label class="form-label" style="cursor:pointer;"><input id="checkbox_inventory" type="checkbox" value="">&nbsp;Monitor Persediaan Stok</label>
-                                                        <p style="
-                                                           margin-bottom: 0px;
-                                                           color: #9e9e9e;
-                                                           ">Jika jenis <?php echo strtolower($title); ?> berupa Jasa, tidak perlu mengaktifkan ini</p>											  		
-                                                    </div>
-                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Akun Persediaan</label>
-                                                            <select id="account_inventory" name="account_inventory" class="form-control" disabled>
-                                                                <?php echo '<option value="' . $account_inventory['account_id'] . '">' . $account_inventory['account_code'] . ' - ' . $account_inventory['account_name'] . '</option>'; ?>     
-                                                            </select>
-                                                        </div>
-                                                    </div>  		
-                                                    <div class="col-lg-8 col-md-8 col-xs-12 padding-remove-side">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Proteksi Stok</label>
-                                                            <select id="with_stock" name="with_stock" class="form-control" disabled>
-                                                                <?php
-                                                                $status_values = array(
-                                                                    '0' => 'Tidak',
-                                                                    '1' => 'Ya',
-                                                                );
-                                                                foreach ($status_values as $value => $display_text) {
-                                                                    echo '<option value="' . $value . '">' . $display_text . '</option>';
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 padding-remove-right">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Stok Minimal</label>
-                                                            <input id="stok_minimal" name="stok_minimal" type="text" value="0" class="form-control" readonly='true'/>
-                                                        </div>
-                                                    </div>	
-                                                </div>                 
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5 col-sm-12 col-xs-12">
-
-                                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="background-color:#dddddd;padding-left: 1px;padding-right: 1px;">
-                                                <ul class="nav nav-tabs nav-tabs-detail" role="tablist" style="margin-top:1px;">
-                                                    <li class="active" data-name="tab_price">
-                                                        <a href="#" data-name="tab_price" onClick="activeTabDetail('tab_price');"><span class="fas fa-chart-bar"></span> Varian Harga Jual</a>
-                                                    </li>                           
-                                                    <li  class="" data-name="tab_recipe">
-                                                        <a href="#" data-name="tab_recipe" onClick="activeTabDetail('tab_recipe');"><span class="fas fa-boxes"></span> Resep</a>
-                                                    </li>
-                                                </ul>
-                                                <div class="tab-content tab-content-detail" style="margin-bottom: 1px;height: 420px;overflow: auto;">
-                                                    <div class="" id="tab_price" style="display: none;">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px;">
-                                                            <p><span class="fas fa-info-circle"></span> Anda dapat menambahkan varian <b>Harga Jual</b> yang berbeda-beda seperti : <br>
-                                                                - Harga Jual Eceran<br>
-                                                                - Harga Jual Grosir<br>
-                                                                Harga varian yang di tambahkan disini akan muncul jika melakukan transaksi penjualan yang mengacu kepada <?php echo strtolower($title); ?> ini
-                                                            </p>
-                                                            <div class="col-md-12 col-xs-12 padding-remove-side">
-                                                                <i class="fas fa-list-alt"></i><b id="b_price_label"> Daftar Varian Harga Jual</b>
-                                                            </div>
-                                                            <table id="table-price" class="table table-bordered">
-                                                                <thead>
-                                                                    <th>Nama Varian</th>
-                                                                    <th class="text-right">Harga Jual</th>
-                                                                    <th>Action</th>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td colspan="3">Tidak ada data</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                                <tfoot>
-                                                                    <tr>
-                                                                        <td colspan="3">
-                                                                            <button type="button" class="btn btn-mini btn-default " id="btn-price"><i class="fas fa-plus-square"></i> Tambah Varian Harga</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tfoot>					
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div class="" id="tab_recipe" style="display: none;">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12" style="margin-top:20px;">
-                                                            <p><span class="fas fa-info-circle"></span> Anda dapat menambahkan komponen <?php echo strtolower($title); ?> yang anda miliki untuk membuat resep <?php echo $title; ?> yang di buka</p>
-
-                                                            <b><i class="fas fa-list-alt"></i> Daftar Komponen <?php echo $title; ?> / Bahan</b>
-                                                            <table id="table-recipe" class="table table-bordered">
-                                                                <thead>
-                                                                    <th><?php echo $title; ?> / Bahan</th>
-                                                                    <th class="text-right">Qty</th>
-                                                                    <th class="text-left">Satuan</th>
-                                                                    <th>Action</th>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td colspan="4">Tidak ada data</td>
-                                                                    </tr>						
-                                                                </tbody>
-                                                                <tfoot>
-                                                                    <tr>
-                                                                        <td colspan="3">
-                                                                            <button type="button" class="btn btn-mini btn-default " id="btn-recipe"><i class="fas fa-plus-square"></i> Tambah Komponen <?php echo $title; ?></button>
-                                                                        </td>
-                                                                    </tr>						
-                                                                </tfoot>
-                                                            </table>
-                                                        </div>
-                                                        <div class="col-md-12 col-xs-12 col-sm-12">
-                                                            <b><i class="fas fa-sign-out-alt"></i> Daftar Diatas Akan Menghasilkan <?php echo $title; ?></b> 
-                                                            <table id="table-recipe-result" class="table table-bordered">
-                                                                <thead>
-                                                                    <th><?php echo $title; ?> Jadi</th>
-                                                                    <th class="text-right">Qty</th>
-                                                                    <th class="text-left">Satuan</th>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td id="modal-product-name"></td>
-                                                                        <td class="text-right">1</td>
-                                                                        <td id="modal-product-unit"></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>			
-                                            </div>
-
+                                            </div>                                               
                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-left">
                                                 <div class="col-lg-4 col-md-4 col-xs-12 padding-remove-side">
                                                     <div class="form-group" style="margin-top:4px;">
@@ -483,11 +248,11 @@
                                     </div>
                                     <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-right">
                                         <div class="pull-right">
-                                            <button id="btn_import_excel" onClick="" class="btn btn-default btn-small" type="button"
+                                            <!-- <button id="btn_import_excel" onClick="" class="btn btn-default btn-small" type="button"
                                                     style="display: inline;">
                                                 <i class="fas fa-file-excel"></i>
                                                 Import via Excel
-                                            </button>   
+                                            </button>    -->
                                             <button id="btn-print-all" onClick="" class="btn btn-default btn-small" type="button"
                                                     style="display: inline;">
                                                 <i class="fas fa-print"></i>
@@ -502,32 +267,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
-                                    <div class="col-lg-2 col-md-2 col-xs-4 col-sm-4 form-group padding-remove-right">
-                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <label class="form-label" style="color:red;">Jenis</label>
-                                            <select id="filter_type" name="filter_type" class="form-control">
-                                                <!-- <option value="0">Semua</option> -->
-                                                <option value="1">Barang</option>
-                                                <!-- <option value="2">Jasa</option>                                                                                                 -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-xs-8 col-sm-8 form-group padding-remove-right">
-                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <label class="form-label" style="color:red;">Kategori</label>
-                                            <select id="filter_categories" name="filter_categories" class="form-control">
-                                                <!-- <option value="0">Semua</option> -->
-                                                <option value="1">Makanan</option>                                                
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--
                                     <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
-                                            <label class="form-label">Referensi</label>
-                                            <select id="filter_ref" name="filter_ref" class="form-control">
-                                              <option value="0">-- Semua --</option>
-                                            </select>
-                                    </div> -->
+                                        <label class="form-label">Cabang</label>
+                                        <select id="filter_branch" name="filter_branch" class="form-control">
+                                            <option value="0">-- Semua --</option>
+                                        </select>
+                                    </div>  
                                     <div class="col-lg-2 col-md-2 col-xs-4 col-sm-4 form-group padding-remove-right">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <label class="form-label">Status</label>

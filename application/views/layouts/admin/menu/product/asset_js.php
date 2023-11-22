@@ -399,7 +399,7 @@
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
                 // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());      
                 formData.append('product_reminder', $('#product_reminder').val());
-
+                formData.append('product_branch_id',$("input[name='product_branch_id']:checked").val());
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -447,6 +447,8 @@
                     if (parseInt(d.status) == 1) { /* Success Message */
                         activeTab('tab1'); // Open/Close Tab By ID
                         // notifSuccess(d.result.id);ss
+                        $("input[name='product_branch_id'][value='"+d.result.product_branch_id+"']").prop("checked", true).change();
+
                         // $("#form-master select[id='product_type']").val(d.result.product_type).trigger('change');
                         $("#form-master input[name='id_document']").val(d.result.product_id);
                         $("#form-master input[name='kode']").val(d.result.product_code);
@@ -630,7 +632,8 @@
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
                 // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());    
                 formData.append('product_reminder', $('#product_reminder').val());
-
+                formData.append('product_branch_id',$("input[name='product_branch_id']:checked").val());
+                
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -799,7 +802,7 @@
 
     function formNew() {
         formMasterSetDisplay(0);
-        $("#form-master input").val('');
+        $("#form-master input").not(':radio').val('');
         $("#btn-new").hide();
         $("#btn-save").show();
         $("#btn-cancel").show();    
@@ -807,7 +810,7 @@
     function formCancel() {
         formMasterSetDisplay(1);
         formResetCheckbox();
-        $("#form-master input").val('');
+        $("#form-master input").not(':radio').val('');
         $("#btn-new").show();
         $("#btn-save").hide();
         $("#btn-update").hide();

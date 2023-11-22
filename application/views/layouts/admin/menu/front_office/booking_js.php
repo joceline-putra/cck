@@ -180,11 +180,16 @@
                 cache: 'false',
                 data: function(d) {
                     d.action = 'load';
-                    d.length = $("#filter_length").find(':selected').val();
+                    d.tipe = 222;
+                    d.search = {value:$("#filter_search").val()};
                     d.date_start = $("#filter_start_date").val();
                     d.date_end = $("#filter_end_date").val();
+                    d.filter_branch = $("#filter_branch").find(':selected').val();
+                    d.filter_ref_price = $("#filter_ref_price").find(':selected').val();
+                    d.filter_ref = $("#filter_ref").find(':selected').val();     
+                    d.filter_paid = $("#filter_paid_flag").find(':selected').val();                                                            
                     d.filter_flag = $("#filter_flag").find(':selected').val();
-                    d.search = {value:$("#filter_search").val()};
+                    d.length = $("#filter_length").find(':selected').val();
                 },
                 dataSrc: function(data) {
                     return data.result;
@@ -352,7 +357,7 @@
                             if(parseInt(row.order_item_flag_checkin) === 1){
                                     dsp += '<li>';
                                     dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
-                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="2" data-order-session="'+row.order_session+'">';
+                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="2" data-order-session="'+row.order_session+'" data-product-name="'+row.product_name+'">';
                                     dsp += '        <span class="fas fa-ban"></span> Checkout';
                                     dsp += '    </a>';
                                     dsp += '</li>';
@@ -386,7 +391,10 @@
             $('select[name="table_order_length"]').val(value).trigger('change');
             order_table.ajax.reload();
         });
-        $("#filter_flag").on('change', function(e){ order_table.ajax.reload(); });
+        $("#filter_branch").on('change', function(e){ order_table.ajax.reload(); });
+        $("#filter_ref_price").on('change', function(e){ order_table.ajax.reload(); });
+        $("#filter_ref").on('change', function(e){ order_table.ajax.reload(); });                
+        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });                
         $("#filter_search").on('input', function(e){ var ln = $(this).val().length; if(parseInt(ln) > 3){ order_table.ajax.reload(); }else if(parseInt(ln) < 1){ order_table.ajax.reload();} });
 
 
@@ -726,6 +734,7 @@
             var oss         = $(this).attr('data-order-session');
             var onu         = $(this).attr('data-order-number');
             var oflag       = $(this).attr('data-order-flag');
+            var opr         = $(this).attr('data-product-name');
 
             if(parseInt(oflag) == 0){
                 var set_flag = 0;
@@ -864,40 +873,46 @@
                     }
                 });            
             }else{
+                if(oflag == 2){
+                    var cnt = 'Checkout kamar <b>'+opr+ '</b> ?';
+                }else{
+                    var cnt ='Apakah anda ingin '+msg+' <b>'+onu+'</b> ?' 
+                }
                 $.confirm({
                     title: 'Konfirmasi!',
-                    content: 'Apakah anda ingin '+msg+' <b>'+onu+'</b> ?',
+                    content: cnt,
                     buttons: {
                         confirm:{ 
                             btnClass: 'btn-primary',
                             text: 'Ya',
                             action: function () {
                                 
-                                // var form = new FormData();
-                                // form.append('action', 'update_flag_item');
-                                // form.append('order_id', oid);
-                                // form.append('order_item_id', otd);                            
-                                // form.append('order_session', oss);
-                                // form.append('order_number', onu);
-                                // form.append('order_item_flag_checkin', oflag);
+                                var form = new FormData();
+                                form.append('action', 'update_flag_item');
+                                form.append('order_id', oid);
+                                form.append('order_item_id', otd);                            
+                                form.append('order_session', oss);
+                                form.append('order_number', onu);
+                                form.append('order_item_flag_checkin', oflag);
+                                form.append('product_name',opr);
 
-                                // $.ajax({
-                                //     type: "POST",
-                                //     url : url,
-                                //     data: form,
-                                //     dataType:'json',
-                                //     cache: false,
-                                //     contentType: false,
-                                //     processData: false,
-                                //     success:function(d){
-                                //         if(parseInt(d.status)==1){ 
-                                //             notif(d.status,d.message); 
-                                //             order_table.ajax.reload(null,false);
-                                //         }else{ 
-                                //             notif(d.status,d.message); 
-                                //         }
-                                //     }
-                                // });
+                                $.ajax({
+                                    type: "POST",
+                                    url : url,
+                                    data: form,
+                                    dataType:'json',
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    success:function(d){
+                                        if(parseInt(d.status)==1){ 
+                                            notif(d.status,d.message); 
+                                            order_table.ajax.reload(null,false);
+                                        }else{ 
+                                            notif(d.status,d.message); 
+                                        }
+                                    }
+                                });
                             }
                         },
                         cancel:{

@@ -32,7 +32,16 @@
             boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
             url: url_image,
         });
-        
+        const autoNumericOption = {
+            digitGroupSeparator: ',',
+            decimalCharacter: '.',
+            decimalCharacterAlternative: '.',
+            decimalPlaces: 0,
+            watchExternalChanges: true //!!!        
+        };        
+        new AutoNumeric('#harga_jual', autoNumericOption);
+        new AutoNumeric('#stok_minimal', autoNumericOption);        
+
         $("select").select2();
         $(".date").datepicker({
             // defaultDate: new Date(),
@@ -43,35 +52,6 @@
             todayHighlight: true,
             weekStart: 1
         });
-        const autoNumericOption = {
-            digitGroupSeparator: ',',
-            decimalCharacter: '.',
-            decimalCharacterAlternative: '.',
-            decimalPlaces: 2,
-            watchExternalChanges: true //!!!        
-        };
-        const autoNumericOption2 = {
-            digitGroupSeparator: ',',
-            decimalCharacter: '.',
-            decimalCharacterAlternative: '.',
-            decimalPlaces: 4,
-            watchExternalChanges: true //!!!        
-        };
-        const autoNumericOption3 = {
-            digitGroupSeparator: ',',
-            decimalCharacter: '.',
-            decimalCharacterAlternative: '.',
-            decimalPlaces: 0,
-            watchExternalChanges: true //!!!        
-        };
-        new AutoNumeric('#harga_jual', autoNumericOption);
-        new AutoNumeric('#harga_beli', autoNumericOption);
-        new AutoNumeric('#harga_promo', autoNumericOption);
-
-        new AutoNumeric('#stok_minimal', autoNumericOption3);
-        new AutoNumeric('#stok_maksimal', autoNumericOption);
-        new AutoNumeric('#recipe-qty', autoNumericOption2);
-        new AutoNumeric('#product_price_price', autoNumericOption);
 
         // var start = 0;
         // var length = $("#filter_length").find(':selected').val();
@@ -88,8 +68,8 @@
                 data: function (d) {
                     d.action = 'load';
                     d.tipe = identity;
-                    d.filter_type = $("#filter_type").find(':selected').val();                    
-                    d.filter_categories = $("#filter_categories").find(':selected').val();
+                    d.filter_type = 1;                    
+                    d.filter_categories = 1;
                     d.filter_ref = $("#filter_ref").find(':selected').val();
                     d.filter_flag = $("#filter_flag").find(':selected').val();
                     d.search = {
@@ -101,39 +81,32 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Kode", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Nama", "searchable": true, "orderable": true},
+                {"targets": 0, "title": "Makanan", "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Harga Jual", "searchable": true, "orderable": true},
                 {"targets": 2, "title": "Stok", "searchable": false, "orderable": true, "className": "text-right"},
-                {"targets": 3, "title": "Harga Beli", "searchable": true, "orderable": true},
-                {"targets": 4, "title": "Harga Jual", "searchable": true, "orderable": true},
+                {"targets": 3, "title": "Stok Minimal", "searchable": false, "orderable": true, "className": "text-right"},                
+                {"targets": 4, "title": "Status", "searchable": false, "orderable": true},                
                 {"targets": 5, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
-                [1, 'asc']
+                [0, 'asc']
             ],
             "columns": [{
-                    'data': 'product_code',
-                    render: function (data, meta, row) {
-                        var dsp = '';
-                        dsp += !(data) ? '-' : data;
-                        return dsp;
-                    }
-                }, {
                     'data': 'product_name',
                     render: function (data, meta, row) {
                         var dsp = '';
                         var cat = !(row.category_name) ? 0 : 1;
+                        dsp += row.product_name;
+                        // dsp += '<b>' + row.product_name + '</b><br>';
+                        // if (row.product_type == 1) {
+                        //     dsp += '<span class="label" style="color:white;background-color:#7c98f5;padding:1px 4px;">Barang</span>&nbsp;';
+                        // }else if (row.product_type == 2) {
+                        //     dsp += '<span class="label" style="color:white;background-color:#b87cf5;padding:1px 4px;">Jasa</span>&nbsp;';
+                        // }
 
-                        dsp += '<b>' + row.product_name + '</b><br>';
-                        if (row.product_type == 1) {
-                            dsp += '<span class="label" style="color:white;background-color:#7c98f5;padding:1px 4px;">Barang</span>&nbsp;';
-                        }else if (row.product_type == 2) {
-                            dsp += '<span class="label" style="color:white;background-color:#b87cf5;padding:1px 4px;">Jasa</span>&nbsp;';
-                        }
-
-                        if (parseInt(cat) > 0) {
-                            dsp += '<span class="label" style="color:white;background-color:#a4a3a5;padding:1px 4px;">' + row.category_name + '</span>';
-                        }
+                        // if (parseInt(cat) > 0) {
+                        //     dsp += '<span class="label" style="color:white;background-color:#a4a3a5;padding:1px 4px;">' + row.category_name + '</span>';
+                        // }
                         /*
                          if(parseFloat(row.product_price_promo) > 0){
                          dsp += '&nbsp;<label class="label label-purple">Promo</label>';
@@ -145,6 +118,18 @@
                          }else{ dsp += '&nbsp;<i class="fas fa-camera"></i>'; }
                          */
 
+                        return dsp;
+                    }
+                },{
+                    'data': 'product_price_sell',
+                    className: 'text-right',
+                    render: function (data, meta, row) {
+                        var dsp = '';
+                        if (parseFloat(data) > 0) {
+                            dsp += 'Rp. ' + addCommas(row.product_price_sell);
+                        } else {
+                            dsp += '-';
+                        }
                         return dsp;
                     }
                 }, {
@@ -159,40 +144,53 @@
                             }
                             dsp += ' ' + row.product_unit;
 
-                            if (parseInt(row.product_with_stock) == 1) {
-                                var product_stock = parseFloat(row.product_stock);
-                                var stock_min = parseFloat(row.product_min_stock_limit);
-                                if (product_stock < stock_min) {
-                                    dsp += '<br><span class="label" style="background-color:#ef873e;color:white;padding:1px 4px;">Stok Akan Habis</span>';
-                                }
-                            } else {
-                            }
+                            // if (parseInt(row.product_with_stock) == 1) {
+                            //     var product_stock = parseFloat(row.product_stock);
+                            //     var stock_min = parseFloat(row.product_min_stock_limit);
+                            //     if (product_stock < stock_min) {
+                            //         dsp += '<br><span class="label" style="background-color:#ef873e;color:white;padding:1px 4px;">Stok Akan Habis</span>';
+                            //     }
+                            // } else {
+                            // }
                         } else {
                             dsp += '-';
                         }
                         return dsp;
                     }
                 }, {
-                    'data': 'product_price_buy',
-                    className: 'text-right',
+                    'data': 'product_min_stock_limit',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        if (parseFloat(data) > 0) {
-                            dsp += 'Rp. ' + addCommas(row.product_price_buy);
+                        if (row.product_type == 1) {
+                            // if (parseFloat(data) > 0) {
+                            //     dsp += '<a href="#" class="btn-product-stock" data-product-id="' + row.product_id + '" data-product-name="' + row.product_name + '" data-product-unit="' + row.product_unit + '"><b>' + data + '</b></a>';
+                            // } else {
+                            //     dsp += data;
+                            // }
+                            dsp += ' ' + row.product_min_stock_limit + ' ' +row.product_unit;
+
+                            // if (parseInt(row.product_with_stock) == 1) {
+                            //     var product_stock = parseFloat(row.product_stock);
+                            //     var stock_min = parseFloat(row.product_min_stock_limit);
+                            //     if (product_stock < stock_min) {
+                            //         dsp += '<br><span class="label" style="background-color:#ef873e;color:white;padding:1px 4px;">Stok Akan Habis</span>';
+                            //     }
+                            // } else {
+                            // }
                         } else {
                             dsp += '-';
                         }
                         return dsp;
                     }
                 }, {
-                    'data': 'product_price_sell',
+                    'data': 'product_flag',
                     className: 'text-right',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        if (parseFloat(data) > 0) {
-                            dsp += 'Rp. ' + addCommas(row.product_price_sell);
-                        } else {
-                            dsp += '-';
+                        if(data == 1){
+                            dsp += 'Aktif';
+                        }else{
+                            dsp += 'Nonaktif';
                         }
                         return dsp;
                     }
@@ -719,25 +717,25 @@
                 var formData = new FormData();
                 formData.append('action', 'create');
                 // formData.append('upload1', $('#upload1')[0].files[0]);
-                formData.append('tipe', $('#product_type').find(':selected').val());
-                formData.append('kode', $('#kode').val());
+                formData.append('tipe', 1);
                 formData.append('nama', $('#nama').val());
                 formData.append('keterangan', $('#keterangan').val());
-                formData.append('harga_beli', $('#harga_beli').val());
+                // formData.append('harga_beli', $('#harga_beli').val());
                 formData.append('harga_jual', $('#harga_jual').val());
-                formData.append('harga_promo', $('#harga_promo').val());
+                // formData.append('harga_promo', $('#harga_promo').val());
                 formData.append('stok_minimal', $('#stok_minimal').val());
-                formData.append('stok_maksmal', $('#stok_maksimal').val());
+                // formData.append('stok_maksmal', $('#stok_maksimal').val());
                 formData.append('satuan', $('#satuan').find(':selected').val());
                 formData.append('status', $('#status').find(':selected').val());
-                formData.append('with_stock', $('#with_stock').find(':selected').val());
-                formData.append('categories', $('#categories').find(':selected').val());
+                formData.append('with_stock', 1);
+                formData.append('categories', 1);
                 // formData.append('manufacture', $('#manufacture').find(':selected').val());
                 formData.append('referensi', $('#referensi').find(':selected').val());
-                formData.append('akun_beli', $('#account_buy').find(':selected').val());
-                formData.append('akun_jual', $('#account_sell').find(':selected').val());
-                formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
+                // formData.append('akun_beli', $('#account_buy').find(':selected').val());
+                // formData.append('akun_jual', $('#account_sell').find(':selected').val());
+                // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
                 formData.append('upload1', $("#files_preview").attr('data-save-img'));
+                formData.append('product_branch_id',$("input[name='product_branch_id']:checked").val());                   
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -788,6 +786,8 @@
                 success: function (d) {
                     if (parseInt(d.status) == 1) { /* Success Message */
                         activeTab('tab1'); // Open/Close Tab By ID
+                        $("input[name='product_branch_id'][value='"+d.result.product_branch_id+"']").prop("checked", true).change();
+
                         // notifSuccess(d.result.id);ss
                         $("#form-master select[id='product_type']").val(d.result.product_type).trigger('change');
                         $("#form-master input[name='id_document']").val(d.result.product_id);
@@ -922,17 +922,17 @@
             }
 
             if (next == true) {
-                if ($("select[id='account_buy']").find(':selected').val() == 0) {
-                    notif(0, 'Akun Pembelian harus dipilih');
-                    next = false;
-                }
+                // if ($("select[id='account_buy']").find(':selected').val() == 0) {
+                //     notif(0, 'Akun Pembelian harus dipilih');
+                //     next = false;
+                // }
             }
 
             if (next == true) {
-                if ($("select[id='account_sell']").find(':selected').val() == 0) {
-                    notif(0, 'Akun Penjualan harus dipilih');
-                    next = false;
-                }
+                // if ($("select[id='account_sell']").find(':selected').val() == 0) {
+                //     notif(0, 'Akun Penjualan harus dipilih');
+                //     next = false;
+                // }
             }
 
             if (next == true) {
@@ -959,8 +959,7 @@
                 formData.append('action', 'update');
                 formData.append('id', $('#id_document').val());
                 // formData.append('upload1', $('#upload1')[0].files[0]);
-                formData.append('tipe', $('#product_type').find(':selected').val());
-                formData.append('kode', $('#kode').val());
+                formData.append('tipe', 1);
                 formData.append('nama', $('#nama').val());
                 formData.append('keterangan', $('#keterangan').val());
                 formData.append('harga_beli', $('#harga_beli').val());
@@ -972,11 +971,7 @@
                 formData.append('referensi', $('#referensi').find(':selected').val());
                 formData.append('satuan', $('#satuan').find(':selected').val());
                 formData.append('status', $('#status').find(':selected').val());
-                formData.append('with_stock', $('#with_stock').find(':selected').val());
-                formData.append('categories', $('#categories').find(':selected').val());
-                formData.append('akun_beli', $('#account_buy').find(':selected').val());
-                formData.append('akun_jual', $('#account_sell').find(':selected').val());
-                formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
+                formData.append('categories', 1);
                 formData.append('upload1', $("#files_preview").attr('data-save-img'));
                 $.ajax({
                     type: "POST",
@@ -1868,7 +1863,7 @@
         });   
         function formNew() {
             formMasterSetDisplay(0);
-            $("#form-master input").val('');
+            $("#form-master input").not(":radio").val('');
             $("#btn-new").hide();
             $("#btn-save").show();
             $("#btn-cancel").show();
@@ -1881,7 +1876,7 @@
         function formCancel() {
             formMasterSetDisplay(1);
             formResetCheckbox();
-            $("#form-master input").val('');
+            $("#form-master input").not(":radio").val('');
             $("#btn-new").show();
             $("#btn-save").hide();
             $("#btn-update").hide();
@@ -1926,12 +1921,8 @@
         var attrInput = [
             "kode",
             "nama",
-            // "harga_beli",
-            // "harga_jual",
-            // "harga_promo",
+            "harga_jual",
             "stok_minimal",
-                    // "stok_maksimal"
-                    // "manufacture" 
         ];
         $("input[name='harga_beli']").val(0);
         $("input[name='harga_jual']").val(0);
@@ -1956,12 +1947,8 @@
             "satuan",
             "status",
             "categories",
-            // "manufacture",
             "referensi",
             "product_type",
-                    // "with_stock",
-                    // "account_buy",
-                    // "account_sell"
         ];
         for (var i = 0; i <= atributSelect.length; i++) {
             $("" + form + " select[name='" + atributSelect[i] + "']").attr('disabled', flag);

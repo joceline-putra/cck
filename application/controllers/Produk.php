@@ -83,7 +83,8 @@ class Produk extends MY_Controller{
 
         $data['image_width'] = intval($this->image_width);
         $data['image_height'] = intval($this->image_height);
-                
+        $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
+        
         //Date First of the month
         $firstdate = new DateTime('first day of this month');
         $firstdateofmonth = $firstdate->format('Y-m-d');
@@ -118,17 +119,15 @@ class Produk extends MY_Controller{
             //Produk ID or TIPE
             if($identity == 1){ //Makanan - Barang
                 $columns = array(
-                    '0' => 'product_code',
-                    '1' => 'product_name',
-                    '2' => 'product_stock',
-                    '3' => 'product_price_sell'                    
+                    '0' => 'product_name',
+                    '1' => 'product_price_sell',
+                    '2' => 'product_stock'                  
                 );                                      
             }else if($identity == 2){ //Kamar - Jasa
                 $columns = array(
                     '0' => 'product_name',
-                    '1' => 'product_code',
-                    '2' => 'branch_name',
-                    '3' => 'ref_name'
+                    '1' => 'ref_name',
+                    '2' => 'branch_name'
                 ); 
             }else if($identity == 3){ //Aset - Inventaris 
                 $columns = array(
@@ -168,7 +167,7 @@ class Produk extends MY_Controller{
                     'product_category_id' => !empty($this->input->post('categories')) ? $this->input->post('categories') : null,
                     'product_manufacture' => !empty($this->input->post('manufacture')) ? $this->input->post('manufacture') : null,
                     'product_user_id' => $session_user_id,
-                    'product_branch_id' => $session_branch_id,
+                    'product_branch_id' => !empty($this->input->post('product_branch_id')) ? $this->input->post('product_branch_id') : null,
                     'product_with_stock' => !empty($this->input->post('with_stock')) ? $this->input->post('with_stock') : 0,
                     'product_min_stock_limit' => !empty($this->input->post('stok_minimal')) ? str_replace( ',', '',$this->input->post('stok_minimal')) : 0,
                     'product_max_stock_limit' => !empty($this->input->post('stok_maksimal')) ? str_replace( ',', '',$this->input->post('stok_maksimal')) : 0,
@@ -589,12 +588,12 @@ class Produk extends MY_Controller{
                         'product_max_stock_limit' => !empty($this->input->post('stok_maksimal')) ? str_replace( ',', '',$this->input->post('stok_maksimal')) : 0,  
                         'product_date_created' => date("YmdHis"),
                         'product_date_updated' => date("YmdHis"),
+                        'product_branch_id' => !empty($this->input->post('product_branch_id')) ? $this->input->post('product_branch_id') : null,                        
                         'product_unit' => !empty($this->input->post('satuan')) ? $this->input->post('satuan') : null,
                         'product_flag' => !empty($this->input->post('status')) ? $this->input->post('status') : 1,
                         'product_category_id' => !empty($this->input->post('categories')) ? $this->input->post('categories') : null,
                         'product_manufacture' => !empty($this->input->post('manufacture')) ? $this->input->post('manufacture') : null,
                         'product_user_id' => $session_user_id,
-                        'product_branch_id' => $session_branch_id,
                         'product_with_stock' => !empty($this->input->post('with_stock')) ? $this->input->post('with_stock') : 0,
                         'product_square_size' => !empty($this->input->post('luas_tanah')) ? $this->input->post('luas_tanah') : 0,
                         'product_building_size' => !empty($this->input->post('luas_bangunan')) ? $this->input->post('luas_bangunan') : 0,

@@ -114,6 +114,7 @@ class Front_model extends CI_Model{
         $this->db->from('orders_items');
         $this->set_params($params);
         $this->set_search($search);
+        $this->set_join_item();        
         return $this->db->count_all_results();
     }    
     function get_all_paid($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {

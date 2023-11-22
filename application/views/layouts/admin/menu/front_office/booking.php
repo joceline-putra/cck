@@ -54,6 +54,97 @@
                                         </div>
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
                                             <div class="clearfix"></div>
+
+                                            <div class="col-md-12 col-xs-12">
+
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <label class="form-label">Periode Awal</label>
+                                                    <div class="col-md-12 col-sm-12 padding-remove-side">
+                                                        <div class="input-append success date col-md-12 col-lg-12 no-padding">
+                                                            <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $first_date;?>">
+                                                            <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <label class="form-label">Periode Akhir</label>
+                                                    <div class="col-md-12 col-sm-12 padding-remove-side">
+                                                        <div class="input-append success date col-md-12 col-lg-12 no-padding">
+                                                            <input name="filter_end_date" id="filter_end_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
+                                                            <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group prs-15">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Cari</label>
+                                                        <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
+                                                    </div>
+                                                </div>          
+                                                <div class="clearfix"></div>
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Cabang</label>
+                                                        <select id="filter_branch" name="filter_branch" class="form-control">
+                                                            <option value="All">Semua</option>
+                                                            <?php
+                                                            foreach($branch as $val){
+                                                                echo '<option value="'.$val['branch_id'].'">'.$val['branch_name'].'</option>';
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>    
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Type</label>
+                                                        <select id="filter_ref_price" name="filter_ref_price" class="form-control">
+                                                            <option value="All">Semua</option>
+                                                            <option value="1">Harian</option>
+                                                            <option value="2">Midnight</option>
+                                                            <option value="3">4 jam</option>
+                                                            <option value="4">2 jam</option>
+                                                            <option value="0">Bulanan</option>                                                                                                                        
+                                                        </select>
+                                                    </div>
+                                                </div>  
+
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Jenis Kamar</label>
+                                                        <select id="filter_ref" name="filter_ref" class="form-control">
+                                                            <option value="All">Semua</option>
+                                                            <?php
+                                                            foreach($ref as $b){
+                                                                echo '<option value="'.$b['branch_id'].'">'.$b['branch_name'].' - '.$b['ref_name'].'</option>';
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>    
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Pembayaran</label>
+                                                        <select id="filter_paid_flag" name="filter_paid_flag" class="form-control">
+                                                            <option value="All">Semua</option>
+                                                            <option value="1">Lunas</option>
+                                                            <option value="0">Belum Lunas</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group">
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Tampil</label>
+                                                        <select id="filter_length" name="filter_length" class="form-control">
+                                                            <option value="10">10 Baris</option>
+                                                            <option value="25">25 Baris</option>
+                                                            <option value="50">50 Baris</option>
+                                                            <option value="100">100 Baris</option>
+                                                            <option value="-1">Semuanya</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>    
                                             <div class="col-lg-12 col-md-12 col-xs-16 col-sm-16 form-group">
                                                 <div class="panel-group" id="accordion" data-toggle="collapse" style="background-color: #eaeaea;border: 1px solid #eaeaea;margin-bottom:0px;">
                                                     <div id="panel-one" class="panel panel-default" style="display:inline;">
@@ -66,92 +157,7 @@
                                                             </h4>                                                       
                                                         </div>
                                                         <div id="collapseFilter" class="panel-collapse collapse">
-                                                            <div class="panel-body" style="padding:0px;">
-                                                                <div class="col-md-12 col-xs-12">
-
-                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
-                                                                        <label class="form-label">Periode Awal</label>
-                                                                        <div class="col-md-12 col-sm-12 padding-remove-side">
-                                                                            <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                                                <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $first_date;?>">
-                                                                                <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
-                                                                        <label class="form-label">Periode Akhir</label>
-                                                                        <div class="col-md-12 col-sm-12 padding-remove-side">
-                                                                            <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                                                <input name="filter_end_date" id="filter_end_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
-                                                                                <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group prs-15">
-                                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                            <label class="form-label">Cari</label>
-                                                                            <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
-                                                                        </div>
-                                                                    </div>                                                                    
-                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
-                                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                            <label class="form-label">Cabang</label>
-                                                                            <select id="filter_flag" name="filter_flag" class="form-control">
-                                                                                <option value="All">Semua</option>
-                                                                                <option value="1">Aktif</option>
-                                                                                <option value="0">Nonaktif</option>
-                                                                                <option value="4">Terhapus</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>    
-
-                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
-                                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                            <label class="form-label">Type</label>
-                                                                            <select id="filter_flag" name="filter_flag" class="form-control">
-                                                                                <option value="All">Semua</option>
-                                                                                <option value="1">Aktif</option>
-                                                                                <option value="0">Nonaktif</option>
-                                                                                <option value="4">Terhapus</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>  
-
-                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
-                                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                            <label class="form-label">Jenis Kamar</label>
-                                                                            <select id="filter_flag" name="filter_flag" class="form-control">
-                                                                                <option value="All">Semua</option>
-                                                                                <option value="1">Aktif</option>
-                                                                                <option value="0">Nonaktif</option>
-                                                                                <option value="4">Terhapus</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>    
-                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
-                                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                            <label class="form-label">Status</label>
-                                                                            <select id="filter_flag" name="filter_flag" class="form-control">
-                                                                                <option value="All">Semua</option>
-                                                                                <option value="1">Aktif</option>
-                                                                                <option value="0">Nonaktif</option>
-                                                                                <option value="4">Terhapus</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group">
-                                                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                                            <label class="form-label">Tampil</label>
-                                                                            <select id="filter_length" name="filter_length" class="form-control">
-                                                                                <option value="10">10 Baris</option>
-                                                                                <option value="25">25 Baris</option>
-                                                                                <option value="50">50 Baris</option>
-                                                                                <option value="100">100 Baris</option>
-                                                                                <option value="-1">Semuanya</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>                                                                        
+                                                            <div class="panel-body" style="padding:0px;">                                                                    
                                                             </div>
                                                         </div>
                                                     </div>

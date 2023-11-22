@@ -13,22 +13,12 @@
 			  	<a href="<?php echo base_url('report/sales/sell/account_receivable');?>">
           			<span class="fas fa-file-alt"></span> Piutang Customer
           		</a>
-			</li>					
-			<li class="" data-name="report/sales/return/detail">
-			  	<a href="<?php echo base_url('report/sales/return/detail');?>">
-          			<span class="fas fa-file-alt"></span> Retur Jual
-          		</a>
 			</li>			
 			<li class="" data-name="report/sales/order/detail">
 			  	<a href="<?php echo base_url('report/sales/order/detail');?>">
           			<span class="fas fa-newspaper"></span> Sales Order Rinci
           		</a>
-			</li>
-			<li class="" data-name="report/sales/prepare/detail">
-			  	<a href="<?php echo base_url('report/sales/prepare/detail');?>">
-          			<span class="fas fa-newspaper"></span> Prepare Rinci
-          		</a>
-			</li>															
+			</li>													
 			<?php 
 			/*
 				foreach($navigation as $n):

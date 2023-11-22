@@ -180,25 +180,31 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5 col-sm-12 col-xs-12">
+                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                <div class="form-group">
+                                                    <label class="form-label">Cabang</label>
+                                                    <div class="radio radio-success">
+                                                        <?php 
+                                                        foreach($branch as $i => $v){
+                                                            $c = '';
+                                                            if($i==0){
+                                                                $c = 'checked';
+                                                            }
+                                                        ?>
+                                                            <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="product_branch_id" value="<?php echo $v['branch_id']; ?>" <?php echo $c; ?>><label for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
+                                                        <?php 
+                                                        } 
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:14px;">
                                                 <div class="form-group">
                                                     <label class="form-label">Deskripsi</label>
                                                     <textarea id="keterangan" name="keterangan" type="text" class="form-control" readonly='true' rows="4"/></textarea>
                                                 </div>
                                             </div>
-                                            <div class="hide col-lg-12 col-md-12 col-xs-12 padding-remove-left">
-                                                <div class="col-lg-4 col-md-4 col-xs-12 padding-remove-left">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Ingatkan Setiap</label>
-                                                        <select id="product_reminder" name="product_reminder" class="form-control" disabled>
-                                                            <option value="0">Pilih</option>
-                                                            <option value="daily">Harian</option>
-                                                            <option value="weekly">Mingguan</option>
-                                                            <option value="monthly">Bulanan</option>
-                                                            <option value="yearly">Tahunan</option>
-                                                        </select>
-                                                    </div>
-                                                </div> 									  		
+                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-left">
                                                 <div class="col-lg-4 col-md-4 col-xs-12 padding-remove-side">
                                                     <div class="form-group" style="">
                                                         <label class="form-label">Status</label>
@@ -216,7 +222,10 @@
                                                             ?>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div>                
+                                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                    <p><i class="fas fa-info"></i> <?php echo $title; ?> nonaktif tidak akan dimunculkan di semua transaksi</p>
+                                                </div>                                                                                
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>

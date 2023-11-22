@@ -31,7 +31,6 @@
             url: url_image,
         });
         
-        // $("select").select2();
         $(".date").datepicker({
             // defaultDate: new Date(),
             format: 'yyyy-mm-dd',
@@ -41,38 +40,6 @@
             todayHighlight: true,
             weekStart: 1
         });
-        // const autoNumericOption = {
-        //     digitGroupSeparator: ',',
-        //     decimalCharacter: '.',
-        //     decimalCharacterAlternative: '.',
-        //     decimalPlaces: 2,
-        //     watchExternalChanges: true //!!!        
-        // };
-        // const autoNumericOption2 = {
-        //     digitGroupSeparator: ',',
-        //     decimalCharacter: '.',
-        //     decimalCharacterAlternative: '.',
-        //     decimalPlaces: 4,
-        //     watchExternalChanges: true //!!!        
-        // };
-        // const autoNumericOption3 = {
-        //     digitGroupSeparator: ',',
-        //     decimalCharacter: '.',
-        //     decimalCharacterAlternative: '.',
-        //     decimalPlaces: 0,
-        //     watchExternalChanges: true //!!!        
-        // };
-        // new AutoNumeric('#harga_jual', autoNumericOption);
-        // new AutoNumeric('#harga_beli', autoNumericOption);
-        // new AutoNumeric('#harga_promo', autoNumericOption);
-
-        // new AutoNumeric('#stok_minimal', autoNumericOption3);
-        // new AutoNumeric('#stok_maksimal', autoNumericOption);
-        // new AutoNumeric('#recipe-qty', autoNumericOption2);
-        // new AutoNumeric('#product_price_price', autoNumericOption);
-
-        // var start = 0;
-        // var length = $("#filter_length").find(':selected').val();
         var index = $("#table-data").DataTable({
             // "processing": true,
             // "rowReorder": { selector: 'td:nth-child(1)'},
@@ -100,11 +67,10 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Nama", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Kode", "searchable": true, "orderable": true},
-                {"targets": 2, "title": "Cabang", "searchable": false, "orderable": true, "className": "text-left"},
-                {"targets": 3, "title": "Jenis Kamar", "searchable": true, "orderable": true},
-                {"targets": 4, "title": "Action", "searchable": false, "orderable": false}
+                {"targets": 0, "title": "Kamar", "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Jenis Kamar", "searchable": true, "orderable": true},
+                {"targets": 2, "title": "Cabang", "searchable": true, "orderable": true, "className": "text-left"},
+                {"targets": 3, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
                 [1, 'asc']
@@ -141,10 +107,11 @@
                         return dsp;
                     }
                 }, {
-                    'data': 'product_code',
+                    'data': 'ref_name',
+                    className: 'text-left',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        dsp += !(data) ? '-' : data;
+                        dsp += row.ref_name;
                         return dsp;
                     }
                 }, {
@@ -152,14 +119,6 @@
                     render: function (data, meta, row) {
                         var dsp = '';
                         dsp += row.branch_name;
-                        return dsp;
-                    }
-                }, {
-                    'data': 'ref_name',
-                    className: 'text-left',
-                    render: function (data, meta, row) {
-                        var dsp = '';
-                        dsp += row.ref_name;
                         return dsp;
                     }
                 }, {
@@ -216,85 +175,9 @@
             index.ajax.reload();
         });  
 
-        $('#satuan').select2({
-            placeholder: '--- Pilih ---',
-            minimumInputLength: 0,
-            ajax: {
-                type: "get",
-                url: "<?= base_url('search/manage'); ?>",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                        source: 'units'
-                    }
-                    return query;
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            },
-            templateResult: function (datas) { //When Select on Click
-                if (!datas.id) {
-                    return datas.text;
-                }
-                // return '<i class="fas fa-balance-scale '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                if ($.isNumeric(datas.id) == true) {
-                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                    // return datas.text;          
-                } else {
-                    // return '<i class="fas fa-plus '+datas.id.toLowerCase()+'"></i> '+datas.text;    
-                }
-                return datas.text;
-            },
-            templateSelection: function (datas) { //When Option on Click
-                // if (!datas.id) { 
-                return datas.text;
-                // }
-                //Custom Data Attribute         
-                // return '<i class="fas fa-balance-scale '+datas.id.toLowerCase()+'"></i> '+datas.text;
-            }
-        });
-        $('#categories').select2({
-            placeholder: '--- Pilih ---',
-            minimumInputLength: 0,
-            ajax: {
-                type: "get",
-                url: "<?= base_url('search/manage'); ?>",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                        tipe: 1, //1=Produk, 2=News
-                        source: 'categories',
-                        search: 'Kamar'                        
-                    }
-                    return query;
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            },
-            templateSelection: function (data, container) {
-                // Add custom attributes to the <option> tag for the selected option
-                // $(data.element).attr('data-custom-attribute', data.customValue);
-                // $("input[name='satuan']").val(data.satuan);
-                return data.text;
-            }
-        });
         $('#referensi').select2({
             placeholder: '--- Pilih ---',
+            allowClear:true,            
             minimumInputLength: 0,
             ajax: {
                 type: "get",
@@ -322,131 +205,7 @@
                 // $("input[name='satuan']").val(data.satuan);
                 return data.text;
             }
-        });
-        $('#account_buy').select2({
-            placeholder: '--- Pilih ---',
-            minimumInputLength: 0,
-            ajax: {
-                type: "get",
-                url: "<?= base_url('search/manage'); ?>",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                        source: 'accounts',
-                        // group:5,
-                        group_sub: 15
-                    }
-                    return query;
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            },
-            templateResult: function (datas) { //When Select on Click
-                if (!datas.id) {
-                    return datas.text;
-                }
-                // return '<i class="fas fa-balance-scale '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                if ($.isNumeric(datas.id) == true) {
-                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                    return datas.text;
-                } else {
-                    // return '<i class="fas fa-plus '+datas.id.toLowerCase()+'"></i> '+datas.text;    
-                }
-            },
-            templateSelection: function (datas) { //When Option on Click
-                if (!datas.id) {
-                    return datas.text;
-                }
-                //Custom Data Attribute         
-                return datas.text;
-            }
-        });
-        $('#account_sell').select2({
-            placeholder: '--- Pilih ---',
-            minimumInputLength: 0,
-            ajax: {
-                type: "get",
-                url: "<?= base_url('search/manage'); ?>",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                        source: 'accounts',
-                        // group:4,
-                        group_sub: 13
-                    }
-                    return query;
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            },
-            templateResult: function (datas) { //When Select on Click
-                if (!datas.id) {
-                    return datas.text;
-                }
-                // return '<i class="fas fa-balance-scale '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                if ($.isNumeric(datas.id) == true) {
-                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                    return datas.text;
-                } else {
-                    // return '<i class="fas fa-plus '+datas.id.toLowerCase()+'"></i> '+datas.text;    
-                }
-            },
-            templateSelection: function (datas) { //When Option on Click
-                if (!datas.id) {
-                    return datas.text;
-                }
-                //Custom Data Attribute         
-                return datas.text;
-            }
-        });
-        $('#product_branch_id').select2({
-            placeholder: '--- Semua ---',
-            allowClear:true,
-            minimumInputLength: 0,
-            ajax: {
-                type: "get",
-                url: "<?= base_url('search/manage'); ?>",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                        source: 'branchs'
-                    }
-                    return query;
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            },
-            templateSelection: function (data, container) {
-                // Add custom attributes to the <option> tag for the selected option
-                // $(data.element).attr('data-custom-attribute', data.customValue);
-                // $("input[name='satuan']").val(data.satuan);
-                return data.text;
-            }
-        });        
+        });     
         $('#filter_branch').select2({
             placeholder: '--- Semua ---',
             allowClear:true,
@@ -479,6 +238,7 @@
         });
         $('#filter_ref').select2({
             placeholder: '--- Semua ---',
+            allowClear:true,            
             minimumInputLength: 0,
             ajax: {
                 type: "get",
@@ -505,53 +265,6 @@
                 // $(data.element).attr('data-custom-attribute', data.customValue);
                 // $("input[name='satuan']").val(data.satuan);
                 return data.text;
-            }
-        });
-        $('#recipe-goods').select2({
-            //dropdownParent:$("#modal-id"), //If Select2 Inside Modal
-            // placeholder: '<i class="fas fa-boxes"></i> Search',
-            minimumInputLength: 0,
-            ajax: {
-                type: "get",
-                url: "<?= base_url('search/manage'); ?>",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                        tipe: 1, //1=Supplier, 2=Asuransi
-                        category: 1,
-                        source: 'products'
-                    }
-                    return query;
-                },
-                processResults: function (datas, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: datas,
-                        pagination: {
-                            more: (params.page * 10) < datas.count_filtered
-                        }
-                    };
-                },
-                cache: true
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            },
-            templateResult: function (datas) { //When Select on Click
-                if (!datas.id) {
-                    return datas.text;
-                }
-                return datas.text;
-            },
-            templateSelection: function (datas) { //When Option on Click
-                if (!datas.id) {
-                    return datas.text;
-                }
-                // return '<i class="fas fa-boxes '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                $(datas.element).attr('data-unit', datas.satuan);
-                return datas.text;
             }
         });
         $(document).on("change", "#recipe-goods", function (e) {
@@ -703,17 +416,17 @@
                 // formData.append('harga_promo', $('#harga_promo').val());
                 // formData.append('stok_minimal', $('#stok_minimal').val());
                 // formData.append('stok_maksmal', $('#stok_maksimal').val());
-                formData.append('satuan', $('#satuan').find(':selected').val());
+                formData.append('satuan', 'unit');
                 formData.append('status', $('#status').find(':selected').val());
                 // formData.append('with_stock', $('#with_stock').find(':selected').val());
-                formData.append('categories', $('#categories').find(':selected').val());
+                formData.append('categories', 2);
                 // formData.append('manufacture', $('#manufacture').find(':selected').val());
                 formData.append('referensi', $('#referensi').find(':selected').val());
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
                 // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
-                formData.append('upload1', $("#files_preview").attr('data-save-img'));
-                formData.append('product_branch_id', $('#product_branch_id').find(':selected').val());                
+                formData.append('upload1', $("#files_preview").attr('data-save-img'));                
+                formData.append('product_branch_id',$("input[name='product_branch_id']:checked").val());               
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -764,6 +477,8 @@
                 success: function (d) {
                     if (parseInt(d.status) == 1) { /* Success Message */
                         activeTab('tab1'); // Open/Close Tab By ID
+                        $("input[name='product_branch_id'][value='"+d.result.product_branch_id+"']").prop("checked", true).change();
+
                         // notifSuccess(d.result.id);ss
                         $("#form-master select[id='product_type']").val(d.result.product_type).trigger('change');
                         $("#form-master input[name='id_document']").val(d.result.product_id);
@@ -934,6 +649,7 @@
                 var formData = new FormData();
                 formData.append('action', 'update');
                 formData.append('id', $('#id_document').val());
+                formData.append('tipe', 2);
                 // formData.append('upload1', $('#upload1')[0].files[0]);
                 // formData.append('tipe', $('#product_type').find(':selected').val());
                 formData.append('kode', $('#kode').val());
@@ -946,15 +662,15 @@
                 // formData.append('stok_maksmal', $('#stok_maksimal').val());
                 // formData.append('manufacture', $('#manufacture').val());      
                 formData.append('referensi', $('#referensi').find(':selected').val());
-                formData.append('satuan', $('#satuan').find(':selected').val());
+                formData.append('satuan', 'unit');
                 // formData.append('status', $('#status').find(':selected').val());
                 // formData.append('with_stock', $('#with_stock').find(':selected').val());
-                formData.append('categories', $('#categories').find(':selected').val());
+                formData.append('categories', 2);
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
                 // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
-                formData.append('product_branch_id', $('#product_branch_id').find(':selected').val());                   
                 formData.append('upload1', $("#files_preview").attr('data-save-img'));
+                formData.append('product_branch_id',$("input[name='product_branch_id']:checked").val());                                  
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -1828,7 +1544,7 @@
         });   
         function formNew() {
             formMasterSetDisplay(0);
-            $("#form-master input").val('');
+            $("#form-master input").not(':radio').val('');
             $("#btn-new").hide();
             $("#btn-save").show();
             $("#btn-cancel").show();
@@ -1841,7 +1557,7 @@
         function formCancel() {
             formMasterSetDisplay(1);
             formResetCheckbox();
-            $("#form-master input").val('');
+            $("#form-master input").not(':radio').val('');
             $("#btn-new").show();
             $("#btn-save").hide();
             $("#btn-update").hide();
@@ -1913,11 +1629,9 @@
 
         //Attr Select yang perlu di setel
         var atributSelect = [
-            "satuan",
             "status",
             "categories",
-            "referensi",
-            "product_type",
+            "referensi"
         ];
         for (var i = 0; i <= atributSelect.lengthcategories; i++) {
             $("" + form + " select[name='" + atributSelect[i] + "']").attr('disabled', flag);

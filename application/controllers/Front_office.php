@@ -72,7 +72,9 @@ class Front_office extends MY_Controller{
                         }
                     }
 
-                    $params = array();
+                    $params = array(
+                        'order_item_type' => intval($post['tipe'])
+                    );
                     
                     /* If Form Mode Transaction CRUD not Master CRUD
                     !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
@@ -91,7 +93,19 @@ class Front_office extends MY_Controller{
                             $params['order_type'] = $post['filter_type'];
                         }
                     */
-                    
+                    if($post['filter_branch'] !== "All") {
+                        $params['order_item_branch_id'] = intval($post['filter_branch']);
+                    }
+                    if($post['filter_ref'] !== "All") {
+                        $params['order_item_ref_id'] = intval($post['filter_ref']);
+                    }                    
+                    // if($post['filter_ref_price'] !== "All") {
+                    //     $params['order_item_ref_id'] = $post['filter_ref'];
+                    // }            
+                    if(is_numeric($post['filter_paid'])) {
+                        $params['order_paid'] = intval($post['filter_paid']);
+                    }                                        
+
                     $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
                     if($get_count > 0){
                         $get_data = $this->Front_model->get_all_booking_item($params, $search, $limit, $start, $order, $dir);
@@ -102,6 +116,7 @@ class Front_office extends MY_Controller{
                         $return->total_records   = 0;
                         $return->result          = [];
                     }
+                    $return->params = $params;
                     $return->message             = 'Load '.$return->total_records.' data';
                     $return->recordsTotal        = $return->total_records;
                     $return->recordsFiltered     = $return->total_records;
@@ -546,7 +561,7 @@ class Front_office extends MY_Controller{
                         $return->message = validation_errors();
                     }else{
                         $order_item_id = !empty($post['order_item_id']) ? $post['order_item_id'] : 0;
-                        if(intval($order_item_id) > 1){
+                        if(intval($order_item_id) > 0){
                             
                             $params = array(
                                 'order_item_flag_checkin' => !empty($post['order_item_flag_checkin']) ? intval($post['order_item_flag_checkin']) : 0,
@@ -556,13 +571,16 @@ class Front_office extends MY_Controller{
                                 'order_item_id' => !empty($post['order_item_id']) ? intval($post['order_item_id']) : 0,
                             );
                             
+                            $get_data = $this->Front_model->get_booking_item_custom($where);
+
                             if($post['order_item_flag_checkin']== 0){
                                 $set_msg = 'waiting';
                             }else if($post['order_item_flag_checkin']== 1){
-                                $set_msg = 'checkin';
+                                $get_product_name = $this->Produk_model->get_produk_quick($post['product_id']);                                
+                                $set_msg = 'checkin '.$get_product_name['product_name'];
                                 $params['order_item_product_id'] = $post['product_id'];
                             }else if($post['order_item_flag_checkin']== 2){
-                                $set_msg = 'checkout';
+                                $set_msg = 'checkout '.$post['product_name'];
                             }else if($post['order_item_flag_checkin']== 4){
                                 $set_msg = 'batal';
                             }else{
@@ -573,7 +591,7 @@ class Front_office extends MY_Controller{
                             //     $params['order_url'] = null;
                             // }
 
-                            $get_data = $this->Front_model->get_booking_item_custom($where);
+
                             if($get_data){
                                 $set_update=$this->Front_model->update_booking_item_custom($where,$params);
                                 if($set_update){
@@ -783,8 +801,8 @@ class Front_office extends MY_Controller{
                 case "room_get":
                     $params = array(
                         'product_type' => 2,
-                        'product_branch_id' => $post['branch_id'],
-                        'product_ref_id' => $post['ref_id'],                        
+                        'product_branch_id' => intval($post['branch_id']),
+                        'product_ref_id' => intval($post['ref_id']),                        
                         'product_category_id' => 2,                        
                         'product_flag' => 1,                        
                     );
@@ -793,6 +811,7 @@ class Front_office extends MY_Controller{
                     $get_ref = $this->Produk_model->get_all_produks($params,$search,$limit,$start,$order,$dir);
                     $return->result = $get_ref;
                     $return->status = 1;
+                    $return->params = $params;
                     break;  
                 case "room_ref":
                     $params = array(
@@ -829,7 +848,8 @@ class Front_office extends MY_Controller{
 
             $data['session'] = $this->session->userdata();  
             $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
-
+            $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
+            $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10],null,null,null,'ref_name','asc');
             $data['first_date'] = $firstdateofmonth;
             $data['end_date'] = date("d-m-Y");
             
@@ -839,7 +859,7 @@ class Front_office extends MY_Controller{
             $data['booking_start_date'] = date("d-M-Y");
             $data['booking_end_date'] = date("d-M-Y", strtotime($date3));            
             
-            // var_dump($data['booking_end_date']);die;
+            // var_dump($data['ref']);die;
             
             $data['hour'] = date("H:i");
             $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
