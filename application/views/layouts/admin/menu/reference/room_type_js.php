@@ -18,6 +18,20 @@
             weekStart: 1
         });
 
+        //Autonumeric
+        const autoNumericOption = {
+            digitGroupSeparator : ',', 
+            decimalCharacter  : '.',
+            decimalCharacterAlternative: '.', 
+            decimalPlaces: 0,
+            watchExternalChanges: true
+        };
+        let price0 = new AutoNumeric('#order_ref_price_id_0', autoNumericOption);
+        let price1 = new AutoNumeric('#order_ref_price_id_1', autoNumericOption);
+        let price2 = new AutoNumeric('#order_ref_price_id_2', autoNumericOption);
+        let price3 = new AutoNumeric('#order_ref_price_id_3', autoNumericOption);                        
+        let price4 = new AutoNumeric('#order_ref_price_id_4', autoNumericOption);                                
+
         var index = $("#table-data").DataTable({
             // "processing": true,
             "serverSide": true,
@@ -265,11 +279,11 @@
                     nama: $("input[id='nama']").val(),
                     keterangan: $("input[id='keterangan']").val(),
                     status: $("select[id='status']").find(':selected').val(),
-                    order_ref_price_id_0: $("#order_ref_price_id_0").val(),
-                    order_ref_price_id_1: $("#order_ref_price_id_1").val(),
-                    order_ref_price_id_2: $("#order_ref_price_id_2").val(),
-                    order_ref_price_id_3: $("#order_ref_price_id_3").val(),
-                    order_ref_price_id_4: $("#order_ref_price_id_4").val(),   
+                    order_ref_price_id_0: price0.rawValue,
+                    order_ref_price_id_1: price1.rawValue,
+                    order_ref_price_id_2: price2.rawValue,
+                    order_ref_price_id_3: price3.rawValue,
+                    order_ref_price_id_4: price4.rawValue,   
                     ref_branch_id: $("input[name='ref_branch_id']:checked").val()                 
                 }
                 var prepare_data = JSON.stringify(prepare);

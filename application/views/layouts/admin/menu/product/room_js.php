@@ -1,8 +1,6 @@
 
 <script>
     $(document).ready(function () {
-        // $.alert('Produk Jasa belum ready');
-        // $("#modal-recipe").modal('show');
         var identity = "<?php echo $identity; ?>";
         var menu_link = "<?php echo $_view; ?>";
         $(".nav-tabs").find('li[class="active"]').removeClass('active');
@@ -43,35 +41,35 @@
             todayHighlight: true,
             weekStart: 1
         });
-        const autoNumericOption = {
-            digitGroupSeparator: ',',
-            decimalCharacter: '.',
-            decimalCharacterAlternative: '.',
-            decimalPlaces: 2,
-            watchExternalChanges: true //!!!        
-        };
-        const autoNumericOption2 = {
-            digitGroupSeparator: ',',
-            decimalCharacter: '.',
-            decimalCharacterAlternative: '.',
-            decimalPlaces: 4,
-            watchExternalChanges: true //!!!        
-        };
-        const autoNumericOption3 = {
-            digitGroupSeparator: ',',
-            decimalCharacter: '.',
-            decimalCharacterAlternative: '.',
-            decimalPlaces: 0,
-            watchExternalChanges: true //!!!        
-        };
-        new AutoNumeric('#harga_jual', autoNumericOption);
-        new AutoNumeric('#harga_beli', autoNumericOption);
-        new AutoNumeric('#harga_promo', autoNumericOption);
+        // const autoNumericOption = {
+        //     digitGroupSeparator: ',',
+        //     decimalCharacter: '.',
+        //     decimalCharacterAlternative: '.',
+        //     decimalPlaces: 2,
+        //     watchExternalChanges: true //!!!        
+        // };
+        // const autoNumericOption2 = {
+        //     digitGroupSeparator: ',',
+        //     decimalCharacter: '.',
+        //     decimalCharacterAlternative: '.',
+        //     decimalPlaces: 4,
+        //     watchExternalChanges: true //!!!        
+        // };
+        // const autoNumericOption3 = {
+        //     digitGroupSeparator: ',',
+        //     decimalCharacter: '.',
+        //     decimalCharacterAlternative: '.',
+        //     decimalPlaces: 0,
+        //     watchExternalChanges: true //!!!        
+        // };
+        // new AutoNumeric('#harga_jual', autoNumericOption);
+        // new AutoNumeric('#harga_beli', autoNumericOption);
+        // new AutoNumeric('#harga_promo', autoNumericOption);
 
-        new AutoNumeric('#stok_minimal', autoNumericOption3);
-        new AutoNumeric('#stok_maksimal', autoNumericOption);
-        new AutoNumeric('#recipe-qty', autoNumericOption2);
-        new AutoNumeric('#product_price_price', autoNumericOption);
+        // new AutoNumeric('#stok_minimal', autoNumericOption3);
+        // new AutoNumeric('#stok_maksimal', autoNumericOption);
+        // new AutoNumeric('#recipe-qty', autoNumericOption2);
+        // new AutoNumeric('#product_price_price', autoNumericOption);
 
         // var start = 0;
         // var length = $("#filter_length").find(':selected').val();
@@ -88,8 +86,9 @@
                 data: function (d) {
                     d.action = 'load';
                     d.tipe = identity;
-                    d.filter_type = $("#filter_type").find(':selected').val();                    
-                    d.filter_categories = $("#filter_categories").find(':selected').val();
+                    d.filter_type = 2;                    
+                    d.filter_categories = 2;
+                    d.filter_branch = $("#filter_branch").find(':selected').val();
                     d.filter_ref = $("#filter_ref").find(':selected').val();
                     d.filter_flag = $("#filter_flag").find(':selected').val();
                     d.search = {
@@ -101,39 +100,33 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Kode", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Nama", "searchable": true, "orderable": true},
-                {"targets": 2, "title": "Stok", "searchable": false, "orderable": true, "className": "text-right"},
-                {"targets": 3, "title": "Harga Beli", "searchable": true, "orderable": true},
-                {"targets": 4, "title": "Harga Jual", "searchable": true, "orderable": true},
-                {"targets": 5, "title": "Action", "searchable": false, "orderable": false}
+                {"targets": 0, "title": "Nama", "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Kode", "searchable": true, "orderable": true},
+                {"targets": 2, "title": "Cabang", "searchable": false, "orderable": true, "className": "text-left"},
+                {"targets": 3, "title": "Jenis Kamar", "searchable": true, "orderable": true},
+                {"targets": 4, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
                 [1, 'asc']
             ],
-            "columns": [{
-                    'data': 'product_code',
-                    render: function (data, meta, row) {
-                        var dsp = '';
-                        dsp += !(data) ? '-' : data;
-                        return dsp;
-                    }
-                }, {
+            "columns": [
+                {
                     'data': 'product_name',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        var cat = !(row.category_name) ? 0 : 1;
+                        // var cat = !(row.category_name) ? 0 : 1;
 
-                        dsp += '<b>' + row.product_name + '</b><br>';
-                        if (row.product_type == 1) {
-                            dsp += '<span class="label" style="color:white;background-color:#7c98f5;padding:1px 4px;">Barang</span>&nbsp;';
-                        }else if (row.product_type == 2) {
-                            dsp += '<span class="label" style="color:white;background-color:#b87cf5;padding:1px 4px;">Jasa</span>&nbsp;';
-                        }
+                        // dsp += '<b>' + row.product_name + '</b><br>';
+                        // if (row.product_type == 1) {
+                        //     dsp += '<span class="label" style="color:white;background-color:#7c98f5;padding:1px 4px;">Barang</span>&nbsp;';
+                        // }else if (row.product_type == 2) {
+                        //     dsp += '<span class="label" style="color:white;background-color:#b87cf5;padding:1px 4px;">Jasa</span>&nbsp;';
+                        // }
 
-                        if (parseInt(cat) > 0) {
-                            dsp += '<span class="label" style="color:white;background-color:#a4a3a5;padding:1px 4px;">' + row.category_name + '</span>';
-                        }
+                        // if (parseInt(cat) > 0) {
+                        //     dsp += '<span class="label" style="color:white;background-color:#a4a3a5;padding:1px 4px;">' + row.category_name + '</span>';
+                        // }
+                        dsp += row.product_name;
                         /*
                          if(parseFloat(row.product_price_promo) > 0){
                          dsp += '&nbsp;<label class="label label-purple">Promo</label>';
@@ -148,52 +141,25 @@
                         return dsp;
                     }
                 }, {
-                    'data': 'product_stock',
+                    'data': 'product_code',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        if (row.product_type == 1) {
-                            if (parseFloat(data) > 0) {
-                                dsp += '<a href="#" class="btn-product-stock" data-product-id="' + row.product_id + '" data-product-name="' + row.product_name + '" data-product-unit="' + row.product_unit + '"><b>' + data + '</b></a>';
-                            } else {
-                                dsp += data;
-                            }
-                            dsp += ' ' + row.product_unit;
-
-                            if (parseInt(row.product_with_stock) == 1) {
-                                var product_stock = parseFloat(row.product_stock);
-                                var stock_min = parseFloat(row.product_min_stock_limit);
-                                if (product_stock < stock_min) {
-                                    dsp += '<br><span class="label" style="background-color:#ef873e;color:white;padding:1px 4px;">Stok Akan Habis</span>';
-                                }
-                            } else {
-                            }
-                        } else {
-                            dsp += '-';
-                        }
+                        dsp += !(data) ? '-' : data;
                         return dsp;
                     }
                 }, {
-                    'data': 'product_price_buy',
-                    className: 'text-right',
+                    'data': 'branch_name',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        if (parseFloat(data) > 0) {
-                            dsp += 'Rp. ' + addCommas(row.product_price_buy);
-                        } else {
-                            dsp += '-';
-                        }
+                        dsp += row.branch_name;
                         return dsp;
                     }
                 }, {
-                    'data': 'product_price_sell',
-                    className: 'text-right',
+                    'data': 'ref_name',
+                    className: 'text-left',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        if (parseFloat(data) > 0) {
-                            dsp += 'Rp. ' + addCommas(row.product_price_sell);
-                        } else {
-                            dsp += '-';
-                        }
+                        dsp += row.ref_name;
                         return dsp;
                     }
                 }, {
@@ -243,32 +209,12 @@
                 index.ajax.reload();
             }
         });
-        $("#filter_categories").on('change', function (e) {
+        $("#filter_branch").on('change', function (e) {
             index.ajax.reload();
-        });
+        });         
         $("#filter_ref").on('change', function (e) {
             index.ajax.reload();
-        });
-        $("#filter_type").on('change', function (e) {
-            index.ajax.reload();
-        });        
-        $('#table-data').on('page.dt', function () {
-            var info = index.page.info();
-            // console.log( 'Showing page: '+info.page+' of '+info.pages);
-            var limit_start = info.start;
-            var limit_end = info.end;
-            var length = info.length;
-            var page = info.page;
-            var pages = info.pages;
-            // start = limit_start;
-            // length = info.length;
-            // console.log("Start: "+info.start+", Length: "+info.length+", End: "+info.end); 
-            // console.log("page .dt : "+info.start+", "+info.length);        
-            // $("#table-data").attr('data-limit-start',limit_start);
-            // $("#table-data").attr('data-limit-end',limit_end);
-        });
-
-
+        });  
 
         $('#satuan').select2({
             placeholder: '--- Pilih ---',
@@ -358,7 +304,7 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        tipe: 10, //1=Produk, 2=News
+                        tipe: 7, //1=Produk, 2=News
                         source: 'references'
                     }
                     return query;
@@ -471,8 +417,9 @@
                 return datas.text;
             }
         });
-        $('#filter_categories').select2({
+        $('#product_branch_id').select2({
             placeholder: '--- Semua ---',
+            allowClear:true,
             minimumInputLength: 0,
             ajax: {
                 type: "get",
@@ -482,9 +429,37 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        tipe: 1, //1=Produk, 2=News
-                        source: 'categories',
-                        search: 'Kamar'                        
+                        source: 'branchs'
+                    }
+                    return query;
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            templateSelection: function (data, container) {
+                // Add custom attributes to the <option> tag for the selected option
+                // $(data.element).attr('data-custom-attribute', data.customValue);
+                // $("input[name='satuan']").val(data.satuan);
+                return data.text;
+            }
+        });        
+        $('#filter_branch').select2({
+            placeholder: '--- Semua ---',
+            allowClear:true,
+            minimumInputLength: 0,
+            ajax: {
+                type: "get",
+                url: "<?= base_url('search/manage'); ?>",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        source: 'branchs'
                     }
                     return query;
                 },
@@ -513,7 +488,7 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        tipe: 3, //1=Produk, 2=News
+                        tipe: 10, //1=Produk, 2=News
                         source: 'references'
                     }
                     return query;
@@ -719,25 +694,26 @@
                 var formData = new FormData();
                 formData.append('action', 'create');
                 // formData.append('upload1', $('#upload1')[0].files[0]);
-                formData.append('tipe', $('#product_type').find(':selected').val());
+                formData.append('tipe', 2);
                 formData.append('kode', $('#kode').val());
                 formData.append('nama', $('#nama').val());
                 formData.append('keterangan', $('#keterangan').val());
-                formData.append('harga_beli', $('#harga_beli').val());
-                formData.append('harga_jual', $('#harga_jual').val());
-                formData.append('harga_promo', $('#harga_promo').val());
-                formData.append('stok_minimal', $('#stok_minimal').val());
-                formData.append('stok_maksmal', $('#stok_maksimal').val());
+                // formData.append('harga_beli', $('#harga_beli').val());
+                // formData.append('harga_jual', $('#harga_jual').val());
+                // formData.append('harga_promo', $('#harga_promo').val());
+                // formData.append('stok_minimal', $('#stok_minimal').val());
+                // formData.append('stok_maksmal', $('#stok_maksimal').val());
                 formData.append('satuan', $('#satuan').find(':selected').val());
                 formData.append('status', $('#status').find(':selected').val());
-                formData.append('with_stock', $('#with_stock').find(':selected').val());
+                // formData.append('with_stock', $('#with_stock').find(':selected').val());
                 formData.append('categories', $('#categories').find(':selected').val());
                 // formData.append('manufacture', $('#manufacture').find(':selected').val());
                 formData.append('referensi', $('#referensi').find(':selected').val());
-                formData.append('akun_beli', $('#account_buy').find(':selected').val());
-                formData.append('akun_jual', $('#account_sell').find(':selected').val());
-                formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
+                // formData.append('akun_beli', $('#account_buy').find(':selected').val());
+                // formData.append('akun_jual', $('#account_sell').find(':selected').val());
+                // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
                 formData.append('upload1', $("#files_preview").attr('data-save-img'));
+                formData.append('product_branch_id', $('#product_branch_id').find(':selected').val());                
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -914,25 +890,25 @@
             }
 
             if (next == true) {
-                if ($("input[id='harga_jual']").val().length == 0) {
-                    notif(0, 'Harga Jual wajib diisi');
-                    $("#harga_jual").focus();
-                    next = false;
-                }
+                // if ($("input[id='harga_jual']").val().length == 0) {
+                //     notif(0, 'Harga Jual wajib diisi');
+                //     $("#harga_jual").focus();
+                //     next = false;
+                // }
             }
 
             if (next == true) {
-                if ($("select[id='account_buy']").find(':selected').val() == 0) {
-                    notif(0, 'Akun Pembelian harus dipilih');
-                    next = false;
-                }
+                // if ($("select[id='account_buy']").find(':selected').val() == 0) {
+                //     notif(0, 'Akun Pembelian harus dipilih');
+                //     next = false;
+                // }
             }
 
             if (next == true) {
-                if ($("select[id='account_sell']").find(':selected').val() == 0) {
-                    notif(0, 'Akun Penjualan harus dipilih');
-                    next = false;
-                }
+                // if ($("select[id='account_sell']").find(':selected').val() == 0) {
+                //     notif(0, 'Akun Penjualan harus dipilih');
+                //     next = false;
+                // }
             }
 
             if (next == true) {
@@ -959,24 +935,25 @@
                 formData.append('action', 'update');
                 formData.append('id', $('#id_document').val());
                 // formData.append('upload1', $('#upload1')[0].files[0]);
-                formData.append('tipe', $('#product_type').find(':selected').val());
+                // formData.append('tipe', $('#product_type').find(':selected').val());
                 formData.append('kode', $('#kode').val());
                 formData.append('nama', $('#nama').val());
                 formData.append('keterangan', $('#keterangan').val());
-                formData.append('harga_beli', $('#harga_beli').val());
-                formData.append('harga_jual', $('#harga_jual').val());
-                formData.append('harga_promo', $('#harga_promo').val());
-                formData.append('stok_minimal', $('#stok_minimal').val());
-                formData.append('stok_maksmal', $('#stok_maksimal').val());
+                // formData.append('harga_beli', $('#harga_beli').val());
+                // formData.append('harga_jual', $('#harga_jual').val());
+                // formData.append('harga_promo', $('#harga_promo').val());
+                // formData.append('stok_minimal', $('#stok_minimal').val());
+                // formData.append('stok_maksmal', $('#stok_maksimal').val());
                 // formData.append('manufacture', $('#manufacture').val());      
                 formData.append('referensi', $('#referensi').find(':selected').val());
                 formData.append('satuan', $('#satuan').find(':selected').val());
-                formData.append('status', $('#status').find(':selected').val());
-                formData.append('with_stock', $('#with_stock').find(':selected').val());
+                // formData.append('status', $('#status').find(':selected').val());
+                // formData.append('with_stock', $('#with_stock').find(':selected').val());
                 formData.append('categories', $('#categories').find(':selected').val());
-                formData.append('akun_beli', $('#account_buy').find(':selected').val());
-                formData.append('akun_jual', $('#account_sell').find(':selected').val());
-                formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
+                // formData.append('akun_beli', $('#account_buy').find(':selected').val());
+                // formData.append('akun_jual', $('#account_sell').find(':selected').val());
+                // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
+                formData.append('product_branch_id', $('#product_branch_id').find(':selected').val());                   
                 formData.append('upload1', $("#files_preview").attr('data-save-img'));
                 $.ajax({
                     type: "POST",
@@ -1808,23 +1785,6 @@
                 }
             });
         }
-        // $('#upload1').change(function (e) {
-        //     var fileName = e.target.files[0].name;
-        //     var reader = new FileReader();
-        //     reader.onload = function (e) {
-        //         $('#img-preview1').attr('src', e.target.result);
-        //     };
-        //     reader.readAsDataURL(this.files[0]);
-        // });
-        // function readURL(input) {
-        //   if (input.files && input.files[0]) {
-        //     var reader = new FileReader();
-        //     reader.onload = function (e) {
-        //         $('.uploadpdf').text(input.files[0].name);
-        //     }
-        //     reader.readAsDataURL(input.files[0]);
-        //   }
-        // } 
 
         //Image Croppie
         $(document).on('change', '#files', function(e) {

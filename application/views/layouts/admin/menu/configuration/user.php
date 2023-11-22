@@ -304,18 +304,7 @@
                                                             <input id="password" name="password" type="password" value="" class="form-control" readonly='true'/>
                                                         </div>
                                                     </div>    											           
-                                                </div> 
-                                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                                    <div class="form-group">                          
-                                                        <label>Fitur Riwayat Harga Produk</label>                          
-                                                    </div>
-                                                    <div class="checkbox check-success">
-                                                        <input id="user_check_price_buy" type="checkbox" value="0"><label for="user_check_price_buy">&nbsp;Bisa lihat Harga Beli</label>
-                                                    </div>
-                                                    <div class="checkbox check-success">
-                                                        <input id="user_check_price_sell" type="checkbox" value="0"><label for="user_check_price_sell">&nbsp;Bisa lihat Harga Jual</label>
-                                                    </div>                                                                                                               
-                                                </div>                                                                          
+                                                </div>                                                                           
                                             </div>
                                             <div class="col-md-4 col-sm-12 col-xs-12">
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
@@ -393,56 +382,7 @@
                                                             <input id="kode" name="kode" type="text" value="" class="form-control" readonly='true'/>
                                                         </div>
                                                     </div>
-                                                -->
-                                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">                                                
-                                                    <div class="col-lg-7 col-md-7 col-xs-12 padding-remove-left">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Nama Lengkap</label>
-                                                            <input id="fullname" name="fullname" type="text" value="" class="form-control" readonly='true'/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-5 col-md-5 col-xs-12 padding-remove-side">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Jenis Kelamin</label>
-                                                            <select id="gender" name="gender" class="form-control" disabled readonly>
-                                                                <option value="">-- Pilih --</option>
-                                                                <?php
-                                                                $jenis_kelamin_values = array(
-                                                                    'L' => 'Laki-laki',
-                                                                    'P' => 'Perempuan',
-                                                                );
-
-                                                                foreach ($jenis_kelamin_values as $value => $display_text) {
-                                                                    echo '<option value="' . $value . '" ' . $selected . '>' . $display_text . '</option>';
-                                                                }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>                           
-                                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Alamat</label>
-                                                        <textarea id="alamat" name="alamat" type="text" value="" class="form-control" readonly='true' rows="4"></textarea>
-                                                    </div>
-                                                </div>                                                
-                                                <div class="hide col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                    <div class="col-md-7 col-xs-7 col-sm-7 padding-remove-left">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Tempat Lahir</label>
-                                                            <input id="place_birth" name="place_birth" type="text" value="" class="form-control" readonly='true'/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-5 col-xs-5 col-sm-5 padding-remove-side">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Tgl Lahir</label>
-                                                            <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                                <input name="tgl" id="tgl" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date; ?>">
-                                                                <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>  
-                                                </div>                         
+                                                -->                         
                                             </div>
                                             <div class="clearfix"></div>
                                             <div class="col-md-12 col-xs-12 col-sm-12" style="margin-top: 10px;">

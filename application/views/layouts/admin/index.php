@@ -894,6 +894,7 @@ $switch_do = !empty($this->session->flashdata('switch_branch')) ?  intval($this-
 				}
 			});			  
 			//Datatable Dashboard Stock Config
+			/*
 			var table_dashboard_stock = $("#table_dashboard_stock").DataTable({
 				"serverSide": true,
 				"ajax": {
@@ -955,7 +956,8 @@ $switch_do = !empty($this->session->flashdata('switch_branch')) ?  intval($this-
 			$("#table_dashboard_stock_filter").css('display','none');  
 			$("#table_dashboard_stock_length").css('display','none');
 			$("#table_dashboard_stock_info").css('display','none');  
-			$("#table_dashboard_stock_paginate").css('display','none');			
+			$("#table_dashboard_stock_paginate").css('display','none');		
+			*/	
 			$(document).on("click",".btn_dashboard_stock",function(e) {
 				e.preventDefault();
 				e.stopPropagation();

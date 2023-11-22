@@ -206,37 +206,37 @@
                                                     <input id="nama" name="nama" type="text" value="" class="form-control" readonly='true'/>
                                                 </div>
                                             </div> 
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                            <!-- <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                 <div class="form-group">
                                                     <label>Keterangan</label>
                                                     <input id="keterangan" name="keterangan" type="text" value="" class="form-control" readonly='true'/>
                                                 </div>
-                                            </div> 
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                            </div>  -->
+                                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                                 <div class="form-group">
                                                     <label>Harga Bulanan</label>
                                                     <input id="order_ref_price_id_0" name="order_ref_price_id_0" type="text" value="" class="form-control" readonly='true'/>
                                                 </div>
                                             </div>          
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                                 <div class="form-group">
                                                     <label>Harga Harian</label>
                                                     <input id="order_ref_price_id_1" name="order_ref_price_id_1" type="text" value="" class="form-control" readonly='true'/>
                                                 </div>
                                             </div>               
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                                 <div class="form-group">
                                                     <label>Midnight</label>
                                                     <input id="order_ref_price_id_2" name="order_ref_price_id_2" type="text" value="" class="form-control" readonly='true'/>
                                                 </div>
                                             </div>                                                             
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                                 <div class="form-group">
                                                     <label>4 Jam</label>
                                                     <input id="order_ref_price_id_3" name="order_ref_price_id_3" type="text" value="" class="form-control" readonly='true'/>
                                                 </div>
                                             </div>                                                            
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                                 <div class="form-group">
                                                     <label>2 Jam</label>
                                                     <input id="order_ref_price_id_4" name="order_ref_price_id_4" type="text" value="" class="form-control" readonly='true'/>

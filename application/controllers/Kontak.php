@@ -222,7 +222,7 @@ class Kontak extends MY_Controller{
                     }
 
                     $params = array(
-                        'contact_branch_id' => intval($session_branch_id),
+                        // 'contact_branch_id' => intval($session_branch_id),
                         'contact_type' => intval($set_tipe)
                     );
 
@@ -308,21 +308,23 @@ class Kontak extends MY_Controller{
                     //Check Data Exist
                     $params_check = array(
                         'contact_type' => intval($set_contact_type),
-                        'contact_branch_id' => intval($session_branch_id)
+                        'contact_code' => $contact_code
+                        // 'contact_branch_id' => intval($session_branch_id)
                     );
                     
                     if($identity == 1){
                         $params_check['contact_name'] = $contact_name;
                         $set_message = $contact_name;
                     }else if($identity == 2){
-                        $params_check['contact_name'] = $contact_name;     
+                        $params_check['contact_code'] = $contact_code;
+                        $params_check['contact_name'] = $contact_name;                             
                         $set_message = $contact_name;                   
                     }else if($identity == 3){
                         $params_check['contact_identity_number'] = $contact_identity_number;        
-                        $set_message = $contact_identity_number;                
+                        $set_message = $contact_code;                
                     }
                     $check_exists = $this->Kontak_model->check_data_exist($params_check);
-
+                    // var_dump($params_check);die;
                     if($check_exists==false){
                         /*
                         $params = array(
@@ -506,22 +508,32 @@ class Kontak extends MY_Controller{
                     $params_check = array(
                         'contact_id !=' => intval($contact_id),
                         'contact_type' => intval($set_contact_type),
-                        'contact_branch_id' => intval($session_branch_id)
+                        // 'contact_branch_id' => intval($session_branch_id)
                     );
 
                     if($identity == 1){//Supplier
                         $params_check['contact_name'] = $contact_name;
                         $set_message = $contact_name;
+                        $check_exists = $this->Kontak_model->check_data_exist($params_check);
                     }else if($identity == 2){ //Customer
+                        $params_check['contact_code'] = $contact_code;                        
                         $params_check['contact_name'] = $contact_name;
-                        $set_message = $contact_name;                                                
+                        $set_message = $contact_code;                                            
+                        
+                        $where_not = [
+                            'contact_id' => intval($contact_id)
+                        ];
+                        $where_in = [
+                            'contact_code' => $contact_code
+                        ];                        
+                        $check_exists = $this->Kontak_model->check_data_exist_items_two_condition($where_not, $where_in);
+                        // var_dump($check_exists);die;
                     }else if($identity == 3){ //Karyawan
                         $check_exists = false;
-                        $params_check['contact_identity_number'] = $contact_identity_number;                        
+                        $params_check['contact_identity_number'] = $contact_code;                        
                         $set_message = $contact_identity_number;
+                        $check_exists = $this->Kontak_model->check_data_exist($params_check);
                     }
-                    $check_exists = $this->Kontak_model->check_data_exist($params_check);
-                    // var_dump($check_exists);die;
                     if($check_exists == false){
                         $params = array(
                             // 'contact_type' => $set_contact_type,

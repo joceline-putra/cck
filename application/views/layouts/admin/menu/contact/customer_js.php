@@ -44,7 +44,7 @@
             decimalPlaces: 2,
             watchExternalChanges: true //!!!        
         };
-        new AutoNumeric('#contact_receivable_limit', autoNumericOption);
+        // new AutoNumeric('#contact_receivable_limit', autoNumericOption);
 
         // $("#filter_search").focus();
         var index = $("#table-data").DataTable({
@@ -71,7 +71,7 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Kode", "searchable": true, "orderable": true, "width":"10%"},
+                {"targets": 0, "title": "NIK", "searchable": true, "orderable": true, "width":"10%"},
                 {"targets": 1, "title": "Nama", "searchable": true, "orderable": true, "width":"30%"},
                 {"targets": 2, "title": "Telepon", "searchable": true, "orderable": true, "width":"15%"},
                 {"targets": 3, "title": "Alamat", "searchable": true, "orderable": true, "width":"30%"},
@@ -578,11 +578,11 @@
             var type_karyawan = ($("#checkbox_karyawan").is(':checked') == true) ? 1 : 0;
 
             if (next == true) {
-                // if ($("input[id='kode']").val().length == 0) {
-                //     notif(0, 'Kode wajib diisi');
-                //     $("#kode").focus();
-                //     next = false;
-                // }
+                if ($("input[id='kode']").val().length == 0) {
+                    notif(0, 'NIK wajib diisi');
+                    $("#kode").focus();
+                    next = false;
+                }
             }
 
             if (next == true) {
@@ -610,17 +610,17 @@
             }
 
             if (next == true) {
-                if ($("select[id='account_payable']").find(':selected').val() < 1) {
-                    notif(0, 'Akun Hutang harus dipilih');
-                    next = false;
-                }
+                // if ($("select[id='account_payable']").find(':selected').val() < 1) {
+                //     notif(0, 'Akun Hutang harus dipilih');
+                //     next = false;
+                // }
             }
 
             if (next == true) {
-                if ($("select[id='account_receivable']").find(':selected').val() < 1) {
-                    notif(0, 'Akun Piutang harus dipilih');
-                    next = false;
-                }
+                // if ($("select[id='account_receivable']").find(':selected').val() < 1) {
+                //     notif(0, 'Akun Piutang harus dipilih');
+                //     next = false;
+                // }
             }
 
             if (next == true) {
@@ -653,7 +653,7 @@
                 // form.append('profesi', $('#profesi').find(':selected').val());   
                 // form.append('nama_mandarin', $('#nama_mandarin').val());
                 // form.append('tgl', $('#tgl').val());      
-                form.append('contact_receivable_limit', removeCommas($('#contact_receivable_limit').val()));
+                // form.append('contact_receivable_limit', removeCommas($('#contact_receivable_limit').val()));
                 form.append('categories', $('#categories').find(':selected').val());
                 form.append('upload1', $("#files_preview").attr('data-save-img'));                 
                 form.append('kontak_parent',$("#contact_parent_id").find(":selected").val());                
@@ -925,9 +925,9 @@
             // });
 
             if (kode.val().length == 0) {
-                // notif(0, 'Kode wajib diisi');
-                // kode.focus();
-                // next = false;
+                notif(0, 'Kode wajib diisi');
+                kode.focus();
+                next = false;
             }
 
 
@@ -938,17 +938,17 @@
             }
 
             if (next == true) {
-                if ($("select[id='account_payable']").find(':selected').val() < 1) {
-                    notif(0, 'Akun Hutang harus dipilih');
-                    next = false;
-                }
+                // if ($("select[id='account_payable']").find(':selected').val() < 1) {
+                //     notif(0, 'Akun Hutang harus dipilih');
+                //     next = false;
+                // }
             }
 
             if (next == true) {
-                if ($("select[id='account_receivable']").find(':selected').val() < 1) {
-                    notif(0, 'Akun Piutang harus dipilih');
-                    next = false;
-                }
+                // if ($("select[id='account_receivable']").find(':selected').val() < 1) {
+                //     notif(0, 'Akun Piutang harus dipilih');
+                //     next = false;
+                // }
             }
 
             if (next == true) {
@@ -978,7 +978,7 @@
                 form.append('akun_hutang', $('#account_payable').find(':selected').val());
                 form.append('akun_piutang', $('#account_receivable').find(':selected').val());
                 form.append('contact_termin', $('#contact_termin').find(':selected').val());
-                form.append('contact_receivable_limit', removeCommas($('#contact_receivable_limit').val()));
+                // form.append('contact_receivable_limit', removeCommas($('#contact_receivable_limit').val()));
                 form.append('categories', $('#categories').find(':selected').val());
                 form.append('upload1', $("#files_preview").attr('data-save-img'));
                 form.append('kontak_parent',$("#contact_parent_id").find(":selected").val());                

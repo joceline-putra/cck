@@ -71,8 +71,7 @@ class Produk extends MY_Controller{
             $data['title'] = 'Kamar';
             $data['_view'] = 'layouts/admin/menu/product/room';
             $file_js = 'layouts/admin/menu/product/room_js.php';
-        }        
-        else if($identity == 3){ //Inventaris
+        }else if($identity == 3){ //Inventaris
             $data['satuan'] = $this->Satuan_model->get_all_satuan();              
             $data['referensi'] = $this->Referensi_model->get_all_referensi(array('ref_type'=>6));
 
@@ -81,59 +80,7 @@ class Produk extends MY_Controller{
             $data['_view'] = 'layouts/admin/menu/product/asset';
             $file_js = 'layouts/admin/menu/product/asset_js.php';
         }
-        /*
-            else if($identity == 2){ //Jasa // Move to product_type = 2
-                $data['account_purchase'] = $this->get_account_map_for_transaction($session_branch_id,1,1); //Pembelian
-                $data['account_sales'] = $this->get_account_map_for_transaction($session_branch_id,2,1); //Penjualan
 
-                // $data['satuan'] = $this->Satuan_model->get_all_satuan();  
-                $data['identity'] = 2;
-                $data['title'] = 'Jasa';
-                $data['_view'] = 'layouts/admin/menu/product/service';
-                $file_js = 'layouts/admin/menu/product/service_js.php';
-            }
-            else if($identity == 4){ //Tindakan & DEPRECATED
-                $data['referensi'] = $this->Referensi_model->get_all_referensi(array('ref_type'=>2));
-                
-                $data['identity'] = 4;    
-                $data['title'] = 'Tindakan';
-                $data['_view'] = 'layouts/admin/menu/product/tindakan';
-                $file_js = 'layouts/admin/menu/product/tindakan_js.php';
-            } 
-            else if($identity == 5){ //Laboratorium
-                // $data['referensi'] = $this->Referensi_model->get_all_referensi(array('ref_type'=>5));
-                $data['account_purchase'] = $this->get_account_map_for_transaction($session_branch_id,1,1); //Pembelian
-                $data['account_sales'] = $this->get_account_map_for_transaction($session_branch_id,2,1); //Penjualan
-
-                $data['identity'] = 5;
-                $data['title'] = 'Laboratorium';
-                $data['_view'] = 'layouts/admin/menu/product/laboratory';
-                $file_js = 'layouts/admin/menu/product/laboratory_js.php';
-            }
-            else if($identity == 6){ //Lain
-                $data['referensi'] = $this->Referensi_model->get_all_referensi(array('ref_type'=>6));
-
-                $data['identity'] = 6;
-                $data['title'] = 'Lain';
-                $data['_view'] = 'product/lain';
-                $file_js = 'product/lain_js.php';
-            } 
-            else if($identity == 7){ //Kategori Produk
-
-                $params = array(
-                    'category_parent_id' => 0
-                );
-                $search = null;
-                $order = 'category_name';
-
-                $data['parent_category'] = $this->Kategori_model->get_all_categoriess($params,$search,100,0,$order,'ASC');
-                $data['identity'] = 7;
-                $data['title'] = 'Kategori Produk';
-                $data['_view'] = 'reference/kategori_produk';
-                $file_js = 'reference/kategori_produk_js.php';
-            }
-        */
-       
         $data['image_width'] = intval($this->image_width);
         $data['image_height'] = intval($this->image_height);
                 
@@ -169,74 +116,29 @@ class Produk extends MY_Controller{
             $identity = !empty($this->input->post('tipe')) ? intval($this->input->post('tipe')) : null;
 
             //Produk ID or TIPE
-            if($identity == 1){ //Barang & Obat
+            if($identity == 1){ //Makanan - Barang
                 $columns = array(
                     '0' => 'product_code',
                     '1' => 'product_name',
                     '2' => 'product_stock',
                     '3' => 'product_price_sell'                    
                 );                                      
-            }else if($identity == 2){ //Jasa
+            }else if($identity == 2){ //Kamar - Jasa
+                $columns = array(
+                    '0' => 'product_name',
+                    '1' => 'product_code',
+                    '2' => 'branch_name',
+                    '3' => 'ref_name'
+                ); 
+            }else if($identity == 3){ //Aset - Inventaris 
                 $columns = array(
                     '0' => 'product_code',
                     '1' => 'product_name',
                     '2' => 'ref_name',
                     '3' => 'product_price_sell'
                 ); 
-            }else if($identity == 3){ //Inventaris 
-                $columns = array(
-                    '0' => 'product_code',
-                    '1' => 'product_name',
-                    '2' => 'ref_name',
-                    '3' => 'product_price_sell'
-                ); 
-            }else if($identity == 5){ //Laboratorium
-                $columns = array(
-                    '0' => 'product_code',
-                    '1' => 'product_name',
-                    '2' => 'ref_name',
-                    '3' => 'product_price_sell'
-                );                       
             }
 
-            /*if($identity == 6){ //Lain
-                $columns = array(
-                    '0' => 'product_code',
-                    '1' => 'product_name',
-                    '2' => 'group',
-                    '3' => 'product_price_sell'
-                );                       
-            }
-            if($identity == 7){ //kategori produk
-                $set_tipe = 7;
-                $params = array(
-                    'product_type' => !empty($this->input->post('tipe')) ? $this->input->post('tipe') : null,
-                    'product_code' => !empty($this->input->post('kode')) ? $this->input->post('kode') : null,
-                    'product_name' => !empty($this->input->post('nama')) ? $this->input->post('nama') : null,
-                    'product_ref_id' => !empty($this->input->post('referensi')) ? $this->input->post('referensi') : null,   
-                    'product_price_sell' => !empty($this->input->post('harga_jual')) ? $this->input->post('harga_jual') : null, 
-                    'product_date_created' => date("YmdHis"),
-                    'product_date_updated' => date("YmdHis"),
-                    'product_flag' => !empty($this->input->post('status')) ? $this->input->post('status') : 1,
-                    'product_user_id' => $session_user_id,
-                    'product_branch_id' => $session_branch_id
-                );   
-                $params_update = array(
-                    'product_category_code' => $data['kode'],
-                    'product_category_name' => $data['nama'],
-                    'product_category_parent_id' => $data['parent'],
-                    'product_category_url' => $data['url'],   
-                    'product_category_icon' => $data['icon'],
-                    'product_category_date_updated' => date("YmdHis"),
-                    'product_category_flag' => $data['status']
-                );                                 
-                $columns = array(
-                    '0' => 'product_category_code',
-                    '1' => 'product_category_name'
-                );
-                $table = 'product_categories';
-            }
-            */
             if($action=='create'){
                 //Set Product
                 $product_type = !empty($this->input->post('tipe')) ? intval($this->input->post('tipe')) : null;
@@ -823,7 +725,7 @@ class Produk extends MY_Controller{
                     $return->status  = 1;
                     $return->message = 'Error update '.$product_name;                    
                 }         
-            }else if($action=='delete'){
+            }else if($action=='delete'){ die;
                 $return->message = 'Function not ready';
             }else if($action=='set-active'){
                 $id = $this->input->post('id');
@@ -879,16 +781,18 @@ class Produk extends MY_Controller{
                         $search[$v] = $s;
                     }
                 }
-
-                $params = array(
-                    'product_branch_id' => $session_branch_id,
-                );
+                $params = array();
+                
+                // $params = array(
+                    // 'product_branch_id' => $session_branch_id,
+                // );
                 if($identity > 0){ //Form Admin Panel (Barang, Jasa, Inventaris)
                     // var_dump($identity);
                     // $params = array(
                     //     'product_branch_id' => $session_branch_id,
                     //     // 'product_type' => $identity
                     // );    
+                    $filter_branch         = !empty($this->input->post('filter_branch')) ? intval($this->input->post('filter_branch')) : 0;
                     $filter_ref         = !empty($this->input->post('filter_ref')) ? intval($this->input->post('filter_ref')) : 0;
                     $filter_category    = !empty($this->input->post('filter_categories')) ? intval($this->input->post('filter_categories')) : 0;                    
                     $filter_type        = !empty($this->input->post('filter_type')) ? intval($this->input->post('filter_type')) : 0;
@@ -896,12 +800,18 @@ class Produk extends MY_Controller{
                     $filter_city        = !empty($this->input->post('filter_city')) ? intval($this->input->post('filter_city')) : 0;                
                     $filter_flag        = !empty($this->input->post('filter_flag')) ? intval($this->input->post('filter_flag')) : 0;
                     
+                    $filter_branch > 0 ? $params['product_branch_id'] = $filter_branch : $params;
                     $filter_ref > 0 ? $params['product_ref_id'] = $filter_ref : $params;
                     $filter_category > 0 ? $params['product_category_id'] = $filter_category : $params;                    
                     $filter_type > 0 ? $params['product_type'] = $filter_type : $params;
                     $filter_contact > 0 ? $params['product_contact_id'] = $filter_contact : $params;
                     $filter_city > 0 ? $params['product_city_id'] = $filter_city : $params;
                     // $filter_flag > 0 ? $params['product_flag'] = $filter_flag : $params;
+                    
+                    // if($filter_branch > 0){
+
+                    // }
+
                     if($filter_flag == 100){
 
                     }else{

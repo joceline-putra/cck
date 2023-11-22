@@ -163,5 +163,32 @@ class Kontak_model extends CI_Model
             return false;
         }
     }
-
+    function check_data_exist_items_two_condition($where_not_in,$where_exist){
+        if ($where_not_in) {
+            foreach ($where_not_in as $k => $v) {
+                $this->db->where($k.' !=', $v);
+            }
+        }
+        if ($where_exist) {
+            $n = 0;
+            $this->db->group_start();
+            foreach($where_exist as $key => $val) {
+                if ($n == 0) {
+                    $this->db->where($key, $val);
+                } else {
+                    $this->db->where($key, $val);
+                }
+                $n++;
+            }
+            $this->db->group_end();
+        }
+        $this->db->limit(1,0);
+        $query = $this->db->get('contacts');
+        if ($query->num_rows() > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
+

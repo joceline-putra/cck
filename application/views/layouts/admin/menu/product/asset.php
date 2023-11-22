@@ -3,7 +3,7 @@
         <?php include '_navigation.php'; ?>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
-                <div id="div-form-trans" style="display:block;" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                <div id="div-form-trans" style="display:none;" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                     <div class="grid simple">
                         <div class="grid-body">
                             <h5><b>Form <?php echo $title; ?></b></h5>                            
@@ -47,7 +47,7 @@
                                         <div class="col-md-4 col-sm-12 col-xs-12">
                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                 <div class="form-group">
-                                                    <label class="form-label">Jenis Inventaris *</label>
+                                                    <label class="form-label">Jenis <?php echo $title; ?> *</label>
                                                     <select id="product_ref_id" name="product_ref_id" class="form-control" disabled readonly>
                                                         <option value="0">Pilih</option>
                                                     </select>
@@ -56,7 +56,7 @@
                                             <div class="col-md-12 col-xs-6 col-sm-12 padding-remove-side">
                                                 <div class="col-md-8 col-xs-12 col-sm-12 padding-remove-left">
                                                     <div class="form-group">
-                                                        <label class="form-label"	>Kode <?php echo $title; ?> / Barcode</label>
+                                                        <label class="form-label">Kode <?php echo $title; ?> / Barcode</label>
                                                         <input id="kode" name="kode" type="text" value="" class="form-control" readonly="true"/>
                                                     </div>
                                                 </div>
@@ -186,7 +186,7 @@
                                                     <textarea id="keterangan" name="keterangan" type="text" class="form-control" readonly='true' rows="4"/></textarea>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-left">
+                                            <div class="hide col-lg-12 col-md-12 col-xs-12 padding-remove-left">
                                                 <div class="col-lg-4 col-md-4 col-xs-12 padding-remove-left">
                                                     <div class="form-group">
                                                         <label class="form-label">Ingatkan Setiap</label>
@@ -292,7 +292,7 @@
                                             <option value="0">Nonaktif</option>
                                         </select>
                                     </div>                                    
-                                    <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                    <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12 form-group padding-remove-right">
                                         <label class="form-label">Cari</label>
                                         <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
                                     </div>                                 

@@ -143,6 +143,13 @@
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4 padding-remove-side">
                                                 <div class="form-group">
+                                                    <label class="form-label" style="color:red;">Cabang *</label>
+                                                    <select id="product_branch" name="product_branch" class="form-control">
+                                                    </select>
+                                                </div>
+                                            </div>	
+                                            <div class="col-lg-12 col-md-12 col-sm-4 col-xs-4 padding-remove-side">
+                                                <div class="form-group">
                                                     <label class="form-label" style="color:red;">Jenis <?php echo $title; ?> *</label>
                                                     <select id="product_type" name="product_type" class="form-control" disabled readonly>
                                                         <option value="2" selected>Jasa</option>
@@ -172,49 +179,13 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>              
-                                            <!-- <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8 padding-remove-side"> -->
-
-                                                <!-- <div class="col-md-4 col-xs-12 col-sm-12 padding-remove-side">-->
-                                                <!-- <div class="form-group"> -->
-                                                <!-- <label>Stok Maksimal</label> -->
-                                                <input id="stok_maksimal" name="stok_maksimal" type="hidden" value="" class="form-control" readonly='true'/>
-                                                <!-- </div>-->
-                                                <!-- </div>-->
-                                            <!-- </div> -->
-                                            <!--
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                                  <div class="form-group">
-                                                    <label>Jenis Produk *</label>
-                                                    <select id="manufacture" name="manufacture" class="form-control" disabled readonly>
-                                                          <option value="">-- Pilih --</option>
-                                                          <option value="Food">Food</option>
-                                                          <option value="Drink">Drink</option>
-                                                          <option value="Snack">Snack</option>
-                                                          <option value="Topping">Topping</option>
-                                                          <option value="Paket">Paket</option>
-                                                          <option value="Bahan Baku">Bahan Baku</option>
-                                                    </select>
-                                                  </div>
-                                            </div>
-                                            -->
-                                            <!--
-                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                                    <div class="form-group">
-                                                            <label>Referensi</label>
-                                                            <select id="referensi" name="referensi" class="form-control" disabled readonly>
-                                                                    <option value="">-- Pilih --</option>
-                                                            </select>
-                                                    </div>
-                                            </div>
-                                            -->                                                                                
+                                            </div>                                                                                 
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                 <div class="form-group">
                                                     <label class="form-label" style="color:red;">Kategori *</label>
                                                     <select id="categories" name="categories" class="form-control" disabled readonly>
-                                                        <!-- <option value="0">-- Pilih --</option> -->
                                                         <option value="2">Kamar</option>                                                        
                                                     </select>
                                                 </div>
@@ -332,7 +303,7 @@
                                                 </div>                 
                                             </div>
                                         </div>
-                                        <div class="col-md-5 col-sm-12 col-xs-12">
+                                        <div class="hide col-md-5 col-sm-12 col-xs-12">
 
                                             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="background-color:#dddddd;padding-left: 1px;padding-right: 1px;">
                                                 <ul class="nav nav-tabs nav-tabs-detail" role="tablist" style="margin-top:1px;">
@@ -510,32 +481,18 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
-                                    <div class="col-lg-2 col-md-2 col-xs-4 col-sm-4 form-group padding-remove-right">
-                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <label class="form-label" style="color:red;">Jenis</label>
-                                            <select id="filter_type" name="filter_type" class="form-control">
-                                                <!-- <option value="0">Semua</option> -->
-                                                <!-- <option value="1">Barang</option> -->
-                                                <option value="2">Jasa</option>                                                                                                
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-xs-8 col-sm-8 form-group padding-remove-right">
-                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <label class="form-label" style="color:red;">Kategori</label>
-                                            <select id="filter_categories" name="filter_categories" class="form-control">
-                                                <!-- <option value="0">Semua</option> -->
-                                                <option value="2">Kamar</option>                                                
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--
                                     <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
-                                            <label class="form-label">Referensi</label>
-                                            <select id="filter_ref" name="filter_ref" class="form-control">
-                                              <option value="0">-- Semua --</option>
-                                            </select>
-                                    </div> -->
+                                        <label class="form-label">Cabang</label>
+                                        <select id="filter_branch" name="filter_branch" class="form-control">
+                                            <option value="0">-- Semua --</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                        <label class="form-label">Jenis Kamar</label>
+                                        <select id="filter_ref" name="filter_ref" class="form-control">
+                                            <option value="0">-- Semua --</option>
+                                        </select>
+                                    </div>
                                     <div class="col-lg-2 col-md-2 col-xs-4 col-sm-4 form-group padding-remove-right">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <label class="form-label">Status</label>

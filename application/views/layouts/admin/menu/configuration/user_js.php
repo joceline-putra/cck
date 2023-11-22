@@ -1067,7 +1067,6 @@
         var attrInput = [
             // "kode",
             "fullname",
-            "place_birth",
             // "tgl",            
             "telepon_1",
             "email_1",
@@ -1080,7 +1079,6 @@
 
         //Attr Textarea yang perlu di setel
         var attrText = [
-            "alamat"
         ];
         for (var i = 0; i <= attrText.length; i++) {
             $("" + form + " textarea[name='" + attrText[i] + "']").attr('readonly', flag);
@@ -1090,7 +1088,6 @@
         var atributSelect = [
             "tipe",
             "branch",
-            "gender",
             "group",
             "theme",
             "status",

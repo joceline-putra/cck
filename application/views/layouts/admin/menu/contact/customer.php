@@ -128,13 +128,13 @@
                                                     </div>
                                                 </div>    
                                                 <div class="col-md-4 col-sm-12 col-xs-12">
-                                                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 padding-remove-left prl-2">
+                                                    <div class="col-lg-7 col-md-7 col-sm-5 col-xs-5 padding-remove-left prl-2">
                                                         <div class="form-group">
-                                                            <label class="form-label">Kode</label>
-                                                            <input id="kode" name="kode" type="text" value="" class="form-control" readonly='true'/>
+                                                            <label class="form-label">NIK</label>
+                                                            <input id="kode" name="kode" type="text" value="" class="form-control"/>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-7 col-md-12 col-sm-7 col-xs-7 padding-remove-side">
+                                                    <div class="col-lg-5 col-md-5 col-sm-7 col-xs-7 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Group *</label>
                                                             <select id="categories" name="categories" class="form-control" disabled readonly>
@@ -148,6 +148,21 @@
                                                             <input id="nama" name="nama" type="text" value="" class="form-control" readonly='true'/>
                                                         </div>
                                                     </div>  
+
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> 
+                                                        <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 padding-remove-left">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Telepon</label>
+                                                                <input id="telepon_1" name="telepon_1" type="text" value="" class="form-control" readonly='true'/>
+                                                            </div>                          
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 padding-remove-side prr-2">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Email</label>
+                                                                <input id="email_1" name="email_1" type="text" value="" class="form-control" readonly='true'/>
+                                                            </div>                          
+                                                        </div>   
+                                                    </div>                                                      
                                                     <!--    
                                                     <div class="col-ld-12 col-md-12 padding-remove-side">
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 padding-remove-left">
@@ -174,21 +189,7 @@
                                                         <input id="npwp" name="npwp" type="text" value="" class="form-control" readonly='true'/>
                                                       </div>                          
                                                     </div>  
-                                                    -->     
-                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> 
-                                                        <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 padding-remove-left">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Telepon</label>
-                                                                <input id="telepon_1" name="telepon_1" type="text" value="" class="form-control" readonly='true'/>
-                                                            </div>                          
-                                                        </div>
-                                                        <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 padding-remove-side prr-2">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Email</label>
-                                                                <input id="email_1" name="email_1" type="text" value="" class="form-control" readonly='true'/>
-                                                            </div>                          
-                                                        </div>   
-                                                    </div>                       
+                                                    -->                           
                                                     <!--
                                                       <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">            
                                                         <div class="form-group">
@@ -202,13 +203,7 @@
                                                           <input id="email_2" name="email_2" type="text" value="" class="form-control" readonly='true'/>
                                                         </div>                             
                                                       </div>                          
-                                                    -->                                                   
-                                                    <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Alamat</label>
-                                                            <textarea id="alamat" name="alamat" type="text" value="" class="form-control" readonly='true' rows="4"/></textarea>
-                                                        </div>
-                                                    </div>                                                                                                          
+                                                    -->                                                                                                            
                                                     <!-- <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Perusahaan</label>
@@ -217,6 +212,13 @@
                                                     </div> -->
                                                 </div>
                                                 <div class="col-md-4 col-sm-12 col-xs-12">
+
+                                                    <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Alamat</label>
+                                                            <textarea id="alamat" name="alamat" type="text" value="" class="form-control" readonly='true' rows="4"/></textarea>
+                                                        </div>
+                                                    </div>                                                      
                                                     <!--
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                       <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-left">
@@ -232,23 +234,7 @@
                                                         </div>                          
                                                       </div>
                                                     </div>  
-                                                    -->
-                                                    <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">                                                    
-                                                        <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-left">
-                                                            <div class="form-group">
-                                                                <label class="form-label" style="color:red;">Aturan Termin (Penjualan)</label>
-                                                                <select id="contact_termin" name="contact_termin" class="form-control">
-                                                                    <!-- <option value="0">-- Pilih Akun --</option> -->                                
-                                                                </select>
-                                                            </div>
-                                                        </div>    
-                                                        <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
-                                                            <div class="form-group">
-                                                                <label class="form-label" style="color:red;">Limit Piutang</label>
-                                                                <input id="contact_receivable_limit" name="contact_receivable_limit" type="text" value="" class="form-control" readonly='true'/>
-                                                            </div>
-                                                        </div>                                                     
-                                                    </div>    
+                                                    -->   
                                                     <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Sales / Karyawan</label>
@@ -263,6 +249,7 @@
                                                             <textarea id="note" name="note" type="text" value="" class="form-control" readonly='true' rows="4"/></textarea>
                                                         </div>
                                                     </div>  -->
+                                                                                                       
                                                     <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Status</label>
@@ -281,7 +268,7 @@
                                                             </select>
                                                         </div>
                                                     </div>                                
-                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                    <div class="hide col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label" style="color:red;">Akun Hutang *</label>
                                                             <select id="account_payable" name="account_payable" class="form-control">
@@ -290,7 +277,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                    <div class="hide col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label" style="color:red;">Akun Piutang *</label>
                                                             <select id="account_receivable" name="account_receivable" class="form-control">
@@ -303,7 +290,7 @@
                                                 <div class="col-md-4 col-sm-12 col-xs-12">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">
-                                                            <label class="form-label">Gambar <?php echo $title; ?> <?php echo $image_width; ?> x <?php echo $image_height; ?> px</label>
+                                                            <label class="form-label">KTP <?php echo $title; ?> <?php echo $image_width; ?> x <?php echo $image_height; ?> px</label>
                                                             <!--
                                                             <img id="img-preview1" class="img-responsive" 
                                                                 data-is-new="0"
@@ -319,7 +306,7 @@
                                                             </div>
                                                         </div>
                                                     </div>  
-                                                    <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                    <div class="hide col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                         <div class="form-group">                          
                                                             <label style="color:red;">Fungsi Kontak Sebagai</label>                          
                                                             <!-- <label><input id="checkbox_supplier" type="checkbox"  id="checkbox_supplier" value="1">&nbsp;<?php #echo $title; ?></label> -->
@@ -341,11 +328,11 @@
                                                 <div class="col-md-12 col-xs-12 col-sm-12" style="margin-top: 10px;">
                                                     <div class="form-group">
                                                         <div class="pull-right">
-                                                            <button id="btn-cancel" onClick="formCancel();" class="btn btn-warning btn-small" type="reset" style="display: none;">
+                                                            <button id="btn-cancel" class="btn btn-warning btn-small" type="reset" style="display: none;">
                                                                 <i class="fas fa-ban"></i> 
                                                                 Cancel
                                                             </button>                                                                  
-                                                            <button id="btn-save" onClick="" class="btn btn-primary btn-small" type="button" style="display:none;">
+                                                            <button id="btn-save" class="btn btn-primary btn-small" type="button" style="display:none;">
                                                                 <i class="fas fa-save"></i>                                 
                                                                 Save
                                                             </button>                                        

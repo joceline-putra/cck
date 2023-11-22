@@ -62,16 +62,16 @@
                             <tr>
                                 <td class="text-right">No</td>
                                 <!-- <td>Gambar</td> -->
-                                <td>Kode <?php echo $type_name;?></td>
+                                <td>NIK <?php echo $type_name;?></td>
                                 <td>Nama <?php echo $type_name;?></td>              
                                 <td>Telepon</td>
                                 <td>Alamat</td>   
-                                <td>Perusahaan</td>
+                                <!-- <td>Perusahaan</td> -->
                                 <td>Email</td>      
                                 <td style="text-align:left;">Catatan</td>                                
                                 <td style="text-align:left;">Status</td>
                                 <td style="text-align:left;">Group</td>                                                                
-                                <td style="text-align:right;">Limit Piutang</td>       
+                                <!-- <td style="text-align:right;">Limit Piutang</td>        -->
                                 <?php if($show_price == 1){?>                             
                                 <td style="text-align:right;">Piutang Berjalan</td>
                                 <td style="text-align:right;">Piutang Terbayar</td>
@@ -116,12 +116,12 @@
                             <td><?php echo $v['contact_name'];?></td>   
                             <td style="text-align:left;"><?php echo $v['contact_phone_1'];?></td> 
                             <td style="text-align:left;"><?php echo $v['contact_address'];?></td>                              
-                            <td style="text-align:left;"><?php echo $v['contact_company'];?></td> 
+                            <!-- <td style="text-align:left;"><?php #echo $v['contact_company'];?></td>  -->
                             <td style="text-align:left;"><?php echo $v['contact_email_1'];?></td>                                                                                                   
                             <td style="text-align:left;"><?php echo $v['contact_note'];?></td>
                             <td style="text-align:left;"><?php echo $v['contact_flag_name'];?></td>
                             <td style="text-align:left;"><?php echo $v['category_name'];?></td>                            
-                            <td style="text-align:right;"><?php echo floatVal($v['contact_receivable_limit'] > 0) ? number_format($v['contact_receivable_limit']) : '-';?></td>                                                          
+                            <!-- <td style="text-align:right;"><?php #echo floatVal($v['contact_receivable_limit'] > 0) ? number_format($v['contact_receivable_limit']) : '-';?></td>                                                           -->
                             <?php if($show_price == 1){ ?>
                             <td style="text-align:right;"><?php echo $running;?></td> 
                             <td style="text-align:right;"><?php echo $paid; ?></td>    

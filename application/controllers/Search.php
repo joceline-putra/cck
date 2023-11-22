@@ -41,9 +41,9 @@ class Search extends MY_Controller{
         $terms  = ltrim(rtrim($terms));
         $next   = false;
 
-        if(strlen($terms) >= 2){
+        // if(strlen($terms) >= 2){
             $next = true;
-        }
+        // }
 
         if($next){        
             if($source=="specialist"){
@@ -579,7 +579,7 @@ class Search extends MY_Controller{
             }
             else if($source=="branchs"){
                 if(!empty($terms)){
-                    $query = $this->db->query("n                                                                                                                                                                    
+                    $query = $this->db->query("                                                                                                                                                                    
                         SELECT branch_id AS id, branch_name AS nama, branch_logo,
                             (SELECT CONCAT(IFNULL(`branch_name`,''),' - ',IFNULL(`branch_address`,''),' - ',IFNULL(`branch_phone_1`,''))) AS `text` 
                         FROM branchs
