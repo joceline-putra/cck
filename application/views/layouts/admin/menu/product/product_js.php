@@ -82,7 +82,7 @@
             },
             "columnDefs": [
                 {"targets": 0, "title": "Makanan", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Kategori", "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Jenis", "searchable": true, "orderable": true},
                 {"targets": 2, "title": "Harga Jual", "searchable": true, "orderable": true},
                 {"targets": 3, "title": "Stok", "searchable": false, "orderable": true, "className": "text-right"},
                 {"targets": 4, "title": "Stok Minimal", "searchable": false, "orderable": true, "className": "text-right"},                

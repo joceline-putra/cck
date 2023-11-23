@@ -6,7 +6,7 @@
         var url = "<?= base_url('kategori/manage'); ?>";
         var view = "<?php echo $_view; ?>";
         $(".nav-tabs").find('li[class="active"]').removeClass('active');
-        $(".nav-tabs").find('li[data-name="' + view + '"]').addClass('active');
+        $(".nav-tabs").find('li[data-name="category/product"]').addClass('active');
         // console.log(view);  
         // $("select").select2();
         $(".date").datepicker({

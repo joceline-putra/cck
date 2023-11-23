@@ -4,7 +4,8 @@
 
 <script>
     var identity            = "<?php echo $identity; ?>";
-    var url                 = "<?= base_url('pos3'); ?>";
+    var url                 = "<?= base_url('front_office/resto'); ?>";
+    var url_sync                 = "<?= base_url('front_office'); ?>";    
     var url_print           = "<?= base_url('pos3/prints'); ?>";
     var url_print_all       = "<?= base_url('pos3/report'); ?>";
     var url_trans           = "<?= base_url('transaksi/manage'); ?>";   
@@ -490,8 +491,9 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        tipe: 7,
-                        source: 'references'
+                        tipe: 2,
+                        branch: $("input[name='trans_branch_id']:checked").val(),
+                        source: 'products_other'
                     }
                     return query;
                 },
@@ -673,6 +675,7 @@
                 var trans_sales_id        = $("#trans_sales_id").find(':selected').val();                        
                 var trans_date            = $("#trans_date").attr('data-raw');                                    
                 var trans_item_count      = transItemsList.length;
+                var branch_id               = $("input[name='trans_branch_id']:checked").val();
 
                 if(parseInt(trans_item_count) < 1){
                     notif(0,order_alias+' Detail masih kosong');
@@ -715,15 +718,16 @@
                     let form = new FormData();
                     form.append('action', 'create');
                     form.append('trans_id', transId); 
+                    form.append('trans_branch_id', branch_id);                     
                     form.append('trans_date', trans_date);                    
-                    form.append('trans_contact_checkbox', $(".trans_contact_checbox").attr('data-flag'));  
-                    form.append('trans_non_contact_id', contact_non_id);  
-                    form.append('trans_contact_id', $("#trans_contact_id").find(":selected").val());  
+                    // form.append('trans_contact_checkbox', $(".trans_contact_checbox").attr('data-flag'));  
+                    // form.append('trans_non_contact_id', contact_non_id);  
+                    form.append('trans_contact_id', 1);  
                     form.append('trans_contact_name', $("#trans_contact_name").val());  
                     form.append('trans_contact_phone', $("#trans_contact_phone").val());  
                     form.append('trans_item_list', JSON.stringify(transItemsList));         
-                    form.append('ref_id', trans_ref_id);         
-                    form.append('sales_id', trans_sales_id);
+                    form.append('trans_product_id', trans_ref_id);         
+                    // form.append('sales_id', trans_sales_id);
                     $.ajax({
                         type: "post",
                         url: url,
@@ -1700,8 +1704,9 @@
             });
         }
         function loadProductTabDetail(params){
+            var branch_id = $("input[name='trans_branch_id']:checked").val();            
             //Plan A (Offline)
-                var products = JSON.parse(window.localStorage.getItem('products')) || [];
+                var products = JSON.parse(window.localStorage.getItem('products_'+branch_id)) || [];
                 var p = "SELECT * FROM ? "; var w = "WHERE";
                 if((parseInt(params['category_id']) > 0)){
                     w += " product_category_id = "+parseInt(params['category_id']);        
@@ -1944,7 +1949,7 @@
                
         // Form 
         function formTransReset(){
-            $("#form_trans input").not("input[id='trans_date']").val('');
+            $("#form_trans input").not("input[id='trans_date']").not(":radio").val('');
             $("#trans_date").val(transDate.format('DD-MMM-YYYY'));
             $("#trans_date").attr('data-raw',transDate.format('YYYY-MM-DD'));
             $("#form_trans select").val(0).trigger('change');
@@ -2393,32 +2398,41 @@
             });
             await myPromise;
         }
-                //Sync
+        
+        //Sync
         function localStorage(){
-            $.ajax({
-                type: "post",
-                url: url+'/sync_product',
-                dataType: 'json', cache: 'false', 
-                beforeSend:function(){},
-                success:function(d){
-                    let s = d.status;
-                    let m = d.message;
-                    let r = d.result;
-                    if(parseInt(s) == 1){
-                        local.setItem('products',JSON.stringify(r));
-                        // var product_local = JSON.parse(window.localStorage.getItem('products') || "[]"); 
-                        // productStorage.push(product_local);
-                        // console.log(productStorage);
-                    }else{
-                        notif(s,m);
+            var branch_id = $("input[name='trans_branch_id']:checked").val();
+            if(parseInt(branch_id) > 0){
+                $.ajax({
+                    type: "post",
+                    url: url_sync+'/sync_product/' + branch_id,
+                    dataType: 'json', cache: 'false', 
+                    beforeSend:function(){},
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            local.setItem('products_'+branch_id,JSON.stringify(r));
+                            // var product_local = JSON.parse(window.localStorage.getItem('products') || "[]"); 
+                            // productStorage.push(product_local);
+                            // console.log(productStorage);
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        notif(0,err);
                     }
-                },
-                error:function(xhr,status,err){
-                    notif(0,err);
-                }
-            });
+                });
+            }
         } 
         localStorage();
+
+        $("input[name='trans_branch_id']").on("change", function (e){
+            var br = $(this).val();
+            localStorage();
+        });
         // loadRoom({});
         /*  
             var p = {

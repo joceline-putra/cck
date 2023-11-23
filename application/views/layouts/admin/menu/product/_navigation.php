@@ -23,14 +23,14 @@
         }
     endforeach;
     ?>							
-    <li class="" data-name="layouts/admin/menu/product/category_product">
-        <a href="<?php echo base_url('category/product'); ?>">
-            <span class="fas fa-filter"></span> Kategori Produk
+    <!-- <li class="" data-name="layouts/admin/menu/product/category_product">
+        <a href="<?php #echo base_url('category/product'); ?>">
+            <span class="fas fa-filter"></span> Jenis Produk
         </a>
-    </li>			
+    </li>			 -->
     <!--	
     <li class="" data-name="layouts/admin/menu/inventory/stock_opname">
-            <a href="<?php echo base_url('inventory/stock_opname'); ?>">
+            <a href="<?php #echo base_url('inventory/stock_opname'); ?>">
             <span class="fas fa-broom"></span> Penyesuaian Stok
     </a>
     </li>

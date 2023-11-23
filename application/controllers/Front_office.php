@@ -26,6 +26,7 @@ class Front_office extends MY_Controller{
         $this->load->model('Referensi_model');                
         $this->load->model('Branch_model');
         $this->load->model('Front_model');
+        $this->load->model('Transaksi_model');        
         $this->load->model('User_model');
         $this->load->model('Produk_model');        
 
@@ -43,12 +44,16 @@ class Front_office extends MY_Controller{
         
         $this->payment_alias    = 'Checkout';  
         $this->dp_alias         = 'Down Payment'; 
-        $this->product_alias    = 'Jasa';     
+        $this->product_alias    = 'Makanan';     
         
         $this->form_title       = 'POS 3';
 
         $this->booking_identity = 222;
-        $this->resto_identity = 2222;        
+        $this->resto_identity = 222;   
+        /*
+            Booking = orders
+            Resto = trans
+        */
     }
     function booking(){
         if ($this->input->post()) {
@@ -917,186 +922,467 @@ class Front_office extends MY_Controller{
 
             $data['session'] = $this->session->userdata();  
             $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+            $session_branch_id = !empty($data['session']['user_data']['branch']['id']) ? $data['session']['user_data']['branch']['id'] : null;
+            $data['theme']      = $this->User_model->get_user($data['session']['user_data']['user_id']); 
+ 
+            $identity   = $this->resto_identity;
 
             $post = $this->input->post();
             $get  = $this->input->get();
             $action = !empty($this->input->post('action')) ? $this->input->post('action') : false;
             
             switch($action){
-                case "load":
+                case "load": //Works
                     $columns = array(
-                        '0' => 'order_id',
-                        '1' => 'order_name'
-                    );
-
-                    $limit     = !empty($post['length']) ? $post['length'] : 10;
-                    $start     = !empty($post['start']) ? $post['start'] : 0;
-                    $order     = !empty($post['order']) ? $columns[$post['order'][0]['column']] : $columns[0];
-                    $dir       = !empty($post['order'][0]['dir']) ? $post['order'][0]['dir'] : "asc";
-                    
-                    $search    = [];
-                    if(!empty($post['search']['value'])) {
-                        $s = $post['search']['value'];
+                        '0' => 'trans_date',
+                        '1' => 'trans_number',
+                        '2' => 'contact_name',
+                        '3' => 'trans_total',
+                        '4' => 'trans_sales_name',
+                        '5' => 'trans_contact_name'
+                    );                
+                    $limit      = $this->input->post('length');
+                    $start      = $this->input->post('start');
+                    $order      = $columns[$this->input->post('order')[0]['column']];
+                    $dir        = $this->input->post('order')[0]['dir'];
+                    $search     = [];
+                    if ($this->input->post('search')['value']) {
+                        $s = $this->input->post('search')['value'];
                         foreach ($columns as $v) {
                             $search[$v] = $s;
                         }
                     }
 
-                    $params = array();
-                    
-                    /* If Form Mode Transaction CRUD not Master CRUD
-                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
-                    !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
-                    */
-
-                    //Default Params for Master CRUD Form
-                    $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
-                    $params['order_name'] = !empty($post['order_name']) ? $post['order_name'] : $params;
-
                     /*
-                        if($post['other_column'] && $post['other_column'] > 0) {
-                            $params['other_column'] = $post['other_column'];
-                        }
-                        if($post['filter_type'] !== "All") {
-                            $params['order_type'] = $post['filter_type'];
+                        if($this->input->post('other_column') && $this->input->post('other_column') > 0) {
+                            $params['other_column'] = $this->input->post('other_column');
                         }
                     */
-                    
-                    $get_count = $this->Front_model->get_all_order_count($params, $search);
-                    if($get_count > 0){
-                        $get_data = $this->Front_model->get_all_booking($params, $search, $limit, $start, $order, $dir);
-                        $return->total_records   = $get_count;
-                        $return->status          = 1; 
-                        $return->result          = $get_data;
-                    }else{
-                        $return->total_records   = 0;
-                        $return->result          = $get_data;
-                    }
-                    $return->message             = 'Load '.$return->total_records.' data';
-                    $return->recordsTotal        = $return->total_records;
-                    $return->recordsFiltered     = $return->total_records;
-                    break;
-                case "create":
-                    // $data = base64_decode($post);
-                    // $data = json_decode($post, TRUE);
+                    //Datepicker
+                    // $date_start     = date('Y-m-d H:i:s', strtotime($this->input->post('date_start').' 00:00:00'));
+                    // $date_end       = date('Y-m-d H:i:s', strtotime($this->input->post('date_end').' 23:59:59'));
 
-                    $this->form_validation->set_rules('order_name', 'order_name', 'required');
+                    //Moment Date
+                    $date_start     = date('Y-m-d H:i:s', strtotime($this->input->post('date_start')));
+                    $date_end       = date('Y-m-d H:i:s', strtotime($this->input->post('date_end')));
+
+                    // $location_from  = !empty($this->input->post('location_from')) ? $this->input->post('location_from') : 0;
+                    // $location_to    = !empty($this->input->post('location_to')) ? $this->input->post('location_to') : 0;
+                    $contact        = !empty($this->input->post('filter_contact')) ? $this->input->post('filter_contact') : 0;
+                    $type_paid      = !empty($this->input->post('filter_type_paid')) ? $this->input->post('filter_type_paid') : 0;
+
+                    $params_datatable = array(
+                        'trans.trans_date >' => $date_start,
+                        'trans.trans_date <' => $date_end,
+                        'trans.trans_type' => intval($identity),
+                        'trans.trans_flag <' => 4,
+                        'trans.trans_branch_id' => intval($session_branch_id)
+                    );
+                    if($contact > 0){
+                        $params_datatable = array(
+                            'trans.trans_date >' => $date_start,
+                            'trans.trans_date <' => $date_end,
+                            'trans.trans_type' => intval($identity),
+                            'trans.trans_flag <' => 4,
+                            'trans.trans_branch_id' => intval($session_branch_id),
+                            'trans.trans_contact_id' => intval($contact)
+                        );
+                    }
+
+                    // if(intval($location_from) > 0){
+                    //     $params_datatable['trans.trans_location_id'] = $location_from;
+                    // }
+
+                    // if(intval($location_to) > 0){
+                    //     $params_datatable['trans.trans_location_to_id'] = $location_to;
+                    // }
+                    
+                    if(intval($type_paid) > 0){
+                        $params_datatable['trans.trans_paid_type'] = intval($type_paid);
+                    }
+                    /*
+                        Transaksi.php
+                        1 Pembelian
+                        2 Penjualan
+                        3 Retur Beli
+                        4 Retur Jual
+                        8 Produksi
+                        5 Transfer Stok
+                        6 Stok Opname
+
+                        Inventory.php
+                        9 Pemakaian Produk
+                    */
+                    $datas_count = $this->Transaksi_model->get_all_transaksis_count($params_datatable,$search);
+                    if($datas_count > 0){
+                        $datas = $this->Transaksi_model->get_all_transaksis($params_datatable, $search, $limit, $start, $order, $dir);
+                        
+                        $return->status=1; 
+                        $return->message='Loaded'; 
+                        $return->total_records=$datas_count;
+                        $return->result=$datas;
+                    }else{
+                        $return->message='No data'; 
+                        $return->total_records=$datas_count;
+                        $return->result=0;
+                    }
+                    $return->recordsTotal       = $datas_count;
+                    $return->recordsFiltered    = $datas_count;
+                    $return->params             = $params_datatable;
+                    $return->search             = $search;
+                    break;
+                case "load_ref": //Requires ref_type, Room, Table, Something on table 'reference'
+                    $ref_type = $datas['ref_type'];
+                    $search = array();
+                    if(strlen($datas['search']) > 0){
+                        $search['ref_name'] = $datas['search'];
+                    }
+                    $start = 0;
+                    $limit = 100;
+                    $order = 'ref_name';
+                    $dir = 'ASC';
+
+                    $params_datatable = array(
+                        'references.ref_type' => intval($ref_type),                    
+                        'references.ref_flag' => 1,
+                        'references.ref_branch_id' => intval($session_branch_id),
+                        'references.ref_parent_id > ' => 0
+                    );      
+                    $datas_count = $this->Referensi_model->get_all_referensis_count($params_datatable,$search);                           
+                    if($datas_count > 0){
+                        //Initial Group n Group Data
+                        $group      = array();
+                        $group_data = array();
+                        $set_data   = array();
+                        $get_data = $this->Referensi_model->get_all_referensis_join_ref($params_datatable, $search, $limit, $start, $order, $dir);
+                        foreach($get_data as $v){     
+
+                            $get_order = array();
+                            if(intval($v['ref_use_type']) == 1){
+                                $where = array(
+                                    'order_flag =' => 0,
+                                    'order_branch_id' => $session_branch_id,
+                                    'order_ref_id' => intval($v['ref_id'])
+                                );
+                                $get_order = $this->Order_model->get_order_ref_custom($where);
+                                $set_data = array(
+                                    'order_id' => intval($get_order['order_id']),
+                                    'order_number' => $get_order['order_number'],
+                                    'order_total' => $get_order['order_total'],
+                                    'order_flag' => $get_order['order_flag'],
+                                    'ref_id' => intval($get_order['order_ref_id']),
+                                    'ref_name' => $get_order['ref_name'],
+                                    'contact_id' => intval($get_order['order_contact_id']),
+                                    'contact_type' => intval($get_order['contact_type']),                                    
+                                    'contact_name' => $get_order['contact_name'],
+                                    'contact_session' => $get_order['contact_session'],                                                                        
+                                    'sales_id' => intval($get_order['order_sales_id']),
+                                    'sales_name' => $get_order['order_sales_name'],                                    
+                                );
+                            }
+                            $datas = array(
+                                'ref_id' => intval($v['ref_id']),
+                                'ref_branch_id' => intval($v['ref_branch_id']),
+                                'ref_type' => intval($v['ref_type']),
+                                'ref_code' => $v['ref_code'],
+                                'ref_name' => $v['ref_name'],
+                                'ref_note' => $v['ref_note'],
+                                'ref_user_id' => intval($v['ref_user_id']),
+                                'ref_date_created' => $v['ref_date_created'],
+                                'ref_date_updated' => $v['ref_date_updated'],
+                                'ref_flag' => intval($v['ref_flag']),
+                                'ref_color' => $v['ref_color'],
+                                'ref_background' => $v['ref_background'],
+                                'ref_icon' => $v['ref_icon'],
+                                'ref_use_type' => intval($v['ref_use_type']),
+                                'order' => $set_data,
+                                'parent_id' => $v['parent_id'],
+                                'parent_name' => $v['parent_name']
+                            );
+
+                            //Grouping Data
+                            $group_data[$v['ref_parent_id']][] = $datas;                                                                   
+                        }
+
+
+                        //Group Data to Multidimensional Array
+                        foreach($group_data as $x => $x_value) {
+                            $group[] = array(
+                                'index'=> $x,
+                                'name' => $x_value[0]['parent_name'],
+                                'data' => $x_value
+                            );
+                        }
+
+                        $return->status=1; $return->message='Loaded';
+                        $return->result=$get_data; 
+                        $return->result_group=$group;    
+                        $datas_count = count($group);    
+                    }else{  
+                        $return->status=0; $return->message= $this->ref_alias.' belum di konfigurasi';
+                        $return->result=array();    
+                    }
+                    $return->total_records=$datas_count;
+                    $return->recordsTotal = $datas_count;
+                    $return->recordsFiltered = $datas_count;
+                    $return->params = $params_datatable;
+                    break;
+                case "load_product_tab_detail":
+                    $data_search = !empty($datas['search']) ? $datas['search'] : '0';
+                    $data_category_id = !empty($datas['category_id']) ? $datas['category_id'] : '0';                    
+                    $search = array();
+                    if(strlen($data_search) > 2){
+                        $search['product_name'] = $datas['search'];
+                    }
+                    $start          = 0;
+                    $limit          = 100;
+                    $category_id    = $data_category_id;
+                    if($category_id > 0){
+                        $params_datatable = array(
+                            'product_branch_id' => intval($session_branch_id),          
+                            'product_category_id' => intval($category_id), //Product Categories
+                            'product_flag' => 1,
+                            // 'product_type' => 2, //1=Barang, 2=Jasa
+                        );
+                    }else if($category_id == -1){
+                        $params_datatable = array(
+                            'product_flag' => 1,
+                            'product_type' => 1, //Barang
+                            'product_price_promo >' => 0, //Product Categories
+                            'product_branch_id' => intval($session_branch_id)                            
+                        );
+                    }else{                    
+                        $params_datatable = array(
+                            'product_branch_id' => intval($session_branch_id),                            
+                            'product_flag' => 1,
+                            // 'product_type' => 2, 1=Barang, 2=Jasa
+                            // 'product_category_id !=' => 0,                    
+                            // 'product_ref_id ' => $reference_id //Product Categories
+                        );
+                    }
+
+                    $datas_count = $this->Produk_model->get_all_produks_count($params_datatable,$search);
+                    if($datas_count > 0){
+                        $datas = $this->Produk_model->get_all_produks($params_datatable, $search, $limit, $start, 'product_name', 'ASC');
+                        $return->status=1; $return->message='Loaded';
+                        $return->result=$datas;        
+                    }else{ 
+                        $return->message='Produk tidak tersedia';
+                        $return->result=[];    
+                    }
+                    $return->total_records=$datas_count;
+                    $return->recordsTotal = $datas_count;
+                    $return->recordsFiltered = $datas_count;
+                    $return->params = $params_datatable;                    
+                    break;
+                case "create": //Works
+                    $this->form_validation->set_rules('trans_item_list', 'Item', 'required');
                     $this->form_validation->set_message('required', '{field} wajib diisi');
                     if ($this->form_validation->run() == FALSE){
                         $return->message = validation_errors();
                     }else{
+                        $next                   = true;
+                        $trans_id               = !empty($post['trans_id']) ? $post['trans_id'] : 0;                     
+                        $trans_non_contact_id   = !empty($post['trans_non_contact_id']) ? $post['trans_non_contact_id'] : 0;
+                        $trans_contact_id       = !empty($post['trans_contact_id']) ? $post['trans_contact_id'] : 0;
+                        $trans_contact_name     = !empty($post['trans_contact_name']) ? $post['trans_contact_name'] : '-';
+                        $trans_contact_phone    = !empty($post['trans_contact_phone']) ? $post['trans_contact_phone'] : '-';
+                        // $total                  = !empty($datas['payment_total']) ? floatval($datas['payment_total']) : 0;
+                        // $total_received         = !empty($datas['payment_total_received']) ? floatval($datas['payment_total_received']) : 0;
+                        // $total_change           = !empty($datas['payment_total_change']) ? floatval($datas['payment_total_change']) : 0;
+                        $post_items             = json_decode($post['trans_item_list'],true);
+                        $ref_id                 = !empty($post['ref_id']) ? $post['ref_id'] : null;
+                        $sales_id               = !empty($post['sales_id']) ? $post['sales_id'] : null;                                                
+                        // $payment_method         = !empty($datas['payment_method']) ? intval($datas['payment_method']) : 0;
+                        $trans_product_id       = !empty($post['trans_product_id']) ? $post['trans_product_id'] : null;
+                        $trans_branch_id       = !empty($post['trans_branch_id']) ? $post['trans_branch_id'] : null;                        
+                        
+                        $document_session       = $this->random_code(20);
+                        $document_number        = $this->request_number_for_transaction($this->resto_identity);
+                        $document_date          = !empty($post['trans_date']) ? date("Y-m-d", strtotime($post['trans_date'])).' '.date("H:i:s") : date("YmdHis");   
 
-                        $order_name = !empty($post['order_name']) ? $post['order_name'] : null;
-                        $order_flag = !empty($post['order_flag']) ? $post['order_flag'] : 0;
-                        $order_session = $this->random_code(20);
+                        //Check Operator is CREATE or UPDATE data
+                        if(intval($trans_id) > 0){
+                            $operator = 'update';
+                        }else{
+                            $operator = 'create';
+                        }
 
                         $params = array(
-                            'order_name' => $order_name,
-                            'order_flag' => $order_flag
+                            'trans_branch_id' => $trans_branch_id,
+                            'trans_type' => $this->resto_identity,
+                            'trans_number' => $document_number,
+                            'trans_date' => $document_date,
+                            'trans_user_id' => $session_user_id,
+                            'trans_date_created' => date("YmdHis"),
+                            'trans_flag' => 1,
+                            // 'trans_total_dpp' => $total,
+                            // 'trans_total_ppn' => 0,
+                            // 'trans_discount' => 0,
+                            // 'trans_voucher' => 0,
+                            // 'trans_total' => $total,
+                            // 'trans_total_paid' => $total,
+                            // 'trans_change' => $total_change,
+                            // 'trans_received' => $total_received,
+                            // 'trans_paid' => 1,
+                            // 'trans_paid_type' => $payment_method,
+                            'trans_session' => $document_session,
+                            //   'trans_ppn' => !empty($post['trans_ppn']) ? $post['trans_voucher_id'] : null,
+                            'trans_sales_id' => $sales_id,
+                            //   'trans_voucher_id' => null,
+                            // 'trans_ref_id' => $ref_id,
+                            'trans_product_id' => $trans_product_id, 
                         );
+
+                        //Customer or Not ?
+                        if(intval($trans_contact_id) > 0){
+                            $get_contact = $this->Kontak_model->get_kontak($trans_contact_id);
+                            $params['trans_contact_id'] = $trans_contact_id;
+                            $params['trans_contact_name'] = $this->sentencecase($get_contact['contact_name']);
+                            $params['trans_contact_phone'] = $get_contact['contact_phone_1'];  
+                            $set_contact_id = $get_contact['contact_id'];
+                            $set_contact_name = $get_contact['contact_name'];
+                            $set_contact_phone = $get_contact['contact_phone_1'];                            
+                        }else{
+                            $params['trans_contact_id'] = $trans_non_contact_id;                            
+                            $params['trans_contact_name'] = $this->sentencecase($trans_contact_name);
+                            $params['trans_contact_phone'] = $trans_contact_phone;
+                            $set_contact_id = $trans_non_contact_id;
+                            $set_contact_name = $trans_contact_name;
+                            $set_contact_phone = $trans_contact_phone;                            
+                        }
 
                         //Check Data Exist
-                        $params_check = array(
-                            'order_name' => $order_name
-                        );
-                        $check_exists = $this->Front_model->check_data_exist($params_check);
+                        /*
+                            $params_check = array(
+                                'trans_name' => $trans_name
+                            );
+                            $check_exists = $this->Trans_model->check_data_exist($params_check);
+                        */
+                        $check_exists = false;
                         if(!$check_exists){
 
-                            $set_data=$this->Front_model->add_booking($params);
+                            if($operator == 'create'){
+                                $set_data = $this->Transaksi_model->add_transaksi($params);
+                            }else if($operator == 'update'){
+                                $get_data = $this->Transaksi_model->get_transaksi_nojoin_custom(['trans_id' => $trans_id]);
+
+                                $trans_date = date("Y-m-d", strtotime($get_data['trans_date']));
+                                $trans_time = date("H:i:s", strtotime($get_data['trans_date']));
+
+                                // 
+                                // if($trans_date !== date("Y-m-d", strtotime($post['trans_date']))){
+                                    $document_date = date("Y-m-d", strtotime($post['trans_date'])).' '.$trans_time;
+                                // }else{
+                                    // $document_date = 
+                                // }
+
+                                $params_update = array(
+                                    'trans_sales_id' => $sales_id,
+                                    'trans_ref_id' => $ref_id,
+                                    'trans_contact_id' => $set_contact_id,
+                                    'trans_contact_name' => $set_contact_name,
+                                    'trans_contact_phone' => $set_contact_phone,                                           
+                                    'trans_date' => $document_date,                            
+                                );                               
+                                // var_dump($params_update);die; 
+                                $set_delete = $this->Transaksi_model->delete_transaksi_item_custom(['trans_item_trans_id' => $trans_id]);
+                                $set_data = $this->Transaksi_model->update_transaksi($trans_id,$params);
+
+                            }
+
                             if($set_data){
-
-                                $order_id = $set_data;
-                                $data = $this->Front_model->get_booking($order_id);
-
-                                // Image Save Upload
-                                $post_files = !empty($_FILES) ? $_FILES['files'] : "";
-                                if(!empty($post_files)){
-                                    //Save Image if Exist
-                                    $config['image_library'] = 'gd2';
-                                    $config['upload_path'] = $upload_path_directory;
-                                    $config['allowed_types'] = 'gif|jpg|png|jpeg';
-                                    $this->upload->initialize($config);
-                                    if ($this->upload->do_upload('files')) {
-                                        $upload = $this->upload->data();
-                                        $raw_photo = time() . $upload['file_ext'];
-                                        $old_name = $upload['full_path'];
-                                        $new_name = $upload_path_directory . $raw_photo;
-                                        if (rename($old_name, $new_name)) {
-                                            $compress['image_library'] = 'gd2';
-                                            $compress['source_image'] = $upload_path_directory . $raw_photo;
-                                            $compress['create_thumb'] = FALSE;
-                                            $compress['maintain_ratio'] = TRUE;
-                                            $compress['width'] = $this->image_width;
-                                            $compress['height'] = $this->image_height;
-                                            $compress['new_image'] = $upload_path_directory . $raw_photo;
-                                            $this->load->library('image_lib', $compress);
-                                            $this->image_lib->resize();
-
-                                            if ($data && $data['order_id']) {
-                                                $params_image = array(
-                                                    'order_image' => $upload_directory . $raw_photo
-                                                );
-                                                if (!empty($data['order_image'])) {
-                                                    if (file_exists($upload_path_directory . $data['order_image'])) {
-                                                        unlink($upload_path_directory . $data['order_image']);
-                                                    }
-                                                }
-                                                $stat = $this->Front_model->update_order_custom(array('order_id' => $set_data), $params_image);
-                                            }
-                                        }
-                                    }
+                                
+                                if($operator == 'create'){                                                                    
+                                    $set_document_id = $set_data;
+                                    $message = 'Menyimpan';
+                                }else if($operator == 'update'){
+                                    $set_document_id = $trans_id;
+                                    $message = 'Memperbarui';
                                 }
-                                //End of Save Image
-
-                                //Croppie Upload Image
-                                $post_upload = !empty($this->input->post('upload1')) ? $this->input->post('upload1') : "";
-                                if(!empty($post_upload)){
-                                    $upload_process = $this->file_upload_image($this->folder_upload,$post_upload);
-                                    if($upload_process->status == 1){
-                                        if ($data && $data['order_id']) {
-                                            $params_image = array(
-                                                'order_url' => $upload_process->result['file_location']
-                                            );
-                                            if (!empty($data['order_url'])) {
-                                                if (file_exists($upload_path_directory . $data['order_url'])) {
-                                                    unlink($upload_path_directory . $data['order_url']);
-                                                }
-                                            }
-                                            $stat = $this->Front_model->update_order_custom(array('order_id' => $set_data), $params_image);
-                                        }
-                                    }else{
-                                        $return->message = 'Fungsi Gambar gagal';
-                                    }
+                                
+                                //Insert trans_item
+                                foreach($post_items as $v){
+                                    $random_item_session     = $this->random_code(20);
+                                    $params_items = array(
+                                        'trans_item_branch_id' => $trans_branch_id,
+                                        'trans_item_type' => $this->resto_identity,
+                                        // 'trans_item_type_name' => 'Penjualan',
+                                        'trans_item_trans_id' => $set_document_id,
+                                        'trans_item_product_id' => $v['product_id'],
+                                        // 'trans_item_location_id' => NULL,
+                                        'trans_item_product_type' => $v['product_type'],
+                                        'trans_item_date' => $document_date,
+                                        'trans_item_unit' => $v['product_unit'],
+                                        'trans_item_out_qty' => $v['product_qty'],
+                                        'trans_item_out_price' => $v['product_price'],
+                                        'trans_item_sell_price' => $v['product_price'],
+                                        // 'trans_item_discount' => intval($v['trans_item_discount']),
+                                        // 'trans_item_ppn' => intval($v['trans_item_ppn']),
+                                        // 'trans_item_ppn_value' => intval($v['trans_item_ppn_value']),
+                                        'trans_item_total' => $v['product_total'],
+                                        'trans_item_sell_total' => $v['product_total'],
+                                        'trans_item_date_created' => date("YmdHis"),
+                                        'trans_item_user_id' => $session_user_id,
+                                        'trans_item_flag' => 1,
+                                        // 'trans_item_ref' => NULL,
+                                        'trans_item_position' => 2,
+                                        'trans_item_note' => $v['product_note'],
+                                        'trans_item_trans_session' => $document_session,
+                                        'trans_item_session' => $random_item_session,
+                                    );
+                                    $this->Transaksi_model->add_transaksi_item($params_items);
                                 }
-                                //End of Croppie
 
+                                $get_trans = $this->Transaksi_model->get_transaksi($set_document_id);
+                                // $get_trans_items = $this->Transaksi_model->get_all_transaksi_items($params_items,null,null,null,null,null);
                                 $return->status=1;
-                                $return->message='Berhasil menambahkan '.$post['order_name'];
+                                $return->message='Berhasil '.$message;
                                 $return->result= array(
-                                    'id' => $set_data,
-                                    'name' => $post['order_name'],
-                                    'session' => $order_session
-                                ); 
+                                    'id' => $set_document_id,
+                                    'number' => $get_trans['trans_number'],
+                                    'date' => $get_trans['trans_date'],                                    
+                                    'session' => $get_trans['trans_session'],
+                                    'contact' => array(
+                                        'id' => $set_contact_id,
+                                        'name' => $set_contact_name,
+                                        'phone' => $set_contact_phone
+                                    )
+                                );                              
                             }else{
-                                $return->message='Gagal menambahkan '.$post['order_name'];
+                                $return->message='Gagal Simpan';
                             }
                         }else{
                             $return->message='Data sudah ada';
                         }
                     }
-                    break;
-                case "read":
-                    $this->form_validation->set_rules('order_id', 'order_id', 'required');
+                    break;                        
+                case "read": //Works
+                    $this->form_validation->set_rules('trans_id', 'ID', 'required');
                     if ($this->form_validation->run() == FALSE){
                         $return->message = validation_errors();
                     }else{                
-                        $order_id   = !empty($post['order_id']) ? $post['order_id'] : 0;
-                        if(intval(strlen($order_id)) > 0){        
-                            $datas = $this->Front_model->get_booking($order_id);
+                        $trans_id   = !empty($post['trans_id']) ? $post['trans_id'] : 0;
+                        if(intval(strlen($trans_id)) > 0){        
+                            $datas = $this->Transaksi_model->get_transaksi($trans_id);
                             if($datas){
+                                $get_trans_items = $this->Transaksi_model->get_all_transaksi_items(['trans_item_trans_id'=>$trans_id],null,null,null,'trans_item_id','asc');
                                 $return->status=1;
                                 $return->message='Berhasil mendapatkan data';
-                                $return->result=$datas;
+                                $return->result= [
+                                    'trans_id' => $datas['trans_id'],
+                                    'trans_session' => $datas['trans_session'],
+                                    'trans_date' => $datas['trans_date'],
+                                    'trans_number' => $datas['trans_number'],
+                                    'ref_id' => $datas['ref_id'],
+                                    'ref_name' => $datas['ref_name'],
+                                    'sales_id' => $datas['sales_id'],
+                                    'sales_fullname' => $datas['sales_fullname'],
+                                    'contact_id' => $datas['contact_id'],
+                                    'contact_name' => !empty($datas['contact_name']) ? $datas['contact_name'] : $datas['trans_contact_name'],                                                                                                            
+                                    'contact_phone' => !empty($datas['contact_phone_1']) ? $datas['contact_phone_1'] : $datas['trans_contact_phone'],
+                                ];
+                                $return->result_item=$get_trans_items;                                
                             }else{
                                 $return->message = 'Data tidak ditemukan';
                             }
@@ -1105,412 +1391,35 @@ class Front_office extends MY_Controller{
                         }
                     }
                     break;
-                case "update":
-                    $this->form_validation->set_rules('order_id', 'order_id', 'required');
-                    $this->form_validation->set_message('required', '{field} tidak ditemukan');
+                case "delete": //Works
+                    $this->form_validation->set_rules('trans_id', 'trans_id', 'required');
                     if ($this->form_validation->run() == FALSE){
                         $return->message = validation_errors();
                     }else{
-                        $order_id = !empty($post['order_id']) ? $post['order_id'] : $post['order_id'];
-                        $order_name = !empty($post['order_name']) ? $post['order_name'] : $post['order_name'];
-                        $order_flag = !empty($post['order_flag']) ? $post['order_flag'] : $post['order_flag'];
+                        $trans_id   = !empty($post['trans_id']) ? $post['trans_id'] : 0;
+                        $trans_name = !empty($post['trans_number']) ? $post['trans_number'] : null;
 
-                        if(strlen($order_id) > 1){
-                            $params = array(
-                                'order_name' => $order_name,
-                                'order_date_updated' => date("YmdHis"),
-                                'order_flag' => $order_flag
-                            );
-
-                            /*
-                            if(!empty($data['password'])){
-                                $params['password'] = md5($data['password']);
-                            }
-                            */
-                           
-                            $set_update=$this->Front_model->update_booking($order_id,$params);
-                            if($set_update){
-                                
-                                $get_data = $this->Front_model->get_booking($order_id);
-                                    
-                                //Update Image if Exist
-                                $post_files = !empty($_FILES) ? $_FILES['files'] : "";
-                                if(!empty($post_files)){
-                                    $config['image_library'] = 'gd2';
-                                    $config['upload_path'] = $upload_path_directory;
-                                    $config['allowed_types'] = 'gif|jpg|png|jpeg';
-                                    $this->upload->initialize($config);
-                                    if ($this->upload->do_upload('files')) {
-                                        $upload = $this->upload->data();
-                                        $raw_photo = time() . $upload['file_ext'];
-                                        $old_name = $upload['full_path'];
-                                        $new_name = $upload_path_directory . $raw_photo;
-                                        if (rename($old_name, $new_name)) {
-                                            $compress['image_library'] = 'gd2';
-                                            $compress['source_image'] = $upload_path_directory . $raw_photo;
-                                            $compress['create_thumb'] = FALSE;
-                                            $compress['maintain_ratio'] = TRUE;
-                                            $compress['width'] = $this->image_width;
-                                            $compress['height'] = $this->image_height;
-                                            $compress['new_image'] = $upload_path_directory . $raw_photo;
-                                            $this->load->library('image_lib', $compress);
-                                            $this->image_lib->resize();
-                                            if ($get_data) {
-                                                $params_image = array(
-                                                    'order_image' => base_url($upload_directory) . $raw_photo
-                                                );
-                                                if (!empty($get_data['order_image'])) {
-                                                    $file = FCPATH.$this->folder_upload.$get_data['order_image'];
-                                                    if (file_exists($file)) {
-                                                        unlink($file);
-                                                    }
-                                                }
-                                                $stat = $this->Front_model->update_order_custom(array('order_id' => $order_id), $params_image);
-                                            }
-                                        }
-                                    }
-                                }
-                                //End of Save Image
-
-                                $return->status  = 1;
-                                $return->message = 'Berhasil memperbarui '.$order_name;
-                            }else{
-                                $return->message='Gagal memperbarui '.$order_name;
-                            }   
-                        }else{
-                            $return->message = "Gagal memperbarui";
-                        } 
-                    }
-                    break;
-                case "delete":
-                    $this->form_validation->set_rules('order_id', 'order_id', 'required');
-                    if ($this->form_validation->run() == FALSE){
-                        $return->message = validation_errors();
-                    }else{
-                        $order_id   = !empty($post['order_id']) ? $post['order_id'] : 0;
-                        $order_name = !empty($post['order_name']) ? $post['order_name'] : null;
-
-                        if(strlen($order_id) > 0){
-                            $get_data=$this->Front_model->get_booking($order_id);
-                            // $set_data=$this->Front_model->delete_booking($order_id);
-                            $set_data = $this->Front_model->update_order_custom(array('order_id'=>$order_id),array('order_flag'=>4));                
-                            if($set_data){
+                        if(strlen($trans_id) > 0){
+                            $get_data=$this->Transaksi_model->get_transaksi($trans_id);
+                            if($get_data){
+                                $set_data=$this->Transaksi_model->delete_transaksi($trans_id);
+                                $set_data=$this->Transaksi_model->delete_transaksi_item_custom(['trans_item_trans_id'=>$trans_id]);
+                                // $set_data = $this->Transaksi_model->update_trans_custom(array('trans_id'=>$trans_id),array('trans_flag'=>4));                
                                 /*
-                                $file = FCPATH.$this->folder_upload.$get_data['order_image'];
+                                $file = FCPATH.$this->folder_upload.$get_data['trans_image'];
                                 if (file_exists($file)) {
                                     unlink($file);
                                 }
                                 */
                                 $return->status=1;
-                                $return->message='Berhasil menghapus '.$order_name;
+                                $return->message='Berhasil menghapus '.$trans_name;
                             }else{
-                                $return->message='Gagal menghapus '.$order_name;
+                                $return->message='Gagal menghapus '.$trans_name;
                             } 
                         }else{
                             $return->message='Data tidak ditemukan';
                         }
                     }
-                    break;
-                case "update_flag":
-                    $this->form_validation->set_rules('order_id', 'order_id', 'required');
-                    $this->form_validation->set_rules('order_flag', 'order_flag', 'required');
-                    $this->form_validation->set_message('required', '{field} wajib diisi');
-                    if($this->form_validation->run() == FALSE){
-                        $return->message = validation_errors();
-                    }else{
-                        $order_id = !empty($post['order_id']) ? $post['order_id'] : 0;
-                        if(strlen(intval($order_id)) > 1){
-                            
-                            $params = array(
-                                'order_flag' => !empty($post['order_flag']) ? intval($post['order_flag']) : 0,
-                            );
-                            
-                            $where = array(
-                                'order_id' => !empty($post['order_id']) ? intval($post['order_id']) : 0,
-                            );
-                            
-                            if($post['order_flag']== 0){
-                                $set_msg = 'nonaktifkan';
-                            }else if($post['order_flag']== 1){
-                                $set_msg = 'mengaktifkan';
-                            }else if($post['order_flag']== 4){
-                                $set_msg = 'menghapus';
-                            }else{
-                                $set_msg = 'mendapatkan data';
-                            }
-
-                            if($post['order_flag'] == 4){
-                                $params['order_url'] = null;
-                            }
-
-                            $get_data = $this->Front_model->get_order_custom($where);
-                            if($get_data){
-                                $set_update=$this->Front_model->update_order_custom($where,$params);
-                                if($set_update){
-                                    if($post['order_flag'] == 4){
-                                        /*
-                                        $file = FCPATH.$this->folder_upload.$get_data['order_image'];
-                                        if (file_exists($file)) {
-                                            unlink($file);
-                                        }
-                                        */
-                                    }
-                                    $return->status  = 1;
-                                    $return->message = 'Berhasil '.$set_msg.' '.$get_data['order_name'];
-                                }else{
-                                    $return->message='Gagal '.$set_msg;
-                                }
-                            }else{
-                                $return->message='Gagal mendapatkan data';
-                            }   
-                        }else{
-                            $return->message = 'Tidak ada data';
-                        } 
-                    }
-                    break;
-                case "create_order_item":
-                    // $data = base64_decode($post);
-                    // $data = json_decode($post, TRUE);
-
-                    $this->form_validation->set_rules('order_item_name', 'order_item_name', 'required');
-                    $this->form_validation->set_message('required', '{field} wajib diisi');
-                    if ($this->form_validation->run() == FALSE){
-                        $return->message = validation_errors();
-                    }else{
-
-                        $order_item_name = !empty($post['order_item_name']) ? $post['order_item_name'] : null;
-                        $order_item_flag = !empty($post['order_item_flag']) ? $post['order_item_flag'] : 0;
-                        $order_item_session = $this->random_code(20);
-
-                        $params = array(
-                            'order_item_name' => $order_item_name,
-                            'order_item_flag' => $order_item_flag
-                        );
-
-                        //Check Data Exist
-                        $params_check = array(
-                            'order_item_name' => $order_item_name
-                        );
-                        $check_exists = $this->Front_model->check_data_exist_order_item($params_check);
-                        if(!$check_exists){
-
-                            $set_data=$this->Front_model->add_order_item($params);
-                            if($set_data){
-
-                                $order_item_id = $set_data;
-                                $data = $this->Front_model->get_order_item($order_item_id);
-                                $return->status=1;
-                                $return->message='Berhasil menambahkan '.$post['order_item_name'];
-                                $return->result= array(
-                                    'id' => $set_data,
-                                    'name' => $post['order_item_name'],
-                                    'session' => $order_item_session
-                                ); 
-                            }else{
-                                $return->message='Gagal menambahkan '.$post['order_item_name'];
-                            }
-                        }else{
-                            $return->message='Data sudah ada';
-                        }
-                    }
-                    break;
-                case "read_order_item":
-                    $this->form_validation->set_rules('order_item_id', 'order_item_id', 'required');
-                    if ($this->form_validation->run() == FALSE){
-                        $return->message = validation_errors();
-                    }else{                
-                        $order_item_id   = !empty($post['order_item_id']) ? $post['order_item_id'] : 0;
-                        if(intval(strlen($order_item_id)) > 0){        
-                            $datas = $this->Front_model->get_order_item($order_item_id);
-                            if($datas){
-                                $return->status=1;
-                                $return->message='Berhasil mendapatkan data';
-                                $return->result=$datas;
-                            }else{
-                                $return->message = 'Data tidak ditemukan';
-                            }
-                        }else{
-                            $return->message='Data tidak ada';
-                        }
-                    }
-                    break;
-                case "update_order_item":
-                    $this->form_validation->set_rules('order_item_id', 'order_item_id', 'required');
-                    $this->form_validation->set_message('required', '{field} tidak ditemukan');
-                    if ($this->form_validation->run() == FALSE){
-                        $return->message = validation_errors();
-                    }else{
-                        $order_item_id = !empty($post['order_item_id']) ? $post['order_item_id'] : $post['order_item_id'];
-                        $order_item_name = !empty($post['order_item_name']) ? $post['order_item_name'] : $post['order_item_name'];
-                        $order_item_flag = !empty($post['order_item_flag']) ? $post['order_item_flag'] : $post['order_item_flag'];
-
-                        if(strlen($order_item_id) > 0){
-                            $params = array(
-                                'order_item_name' => $order_item_name,
-                                'order_item_date_updated' => date("YmdHis"),
-                                'order_item_flag' => $order_item_flag
-                            );
-                           
-                            $set_update=$this->Front_model->update_order_item($order_item_id,$params);
-                            if($set_update){
-                                $get_data = $this->Front_model->get_order_item($order_item_id);
-                                $return->status  = 1;
-                                $return->message = 'Berhasil memperbarui '.$order_item_name;
-                            }else{
-                                $return->message='Gagal memperbarui '.$order_item_name;
-                            }   
-                        }else{
-                            $return->message = "Gagal memperbarui";
-                        } 
-                    }
-                    break;
-                case "update_order_item_flag":
-                    $this->form_validation->set_rules('order_item_id', 'order_item_id', 'required');
-                    $this->form_validation->set_rules('order_item_flag', 'order_item_flag', 'required');
-                    $this->form_validation->set_message('required', '{field} wajib diisi');
-                    if($this->form_validation->run() == FALSE){
-                        $return->message = validation_errors();
-                    }else{
-                        $order_item_id = !empty($post['order_item_id']) ? $post['order_item_id'] : 0;
-                        if(strlen(intval($order_item_id)) > 0){
-                            
-                            $params = array(
-                                'order_item_flag' => !empty($post['order_item_flag']) ? intval($post['order_item_flag']) : 0,
-                            );
-                            
-                            $where = array(
-                                'order_item_id' => !empty($post['order_item_id']) ? intval($post['order_item_id']) : 0,
-                            );
-                            
-                            if($post['order_item_flag']== 0){
-                                $set_msg = 'nonaktifkan';
-                            }else if($post['order_item_flag']== 1){
-                                $set_msg = 'mengaktifkan';
-                            }else if($post['order_item_flag']== 4){
-                                $set_msg = 'menghapus';
-                            }else{
-                                $set_msg = 'mendapatkan data';
-                            }
-
-                            $set_update=$this->Front_model->update_order_item_custom($where,$params);
-                            if($set_update){
-                                $get_data = $this->Front_model->get_order_item_custom($where);
-                                $return->status  = 1;
-                                $return->message = 'Berhasil '.$set_msg.' '.$get_data['order_item_name'];
-                            }else{
-                                $return->message='Gagal '.$set_msg;
-                            }   
-                        }else{
-                            $return->message = 'Gagal mendapatkan data';
-                        } 
-                    }
-                    break;
-                case "delete_order_item":
-                    $this->form_validation->set_rules('order_item_id', 'order_item_id', 'required');
-                    if ($this->form_validation->run() == FALSE){
-                        $return->message = validation_errors();
-                    }else{
-                        $order_item_id   = !empty($post['order_item_id']) ? $post['order_item_id'] : 0;
-                        $order_item_name = !empty($post['order_item_name']) ? $post['order_item_name'] : null;                                
-
-                        if(strlen($order_item_id) > 0){
-                            $get_data=$this->Front_model->get_order_item($order_item_id);
-                            // $set_data=$this->Front_model->delete_order_item($order_item_id);
-                            $set_data = $this->Front_model->update_order_item_custom(array('order_item_id'=>$order_item_id),array('order_item_flag'=>4));                
-                            if($set_data){
-                                /*
-                                if (file_exists($get_data['order_item_image'])) {
-                                    unlink($get_data['order_item_image']);
-                                } 
-                                */
-                                $return->status=1;
-                                $return->message='Berhasil menghapus '.$order_item_name;
-                            }else{
-                                $return->message='Gagal menghapus '.$order_item_name;
-                            } 
-                        }else{
-                            $return->message='Data tidak ditemukan';
-                        }
-                    }
-                    break;
-                case "load_order_item":
-                    $columns = array(
-                        '0' => 'order_item_id',
-                        '1' => 'order_item_name'
-                    );
-
-                    $limit     = !empty($post['length']) ? $post['length'] : 10;
-                    $start     = !empty($post['start']) ? $post['start'] : 0;
-                    $order     = !empty($post['order']) ? $columns[$post['order'][0]['column']] : $columns[0];
-                    $dir       = !empty($post['order'][0]['dir']) ? $post['order'][0]['dir'] : "asc";
-                    
-                    $search    = [];
-                    if(!empty($post['search']['value'])) {
-                        $s = $post['search']['value'];
-                        foreach ($columns as $v) {
-                            $search[$v] = $s;
-                        }
-                    }
-
-                    $params = array();
-
-                    //Default Params for Master CRUD Form
-                    $params['order_item_id']   = !empty($post['order_item_id']) ? $post['order_item_id'] : $params;
-                    $params['order_item_name'] = !empty($post['order_item_name']) ? $post['order_item_name'] : $params;
-
-                    /*
-                    if($post['other_item_column'] && $post['other_item_column'] > 0) {
-                        $params['other_item_column'] = $post['other_item_column'];
-                    }
-                    */
-                    
-                    $get_count = $this->Front_model->get_all_order_item_count($params, $search);
-                    if($get_count > 0){
-                        $get_data = $this->Front_model->get_all_order_item($params, $search, $limit, $start, $order, $dir);
-                        $return->total_records   = $get_count;
-                        $return->status          = 1; 
-                        $return->result          = $get_data;
-                    }else{
-                        $return->total_records   = 0;
-                        $return->result          = array();
-                    }
-                    $return->message             = 'Load '.$return->total_records.' data';
-                    $return->recordsTotal        = $return->total_records;
-                    $return->recordsFiltered     = $return->total_records;
-                    break;
-                case "load_order_item_2":
-                    $params = array(); $total  = 0;
-                    $this->form_validation->set_rules('order_item_order_id', 'order_item_order_id', 'required');
-                    if ($this->form_validation->run() == FALSE){
-                        $return->message = validation_errors();
-                    }else{
-                        $order_item_order_id   = !empty($post['order_item_order_id']) ? $post['order_item_order_id'] : 0;
-                        if(intval(strlen($order_item_order_id)) > 0){
-                            $params = array(
-                                'order_item_order_id' => $order_item_order_id
-                            );
-                            $search = null;
-                            $start  = null;
-                            $limit  = null;
-                            $order  = "order_item_id";
-                            $dir    = "asc";
-                            $get_data = $this->Front_model->get_all_order_item($params, $search, $limit, $start, $order, $dir);
-                            if($get_data){
-                                $total = count($get_data);
-                                $return->status=1;
-                                $return->message='Berhasil mendapatkan data';
-                                $return->result=$get_data;
-                            }else{
-                                $return->message = 'Data tidak ditemukan';
-                            }
-                        }else{
-                            $return->message='Data tidak ada';
-                        }
-                    }
-                    $return->params          =$params;
-                    $return->total_records   = $total;
-                    $return->recordsTotal    = $total;
-                    $return->recordsFiltered = $total;
                     break;
                 default:
                     $return->message='No Action';
@@ -1557,15 +1466,16 @@ class Front_office extends MY_Controller{
             $data['products']         = $this->Produk_model->get_all_produks_datatable($params_product,null,6,0,'product_name','asc');            
             $data['product_category'] = $this->Kategori_model->get_all_categoriess($params_datatable,null,null,null,'category_name','asc');            
             $data['non_contact']      = $this->Kontak_model->get_kontak_custom($where_non);            
-                        
+            $data['branch']           = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
+
             $data['contact_1_alias']  = 'Customer';
             $data['contact_2_alias']  = 'Sales By';
-            $data['ref_alias']        = 'Ruangan';         
+            $data['ref_alias']        = 'Kamar';         
             $data['order_alias']      = 'Order';
             $data['trans_alias']      = 'Trans';
             $data['payment_alias']    = 'Checkout'; 
             $data['dp_alias']         = 'Down Payment'; 
-            $data['product_alias']    = 'Jasa';    
+            $data['product_alias']    = 'Makanan';    
                         
             $data['title'] = 'Front';
             $data['_view'] = 'layouts/admin/menu/front_office/resto';
@@ -1665,7 +1575,53 @@ class Front_office extends MY_Controller{
         $d1 = strtotime($d1);
         $d2 = strtotime($d2);
         return intVal(($d2 - $d1) / (24 *3600));
-    }        
+    }      
+    function sync_product($branch_id){
+        $return          = new \stdClass();
+        $return->status  = 0;
+        $return->message = '';
+        $return->result  = '';
+        $params = array(
+            'product_branch_id' => $branch_id,
+            'product_type' => 1
+        );
+        $return->params = $params;
+        $get_all_product = $this->Produk_model->get_all_produks($params,null,null,null,'product_name','asc');
+        $datas = array();
+        foreach($get_all_product as $v){
+            $datas[] = array(
+                'product_id' => intval($v['product_id']),
+                'product_barcode' => $v['product_barcode'],
+                'product_code' => !empty($v['product_code']) ? $v['product_code'] : '',
+                'product_name' => $v['product_name'],
+                'product_unit' => $v['product_unit'],   
+                'product_category_id' => intval($v['product_category_id']),                             
+                'product_image' => !empty($v['product_image']) ? $v['product_image'] : 'upload/noimage.png',
+                'product_price_sell_format' => !empty($v['product_price_sell_format']) ? $v['product_price_sell_format'] : '0',
+                'product_price_sell' => $v['product_price_sell'],
+                'product_price_promo' => $v['product_price_promo'],
+                'product_type' => $v['product_type']
+            );
+        }
+        
+        // encode array to json
+        $json = json_encode($datas);
+
+        $path = FCPATH . 'download';
+        if (!file_exists($path)) {
+            mkdir($path, 0775, true);
+        }
+
+        //write json to file
+        if (file_put_contents($path."/"."products_".$branch_id.".json", $json)){
+            $return->message = "JSON file created successfully...";
+            $return->result = $datas;
+            $return->status = 1;
+        }else{ 
+            $return->message = "Oops! Error creating json file...";
+        }
+        echo json_encode($return);
+    }      
     function test(){
         echo json_encode($this->Front_model->get_all_paid(null,null,null,null,'paid_id','asc'));
 

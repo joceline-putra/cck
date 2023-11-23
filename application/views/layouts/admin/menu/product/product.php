@@ -163,7 +163,7 @@
                                             </div>                                            
                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                 <div class="form-group">
-                                                    <label class="form-label">Kategori *</label>
+                                                    <label class="form-label">Jenis Produk *</label>
                                                     <select id="categories" name="categories" class="form-control" disabled readonly>
                                                         <option value="0">-- Pilih --</option>
                                                     </select>

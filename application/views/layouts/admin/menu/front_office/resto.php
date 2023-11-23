@@ -906,11 +906,30 @@
                                             </div>
                                         </div>
                                         <div id="product-search" class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="margin-top:5px;padding-left:5px;padding-right:5px;">
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 padding-remove-side">
+                                                <div class="form-group">
+                                                    <label class="form-label" style="color:#ffffff;">Cabang</label>
+                                                    <div class="radio radio-success">
+                                                            <?php 
+                                                            foreach($branch as $i => $v){
+                                                                $c = '';
+                                                                if($i==0){
+                                                                    $c = 'checked';
+                                                                }
+                                                            ?>
+                                                            <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="trans_branch_id" value="<?php echo $v['branch_id']; ?>" <?php echo $c; ?>><label style="color:#ffffff;" for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
+                                                        <?php 
+                                                        } 
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
                                             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-7" style="padding-left:4px;padding-right:4px;">
                                                 <div class="form-group">    
                                                     <input id="search_product_tab" name="search_product_tab" type="text" class="form-control" placeholder="Cari [Kode <?php echo $product_alias; ?> / Nama / Barcode]">
                                                 </div>
                                             </div>   
+                                            <!--
                                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 padding-remove-side">
                                                 <div class="form-group">
                                                     <div class="toggles">
@@ -919,7 +938,8 @@
                                                     </div>
                                                     <label class="form-label barcode_label" style="color:var(--form-font-color);">Barcode Mode</label>
                                                 </div>
-                                            </div>                                                 
+                                            </div> 
+                                            -->                                                                                             
                                         </div>                                  
                                         <div id="product-tab" class="col-md-12 col-sm-12 col-sm-12 col-xs-12 tabbable tabs-left" style="border-bottom: 8px solid var(--form-background-color);">
                                             <ul class="nav nav-tabs scroll-nav scroll_product_tab" id="style-5" role="tablist" style="border-right:0!important;padding:0px 4px;margin:0px;">
@@ -1032,31 +1052,50 @@
                                                                 </div>   
                                                             </div>                                        
                                                             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 prs-0">                                                   
-                                                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 padding-remove-side prs-0">
+                                                                <div class="col-md-4 col-sm-6 col-xs-6 padding-remove-side prs-0">
                                                                     <div class="col-md-12 col-xs-12 col-sm-12 prs-0 prs-5">
                                                                         <div class="form-group">                        
-                                                                            <label class="form-label"><?php echo $ref_alias;?></label>
+                                                                            <label class="form-label"><?php echo $ref_alias;?>(trans_ref_id)</label>
                                                                             <select id="trans_ref_id" name="trans_ref_id" class="form-control">
                                                                                 <option value="0">-</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>   
-                                                                </div>         
+                                                                </div>
+                                                                <div class="col-md-4 col-xs-6 col-sm-6 padding-remove-side">
+                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label">Nama <?php echo $contact_1_alias; ?></label>
+                                                                            <input id="trans_contact_name" name="trans_contact_name" type="text" value="" class="form-control" style="cursor:pointer;"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4 col-xs-6 col-sm-6 padding-remove-side">
+                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
+                                                                        <div class="form-group">
+                                                                            <label class="form-label">Telepon <?php echo $contact_1_alias; ?></label>
+                                                                            <input id="trans_contact_phone" name="trans_contact_phone" type="text" value="" class="form-control" style="cursor:pointer;"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                                
+                                                                <!--         
                                                                 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 padding-remove-side prs-0">
                                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                                         <div class="form-group">                        
-                                                                            <label class="form-label"><?php echo $contact_2_alias; ?> *</label>
+                                                                            <label class="form-label"><?php echo $contact_2_alias; ?> *(trans_sales_id)</label>
                                                                             <select id="trans_sales_id" name="trans_sales_id" class="form-control">
                                                                                 <option value="0">Pilih</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>   
-                                                                </div>                                                     
+                                                                </div>
+                                                                -->                                                     
                                                             </div>
                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 prs-0">
+                                                                <!--
                                                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 padding-remove-side">
                                                                     <div class="form-group">
-                                                                        <label class="form-label"><?php echo $contact_1_alias; ?>?</label>
+                                                                        <label class="form-label"><?php #echo $contact_1_alias; ?>?</label>
                                                                         <div class="toggles">
                                                                             <input type="checkbox" name="checkbox" id="trans_contact_checkbox_flag" class="ios-toggle"/>
                                                                             <label class="trans_contact_checkbox" data-flag="0"></label>	
@@ -1071,23 +1110,8 @@
                                                                             </select>               
                                                                         </div>                   
                                                                     </div>   
-                                                                </div>                                                        
-                                                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
-                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
-                                                                        <div class="form-group">
-                                                                            <label class="form-label">Nama non-<?php echo $contact_1_alias; ?></label>
-                                                                            <input id="trans_contact_name" name="trans_contact_name" type="text" value="" class="form-control" style="cursor:pointer;"/>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
-                                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">
-                                                                        <div class="form-group">
-                                                                            <label class="form-label">Telepon non-<?php echo $contact_1_alias; ?></label>
-                                                                            <input id="trans_contact_phone" name="trans_contact_phone" type="text" value="" class="form-control" style="cursor:pointer;"/>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                </div>  
+                                                                -->
                                                                 <div class="clearfix"></div>
                                                             </div>
                                                         </div>

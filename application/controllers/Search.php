@@ -503,6 +503,56 @@ class Search extends MY_Controller{
                     'text' => '-- Ketik yg ingin di cari --'
                 ));                
             }
+            else if($source=="products_other"){
+                $branch  = $this->input->get('branch');  
+                // $where_category = '';
+                if(!empty($category)){
+                    // $where_category = ' AND product_category_id > 0';
+                    $where_category = '';
+                }else{
+                    $where_category = ' AND product_category_id < 1';
+                }
+
+                if($category=='add-on'){
+                    // $where_category = ' AND product_category_id > 0';
+                    $where_category = '';
+                }
+
+                if($tipe == 2){
+                    $where_category = '';
+                }
+
+                if(!empty($terms)){
+                    $prepare="SELECT product_id AS id, product_code AS kode, product_type AS tipe, product_name AS nama, product_unit AS satuan, product_stock,
+                            (SELECT CONCAT(IFNULL(`product_name`,''))) AS `text`
+                        FROM products
+                        WHERE (product_name LIKE '%".$terms."%')
+                        AND product_flag=1 AND product_branch_id=".$branch." AND product_type = ".$tipe."".$where_category."
+                    ";
+                    // var_dump($prepare);
+                    $query = $this->db->query($prepare);
+                }else{
+                    $prepare="SELECT product_id AS id, product_code AS kode, product_type AS tipe, product_name AS nama, product_unit AS satuan, product_stock,
+                            (SELECT CONCAT(IFNULL(`product_name`,''))) AS `text`
+                        FROM products
+                        WHERE product_flag=1 AND product_branch_id=".$session_branch_id." AND product_type = ".$tipe."".$where_category."
+                        ORDER BY product_name ASC LIMIT 20
+                    ";
+                    // var_dump($prepare);
+                    $query = $this->db->query($prepare);                    
+                }
+                $result = $query->result();
+                $json = array_push($result,array(
+                    'id' => "0",
+                    'nama' => '-- Ketik yg ingin di cari --',
+                    'text' => '-- Ketik yg ingin di cari --'
+                ));      
+                // $json = array_push($result,array(
+                //     'id' => "-",
+                //     'nama' => 'Buat Produk Baru',
+                //     'text' => 'Buat Produk Baru'
+                // ));                                    
+            }            
             else if($source=="categories"){
                 if(!empty($terms)){
                     $query = $this->db->query("
