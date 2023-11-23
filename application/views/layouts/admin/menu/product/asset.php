@@ -52,15 +52,7 @@
                                                         <option value="0">Pilih</option>
                                                     </select>
                                                 </div>
-                                            </div>									
-                                            <div class="col-md-12 col-xs-6 col-sm-12 padding-remove-side">
-                                                <div class="col-md-8 col-xs-12 col-sm-12 padding-remove-left">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Kode <?php echo $title; ?> / Barcode</label>
-                                                        <input id="kode" name="kode" type="text" value="" class="form-control" readonly="true"/>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            </div>	
                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                 <div class="form-group">
                                                     <label class="form-label">Nama <?php echo $title; ?> *</label>

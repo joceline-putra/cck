@@ -20,6 +20,8 @@ class Front_office extends MY_Controller{
         }
         // $this->load->helper('form');
         // $this->load->library('form_validation');
+        $this->load->model('Kontak_model');    
+        $this->load->model('Kategori_model');            
         $this->load->model('Ref_model');    
         $this->load->model('Referensi_model');                
         $this->load->model('Branch_model');
@@ -31,6 +33,19 @@ class Front_office extends MY_Controller{
         $this->whatsapp_config  = 1;
         $this->module_approval   = 0; //Approval
         $this->module_attachment   = 1; //Attachment         
+
+        $this->contact_1_alias  = 'Customer';
+        $this->contact_2_alias  = 'Sales By';
+        $this->ref_alias        = 'Ruangan';         
+        
+        $this->order_alias      = 'Order';
+        $this->trans_alias      = 'Trans';
+        
+        $this->payment_alias    = 'Checkout';  
+        $this->dp_alias         = 'Down Payment'; 
+        $this->product_alias    = 'Jasa';     
+        
+        $this->form_title       = 'POS 3';
 
         $this->booking_identity = 222;
         $this->resto_identity = 2222;        
@@ -857,9 +872,7 @@ class Front_office extends MY_Controller{
             $date3 = $now->modify('+1 day')->format('Y-m-d H:i:s');
 
             $data['booking_start_date'] = date("d-M-Y");
-            $data['booking_end_date'] = date("d-M-Y", strtotime($date3));            
-            
-            // var_dump($data['ref']);die;
+            $data['booking_end_date'] = date("d-M-Y", strtotime($date3));              
             
             $data['hour'] = date("H:i");
             $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
@@ -1521,13 +1534,39 @@ class Front_office extends MY_Controller{
             $data['image_height'] = intval($this->image_height);
 
             $data['module_approval']    = $this->module_approval;
-            $data['module_attachment'] = $this->module_attachment;   
+            $data['module_attachment']  = $this->module_attachment;   
+            $data['identity']           = $this->resto_identity;
+            $data['whatsapp_config']  = $this->whatsapp_config;
             /*
             // Reference Model
             $this->load->model('Reference_model');
             $data['reference'] = $this->Reference_model->get_all_reference();
             */
-            $data['identity'] = $this->resto_identity;
+            $params_datatable = array(
+                'category_type' => 1, //Product Categories
+                'category_flag' => 1
+            );            
+            $where_non = array(
+                'contact_flag' => 5,
+                'contact_type' => 2
+            ); 
+            $params_product = array(
+                'product_type' => 1,
+                'product_flag' => 1
+            );                          
+            $data['products']         = $this->Produk_model->get_all_produks_datatable($params_product,null,6,0,'product_name','asc');            
+            $data['product_category'] = $this->Kategori_model->get_all_categoriess($params_datatable,null,null,null,'category_name','asc');            
+            $data['non_contact']      = $this->Kontak_model->get_kontak_custom($where_non);            
+                        
+            $data['contact_1_alias']  = 'Customer';
+            $data['contact_2_alias']  = 'Sales By';
+            $data['ref_alias']        = 'Ruangan';         
+            $data['order_alias']      = 'Order';
+            $data['trans_alias']      = 'Trans';
+            $data['payment_alias']    = 'Checkout'; 
+            $data['dp_alias']         = 'Down Payment'; 
+            $data['product_alias']    = 'Jasa';    
+                        
             $data['title'] = 'Front';
             $data['_view'] = 'layouts/admin/menu/front_office/resto';
             $this->load->view('layouts/admin/index',$data);

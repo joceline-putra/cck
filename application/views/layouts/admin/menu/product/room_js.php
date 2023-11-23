@@ -419,7 +419,7 @@
                 formData.append('satuan', 'unit');
                 formData.append('status', $('#status').find(':selected').val());
                 // formData.append('with_stock', $('#with_stock').find(':selected').val());
-                formData.append('categories', 2);
+                // formData.append('categories', 2);
                 // formData.append('manufacture', $('#manufacture').find(':selected').val());
                 formData.append('referensi', $('#referensi').find(':selected').val());
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());
@@ -665,7 +665,7 @@
                 formData.append('satuan', 'unit');
                 // formData.append('status', $('#status').find(':selected').val());
                 // formData.append('with_stock', $('#with_stock').find(':selected').val());
-                formData.append('categories', 2);
+                // formData.append('categories', 2);
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
                 // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());

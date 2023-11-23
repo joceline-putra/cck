@@ -143,6 +143,32 @@
                                             </div>                                                       
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                <div class="form-group">
+                                                    <label class="form-label">Cabang</label>
+                                                    <div class="radio radio-success">
+                                                            <?php 
+                                                            foreach($branch as $i => $v){
+                                                                $c = '';
+                                                                if($i==0){
+                                                                    $c = 'checked';
+                                                                }
+                                                            ?>
+                                                            <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="product_branch_id" value="<?php echo $v['branch_id']; ?>" <?php echo $c; ?>><label for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
+                                                        <?php 
+                                                        } 
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                <div class="form-group">
+                                                    <label class="form-label">Kategori *</label>
+                                                    <select id="categories" name="categories" class="form-control" disabled readonly>
+                                                        <option value="0">-- Pilih --</option>
+                                                    </select>
+                                                </div>
+                                            </div>                                            
                                             <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8 padding-remove-side">
                                                 <div class="form-group">
                                                     <label class="form-label">Nama <?php echo $title; ?> *</label>

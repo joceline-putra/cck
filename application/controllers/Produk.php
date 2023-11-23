@@ -120,8 +120,9 @@ class Produk extends MY_Controller{
             if($identity == 1){ //Makanan - Barang
                 $columns = array(
                     '0' => 'product_name',
-                    '1' => 'product_price_sell',
-                    '2' => 'product_stock'                  
+                    '1' => 'category_name',                    
+                    '2' => 'product_price_sell',
+                    '3' => 'product_stock'                  
                 );                                      
             }else if($identity == 2){ //Kamar - Jasa
                 $columns = array(
@@ -801,7 +802,7 @@ class Produk extends MY_Controller{
                     
                     $filter_branch > 0 ? $params['product_branch_id'] = $filter_branch : $params;
                     $filter_ref > 0 ? $params['product_ref_id'] = $filter_ref : $params;
-                    $filter_category > 0 ? $params['product_category_id'] = $filter_category : $params;                    
+                    // $filter_category > 0 ? $params['product_category_id'] = $filter_category : $params;                    
                     $filter_type > 0 ? $params['product_type'] = $filter_type : $params;
                     $filter_contact > 0 ? $params['product_contact_id'] = $filter_contact : $params;
                     $filter_city > 0 ? $params['product_city_id'] = $filter_city : $params;

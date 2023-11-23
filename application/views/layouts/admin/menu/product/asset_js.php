@@ -82,9 +82,9 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Kode", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Nama", "searchable": true, "orderable": true},
-                {"targets": 2, "title": "Jenis", "searchable": true, "orderable": true},
+                {"targets": 0, "title": "Nama", "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Jenis", "searchable": true, "orderable": true},
+                {"targets": 2, "title": "Cabang", "searchable": true, "orderable": true},
                 {"targets": 3, "title": "Satuan", "searchable": true, "orderable": true},
                 {"targets": 4, "title": "Action", "searchable": false, "orderable": false}
             ],
@@ -92,8 +92,7 @@
                 [1, 'asc']
             ],
             "columns": [
-               {'data': 'product_code'
-                }, {
+               {
                     'data': 'product_name',
                     render: function (data, meta, row) {
                         var dsp = '';
@@ -101,6 +100,7 @@
                         return dsp;
                     }
                 }, {'data': 'ref_name'
+                }, {'data': 'branch_name'
                 }, {'data': 'product_unit'
                 }, {
                     'data': 'product_reminder',
@@ -381,7 +381,7 @@
                 formData.append('action', 'create');
                 formData.append('upload1', $('#upload1')[0].files[0]);
                 formData.append('tipe', 3);
-                formData.append('kode', $('#kode').val());
+                // formData.append('kode', $('#kode').val());
                 formData.append('nama', $('#nama').val());
                 formData.append('keterangan', $('#keterangan').val());
                 // formData.append('harga_beli', $('#harga_beli').val());
@@ -398,7 +398,7 @@
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());             
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
                 // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());      
-                formData.append('product_reminder', $('#product_reminder').val());
+                // formData.append('product_reminder', $('#product_reminder').val());
                 formData.append('product_branch_id',$("input[name='product_branch_id']:checked").val());
                 $.ajax({
                     type: "POST",
@@ -614,7 +614,7 @@
                 formData.append('id', $('#id_document').val());
                 formData.append('upload1', $('#upload1')[0].files[0]);
                 formData.append('tipe', 3);
-                formData.append('kode', $('#kode').val());
+                // formData.append('kode', $('#kode').val());
                 formData.append('nama', $('#nama').val());
                 formData.append('keterangan', $('#keterangan').val());
                 // formData.append('harga_beli', $('#harga_beli').val());
@@ -631,7 +631,7 @@
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());             
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
                 // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());    
-                formData.append('product_reminder', $('#product_reminder').val());
+                // formData.append('product_reminder', $('#product_reminder').val());
                 formData.append('product_branch_id',$("input[name='product_branch_id']:checked").val());
                 
                 $.ajax({

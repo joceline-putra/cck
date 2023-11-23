@@ -69,7 +69,7 @@
                     d.action = 'load';
                     d.tipe = identity;
                     d.filter_type = 1;                    
-                    d.filter_categories = 1;
+                    // d.filter_categories = 1;
                     d.filter_ref = $("#filter_ref").find(':selected').val();
                     d.filter_flag = $("#filter_flag").find(':selected').val();
                     d.search = {
@@ -82,11 +82,12 @@
             },
             "columnDefs": [
                 {"targets": 0, "title": "Makanan", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Harga Jual", "searchable": true, "orderable": true},
-                {"targets": 2, "title": "Stok", "searchable": false, "orderable": true, "className": "text-right"},
-                {"targets": 3, "title": "Stok Minimal", "searchable": false, "orderable": true, "className": "text-right"},                
-                {"targets": 4, "title": "Status", "searchable": false, "orderable": true},                
-                {"targets": 5, "title": "Action", "searchable": false, "orderable": false}
+                {"targets": 1, "title": "Kategori", "searchable": true, "orderable": true},
+                {"targets": 2, "title": "Harga Jual", "searchable": true, "orderable": true},
+                {"targets": 3, "title": "Stok", "searchable": false, "orderable": true, "className": "text-right"},
+                {"targets": 4, "title": "Stok Minimal", "searchable": false, "orderable": true, "className": "text-right"},                
+                {"targets": 5, "title": "Cabang", "searchable": false, "orderable": true},                
+                {"targets": 6, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
                 [0, 'asc']
@@ -118,6 +119,13 @@
                          }else{ dsp += '&nbsp;<i class="fas fa-camera"></i>'; }
                          */
 
+                        return dsp;
+                    }
+                },{
+                    'data': 'category_name',
+                    render: function (data, meta, row) {
+                        var dsp = '';
+                        dsp += row.category_name;
                         return dsp;
                     }
                 },{
@@ -183,15 +191,16 @@
                         return dsp;
                     }
                 }, {
-                    'data': 'product_flag',
-                    className: 'text-right',
+                    'data': 'branch_name',
+                    className: 'text-left',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        if(data == 1){
-                            dsp += 'Aktif';
-                        }else{
-                            dsp += 'Nonaktif';
-                        }
+                        // if(data == 1){
+                        //     dsp += 'Aktif';
+                        // }else{
+                        //     dsp += 'Nonaktif';
+                        // }
+                        dsp += row.branch_name;
                         return dsp;
                     }
                 }, {
@@ -266,8 +275,6 @@
             // $("#table-data").attr('data-limit-end',limit_end);
         });
 
-
-
         $('#satuan').select2({
             placeholder: '--- Pilih ---',
             minimumInputLength: 0,
@@ -326,8 +333,7 @@
                     var query = {
                         search: params.term,
                         tipe: 1, //1=Produk, 2=News
-                        source: 'categories',
-                        search: 'Makanan'                        
+                        source: 'categories',                     
                     }
                     return query;
                 },
@@ -728,7 +734,7 @@
                 formData.append('satuan', $('#satuan').find(':selected').val());
                 formData.append('status', $('#status').find(':selected').val());
                 formData.append('with_stock', 1);
-                formData.append('categories', 1);
+                formData.append('categories', $('#categories').find(':selected').val());
                 // formData.append('manufacture', $('#manufacture').find(':selected').val());
                 formData.append('referensi', $('#referensi').find(':selected').val());
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());
@@ -971,8 +977,9 @@
                 formData.append('referensi', $('#referensi').find(':selected').val());
                 formData.append('satuan', $('#satuan').find(':selected').val());
                 formData.append('status', $('#status').find(':selected').val());
-                formData.append('categories', 1);
+                formData.append('categories', $('#categories').find(':selected').val());
                 formData.append('upload1', $("#files_preview").attr('data-save-img'));
+                formData.append('product_branch_id',$("input[name='product_branch_id']:checked").val());                   
                 $.ajax({
                     type: "POST",
                     url: url,
