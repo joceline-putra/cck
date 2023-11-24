@@ -746,11 +746,11 @@
             </li>           
             <li class="">
                 <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="true">
-                <span class="fas fa-plus-square"></span> <?php echo $order_alias; ?></a>
+                <span class="fas fa-plus-square"></span> Form <?php echo $order_alias; ?></a>
             </li> 
             <li class="">
                 <a href="#tab3" role="tab" class="btn-tab-3" data-toggle="tab" aria-expanded="true">
-                <span class="fas fa-plus-square"></span> <?php echo $trans_alias; ?></a>
+                <span class="fas fa-plus-square"></span> Checkout <?php echo $trans_alias; ?></a>
             </li>                                                                                             
         </ul>
         <div class="tab-content" style="border: 8px solid var(--form-background-color);">
@@ -806,28 +806,30 @@
                                                 </div>                                                    
                                                 <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <label class="form-label" style="color:var(--form-font-color);"><?php echo $contact_1_alias; ?></label>
-                                                        <select id="filter_trans_contact" name="filter_trans_contact" class="form-control">
+                                                        <label class="form-label" style="color:var(--form-font-color);">Cabang</label>
+                                                        <select id="filter_branch" name="filter_branch" class="form-control">
                                                             <option value="0">Semua</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">
+                                                <!--
                                                 <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right prs-0">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label" style="color:var(--form-font-color);">Metode Bayar</label>
                                                         <select id="filter_trans_type_paid" name="filter_trans_type_paid" class="form-control">
                                                             <option value="0">Semua</option>
                                                             <?php 
-                                                            foreach($type_paid as $v){
-                                                                echo '<option value="'.$v['paid_id'].'">'.$v['paid_name'].'</option>';
-                                                            }
+                                                            // foreach($type_paid as $v){
+                                                            //     echo '<option value="'.$v['paid_id'].'">'.$v['paid_name'].'</option>';
+                                                            // }
                                                             ?>
                                                         </select>
                                                     </div>
-                                                </div>                                                        
-                                                <div class="col-lg-5 col-md-5 col-xs-6 col-sm-6 form-group padding-remove-right prs-0">
+                                                </div>    
+                                                -->                                                    
+                                                <div class="col-lg-9 col-md-9 col-xs-6 col-sm-6 form-group padding-remove-right prs-0">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">
                                                         <label class="form-label" style="color:var(--form-font-color);">Cari</label>
                                                         <input id="filter_trans_search" name="filter_trans_search" type="text" value="" class="form-control" placeholder="Pencarian" />
@@ -1055,7 +1057,7 @@
                                                                 <div class="col-md-4 col-sm-6 col-xs-6 padding-remove-side prs-0">
                                                                     <div class="col-md-12 col-xs-12 col-sm-12 prs-0 prs-5">
                                                                         <div class="form-group">                        
-                                                                            <label class="form-label"><?php echo $ref_alias;?>(trans_ref_id)</label>
+                                                                            <label class="form-label"><?php echo $ref_alias;?></label>
                                                                             <select id="trans_ref_id" name="trans_ref_id" class="form-control">
                                                                                 <option value="0">-</option>
                                                                             </select>

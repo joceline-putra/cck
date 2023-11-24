@@ -535,7 +535,7 @@ class Search extends MY_Controller{
                     $prepare="SELECT product_id AS id, product_code AS kode, product_type AS tipe, product_name AS nama, product_unit AS satuan, product_stock,
                             (SELECT CONCAT(IFNULL(`product_name`,''))) AS `text`
                         FROM products
-                        WHERE product_flag=1 AND product_branch_id=".$session_branch_id." AND product_type = ".$tipe."".$where_category."
+                        WHERE product_flag=1 AND product_branch_id=".$branch." AND product_type = ".$tipe."".$where_category."
                         ORDER BY product_name ASC LIMIT 20
                     ";
                     // var_dump($prepare);

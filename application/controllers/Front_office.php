@@ -26,7 +26,8 @@ class Front_office extends MY_Controller{
         $this->load->model('Referensi_model');                
         $this->load->model('Branch_model');
         $this->load->model('Front_model');
-        $this->load->model('Transaksi_model');        
+        $this->load->model('Transaksi_model');  
+        $this->load->model('Type_model');                
         $this->load->model('User_model');
         $this->load->model('Produk_model');        
 
@@ -936,10 +937,10 @@ class Front_office extends MY_Controller{
                     $columns = array(
                         '0' => 'trans_date',
                         '1' => 'trans_number',
-                        '2' => 'contact_name',
-                        '3' => 'trans_total',
-                        '4' => 'trans_sales_name',
-                        '5' => 'trans_contact_name'
+                        '2' => 'branch_name',
+                        '3' => 'product_name',
+                        '4' => 'trans_total',
+                        '5' => 'label'
                     );                
                     $limit      = $this->input->post('length');
                     $start      = $this->input->post('start');
@@ -970,13 +971,14 @@ class Front_office extends MY_Controller{
                     // $location_to    = !empty($this->input->post('location_to')) ? $this->input->post('location_to') : 0;
                     $contact        = !empty($this->input->post('filter_contact')) ? $this->input->post('filter_contact') : 0;
                     $type_paid      = !empty($this->input->post('filter_type_paid')) ? $this->input->post('filter_type_paid') : 0;
+                    $filter_branch  = !empty($this->input->post('filter_branch')) ? $this->input->post('filter_branch') : 0;                    
 
                     $params_datatable = array(
                         'trans.trans_date >' => $date_start,
                         'trans.trans_date <' => $date_end,
                         'trans.trans_type' => intval($identity),
                         'trans.trans_flag <' => 4,
-                        'trans.trans_branch_id' => intval($session_branch_id)
+                        // 'trans.trans_branch_id' => intval($session_branch_id)
                     );
                     if($contact > 0){
                         $params_datatable = array(
@@ -984,14 +986,14 @@ class Front_office extends MY_Controller{
                             'trans.trans_date <' => $date_end,
                             'trans.trans_type' => intval($identity),
                             'trans.trans_flag <' => 4,
-                            'trans.trans_branch_id' => intval($session_branch_id),
+                            // 'trans.trans_branch_id' => intval($session_branch_id),
                             'trans.trans_contact_id' => intval($contact)
                         );
                     }
 
-                    // if(intval($location_from) > 0){
-                    //     $params_datatable['trans.trans_location_id'] = $location_from;
-                    // }
+                    if(intval($filter_branch) > 0){
+                        $params_datatable['trans.trans_branch_id'] = $filter_branch;
+                    }
 
                     // if(intval($location_to) > 0){
                     //     $params_datatable['trans.trans_location_to_id'] = $location_to;
@@ -1013,9 +1015,9 @@ class Front_office extends MY_Controller{
                         Inventory.php
                         9 Pemakaian Produk
                     */
-                    $datas_count = $this->Transaksi_model->get_all_transaksis_count($params_datatable,$search);
+                    $datas_count = $this->Transaksi_model->get_all_transaksis_resto_count($params_datatable,$search);
                     if($datas_count > 0){
-                        $datas = $this->Transaksi_model->get_all_transaksis($params_datatable, $search, $limit, $start, $order, $dir);
+                        $datas = $this->Transaksi_model->get_all_transaksis_resto($params_datatable, $search, $limit, $start, $order, $dir);
                         
                         $return->status=1; 
                         $return->message='Loaded'; 
@@ -1127,6 +1129,102 @@ class Front_office extends MY_Controller{
                     $return->recordsFiltered = $datas_count;
                     $return->params = $params_datatable;
                     break;
+                case "load_categories": //Requires ref_type, Room, Table, Something on table 'reference'
+                        $ref_type = $datas['ref_type'];
+                        $search = array();
+                        if(strlen($datas['search']) > 0){
+                            $search['ref_name'] = $datas['search'];
+                        }
+                        $start = 0;
+                        $limit = 100;
+                        $order = 'ref_name';
+                        $dir = 'ASC';
+    
+                        $params_datatable = array(
+                            'references.ref_type' => intval($ref_type),                    
+                            'references.ref_flag' => 1,
+                            'references.ref_branch_id' => intval($session_branch_id),
+                            'references.ref_parent_id > ' => 0
+                        );      
+                        $datas_count = $this->Referensi_model->get_all_referensis_count($params_datatable,$search);                           
+                        if($datas_count > 0){
+                            //Initial Group n Group Data
+                            $group      = array();
+                            $group_data = array();
+                            $set_data   = array();
+                            $get_data = $this->Referensi_model->get_all_referensis_join_ref($params_datatable, $search, $limit, $start, $order, $dir);
+                            foreach($get_data as $v){     
+    
+                                $get_order = array();
+                                if(intval($v['ref_use_type']) == 1){
+                                    $where = array(
+                                        'order_flag =' => 0,
+                                        'order_branch_id' => $session_branch_id,
+                                        'order_ref_id' => intval($v['ref_id'])
+                                    );
+                                    $get_order = $this->Order_model->get_order_ref_custom($where);
+                                    $set_data = array(
+                                        'order_id' => intval($get_order['order_id']),
+                                        'order_number' => $get_order['order_number'],
+                                        'order_total' => $get_order['order_total'],
+                                        'order_flag' => $get_order['order_flag'],
+                                        'ref_id' => intval($get_order['order_ref_id']),
+                                        'ref_name' => $get_order['ref_name'],
+                                        'contact_id' => intval($get_order['order_contact_id']),
+                                        'contact_type' => intval($get_order['contact_type']),                                    
+                                        'contact_name' => $get_order['contact_name'],
+                                        'contact_session' => $get_order['contact_session'],                                                                        
+                                        'sales_id' => intval($get_order['order_sales_id']),
+                                        'sales_name' => $get_order['order_sales_name'],                                    
+                                    );
+                                }
+                                $datas = array(
+                                    'ref_id' => intval($v['ref_id']),
+                                    'ref_branch_id' => intval($v['ref_branch_id']),
+                                    'ref_type' => intval($v['ref_type']),
+                                    'ref_code' => $v['ref_code'],
+                                    'ref_name' => $v['ref_name'],
+                                    'ref_note' => $v['ref_note'],
+                                    'ref_user_id' => intval($v['ref_user_id']),
+                                    'ref_date_created' => $v['ref_date_created'],
+                                    'ref_date_updated' => $v['ref_date_updated'],
+                                    'ref_flag' => intval($v['ref_flag']),
+                                    'ref_color' => $v['ref_color'],
+                                    'ref_background' => $v['ref_background'],
+                                    'ref_icon' => $v['ref_icon'],
+                                    'ref_use_type' => intval($v['ref_use_type']),
+                                    'order' => $set_data,
+                                    'parent_id' => $v['parent_id'],
+                                    'parent_name' => $v['parent_name']
+                                );
+    
+                                //Grouping Data
+                                $group_data[$v['ref_parent_id']][] = $datas;                                                                   
+                            }
+    
+    
+                            //Group Data to Multidimensional Array
+                            foreach($group_data as $x => $x_value) {
+                                $group[] = array(
+                                    'index'=> $x,
+                                    'name' => $x_value[0]['parent_name'],
+                                    'data' => $x_value
+                                );
+                            }
+    
+                            $return->status=1; $return->message='Loaded';
+                            $return->result=$get_data; 
+                            $return->result_group=$group;    
+                            $datas_count = count($group);    
+                        }else{  
+                            $return->status=0; $return->message= $this->ref_alias.' belum di konfigurasi';
+                            $return->result=array();    
+                        }
+                        $return->total_records=$datas_count;
+                        $return->recordsTotal = $datas_count;
+                        $return->recordsFiltered = $datas_count;
+                        $return->params = $params_datatable;
+                        break;
                 case "load_product_tab_detail":
                     $data_search = !empty($datas['search']) ? $datas['search'] : '0';
                     $data_category_id = !empty($datas['category_id']) ? $datas['category_id'] : '0';                    
@@ -1421,6 +1519,62 @@ class Front_office extends MY_Controller{
                         }
                     }
                     break;
+                case "update_label":
+                    $id = !empty($this->input->post('trans_id')) ? $this->input->post('trans_id') : 0;
+                    $trans_label = !empty($this->input->post('trans_label')) ? $this->input->post('trans_label') : null;
+
+                    if(strlen(intval($id)) > 0){
+                        $get_data = $this->Transaksi_model->get_transaksi($id);
+                        
+                        $where_type = array(
+                            'type_for' => 2,
+                            'type_type' => $get_data['trans_type']
+                        );
+                        $get_type = $this->Type_model->get_type_custom($where_type);
+                        
+                        $where_label = array(
+                            'ref_type' => 9,
+                            'ref_name' => $trans_label
+                        );
+                        $get_label = $this->Referensi_model->get_all_referensi_custom($where_label);
+                        // var_dump($get_label);
+                        $params = array(
+                            'trans_label' => $trans_label,
+                        );
+                        
+                        $set_data = $this->Transaksi_model->update_transaksi($id,$params);
+                        if($set_data){
+
+                            /* Start Activity */
+                            $params = array(
+                                'activity_user_id' => $session_user_id,
+                                'activity_branch_id' => $session_branch_id,
+                                'activity_action' => 10,
+                                'activity_table' => 'trans',
+                                'activity_table_id' => $get_data['trans_id'],
+                                'activity_text_1' => $trans_label,
+                                'activity_text_2' => $get_data['trans_number'],
+                                'activity_date_created' => date('YmdHis'),
+                                'activity_flag' => 1,
+                                'activity_transaction' => $get_type['type_name'],
+                                'activity_type' => 2,
+                                'activity_icon' => $get_label['ref_note']
+                            );
+                            $this->save_activity($params);
+                            /* End Activity */
+
+                            $return->status  = 1;
+                            $return->message = 'Berhasil memperbarui';
+                            $return->result = array(
+                                'trans_id' => $get_data['trans_id'],
+                                'trans_label' => $trans_label 
+                            );
+                        }
+                    }else{
+                        $return->status  = 0;
+                        $return->message = 'Failed set label';
+                    }
+                    break;                    
                 default:
                     $return->message='No Action';
                     break; 
@@ -1471,8 +1625,8 @@ class Front_office extends MY_Controller{
             $data['contact_1_alias']  = 'Customer';
             $data['contact_2_alias']  = 'Sales By';
             $data['ref_alias']        = 'Kamar';         
-            $data['order_alias']      = 'Order';
-            $data['trans_alias']      = 'Trans';
+            $data['order_alias']      = 'Warmindo';
+            $data['trans_alias']      = 'Warmindo';
             $data['payment_alias']    = 'Checkout'; 
             $data['dp_alias']         = 'Down Payment'; 
             $data['product_alias']    = 'Makanan';    

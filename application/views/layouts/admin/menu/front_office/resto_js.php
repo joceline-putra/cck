@@ -318,7 +318,8 @@
                     // d.date_end = $("#end").val();
                     d.date_start = $("#filter_trans_date").attr('data-start');
                     d.date_end = $("#filter_trans_date").attr('data-end');
-                    d.filter_contact = $("#filter_trans_contact").find(':selected').val();
+                    // d.filter_contact = $("#filter_trans_contact").find(':selected').val();
+                    d.filter_branch = $("#filter_branch").find(':selected').val();                    
                     d.filter_type_paid = $("#filter_trans_type_paid").find(':selected').val();
                     d.length = $("#filter_trans_length").find(':selected').val();
                     d.search = {
@@ -333,9 +334,9 @@
             "columnDefs": [
                 {"targets": 0, "title": "Tanggal", "searchable": true, "orderable": true},
                 {"targets": 1, "title": "Nomor "+trans_alias, "searchable": true, "orderable": true},
-                {"targets": 2, "title": contact_1_alias, "searchable": false, "orderable": true, "className": "text-left"},
-                {"targets": 3, "title": "Total", "searchable": true, "orderable": true},
-                {"targets": 4, "title": "Status", "searchable": true, "orderable": true},
+                {"targets": 2, "title": "Cabang", "searchable": true, "orderable": true, "className": "text-left"},
+                {"targets": 3, "title": "Kamar", "searchable": true, "orderable": true},
+                {"targets": 4, "title": "Total", "searchable": true, "orderable": true},
                 {"targets": 5, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
@@ -346,6 +347,25 @@
                     render: function (data, meta, row) {
                         var dsp = '';
                         dsp += moment(row.trans_date).format("DD-MMM-YYYY, HH:mm");
+                        if (row.trans_label == undefined) {
+                            dsp += '&nbsp;<span class="label btn-label" style="cursor:pointer;color:white;background-color:#929ba1;padding:1px 4px;" data-trans-id="' + row.trans_id + '">Label</span>';
+                        } else {
+                            var bgcolor = '#929ba1';
+                            var color = 'white';
+                            var icon = '';
+
+                            if (row.trans_label !== undefined) {
+                                icon = row.label_icon;
+                                bgcolor = row.label_background;
+                                color = row.label_color;
+                            }
+
+                            dsp += '&nbsp;<span class="label btn-label" data-trans-id="' + row.trans_id + '" style="cursor:pointer;color:' + color + ';background-color:' + bgcolor + ';padding:1px 4px;">';
+                            dsp += '<span class="' + icon + '">&nbsp;';
+                            dsp += row.trans_label;
+                            dsp += '</span>';
+                            dsp += '</span>';
+                        }                               
                         return dsp;
                     }
                 }, {
@@ -354,33 +374,27 @@
                         var dsp = '';
                         dsp += '<button class="btn btn-mini btn-info btn_edit_trans" data-id="' + row.trans_id + '" data-session="'+row.trans_session+'" data-number="'+row.trans_number+'" style="cursor:pointer;">';
                         dsp += '<span class="fas fa-file-alt"></span>&nbsp;' + row.trans_number;
-                        dsp += '</button>';
-                        // if (row.trans_ref_number != undefined) {
-                        //     dsp += '<br>' + row.trans_ref_number;
+                        dsp += '</button>';                 
+                        return dsp;
+                    }
+                }, {
+                    'data': 'branch_name',
+                    render: function (data, meta, row) {
+                        var dsp = '';
+                        dsp += row.branch_name;
+                        // if(row.trans_contact_name == undefined){
+                        //     dsp += '<label class="label label-inverse">'+ contact_1_alias +'</label>&nbsp;';
+                        //     dsp += row.contact_name;
+                        // }else{
+                        //     dsp += row.trans_contact_name;                                                                    
                         // }
                         return dsp;
                     }
                 }, {
-                    'data': 'contact_name',
+                    'data': 'trans_total', className: 'text-left',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        /*
-                            dsp += '<a class="btn-contact-info" data-id="' + row.trans_contact_id + '" data-type="trans" data-trans-type="2" style="cursor:pointer;">';
-                            dsp += '<span class="hide fas fa-user-tie"></span>&nbsp;' + row.contact_name;
-                            dsp += '</a>';
-                            if(row.contact_category_id != undefined){ 
-                                dsp += '<br><span class="label btn-label label-inverse" style="padding:1px 4px;">' + row.category_name + '</span>';                             
-                            }
-                            if(row.trans_sales_id != undefined){ 
-                                dsp += '<br><span class="label btn-label" style="padding:1px 4px;">' + row.trans_sales_name + '</span>';                             
-                            }
-                        */
-                        if(row.trans_contact_name == undefined){
-                            dsp += '<label class="label label-inverse">'+ contact_1_alias +'</label>&nbsp;';
-                            dsp += row.contact_name;
-                        }else{
-                            dsp += row.trans_contact_name;                                                                    
-                        }
+                        dsp += row.product_name;
                         return dsp;
                     }
                 }, {
@@ -391,54 +405,6 @@
                         // dsp += '<a class="btn-trans-item-info" data-id="' + row.trans_id + '" data-session="' + row.trans_session + '" data-trans-number="' + row.trans_number + '" data-contact-name="' + row.contact_name + '" data-trans-type="' + row.trans_type + '" data-type="trans" style="cursor:pointer;">';
                         dsp += addCommas((parseFloat(row.trans_total_dpp) + parseFloat(row.trans_total_ppn)) - parseFloat(row.trans_discount));
                         // dsp += '</a>';
-                        return dsp;
-                    }
-                }, {
-                    'data': 'trans_total', className: 'text-right',
-                    render: function (data, meta, row) {
-                        var dsp = '';
-
-                        if (parseInt(row.trans_paid) == 1) {
-                            var rest_of_bill = 0;
-                        } else if (parseInt(row.trans_paid) == 0) {
-                            var rest_of_bill = row.trans_total - row.trans_total_paid;
-                        }
-
-                        /*
-                            Menampilkan Jumlah Sisa Piutang
-                            dsp += '<a class="btn-trans-payment-info" data-id="' + row.trans_id + '" data-session="' + row.trans_session + '" data-trans-number="' + row.trans_number + '" data-contact-name="' + row.contact_name + '" data-trans-type="' + row.trans_type + '" data-trans-total="' + row.trans_total + '" data-type="finance" style="cursor:pointer;">';
-                            dsp += addCommas(rest_of_bill);
-                            dsp += '</a>';
-                        */
-
-                        var date_due_over = parseInt(row.date_due_over);
-                        if (row.trans_paid == 0) {
-                            if (date_due_over > 0) {
-                                dsp += '<span class="label label-danger" style="color:white;background-color:#1b3148;padding:1px 4px;"> ' + date_due_over + ' hari</span><span class="label" style="color:white;background-color:#ff6665;padding:1px 4px;">Jatuh Tempo</span>';
-                            }
-                        } else if (row.trans_paid == 1) {
-                            dsp += '<span class="label label-success" style="color:white;background-color:#ce83f5;padding:2px 4px;">Lunas</span>&nbsp;';
-
-                            if(parseInt(row.trans_paid_type) == 1){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">Cash</label>';
-                            }else if(parseInt(row.trans_paid_type) == 2){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">Bank Transfer</label>';
-                            }else if(parseInt(row.trans_paid_type) == 3){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">EDC</label>';
-                            }else if(parseInt(row.trans_paid_type) == 4){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">Gratis</label>';
-                            }else if(parseInt(row.trans_paid_type) == 5){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">QRIS</label>';
-                            }else if(parseInt(row.trans_paid_type) == 6){
-                                dsp += '<label class="label label-primary" style="padding:2px 4px;">Link Payment</label>';
-                            }else if(parseInt(row.trans_paid_type) == 7){
-                                dsp += '<label class="label label-primary" style="padding:2px 4px;">e-Wallet</label>';
-                            }else if(parseInt(row.trans_paid_type) == 8){
-                                dsp += '<label class="label label-inverse" style="padding:2px 4px;">Deposit</label>';
-                            }else{
-
-                            }
-                        }
                         return dsp;
                     }
                 }, {
@@ -474,7 +440,7 @@
                 trans_table.ajax.reload();
             }
         });  
-        $("#filter_trans_type_paid, #filter_trans_contact").on("change", function(e) {
+        $("#filter_trans_type_paid, #filter_trans_contact, #filter_branch").on("change", function(e) {
             e.preventDefault();
             e.stopPropagation();
             trans_table.ajax.reload();
@@ -603,7 +569,48 @@
                 }
                 return '<i class="fas fa-user-check ' + d.id.toLowerCase() + '"></i> ' + d.text;
             },
-        });        
+        });     
+        $('#filter_branch').select2({
+            placeholder: {
+                id: '0',
+                text: 'Semua Cabang'
+            },
+            allowClear: true,
+            ajax: {
+                type: "get",
+                url: url_search,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        source: 'branchs'
+                    }
+                    return query;
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (m) {
+                return m;
+            },
+            templateSelection: function (d) {
+                if (!d.id) {
+                    return d.text;
+                }
+                return d.text;
+            },
+            templateResult: function (d) {
+                if (!d.id) {
+                    return d.text;
+                }
+                return d.text;
+            },
+        });           
         $("#trans_contact_id").on("change", function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1563,6 +1570,137 @@
             $("#modal-scanner").modal('show');
             return scanner.render(scannerResult);  
         });
+        $(document).on("click", ".btn-label", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log($(this));
+            var id = $(this).attr('data-trans-id');
+
+            var title = 'Ganti Label';
+            $.confirm({
+                title: title,
+                columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                autoClose: 'button_2|10000',
+                closeIcon: true,
+                closeIconClass: 'fas fa-times',
+                animation: 'zoom',
+                closeAnimation: 'bottom',
+                animateFromElement: false,
+                content: function () {
+                    let self = this;
+                    let url = "<?= base_url('referensi/manage'); ?>"; //CI
+
+                    let form = new FormData();
+                    form.append('action', 'load');
+                    form.append('tipe', 9);
+                    form.append('order[0][column]', '0');
+                    form.append('order[0][dir]', 'asc');
+                    return $.ajax({
+                        url: url,
+                        data: form,
+                        dataType: 'json',
+                        type: 'post',
+                        cache: 'false', contentType: false, processData: false,
+                    }).done(function (d) {
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if (parseInt(s) == 1) {
+                            // notif(s, m);
+                            // notifSuccess(m);
+                            /* hint zz_for or zz_each */
+                        } else {
+                            // notif(s,m);
+                            // notifSuccess(m);
+                        }
+                        self.setTitle(m);
+                        // self.setContentAppend('<br>Version: ' + d.short_name); //Json Return
+                        // self.setContentAppend('<img src="'+ d.icons[0].src+'" class="img-responsive" style="margin:0 auto;">'); // Image Return
+                        /*type_your_code_here*/
+
+                    }).fail(function () {
+                        self.setContent('Something went wrong, Please try again.');
+                    });
+                },
+                onContentReady: function () {
+                    var self = this;
+                    var content = '';
+                    var dsp = '';
+                    let r = self.ajaxResponse.data;
+                    // dsp += '<div>Content is ready after process !</div>';
+                    dsp += '<form id="jc_form">';
+                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                    dsp += '    <div class="form-group">';
+                    // dsp += '    <label class="form-label">Label</label>';
+                    dsp += '        <select id="jc_select" name="jc_select" class="form-control">';
+                    if (parseInt(r['status']) == 1) {
+                        for (var ss = 0; ss < r['result'].length; ss++) {
+                            dsp += '          <option value="' + r['result'][ss]['ref_name'] + '">' + r['result'][ss]['ref_name'] + '</option>';
+                        }
+                    }
+                    dsp += '            <option value="Label">Label</option>';
+                    dsp += '        </select>';
+                    dsp += '    </div>';
+                    dsp += '</div>';
+                    dsp += '</form>';
+                    content = dsp;
+                    self.setContentAppend(content);
+                },
+                buttons: {
+                    button_1: {
+                        text: 'Terapkan',
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: function () {
+                            var self = this;
+
+                            // var input     = self.$content.find('#jc_input').val();
+                            // var textarea  = self.$content.find('#jc_textarea').val();
+                            var select = self.$content.find('#jc_select').val();
+
+                            if (select == 0) {
+                                $.alert('Select mohon dipilih dahulu');
+                                return false;
+                            } else {
+                                var form = new FormData();
+                                form.append('action', 'update_label');
+                                form.append('trans_id', id);
+                                form.append('trans_label', select);
+                                $.ajax({
+                                    type: "post",
+                                    url: url,
+                                    data: form, dataType: 'json',
+                                    cache: 'false', contentType: false, processData: false,
+                                    beforeSend: function () {},
+                                    success: function (d) {
+                                        var s = d.status;
+                                        var m = d.message;
+                                        var r = d.result;
+                                        if (parseInt(s) == 1) {
+                                            notif(s, m);
+                                            trans_table.ajax.reload(null, false);
+                                        } else {
+                                            // notif(s,m);
+                                            // notifSuccess(m);
+                                        }
+                                    },
+                                    error: function (xhr, status, err) {}
+                                });
+                            }
+                        }
+                    },
+                    button_2: {
+                        text: 'Batal',
+                        btnClass: 'btn-danger',
+                        keys: ['Escape'],
+                        action: function () {
+                            //Close
+                        }
+                    }
+                }
+            });
+
+        });
 
         function loadRoom(params) { /* load-reference */
             if(params['search']){
@@ -1718,6 +1856,7 @@
                     w += " product_category_id > 0";
                 }
                 var d = alasql(p+w,[products]);
+                console.log('products_'+branch_id+'.json ' + ', ' + w);
                 var total_records = parseInt(d.length);
                 $("#product_tab_detail").html('');
                 if (parseInt(d.length) > 0) {
@@ -2432,7 +2571,7 @@
         $("input[name='trans_branch_id']").on("change", function (e){
             var br = $(this).val();
             localStorage();
-        });
+        }); 
         // loadRoom({});
         /*  
             var p = {

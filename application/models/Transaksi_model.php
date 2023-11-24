@@ -34,6 +34,7 @@ class Transaksi_model extends CI_Model{
         $this->db->join('types','trans_type=type_type AND type_for=2','left');
         $this->db->join('references AS label','label.ref_name=trans_label','left');        
         $this->db->join('categories','categories.category_id=contacts.contact_category_id','left');
+        $this->db->join('branchs','trans.trans_branch_id=branchs.branch_id','left');        
     }
     function get_all_transaksis($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
         $this->db->select("*, trans_id AS trans_id, DATE_FORMAT(`trans_date`,'%d-%b-%y, %H:%i') AS trans_date_format, users.user_username, IFNULL(trans_total,0) AS trans_total");
@@ -42,6 +43,7 @@ class Transaksi_model extends CI_Model{
         $this->db->select("(SELECT trans_total - trans_total_paid) AS trans_total_sisa_tagihan");
         $this->db->select('ref_name AS label_name, ref_color AS label_color, ref_background AS label_background, ref_note AS label_icon');
         // $this->db->select('category_id, category_name, category_flag');
+        $this->db->select('branch_id, branch_name');
         $this->set_params($params);
         $this->set_search($search);
         $this->set_join();
@@ -58,6 +60,40 @@ class Transaksi_model extends CI_Model{
         
         return $this->db->get('trans')->result_array();
     }
+    function get_all_transaksis_resto($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
+        $this->db->select("trans.*, trans_id AS trans_id, DATE_FORMAT(`trans_date`,'%d-%b-%y, %H:%i') AS trans_date_format, users.user_username, IFNULL(trans_total,0) AS trans_total");
+        $this->db->select("(SELECT IFNULL(SUM(trans_item_total),0) FROM trans_items WHERE trans_item_trans_id=trans_id) AS trans_subtotal");
+        $this->db->select("IF(DATEDIFF(trans_date_due,NOW()) < 0, ABS(DATEDIFF(trans_date_due,NOW())), 0) AS date_due_over");
+        $this->db->select("(SELECT trans_total - trans_total_paid) AS trans_total_sisa_tagihan");
+        $this->db->select('ref_name AS label_name, ref_color AS label_color, ref_background AS label_background, ref_note AS label_icon');
+        // $this->db->select('category_id, category_name, category_flag');
+        $this->db->select('contact_id, contact_name');
+        $this->db->select('branch_id, branch_name');
+        $this->db->select('user_id, user_fullname');
+        $this->db->select('user_id, user_fullname');                
+        $this->db->select('product_id, product_name');                        
+        $this->set_params($params);
+        $this->set_search($search);
+        $this->db->join('contacts','trans.trans_contact_id=contacts.contact_id','left');
+        $this->db->join('users','trans.trans_user_id=users.user_id','left');
+        // $this->db->join('types','trans_type=type_type AND type_for=2','left');
+        $this->db->join('references AS label','label.ref_name=trans_label','left');        
+        // $this->db->join('categories','categories.category_id=contacts.contact_category_id','left');
+        $this->db->join('branchs','trans.trans_branch_id=branchs.branch_id','left');       
+        $this->db->join('products','trans.trans_product_id=products.product_id','left');                
+
+        if ($order) {
+            $this->db->order_by($order, $dir);
+        } else {
+            $this->db->order_by('trans_id', "asc");
+        }
+
+        if ($limit) {
+            $this->db->limit($limit, $start);
+        }
+        
+        return $this->db->get('trans')->result_array();
+    }    
     function get_all_transaksis_goods_out($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
         $this->db->select("trans.*, trans_id AS trans_id, DATE_FORMAT(`trans_date`,'%d-%b-%y, %H:%i') AS trans_date_format, users.user_username, IFNULL(trans_total,0) AS trans_total");
         // $this->db->select("(SELECT IFNULL(SUM(trans_item_total),0) FROM trans_items WHERE trans_item_trans_id=trans_id) AS trans_subtotal");
@@ -109,6 +145,18 @@ class Transaksi_model extends CI_Model{
         $this->set_search($search);            
         return $this->db->count_all_results();
     }
+    function get_all_transaksis_resto_count($params,$search){
+        $this->db->from('trans');   
+        $this->db->join('contacts','trans.trans_contact_id=contacts.contact_id','left');
+        $this->db->join('users','trans.trans_user_id=users.user_id','left');
+        // $this->db->join('types','trans_type=type_type AND type_for=2','left');
+        $this->db->join('references AS label','label.ref_name=trans_label','left');        
+        // $this->db->join('categories','categories.category_id=contacts.contact_category_id','left');
+        $this->db->join('branchs','trans.trans_branch_id=branchs.branch_id','left');        
+        $this->set_params($params);
+        $this->set_search($search);            
+        return $this->db->count_all_results();
+    }    
     function get_all_transaksis_goods_out_count($params,$search){
         $this->db->from('trans');   
         // $this->db->join('contacts','trans.trans_contact_id=contacts.contact_id','left');
