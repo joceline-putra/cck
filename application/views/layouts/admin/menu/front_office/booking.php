@@ -417,13 +417,14 @@
                                                 </div>  
                                                 <?php } ?>
                                                 <?php if($module_attachment == 1){ ?>
+                                                <!-- <b>Attachment Terkait</b> -->
                                                 <div class="panel-group" id="accordion" data-toggle="collapse" style="background-color: #eaeaea;border: 1px solid #eaeaea;margin-bottom:0px;">
                                                     <div id="panel-one" class="panel panel-default" style="display:inline;">
                                                         <div class="panel-heading">
                                                             <h4 class="panel-title">
                                                                 <a class="" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                                                                     <i class="fa fa-paperclip"></i> 
-                                                                    Data Attachment 
+                                                                    Attachment Terkait 
                                                                     <span id="badge_attachment" class="badge badge-default">0</span>  
                                                                 </a>
                                                             </h4>
@@ -464,7 +465,47 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>                              
+                                                </div>   
+                                                <!-- <b>Attachment Pembayaran</b> -->
+                                                <div class="panel-group" id="accordion" data-toggle="collapse" style="background-color: #eaeaea;border: 1px solid #eaeaea;margin-bottom:0px;">
+                                                    <div id="panel-two" class="panel panel-default" style="display:inline;">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a class="" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                                                    <i class="fa fa-receipt"></i> 
+                                                                    Bukti Pembayaran 
+                                                                    <span id="badge_paid" class="badge badge-default">0</span>  
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseTwo" class="panel-collapse collapse">
+                                                            <div class="panel-body" style="padding:0px;">
+                                                                <table class="table" id="table_paid" style="background-color:white; ">
+                                                                    <thead>    
+                                                                        <tr>
+                                                                            <td>File</td>
+                                                                            <td>Tgl</td>
+                                                                            <td>Metode</td>                                            
+                                                                            <td style="text-align:right;">Total</td>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    </tbody>
+                                                                </table>
+                                                                <div class="col-md-12 col-xs-12">
+                                                                    <div class="form-group">
+                                                                        <div class="pull-right">                            
+                                                                            <button id="btn_paid_add" class="btn btn-primary btn-small" type="button">
+                                                                                <i class="fas fa-paperclip"></i>
+                                                                                Tambah Pembayaran
+                                                                            </button>                                                                                                                                                                                                         
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                                                                              
                                                 <?php } ?>                                                                                    
                                             </div>           
                                             <?php } ?>                                                                        

@@ -307,7 +307,17 @@
                         // if(parseInt(row.order_files_count) > 0){
                             var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.price_name;
                             var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
-                            dsp += '<span '+st+' class="btn-attachment-info-2 label label-inverse" style="cursor:pointer;color:white;"><span class="fas fa-paperclip"></span>&nbsp;'+row.order_files_count+' Attachment</span>';
+                            dsp += '<span '+st+' class="btn-attachment-info-2 label label-inverse" style="cursor:pointer;color:white;"><span class="fas fa-paperclip"></span>&nbsp;'+row.order_files_count+'</span>';
+                            if(parseInt(row.order_paid) == 0){
+                                // var sts = 'Belum Lunas';
+                                // var ic = 'fas fa-thumbs-down';
+                                var lg = 'danger';
+                            }else if(parseInt(row.order_paid) == 1){
+                                // var sts = 'Lunas';
+                                // var ic = 'fas fa-thumbs-up';
+                                var lg = 'success';
+                            }                            
+                            dsp += '&nbsp;<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="fas fa-receipt"></span>&nbsp;'+row.order_order_paid_count+'</span>';                            
                         // }         
                         return dsp;
                     }
@@ -592,6 +602,7 @@
                         orderID = d.result.order_id;
                         $("#modal_order").modal('show');
                         loadAttachment(d.result.order_id);
+                        loadPaid(d.result.order_id);
                         formBookingSetDisplay(0);
                     }else{
                         notif(0,d.message);
@@ -1195,7 +1206,7 @@
                             dsp += '</table>';
                             dsp += '<br><b>Attachment Terkait</b>';
 
-                            dsp += '<table id="table-order" class="table table-bordered">';
+                            dsp += '<table id="table_attachment" class="table table-bordered">';
                             dsp += '  <thead>';
                             dsp += '    <th>Name</th>';
                             dsp += '    <th style="text-align:right;">Size</th>';
@@ -2274,10 +2285,10 @@
                                 var dsp = '';
                                 r.forEach(async (v, i) => {      
                                     
-                                    var siz = '0 kb';
-                                    if(v['paid_size'] > 0){
-                                        siz = v['paid']['size_unit'];
-                                    }
+                                    // var siz = '0 kb';
+                                    // if(v['paid_size'] > 0){
+                                    //     siz = v['paid']['size_unit'];
+                                    // }
 
                                     var attr = 'data-paid-payment-type="'+v['paid_payment_type']+'" data-paid-id="'+v['paid_id']+'" data-paid-session="'+v['paid_session']+'" data-paid-number="'+v['paid_number']+'" data-paid-format="'+v['paid']['format']+'" data-paid-src="'+v['paid']['src']+'" data-paid-name="'+v['paid_name']+'"';                                                                                      
                                     dsp += '<tr>';
@@ -2294,15 +2305,15 @@
                                     dsp += '</tr>';
                                 });
                                 $("#table_paid tbody").html(dsp);
-                                // $("#badge_attachment").html(total_records).removeClass('badge-default').addClass('badge-success');
+                                $("#badge_paid").html(total_records).removeClass('badge-default').addClass('badge-success');
                             }else{
                                 $("#table_paid tbody").html('<tr><td colspan="3">Tidak ada data pembayaran</td></tr>');
-                                // $("#badge_attachment").html(0).removeClass('badge-success').addClass('badge-default');  
+                                $("#badge_paid").html(0).removeClass('badge-success').addClass('badge-default');  
                             }
                         }else{
                             // notif(s,m);
                             $("#table_paid tbody").html('<tr><td colspan="4">Tidak ada data pembayaran</td></tr>');
-                            // $("#badge_attachment").html(0).removeClass('badge-success').addClass('badge-default');                 
+                            $("#badge_paid").html(0).removeClass('badge-success').addClass('badge-default');                 
                         }
                     },
                     error:function(xhr,status,err){
