@@ -26,7 +26,8 @@ class Front_office extends MY_Controller{
         $this->load->model('Referensi_model');                
         $this->load->model('Branch_model');
         $this->load->model('Front_model');
-        $this->load->model('Transaksi_model');  
+        $this->load->model('Transaksi_model');
+        $this->load->model('Order_model');          
         $this->load->model('Type_model');                
         $this->load->model('User_model');
         $this->load->model('Produk_model');        
@@ -824,7 +825,7 @@ class Front_office extends MY_Controller{
                         'product_type' => 2,
                         'product_branch_id' => intval($post['branch_id']),
                         'product_ref_id' => intval($post['ref_id']),                        
-                        'product_category_id' => 2,                        
+                        // 'product_category_id' => 2,                        
                         'product_flag' => 1,                        
                     );
                     // $params = null;
@@ -855,7 +856,80 @@ class Front_office extends MY_Controller{
                     $get_ref = $this->Ref_model->get_ref_price_custom($params);
                     $return->result = $get_ref;
                     $return->status = 1;                    
-                    break;                                                                                          
+                    break;    
+                case "load-order-items-for-report":
+                    // $columns = array(
+                    //     '0' => 'order_date',
+                    //     '1' => 'order_number'
+                    // );           
+                    
+                    // $limit     = !empty($post['length']) ? $post['length'] : 10;
+                    // $start     = !empty($post['start']) ? $post['start'] : 0;
+                    // $order     = !empty($post['order']) ? $columns[$post['order'][0]['column']] : $columns[0];
+                    // $dir       = !empty($post['order'][0]['dir']) ? $post['order'][0]['dir'] : "asc";
+
+                    $trans_type = !empty($this->input->post('tipe')) ? $this->input->post('tipe') : 0;
+                    $contact_id = !empty($this->input->post('kontak')) ? $this->input->post('kontak') : 0;
+                    $product_id = !empty($this->input->post('product')) ? $this->input->post('product') : 0;
+                    $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : 0;                    
+                    $product    = !empty($this->input->post('product')) ? $this->input->post('product') : 0;   
+                    $date_start = date('Y-m-d H:i:s', strtotime($this->input->post('date_start').' 00:00:00'));
+                    $date_end   = date('Y-m-d H:i:s', strtotime($this->input->post('date_end').' 23:59:59'));
+                    $params = array(
+                        'order_item_type' => intval($trans_type),
+                        'order_date >' => $date_start,
+                        'order_date <' => $date_end,                    
+                        // 'order_item_branch_id' => intval($session_branch_id),
+                    );
+                    if(intval($branch) > 0){
+                        $params['order_branch_id'] = $branch;
+                    }
+                    // if(intval($product_id) > 0){
+                    //     $params['order_item_product_id'] = $product_id;
+                    // }
+
+                    // if(intval($product) > 0){
+                    //     $params['order_item_product_id'] = $product;
+                    // }     
+                    // $datas = $this->Order_model->get_all_order_items_report($params,null,1000,0,'order_item_date','asc');
+                    $datas = $this->Front_model->get_all_booking_item($params,null,1000,0,'order_date','asc'); 
+                    // var_dump($order,$dir);die;                   
+                    if(!empty($datas)){
+                        /*  Activity
+                            $params = array(
+                                'id_user' => $session['user_data']['user_id'],
+                                'action' => 3,
+                                'table' => 'transaksi',
+                                'table_id' => $datas['id'],
+                                'text_1' => strtoupper($datas['kode']),
+                                'text_2' => ucwords(strtolower($datas['username'])),
+                                'date_created' => date('YmdHis'),
+                                'flag' => 0
+                            );
+                            $this->save_activity($params);
+                        /* End Activity */
+                        if(isset($datas)){ //Data exist
+                            $total=count($datas);
+                            $return->status=1; 
+                            $return->message='Loaded'; 
+                            $return->total_records=$total;
+                            $return->result=$datas;
+                        }else{
+                            $return->status=0; 
+                            $return->message='No data'; 
+                            $return->total_records=0;
+                            $return->result=0;
+                        }
+                        $return->status=1;
+                        $return->message='Data ditemukan';
+                    }else{
+                        $total=0;
+                        $return->message='Tidak ada item temporary';
+                    }
+                    $return->recordsTotal = $total;
+                    $return->recordsFiltered = $total;
+                    $return->params = $params;
+                    break;  
                 default:
                     $return->message='No Action';
                     break; 
@@ -1333,22 +1407,22 @@ class Front_office extends MY_Controller{
                         );
 
                         //Customer or Not ?
-                        if(intval($trans_contact_id) > 0){
-                            $get_contact = $this->Kontak_model->get_kontak($trans_contact_id);
-                            $params['trans_contact_id'] = $trans_contact_id;
-                            $params['trans_contact_name'] = $this->sentencecase($get_contact['contact_name']);
-                            $params['trans_contact_phone'] = $get_contact['contact_phone_1'];  
-                            $set_contact_id = $get_contact['contact_id'];
-                            $set_contact_name = $get_contact['contact_name'];
-                            $set_contact_phone = $get_contact['contact_phone_1'];                            
-                        }else{
-                            $params['trans_contact_id'] = $trans_non_contact_id;                            
+                        // if(intval($trans_contact_id) > 0){
+                        //     $get_contact = $this->Kontak_model->get_kontak($trans_contact_id);
+                        //     $params['trans_contact_id'] = $trans_contact_id;
+                        //     $params['trans_contact_name'] = $this->sentencecase($get_contact['contact_name']);
+                        //     $params['trans_contact_phone'] = $get_contact['contact_phone_1'];  
+                        //     $set_contact_id = $get_contact['contact_id'];
+                        //     $set_contact_name = $get_contact['contact_name'];
+                        //     $set_contact_phone = $get_contact['contact_phone_1'];                            
+                        // }else{
+                            $params['trans_contact_id'] = null;                            
                             $params['trans_contact_name'] = $this->sentencecase($trans_contact_name);
                             $params['trans_contact_phone'] = $trans_contact_phone;
                             $set_contact_id = $trans_non_contact_id;
                             $set_contact_name = $trans_contact_name;
                             $set_contact_phone = $trans_contact_phone;                            
-                        }
+                        // }
 
                         //Check Data Exist
                         /*
@@ -1408,7 +1482,7 @@ class Front_office extends MY_Controller{
                                         // 'trans_item_type_name' => 'Penjualan',
                                         'trans_item_trans_id' => $set_document_id,
                                         'trans_item_product_id' => $v['product_id'],
-                                        // 'trans_item_location_id' => NULL,
+                                        'trans_item_location_id' => $trans_branch_id,
                                         'trans_item_product_type' => $v['product_type'],
                                         'trans_item_date' => $document_date,
                                         'trans_item_unit' => $v['product_unit'],
@@ -1574,7 +1648,155 @@ class Front_office extends MY_Controller{
                         $return->status  = 0;
                         $return->message = 'Failed set label';
                     }
-                    break;                    
+                    break;     
+                case "load-trans-items-for-report":
+                    // $columns = array(
+                    //     '0' => 'trans_date',
+                    //     '1' => 'trans_number',
+                    //     '2' => 'product_name'
+                    // );           
+                    
+                    // $limit     = !empty($post['length']) ? $post['length'] : 10;
+                    // $start     = !empty($post['start']) ? $post['start'] : 0;
+                    // $order     = !empty($post['order']) ? $columns[$post['order'][0]['column']] : $columns[0];
+                    // $dir       = !empty($post['order'][0]['dir']) ? $post['order'][0]['dir'] : "asc";
+
+                    $trans_type = !empty($this->input->post('tipe')) ? $this->input->post('tipe') : 0;
+                    $contact_id = !empty($this->input->post('kontak')) ? $this->input->post('kontak') : 0;
+                    $product_id = !empty($this->input->post('product')) ? $this->input->post('product') : 0;
+                    $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : 0;                    
+                    $sales_id = !empty($this->input->post('sales')) ? $this->input->post('sales') : 0;                    
+                    $product = !empty($this->input->post('product')) ? $this->input->post('product') : 0;    
+
+                    $date_start = date('Y-m-d H:i:s', strtotime($this->input->post('date_start').' 00:00:00'));
+                    $date_end = date('Y-m-d H:i:s', strtotime($this->input->post('date_end').' 23:59:59'));                    
+                    // $subtotal = 0;
+                    // $total_diskon = 0;
+                    // $total_ppn = 0;
+                    // $total= 0;
+
+                    $params = array(
+                        'trans_type' => intval($trans_type),
+                        'trans_date >' => $date_start,
+                        'trans_date <' => $date_end,                         
+                    );
+                    if(intval($branch) > 0){
+                        $params['trans_branch_id'] = $branch;
+                    }
+                    // if(intval($contact_id) > 0){
+                    //     $params['trans_contact_id'] = intval($contact_id);
+                    // }
+                    // if(intval($sales_id) > 0){
+                    //     $params['trans_sales_id'] = intval($sales_id);
+                    // }                    
+                    // if(intval($product_id) > 0){
+                    //     $params['trans_item_product_id'] = intval($product_id);
+                    // }
+
+                    // if(intval($product) > 0){
+                    //     $params['trans_item_product_id'] = intval($product);
+                    // }     
+
+                    $search = null;
+                    $limit = 1000;
+                    $start = 0;
+                    $order = 'trans_item_date'; 
+                    $dir = 'asc';          
+                    // var_dump($order,$dir);die;
+                    $datas = $this->Transaksi_model->get_all_transaksi_items_report($params,$search,$limit,$start,$order,$dir);
+
+                    if(!empty($datas)){
+                        // foreach($get_data as $v){
+
+                        //     $get_product_price = $this->Product_price_model->get_all_product_price(array('product_price_product_id'=>$v['product_id']),null,null,null,null,null);
+                        //     $product_price_list = array();
+                        //     foreach($get_product_price as $pp){
+                        //         $product_price_list[] = array(
+                        //             'product_price_id' => $pp['product_price_id'],
+                        //             'product_price_product_id' => $pp['product_price_product_id'],
+                        //             'product_price_name' => $pp['product_price_name'],
+                        //             'product_price_price' => $pp['product_price_price']
+                        //         );
+                        //     }
+
+                        //     $datas[] = array(
+                        //         'trans_item_id' => $v['trans_item_id'],
+                        //         'trans_item_order_id' => $v['trans_item_order_id'],
+                        //         'trans_item_unit' => $v['trans_item_unit'],
+                        //         // 'trans_item_qty_weight' => number_format($v['trans_item_qty_weight'],2,'.',','),
+                        //         'trans_item_in_qty' => number_format($v['trans_item_in_qty'],2,'.',','),
+                        //         'trans_item_in_price' => number_format($v['trans_item_in_price'],2,'.',','),
+                        //         'trans_item_out_qty' => number_format($v['trans_item_out_qty'],2,'.',','),
+                        //         'trans_item_out_price' => number_format($v['trans_item_out_price'],2,'.',','),
+                        //         'trans_item_sell_price' => number_format($v['trans_item_sell_price'],2,'.',','),
+                        //         'trans_item_discount' => number_format($v['trans_item_discount'],2,'.',','),
+                        //         'trans_item_total' => number_format($v['trans_item_total'],2,'.',','),
+                        //         'trans_item_sell_total' => number_format($v['trans_item_sell_total'],2,'.',','),
+                        //         'trans_item_total_after_discount' => number_format($v['trans_item_total'],2,'.',','),
+                        //         'trans_item_note' => $v['trans_item_note'],
+                        //         // 'trans_item_product_price_id' => $v['trans_item_product_price_id'],
+                        //         'trans_item_user_id' => $v['trans_item_user_id'],
+                        //         'trans_item_branch_id' => $v['trans_item_branch_id'],
+                        //         'trans_item_ppn' => $v['trans_item_ppn'],
+                        //         'product_id' => $v['product_id'],
+                        //         'product_code' => $v['product_code'],
+                        //         'product_name' => $v['product_name'],
+                        //         'has_other_price' => $product_price_list
+                        //     );
+
+                        //     if($identity==2){ //Penjualan
+                        //         $subtotal=$subtotal+$v['trans_item_sell_total'];
+                        //         if($v['trans_item_ppn'] == 1){
+                        //             $total_ppn = $total_ppn + ($v['trans_item_sell_total']*0.1);
+                        //         }
+                        //     }else{
+                        //         $subtotal=$subtotal+$v['trans_item_total'];
+                        //         if($v['trans_item_ppn'] == 1){
+                        //             $total_ppn = $total_ppn + ($v['trans_item_total']*0.1);
+                        //         }
+                        //     }
+                        // }
+                        /* Activity */
+                        /*
+                        $params = array(
+                            'id_user' => $session['user_data']['user_id'],
+                            'action' => 3,
+                            'table' => 'transaksi',
+                            'table_id' => $datas['id'],
+                            'text_1' => strtoupper($datas['kode']),
+                            'text_2' => ucwords(strtolower($datas['username'])),
+                            'date_created' => date('YmdHis'),
+                            'flag' => 0
+                        );
+                        $this->save_activity($params);
+                        /* End Activity */
+                        if(isset($datas)){ //Data exist
+                            $data_source=$datas; $total=count($datas);
+                            $return->status=1; $return->message='Loaded'; $return->total_records=$total;
+                            $return->result=$datas;
+                            // $return->total_produk=count($datas);
+                            // $return->subtotal=number_format($subtotal,0,'.',',');
+                            // $return->total_diskon=number_format($total_diskon,0,'.',',');
+                            // $return->total_ppn=number_format($total_ppn,0,'.',',');
+                            // $return->total=number_format(($subtotal+$total_ppn)-$total_diskon,0,'.',',');
+                        }else{
+                            $data_source=0; $total=0;
+                            $return->status=0; $return->message='No data'; $return->total_records=$total;
+                            $return->result=0;
+                        }
+                        $return->status=1;
+                        $return->message='Data ditemukan';
+                        $return->params = $params;
+                        // if(intval($trans_id) > 0){
+                            // $return->message = 'Berhasil memuat data';
+                        // }
+                    }else{
+                        $total=0;
+                        $return->message='Tidak ada item temporary';
+                    }
+                    $return->recordsTotal = $total;
+                    $return->recordsFiltered = $total;
+                    break;                                                                                                                                                    
                 default:
                     $return->message='No Action';
                     break; 

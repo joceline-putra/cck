@@ -44,7 +44,10 @@
             
             if(!empty($product)){
                 echo $product_alias.' : ' . $product['product_code'].', '.$product['product_name'].', '.$product['product_unit'];                
-            }            
+            }         
+            if(!empty($branchs)){
+                echo 'Cabang : ' . $branchs['branch_name'].', '.$branchs['branch_address'];                
+            }                
         ?>
         </div>
     </div>
@@ -58,36 +61,65 @@
                         <td class="text-right"><b>No</b></td>
                         <td><b>Tanggal</b></td>
                         <td><b>Nomor</b></td>
+                        <td><b>Cabang</b></td>                        
                         <td><b><?php echo $contact_alias; ?></b></td>
-                        <td><b>Kode <?php echo $product_alias; ?></b></td>   
-                        <td><b>Nama <?php echo $product_alias; ?></b></td>
-                        <td style="text-align:right;"><b>Qty</b></td>                     
-                        <td style="text-align: right;"><b>Total Nilai</b></td>     
+                        <td><b>Tipe</b></td>   
+                        <td><b>Jenis Kamar</b></td>
+                        <td style="text-align:left;"><b>Untuk</b></td>  
+                        <td style="text-align:left;"><b>CheckIn</b></td>                          
+                        <td style="text-align:right;"><b>Total Nilai</b></td>                                     
+                        <td style="text-align:right;"><b>Total Terbayar</b></td>     
+                        <td style="text-align:left;"><b>Status</b></td>        
+                        <td style="text-align:left;"><b>Attachment</b></td>                                                                     
                     </tr>
                 </thead>
             <tbody>
                 <?php 
                 $num=1;
                 $total_trans=0;
+                $total_paid=0;                
                 foreach($content as $v):
                 ?>
                 <tr data-trans-id="<?php echo $v['order_id'];?>">
                      <td class="text-right"><?php echo $num++; ?></td>
-                     <td><?php echo $v['order_date'];?></td>
+                     <td><?php echo date("d-M-Y", strtotime($v['order_date']));?></td>
                      <td><?php echo $v['order_number'];?></td>                     
-                     <td><?php echo $v['contact_name'];?></td>  
-                     <td><?php echo $v['product_code'];?></td>                                     
-                     <td><?php echo $v['product_name'];?></td>                                                          
-                     <td class="text-right"><?php echo $v['order_item_qty'].' '.$v['order_item_unit'];?></td>                                                                               
-                     <td style="text-align:right;"><?php echo number_format($v['order_item_total']);?></td>                                      
+                     <td><?php echo $v['branch_name'];?></td>  
+                     <td><?php echo $v['order_contact_name'];?></td>  
+                     <td><?php echo $v['price_name'];?></td>                                     
+                     <td><?php echo $v['ref_name'];?></td>                                                          
+                     <td class="text-left"><?php echo date("d-M-Y", strtotime($v['order_item_start_date'])).' sd '.date("d-M-Y", strtotime($v['order_item_start_date']));?></td>
+                     <td><?php 
+                        if($v['order_item_flag_checkin'] == 0){
+                            echo 'Waiting';
+                        }else if($v['order_item_flag_checkin'] == 1){
+                            echo 'CheckIN '.$v['product_name'];
+                        }else if($v['order_item_flag_checkin'] == 2){
+                            echo 'CheckOUT '.$v['product_name'];
+                        }else if($v['order_item_flag_checkin'] == 4){
+                            echo 'Batal';
+                        }
+                     ?></td>
+                     <td style="text-align:right;"><?php echo number_format($v['order_item_price']);?></td>     
+                     <td style="text-align:right;"><?php echo number_format($v['order_total_paid']);?></td>                                                           
+                     <td><?php if($v['order_paid'] == 1){ echo 'Lunas'; };?></td>    
+                     <td><?php 
+                        if($v['order_files_count'] > 0){
+                            echo '<span class="fas fa-files"></span>'.$v['order_files_count'];
+                        }else{
+                            echo '-';
+                        }
+                        ;?></td>    
                  </tr>    
                 <?php 
-                $total_trans = $total_trans + $v['order_item_total'];                  
+                $total_trans = $total_trans + $v['order_item_price'];                  
+                $total_paid = $total_paid + $v['order_total_paid'];                                  
                 endforeach;
                 ?>      
                 <tr>
-                    <td colspan="7"><b>Total</b></td>
-                    <td style="text-align: right;"><b><?php echo number_format($total_trans);?></b></td>                                        
+                    <td colspan="9"><b>Total</b></td>
+                    <td style="text-align: right;"><b><?php echo number_format($total_trans);?></b></td>
+                    <td style="text-align: right;"><b><?php echo number_format($total_paid);?></b></td>                                                            
                 </tr>
             </tbody>
         </table> 

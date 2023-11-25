@@ -1,22 +1,22 @@
 		<ul class="nav nav-tabs" role="tablist">
-			<li class="" data-name="report/sales/sell/recap">
-			  	<a href="<?php echo base_url('report/sales/sell/recap');?>">
+			<!-- <li class="" data-name="report/sales/sell/recap">
+			  	<a href="<?php #echo base_url('report/sales/sell/recap');?>"> 
           			<span class="fas fa-clipboard-list"></span> Penjualan Rekap
           		</a>
-			</li>
+			</li> -->
 			<li class="" data-name="report/sales/sell/detail">
 			  	<a href="<?php echo base_url('report/sales/sell/detail');?>">
-          			<span class="fas fa-newspaper"></span> Penjualan Rinci
+          			<span class="fas fa-newspaper"></span> Penjualan Warmindo
           		</a>
 			</li>
-			<li class="" data-name="report/sales/sell/account_receivable">
-			  	<a href="<?php echo base_url('report/sales/sell/account_receivable');?>">
+			<!-- <li class="" data-name="report/sales/sell/account_receivable">
+			  	<a href="<?php #echo base_url('report/sales/sell/account_receivable');?>">
           			<span class="fas fa-file-alt"></span> Piutang Customer
           		</a>
-			</li>			
+			</li>			 -->
 			<li class="" data-name="report/sales/order/detail">
 			  	<a href="<?php echo base_url('report/sales/order/detail');?>">
-          			<span class="fas fa-newspaper"></span> Sales Order Rinci
+          			<span class="fas fa-newspaper"></span> Penjualan Kamar <!-- Sales Order Rinci -->
           		</a>
 			</li>													
 			<?php 

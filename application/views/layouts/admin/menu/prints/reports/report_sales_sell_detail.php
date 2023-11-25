@@ -44,7 +44,10 @@
             
             if(!empty($product)){
                 echo $product_alias.' : ' . $product['product_code'].', '.$product['product_name'].', '.$product['product_unit'];                
-            }                        
+            }       
+            if(!empty($branchs)){
+                echo 'Cabang : ' . $branchs['branch_name'].', '.$branchs['branch_address'];                
+            }                                    
         ?>
         </div>
     </div>
@@ -58,8 +61,8 @@
                         <td><b>No</b></td>
                         <td><b>Tanggal</b></td>
                         <td><b>Nomor</b></td>
-                        <td><b><?php echo $contact_alias;?></b></td>
-                        <td><b>Kode <?php echo $product_alias;?></b></td>   
+                        <td><b>Cabang</b></td>                        
+                        <td><b><?php echo $contact_alias;?></b></td> 
                         <td><b>Nama <?php echo $product_alias;?></b></td>
                         <td style="text-align: right;"><b>Harga Jual</b></td>                          
                         <td style="text-align:right;"><b>Qty</b></td>                     
@@ -78,12 +81,12 @@
                 <tr data-trans-id="<?php echo $v['trans_id'];?>">
                     <td class="text-right"><?php echo $num++; ?></td>
                     <td><?php echo date("d-M-Y, H:i", strtotime($v['trans_date']));?></td>
-                    <td><?php echo $v['trans_number'];?></td>                     
-                    <td><?php echo $v['contact_name'];?></td>  
-                    <td><?php echo $v['product_code'];?></td>                                     
+                    <td><?php echo $v['trans_number'];?></td>     
+                    <td><?php echo $v['branch_name'];?></td>                                         
+                    <td><?php echo $v['trans_contact_name'];?></td>                            
                     <td><?php echo $v['product_name'];?></td>     
                     <td style="text-align:right;"><?php echo number_format($v['trans_item_sell_price']);?></td>                                                                          
-                    <td class="text-right"><?php echo $v['trans_item_out_qty'].' '.$v['trans_item_unit'];?></td>                                                                               
+                    <td class="text-right"><?php echo number_format($v['trans_item_out_qty']).' '.$v['trans_item_unit'];?></td>                                                                               
                     <td style="text-align:right;">
                         <span class="btn_price_detail" style="cursor:pointer;" data-price-in="<?php echo number_format($v['trans_item_out_price']);?>" 
                         data-price-in-total="<?php echo number_format($v['trans_item_out_price']*$v['trans_item_out_qty']);?>"
@@ -97,7 +100,7 @@
                 ?>      
                 <tr>
                     <td colspan="7"><b>Total</b></td>
-                    <td style="text-align: right;"><b><?php echo number_format($total_qty,2,'.',',');?></b></td>
+                    <td style="text-align: right;"><b><?php echo number_format($total_qty,0,'.',',');?></b></td>
                     <td style="text-align: right;"><b><?php echo number_format($total_trans);?></b></td>                                        
                 </tr>
             </tbody>

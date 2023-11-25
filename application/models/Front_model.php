@@ -39,7 +39,8 @@ class Front_model extends CI_Model{
         $this->db->join('orders','order_id=order_item_order_id','left');
         $this->db->join('references','ref_id=order_item_ref_id','left');
         $this->db->join('references_prices','price_id=order_item_ref_price_id','left');
-        $this->db->join('products','product_id=order_item_product_id','left');        
+        $this->db->join('products','product_id=order_item_product_id','left');  
+        $this->db->join("branchs","order_branch_id=branch_id","left");                
     }
     
     function set_join_paid(){
@@ -58,7 +59,8 @@ class Front_model extends CI_Model{
         $this->db->select("orders_items.order_item_type_2, orders_items.order_item_ref_id, orders_items.order_item_ref_price_id, orders_items.order_item_start_date, orders_items.order_item_end_date, orders_items.order_item_flag_checkin");
         $this->db->select("references.ref_id, references.ref_name");
         $this->db->select("references_prices.price_id, references_prices.price_name");
-        $this->db->select("products.product_id, products.product_name, product_flag");                
+        $this->db->select("products.product_id, products.product_name, product_flag");  
+        $this->db->select("branch_id, branch_name");              
     }
     
     function set_select_paid(){

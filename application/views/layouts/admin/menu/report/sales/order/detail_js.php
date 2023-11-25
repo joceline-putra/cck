@@ -1,7 +1,7 @@
 
 <script>
     $(document).ready(function () {
-        var url = "<?= base_url('order/manage'); ?>";
+        var url = "<?= base_url('front_office/booking'); ?>";
         //var url_print = "<?= base_url('report/prints'); ?>"; 
         var url_print_trans = "<?= base_url('order/prints'); ?>";
         var url_print = "<?= base_url('report'); ?>";
@@ -36,13 +36,13 @@
                 cache: 'false',
                 data: function (d) {
                     d.action = 'load-order-items-for-report';
-                    d.tipe = 2;
+                    d.tipe = 222;
                     d.date_start = $("#start").val();
                     d.date_end = $("#end").val();
                     // d.start = $("#table-data").attr('data-limit-start');
                     // d.length = $("#table-data").attr('data-limit-end'); 
                     d.length = $("#filter_length").find(':selected').val();
-                    d.kontak = $("#filter_kontak").find(':selected').val();
+                    d.branch = $("#filter_branch").find(':selected').val();
                     d.product = $("#filter_produk").find(':selected').val();
                     d.order[0]['column'] = $("#filter_order").find(':selected').val();
                     d.order[0]['dir'] = $("#filter_dir").find(':selected').val();
@@ -58,17 +58,23 @@
             "columnDefs": [
                 {"targets": 0, "title": "Tanggal", "searchable": false, "orderable": false},
                 {"targets": 1, "title": "Nomor", "searchable": false, "orderable": false},
-                {"targets": 2, "title": contact_alias, "searchable": false, "orderable": false},
-                {"targets": 3, "title": "Kode", "searchable": false, "orderable": false},
-                {"targets": 4, "title": "Nama "+product_alias, "searchable": false, "orderable": false},
-                {"targets": 5, "title": "Qty", "searchable": false, "orderable": false},
-                {"targets": 6, "title": "Total Nilai", "searchable": false, "orderable": false}
+                {"targets": 2, "title": "Cabang", "searchable": false, "orderable": false},                
+                {"targets": 3, "title": contact_alias, "searchable": false, "orderable": false},
+                {"targets": 4, "title": "Tipe", "searchable": false, "orderable": false},
+                {"targets": 5, "title": "Jenis Kamar", "searchable": false, "orderable": false},
+                {"targets": 6, "title": "Untuk", "searchable": false, "orderable": false},
+                {"targets": 7, "title": "Total Nilai", "searchable": false, "orderable": false}
             ],
             // "order": [
             //   [0, 'asc']
             // ],
             "columns": [{
-                    'data': 'order_date'
+                    'data': 'order_date',
+                    render: function (data, meta, row){
+                        var dsp = '';
+                        dsp += moment(data).format("DD-MMM-YYYY");
+                        return dsp;                        
+                    }
                 }, {
                     'data': 'order_number',
                     render: function (data, meta, row) {
@@ -80,32 +86,37 @@
                         return dsp;
                     }
                 }, {
-                    'data': 'contact_name'
+                    'data': 'branch_name'
                 }, {
-                    'data': 'product_code'
+                    'data': 'order_contact_name'
                 }, {
-                    'data': 'product_name',
+                    'data': 'price_name'
+                }, {
+                    'data': 'ref_name',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        dsp += row.product_name;
+                        dsp += row.ref_name;
                         // dsp += '<a class="btn-edit" data-id="'+ row.trans_id +'" style="cursor:pointer;">';
                         // dsp += '<span class="fas fa-file-alt"></span>&nbsp;'+row.trans_number;
                         // dsp += '</a>';
                         return dsp;
                     }
                 }, {
-                    'data': 'order_item_unit', className: 'text-right',
+                    'data': 'order_item_unit', className: 'text-left',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        dsp += addCommas(row.order_item_qty) + ' ' + row.order_item_unit;
+                        // dsp += addCommas(row.order_item_qty) + ' ' + row.order_item_unit;
+                        dsp += moment(row.order_item_start_date).format("DD-MMM-YY");
+                        dsp += ' sd ';
+                        dsp += moment(row.order_item_end_date).format("DD-MMM-YY");
                         return dsp;
                     }
                 }, {
-                    'data': 'order_item_total',
+                    'data': 'order_total',
                     className: 'text-right',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        dsp += addCommas(row.order_item_total);
+                        dsp += addCommas(row.order_total);
                         // dsp += '<button class="btn-pay btn btn-mini btn-info" data-contact-id="'+ row.contact_id +'">';
                         // dsp += '<span class="fas fa-money-bill"></span> Bayar';
                         // dsp += '</button>';          
@@ -147,10 +158,11 @@
             index.ajax.reload();
         });
 
-        $('#filter_kontak').select2({
+        $('#filter_branch').select2({
             //dropdownParent:$("#modal-id"), //If Select2 Inside Modal
-            placeholder: '<i class="fas fa-search"></i> Search',
+            placeholder: 'Search',
             minimumInputLength: 0,
+            allowClear: true,
             ajax: {
                 type: "get",
                 url: "<?= base_url('search/manage'); ?>",
@@ -159,8 +171,7 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        tipe: 2, //1=Supplier, 2=Asuransi
-                        source: 'contacts'
+                        source: 'branchs'
                     }
                     return query;
                 },
@@ -192,17 +203,17 @@
                     return datas.text;
                 }
                 //Custom Data Attribute
-                $(datas.element).attr('data-alamat', datas.alamat);
-                $(datas.element).attr('data-telepon', datas.telepon);
-                $(datas.element).attr('data-email', datas.email);
+                // $(datas.element).attr('data-alamat', datas.alamat);
+                // $(datas.element).attr('data-telepon', datas.telepon);
+                // $(datas.element).attr('data-email', datas.email);
                 if ($.isNumeric(datas.id) == true) {
-                    return '<i class="fas fa-user-check ' + datas.id.toLowerCase() + '"></i> ' + datas.text;
+                    return datas.text;
                 }
             }
         });
         $('#filter_produk').select2({
             //dropdownParent:$("#modal-id"), //If Select2 Inside Modal
-            placeholder: '<i class="fas fa-search"></i> Search',
+            placeholder: 'Search',
             minimumInputLength: 0,
             ajax: {
                 type: "get",
@@ -250,11 +261,11 @@
                 $(datas.element).attr('data-telepon', datas.telepon);
                 $(datas.element).attr('data-email', datas.email);
                 if ($.isNumeric(datas.id) == true) {
-                    return '<i class="fas fa-boxes ' + datas.id.toLowerCase() + '"></i> ' + datas.text;
+                    return datas.text;
                 }
             }
         });
-        $(document).on("change", "#filter_kontak, #filter_produk, #filter_order, #filter_dir", function (e) {
+        $(document).on("change", "#filter_branch, #filter_produk, #filter_order, #filter_dir", function (e) {
             index.ajax.reload();
         });
 
@@ -272,7 +283,8 @@
             var request = $(this).attr('data-request'); //report_purchase_buy_recap
             var format = $(this).attr('data-format'); //html, xls
             var contact = $("#filter_kontak").find(':selected').val();
-            var product = $("#filter_produk").find(':selected').val();
+            var contact = 0;
+            var branch = $("#filter_branch").find(':selected').val();
 
             var order = $("#filter_order").find(':selected').val();
             if (order == 0) {
@@ -292,7 +304,7 @@
                     + request + '/'
                     + $("#start").val() + '/'
                     + $("#end").val() + '/'
-                    + contact + "?product=" + product + "&format=" + format + "&order=" + order + "&dir=" + dir;
+                    + contact + "?branch=" + branch + "&format=" + format + "&order=" + order + "&dir=" + dir;
             window.open(print_url, '_blank');
             // var request = $('.btn-print-all').data('request');
             // var print_url = url_print +'/'+ request + '/'+ $("#start").val() +'/'+ $("#end").val();

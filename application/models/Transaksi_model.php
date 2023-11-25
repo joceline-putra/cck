@@ -286,8 +286,36 @@ class Transaksi_model extends CI_Model{
         $this->set_search($search);            
         return $this->db->count_all_results();
     }        
+    // function get_all_transaksi_items_report($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
+    //     $this->db->select("trans_items.*, trans.*, contacts.*, products.*, locations.*");
+    //     $this->set_params($params);
+    //     // $this->set_search($search);
+    //     // $this->set_join();
+        
+    //     $this->db->join('products','trans_items.trans_item_product_id=products.product_id','left');
+    //     $this->db->join('trans','trans_items.trans_item_trans_id=trans.trans_id','left');
+    //     $this->db->join('contacts','trans.trans_contact_id=contacts.contact_id','left');
+    //     $this->db->join('locations','trans_item_location_id=location_id','left');
+
+    //     if ($order) {
+    //         $this->db->order_by($order, $dir);
+    //     } else {
+    //         $this->db->order_by('trans_item_id', "asc");
+    //     }
+
+    //     if ($limit) {
+    //         $this->db->limit($limit, $start);
+    //     }
+        
+    //     return $this->db->get('trans_items')->result_array();
+    // }
     function get_all_transaksi_items_report($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
-        $this->db->select("trans_items.*, trans.*, contacts.*, products.*, locations.*");
+        // $this->db->select("trans_items.*, trans.*, contacts.*, products.*, locations.*");
+        $this->db->select("trans_items.*");
+        $this->db->select("trans_id, trans_number, trans_date, trans_flag, trans_branch_id, trans_contact_name, trans_contact_phone");
+        $this->db->select("product_id, product_code, product_name, product_type");
+        $this->db->select("location_id, location_name");
+        $this->db->select("branch_id, branch_name");
         $this->set_params($params);
         // $this->set_search($search);
         // $this->set_join();
@@ -296,6 +324,7 @@ class Transaksi_model extends CI_Model{
         $this->db->join('trans','trans_items.trans_item_trans_id=trans.trans_id','left');
         $this->db->join('contacts','trans.trans_contact_id=contacts.contact_id','left');
         $this->db->join('locations','trans_item_location_id=location_id','left');
+        $this->db->join('branchs','trans_branch_id=branch_id','left');        
 
         if ($order) {
             $this->db->order_by($order, $dir);
@@ -308,7 +337,7 @@ class Transaksi_model extends CI_Model{
         }
         
         return $this->db->get('trans_items')->result_array();
-    }
+    }    
     function get_all_transaksi_items_return($from_trans_buy_or_sell,$params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
         
         if($from_trans_buy_or_sell == 1){ //From Pembelian

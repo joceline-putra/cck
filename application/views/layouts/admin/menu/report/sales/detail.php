@@ -79,6 +79,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                            <label class="form-label">Cabang</label>
+                                            <select id="filter_branch" name="filter_branch" class="form-control">
+                                                <option value="0">-- Semua --</option>
+                                            </select>
+                                        </div>
+                                    </div>                                      
                                     <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <label class="form-label">Sorting</label>
@@ -98,18 +106,10 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="clearfix"></div>
-                                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                    <div class="clearfix"></div>                                  
+                                    <!-- <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <label class="form-label"><?php echo $customer_alias; ?></label>
-                                            <select id="filter_kontak" name="filter_kontak" class="form-control">
-                                                <option value="0">-- Semua --</option>
-                                            </select>
-                                        </div>
-                                    </div>                                    
-                                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group">
-                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <label class="form-label"><?php echo $product_alias; ?></label>
+                                            <label class="form-label"><?php #echo $product_alias; ?></label>
                                             <select id="filter_produk" name="filter_produk" class="form-control">
                                                 <option value="0">-- Semua --</option>
                                             </select>
@@ -122,7 +122,7 @@
                                                 <option value="0">-- Semua --</option>
                                             </select>
                                         </div>
-                                    </div>                                                                                                                      
+                                    </div>  -->                                                                                                                     
                                 </div>  
                                 <div class="col-md-12 col-xs-12 col-sm-12 table-responsive">
                                     <table id="table-data" class="table table-bordered" data-limit-start="0" data-limit-end="10"

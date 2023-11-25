@@ -25,6 +25,7 @@ class Report extends MY_Controller{
         $this->load->model('Kontak_model');     
         $this->load->model('Kategori_model');
         $this->load->model('Type_model');
+        $this->load->model('Front_model');        
 
         $this->journal_url = site_url('keuangan/print/');
         $this->trans_url = site_url('transaksi/print_history/');
@@ -870,7 +871,7 @@ class Report extends MY_Controller{
                     // $data['trans_type'] = 1;
                 }else if ($version == 2){
                     // $data['identity'] = 1;
-                    $data['title']  = 'Laporan Penjualan Rinci';
+                    $data['title']  = 'Laporan Penjualan Warmindo';
                     $data['_view']  = 'layouts/admin/menu/report/sales/detail';
                     $file_js        = 'layouts/admin/menu/report/sales/detail_js.php';
                     // $data['trans_type'] = 1;
@@ -888,7 +889,7 @@ class Report extends MY_Controller{
                     // $data['trans_type'] = 1;
                 }else if ($version == 5){
                     // $data['identity'] = 1;
-                    $data['title']  = 'Laporan Sales Order Rinci';
+                    $data['title']  = 'Laporan Penjualan Kamar'; // 'Laporan Sales Order Rinci';
                     $data['_view']  = 'layouts/admin/menu/report/sales/order/detail';
                     $file_js        = 'layouts/admin/menu/report/sales/order/detail_js.php';
                     // $data['trans_type'] = 1;
@@ -1425,6 +1426,7 @@ class Report extends MY_Controller{
             $session_branch_id = $session['user_data']['branch']['id'];
             $session_user_id = $session['user_data']['user_id'];
 
+            $branch = $this->input->get('branch');
             $product = $this->input->get('product');
             $order = $this->input->get('order');
             $dir = $this->input->get('dir');
@@ -1445,36 +1447,41 @@ class Report extends MY_Controller{
             $search = null;
 
             $params_datatable = array(
-                'trans_branch_id' => $session_branch_id,
-                'trans_type' => 2,
+                'trans_type' => 222,
                 'trans_date >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
                 'trans_date <' => date("Y-m-d", strtotime($date_end)).' 23:59:59'
             );
 
-            if(intval($contact) > 0){
-                $params_datatable['contact_id'] = intval($contact);
-                $get_contact = $this->Kontak_model->get_kontak(intval($contact));
-                $data['contact'] = $get_contact;
+            if(intval($branch) > 0){
+                $params_datatable['trans_branch_id'] = intval($branch);
+                $get_branch = $this->Branch_model->get_branch(intval($branch));
+                $data['branchs'] = $get_branch;
             }
+            // if(intval($contact) > 0){
+            //     $params_datatable['contact_id'] = intval($contact);
+            //     $get_contact = $this->Kontak_model->get_kontak(intval($contact));
+            //     $data['contact'] = $get_contact;
+            // }
             
-            if(intval($sales) > 0){
-                $params_datatable['trans_sales_id'] = intval($sales);
-                $get_sales = $this->Kontak_model->get_kontak(intval($sales));
-                $data['sales'] = $get_sales;
-            }
+            // if(intval($sales) > 0){
+            //     $params_datatable['trans_sales_id'] = intval($sales);
+            //     $get_sales = $this->Kontak_model->get_kontak(intval($sales));
+            //     $data['sales'] = $get_sales;
+            // }
 
-            if(intval($product) > 0){
-                $params_datatable['product_id'] = intval($product);
-                $get_product = $this->Produk_model->get_produk(intval($product));
-                $data['product'] = $get_product;
-            }
+            // if(intval($product) > 0){
+            //     $params_datatable['product_id'] = intval($product);
+            //     $get_product = $this->Produk_model->get_produk(intval($product));
+            //     $data['product'] = $get_product;
+            // }
 
             $mdatas = array();
             $mdatas = $this->Transaksi_model->get_all_transaksi_items_report($params_datatable, $search, $limit, $start, $order, $dir);
             // echo json_encode($mdatas);die;
             $data['periode'] = date("d-M-Y, H:i", strtotime($date_start.' 00:00:00')).' sd '.date("d-M-Y, H:i", strtotime($date_end.' 23:59:59')); 
-            $data['content'] = $mdatas;        
-            $data['title']          = "Laporan ".$this->sell_alias." Rinci";
+            $data['content'] = $mdatas;     
+            // var_dump($data['branch']);die;   
+            $data['title']          = "Laporan Warmindo";
             $data['contact_alias']      = $this->customer_alias;
             // $data['employee_alias']     = $this->employee_alias;
             // $data['ref_alias']          = $this->ref_alias;  
@@ -1485,6 +1492,7 @@ class Report extends MY_Controller{
             $session = $this->session->userdata(); 
             $session_branch_id = $session['user_data']['branch']['id'];
             $session_user_id = $session['user_data']['user_id'];
+            $branch = $this->input->get('branch');
 
             $product = $this->input->get('product');
             $order = $this->input->get('order');
@@ -1505,30 +1513,36 @@ class Report extends MY_Controller{
             $search = null;
 
             $params_datatable = array(
-                'order_branch_id' => $session_branch_id,
-                'order_type' => 2,
+                // 'order_branch_id' => $session_branch_id,
+                'order_type' => 222,
                 'order_date >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
                 'order_date <' => date("Y-m-d", strtotime($date_end)).' 23:59:59'
             );
 
-            if(intval($contact) > 0){
-                $params_datatable['contact_id'] = intval($contact);
-                $get_contact = $this->Kontak_model->get_kontak(intval($contact));
-                $data['contact'] = $get_contact;
-            }
+            // if(intval($contact) > 0){
+            //     $params_datatable['contact_id'] = intval($contact);
+            //     $get_contact = $this->Kontak_model->get_kontak(intval($contact));
+            //     $data['contact'] = $get_contact;
+            // }
             
-            if(intval($product) > 0){
-                $params_datatable['product_id'] = intval($product);
-                $get_product = $this->Produk_model->get_produk(intval($product));
-                $data['product'] = $get_product;
+            // if(intval($product) > 0){
+            //     $params_datatable['product_id'] = intval($product);
+            //     $get_product = $this->Produk_model->get_produk(intval($product));
+            //     $data['product'] = $get_product;
+            // }
+            
+            if(intval($branch) > 0){
+                $params_datatable['order_branch_id'] = intval($branch);
+                $get_branch = $this->Branch_model->get_branch(intval($branch));
+                $data['branchs'] = $get_branch;
             }
 
             $mdatas = array();
-            $mdatas = $this->Order_model->get_all_order_items_report($params_datatable, $search, $limit, $start, $order, $dir);
+            $mdatas = $this->Front_model->get_all_booking_item($params_datatable, $search, $limit, $start, $order, $dir);
             // echo json_encode($mdatas);die;
             $data['periode'] = date("d-M-Y, H:i", strtotime($date_start.' 00:00:00')).' sd '.date("d-M-Y, H:i", strtotime($date_end.' 23:59:59')); 
             $data['content'] = $mdatas; 
-            $data['title']          = "Laporan ".$this->so_alias." Rinci";
+            $data['title']          = "Laporan Penjualan Kamar";
             $data['contact_alias']      = $this->customer_alias;
             // $data['employee_alias']     = $this->employee_alias;
             // $data['ref_alias']          = $this->ref_alias;  

@@ -1,7 +1,7 @@
 
 <script>
     $(document).ready(function () {
-        var url = "<?= base_url('transaksi/manage'); ?>";
+        var url = "<?= base_url('front_office/resto'); ?>";
         //var url_print = "<?= base_url('report/prints'); ?>"; 
         var url_print_trans = "<?= base_url('transaksi/print'); ?>";
         var url_print = "<?= base_url('report'); ?>";
@@ -36,13 +36,14 @@
                 cache: 'false',
                 data: function (d) {
                     d.action = 'load-trans-items-for-report';
-                    d.tipe = 2;
+                    d.tipe = 222;
                     d.date_start = $("#start").val();
                     d.date_end = $("#end").val();
                     // d.start = $("#table-data").attr('data-limit-start');
                     // d.length = $("#table-data").attr('data-limit-end'); 
                     d.length = $("#filter_length").find(':selected').val();
-                    d.kontak = $("#filter_kontak").find(':selected').val();
+                    // d.kontak = $("#filter_kontak").find(':selected').val();
+                    d.branch = $("#filter_branch").find(':selected').val();                    
                     d.product = $("#filter_produk").find(':selected').val();
                     d.sales = $("#filter_sales").find(':selected').val();                    
                     d.order[0]['column'] = $("#filter_order").find(':selected').val();
@@ -59,8 +60,8 @@
             "columnDefs": [
                 {"targets": 0, "title": "Tanggal", "searchable": false, "orderable": false},
                 {"targets": 1, "title": "Nomor", "searchable": false, "orderable": false},
-                {"targets": 2, "title": contact_alias, "searchable": false, "orderable": false},
-                {"targets": 3, "title": "Kode", "searchable": false, "orderable": false},
+                {"targets": 2, "title": "Cabang", "searchable": false, "orderable": false},
+                {"targets": 3, "title": contact_alias, "searchable": false, "orderable": false},
                 {"targets": 4, "title": "Nama "+product_alias, "searchable": false, "orderable": false},
                 {"targets": 5, "title": "Qty", "searchable": false, "orderable": false},
                 {"targets": 6, "title": "Total Nilai", "searchable": false, "orderable": false}
@@ -69,7 +70,12 @@
             //   [0, 'asc']
             // ],
             "columns": [{
-                    'data': 'trans_date'
+                    'data': 'trans_date',
+                    render: function (data, meta, row){
+                        var dsp = '';
+                        dsp += moment(data).format("DD-MMM-YYYY");
+                        return dsp;                        
+                    }
                 }, {
                     'data': 'trans_number',
                     render: function (data, meta, row) {
@@ -81,9 +87,9 @@
                         return dsp;
                     }
                 }, {
-                    'data': 'contact_name'
+                    'data': 'branch_name'
                 }, {
-                    'data': 'product_code'
+                    'data': 'trans_contact_name'
                 }, {
                     'data': 'product_name',
                     render: function (data, meta, row) {
@@ -148,10 +154,11 @@
             index.ajax.reload();
         });
 
-        $('#filter_kontak').select2({
+        $('#filter_branch').select2({
             //dropdownParent:$("#modal-id"), //If Select2 Inside Modal
-            placeholder: '<i class="fas fa-search"></i> Search',
+            placeholder: 'Search',
             minimumInputLength: 0,
+            allowClear: true,
             ajax: {
                 type: "get",
                 url: "<?= base_url('search/manage'); ?>",
@@ -160,8 +167,7 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        tipe: 2, //1=Supplier, 2=Asuransi
-                        source: 'contacts'
+                        source: 'branchs'
                     }
                     return query;
                 },
@@ -193,17 +199,17 @@
                     return datas.text;
                 }
                 //Custom Data Attribute
-                $(datas.element).attr('data-alamat', datas.alamat);
-                $(datas.element).attr('data-telepon', datas.telepon);
-                $(datas.element).attr('data-email', datas.email);
+                // $(datas.element).attr('data-alamat', datas.alamat);
+                // $(datas.element).attr('data-telepon', datas.telepon);
+                // $(datas.element).attr('data-email', datas.email);
                 if ($.isNumeric(datas.id) == true) {
-                    return '<i class="fas fa-user-check ' + datas.id.toLowerCase() + '"></i> ' + datas.text;
+                    return datas.text;
                 }
             }
-        });        
+        });
         $('#filter_produk').select2({
             //dropdownParent:$("#modal-id"), //If Select2 Inside Modal
-            placeholder: '<i class="fas fa-search"></i> Search',
+            placeholder: 'Search',
             minimumInputLength: 0,
             ajax: {
                 type: "get",
@@ -247,17 +253,17 @@
                     return datas.text;
                 }
                 //Custom Data Attribute
-                $(datas.element).attr('data-alamat', datas.alamat);
-                $(datas.element).attr('data-telepon', datas.telepon);
-                $(datas.element).attr('data-email', datas.email);
+                // $(datas.element).attr('data-alamat', datas.alamat);
+                // $(datas.element).attr('data-telepon', datas.telepon);
+                // $(datas.element).attr('data-email', datas.email);
                 if ($.isNumeric(datas.id) == true) {
-                    return '<i class="fas fa-boxes ' + datas.id.toLowerCase() + '"></i> ' + datas.text;
+                    return datas.text;
                 }
             }
         });
         $('#filter_sales').select2({
             //dropdownParent:$("#modal-id"), //If Select2 Inside Modal
-            placeholder: '<i class="fas fa-search"></i> Search',
+            placeholder: 'Search',
             minimumInputLength: 0,
             ajax: {
                 type: "get",
@@ -304,11 +310,11 @@
                 // $(datas.element).attr('data-telepon', datas.telepon);
                 // $(datas.element).attr('data-email', datas.email);
                 if ($.isNumeric(datas.id) == true) {
-                    return '<i class="fas fa-user-check ' + datas.id.toLowerCase() + '"></i> ' + datas.text;
+                    return datas.text;
                 }
             }
-        });          
-        $(document).on("change", "#filter_kontak, #filter_produk, #filter_order, #filter_dir, #filter_sales", function (e) {
+        });
+        $(document).on("change", "#filter_kontak, #filter_branch, #filter_order, #filter_dir, #filter_sales", function (e) {
             index.ajax.reload();
         });
 
@@ -326,6 +332,8 @@
             var request = $(this).attr('data-request'); //report_purchase_buy_recap
             var format = $(this).attr('data-format'); //html, xls
             var contact = $("#filter_kontak").find(':selected').val();
+            var branch = $("#filter_branch").find(':selected').val();            
+            contact = 0;
             var sales = $("#filter_sales").find(':selected').val();            
             var product = $("#filter_produk").find(':selected').val();
 
@@ -347,7 +355,7 @@
                     + request + '/'
                     + $("#start").val() + '/'
                     + $("#end").val() + '/'
-                    + contact + "?product=" + product + "&format=" + format + "&order=" + order + "&dir=" + dir + "&sales=" + sales;
+                    + contact + "?branch=" + branch + "&format=" + format + "&order=" + order + "&dir=" + dir + "&sales=" + sales;
             window.open(print_url, '_blank');
             // var request = $('.btn-print-all').data('request');
             // var print_url = url_print +'/'+ request + '/'+ $("#start").val() +'/'+ $("#end").val();
