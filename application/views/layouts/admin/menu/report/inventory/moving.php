@@ -81,15 +81,20 @@
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12 form-group padding-remove-left">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <label class="form-label">Gudang</label>
+                                            <label class="form-label">Cabang</label>
                                             <select id="filter_location" name="filter_location" class="form-control">
-                                                <option value="0">-- Semua --</option>
+                                                <!-- <option value="0">-- Semua --</option> -->
+                                                <?php 
+                                                foreach($branch as $v){
+                                                    echo '<option value="'.$v['branch_id'].'">'.$v['branch_name'].'</option>';
+                                                } 
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 form-group padding-remove-left">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                            <label class="form-label">Kategori <?php echo $product_alias; ?></label>
+                                            <label class="form-label">Jenis <?php echo $product_alias; ?></label>
                                             <select id="filter_categories" name="filter_categories" class="form-control">
                                                 <option value="0">Semua</option>
                                             </select>
@@ -109,7 +114,6 @@
                                             <label class="form-label">Sorting</label>
                                             <select id="filter_order" name="filter_order" class="form-control">
                                                 <option value="1">Nama <?php echo $product_alias; ?></option>
-                                                <option value="0">Kode <?php echo $product_alias; ?></option>
                                             </select>
                                         </div>
                                     </div>

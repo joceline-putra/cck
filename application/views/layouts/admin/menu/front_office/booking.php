@@ -75,7 +75,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group prs-15">
+                                                <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group padding-remove-side prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Cari</label>
                                                         <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
@@ -132,7 +132,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group">
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Tampil</label>
                                                         <select id="filter_length" name="filter_length" class="form-control">
@@ -145,6 +145,7 @@
                                                     </div>
                                                 </div>
                                             </div>    
+                                            <!--
                                             <div class="col-lg-12 col-md-12 col-xs-16 col-sm-16 form-group">
                                                 <div class="panel-group" id="accordion" data-toggle="collapse" style="background-color: #eaeaea;border: 1px solid #eaeaea;margin-bottom:0px;">
                                                     <div id="panel-one" class="panel panel-default" style="display:inline;">
@@ -163,6 +164,7 @@
                                                     </div>
                                                 </div>                                                   
                                             </div>
+                                            -->
                                         </div>
                                         <div class="col-md-12 col-xs-12 col-sm-12" style="padding-top:10px;">
                                             <div class="table-responsive">
@@ -218,7 +220,7 @@
                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
-                                                        <label class="form-label">Cabang (order_branch_id)</label>
+                                                        <label class="form-label">Cabang</label>
                                                         <div class="radio radio-success">
                                                             <?php 
                                                             foreach($branch as $i => $v){
@@ -237,7 +239,7 @@
                                                 </div>  
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
-                                                        <label class="form-label">Type (order_ref_price_id)</label>
+                                                        <label class="form-label">Type</label>
                                                         <div class="radio radio-success">
                                                         <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0"><label for="order_ref_price_id_0">Bulanan</label>                                                            
                                                             <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" checked><label for="order_ref_price_id_1">Harian</label>
@@ -258,7 +260,7 @@
                                                 </div>-->
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
-                                                        <label class="form-label">Jenis Kamar (order_ref_id)</label>
+                                                        <label class="form-label">Jenis Kamar</label>
                                                         <div id="order_ref_id" class="radio radio-success">
                                                             <?php 
                                                             foreach($ref as $i => $v){

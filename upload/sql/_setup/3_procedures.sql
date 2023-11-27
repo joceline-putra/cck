@@ -1046,21 +1046,19 @@ CREATE PROCEDURE `sp_product_stock_update`(IN vPRODUCT_ID BIGINT(50))
         DECLARE mSTOCK_CALCULATE DOUBLE(18,2);
         
         SELECT product_type, product_with_stock INTO mPRODUCT_TYPE, mPRODUCT_WITH_STOCK FROM products WHERE product_id=vPRODUCT_ID;
-        IF mPRODUCT_TYPE = 1 THEN
-            IF mPRODUCT_WITH_STOCK = 1 THEN 
-                
-                SELECT IFNULL(SUM(trans_item_in_qty),0) - IFNULL(SUM(trans_item_out_qty),0) INTO mSTOCK_CALCULATE 
-                FROM trans_items
-                WHERE trans_item_product_id=vPRODUCT_ID;
+        IF mPRODUCT_WITH_STOCK = 1 THEN 
+            
+            SELECT IFNULL(SUM(trans_item_in_qty),0) - IFNULL(SUM(trans_item_out_qty),0) INTO mSTOCK_CALCULATE 
+            FROM trans_items
+            WHERE trans_item_product_id=vPRODUCT_ID;
 
-                -- IF mSTOCK_CALCULATE > 0 THEN
-                --     SET mSTOCK_CALCULATE = mSTOCK_CALCULATE;
-                -- ELSE
-                --     SET mSTOCK_CALCULATE = '0.00';
-                -- END IF;
-                
-                UPDATE products SET product_stock=mSTOCK_CALCULATE WHERE product_id=vPRODUCT_ID;
-            END IF;
+            -- IF mSTOCK_CALCULATE > 0 THEN
+            --     SET mSTOCK_CALCULATE = mSTOCK_CALCULATE;
+            -- ELSE
+            --     SET mSTOCK_CALCULATE = '0.00';
+            -- END IF;
+            
+            UPDATE products SET product_stock=mSTOCK_CALCULATE WHERE product_id=vPRODUCT_ID;
         END IF;
     END$$
 DELIMITER ;
@@ -2620,7 +2618,7 @@ CREATE PROCEDURE `sp_report_stock`(
                 IFNULL( SUM( trans_items.trans_item_in_qty ), 0 ) AS in_qty,
                 IFNULL( SUM( trans_items.trans_item_out_qty ), 0 ) AS out_qty,
                 IFNULL(awal.start_qty,0) + IFNULL( SUM( trans_items.trans_item_in_qty ), 0 ) - IFNULL( SUM( trans_items.trans_item_out_qty ), 0 ) AS balance,
-                `category_id`, `category_name`
+                `category_id`, `category_name`, `location_name`
             FROM `trans_items`
             LEFT JOIN (
                 SELECT trans_item_product_id AS product_id,

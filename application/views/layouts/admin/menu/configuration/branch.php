@@ -127,8 +127,8 @@
                                                     </div>
                                                 </div>    
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="col-lg-7 col-md-12 col-xs-12 padding-remove-left">
-                                                        <div class="col-md-5 col-xs-12 padding-remove-side">
+                                                    <div class="col-lg-4 col-md-4 col-xs-12 padding-remove-left">
+                                                        <div class="col-md-12 col-xs-12 padding-remove-side">
                                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                                 <div class="form-group">
                                                                     <label class="form-label">Gambar <?php echo $title; ?> <?php echo $image_width; ?> x <?php echo $image_height; ?> px</label>
@@ -147,14 +147,10 @@
                                                                     </div>
                                                                 </div>
                                                             </div>  
-                                                        </div>
-                                                        <div class="col-md-7 col-xs-12 padding-remove-right">
-                                                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Kode <?php echo $title; ?> / Perusahaan (opsional)</label>
-                                                                    <input id="kode" name="kode" type="text" value="" class="form-control" readonly='true'/>
-                                                                </div>
-                                                            </div>                              
+                                                        </div>                          
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-xs-12 padding-remove-left">
+                                                        <div class="col-md-12 col-xs-12 padding-remove-side">                     
                                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                                 <div class="form-group">
                                                                     <label class="form-label">Nama <?php echo $title; ?> / Perusahaan *</label>
@@ -162,6 +158,20 @@
                                                                 </div>
                                                             </div>                                               
                                                         </div>
+                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">                                                       
+                                                            <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-left">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Telepon *</label>
+                                                                    <input id="telepon_1" name="telepon_1" type="text" value="" class="form-control" readonly='true'/>
+                                                                </div>                          
+                                                            </div>
+                                                            <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-right">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Email</label>
+                                                                    <input id="email_1" name="email_1" type="text" value="" class="form-control" readonly='true'/>
+                                                                </div>                          
+                                                            </div>   
+                                                        </div>                                                         
                                                         <!--        
                                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                             <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-left">
@@ -201,23 +211,9 @@
                                                                     ?>
                                                                 </select>
                                                             </div>
-                                                        </div>                            
-                                                    </div>
-                                                    <div class="col-lg-5 col-md-12 col-xs-12 padding-remove-right">
-                                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">                                                       
-                                                            <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-left">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Telepon *</label>
-                                                                    <input id="telepon_1" name="telepon_1" type="text" value="" class="form-control" readonly='true'/>
-                                                                </div>                          
-                                                            </div>
-                                                            <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-right">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Email</label>
-                                                                    <input id="email_1" name="email_1" type="text" value="" class="form-control" readonly='true'/>
-                                                                </div>                          
-                                                            </div>   
-                                                        </div>                            
+                                                        </div>                                                      
+                                                    </div>                                                    
+                                                    <div class="col-lg-4 col-md-4 col-xs-12 padding-remove-right">                           
                                                         <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                             <div class="form-group">
                                                                 <label class="form-label">Alamat *</label>
@@ -254,7 +250,6 @@
                                                         -->                                                                    
                                                     </div>
                                                 </div>
-
                                                 <div class="clearfix"></div>
                                                 <div class="col-md-12 col-xs-12 col-sm-12" style="margin-top: 10px;">
                                                     <div class="form-group">

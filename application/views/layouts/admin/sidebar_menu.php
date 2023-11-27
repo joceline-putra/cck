@@ -57,7 +57,6 @@ $next = true;
                     </ul>
                 </li>                
             </li>
-
             <?php if ($next == false) { ?>
 
                 <li class="separate"></li>
@@ -179,14 +178,12 @@ $next = true;
             <li class="start"> 
                 <a href="#">
                     <i class="fas fa-wallet"></i>
-                    <span class="title">Example</span> <span class="selected"></span>
+                    <span class="title">Bookings</span> <span class="selected"></span>
                 </a>
-                <!-- <li class="start open visible-xs visible-sm hidden-md hidden-lg">  -->
                 <li class="start open">
                     <ul class="open sub-menu" style="display:block;">
-                        <li><a href="<?php echo site_url('sales/pos')?>">POS</a></li>
-                        <li><a href="<?php echo site_url('sales/pos2')?>">POS 2</a></li>
-                        <li><a href="<?php echo site_url('sales/pos3')?>">POS 3</a></li>
+                        <li><a href="<?php echo site_url('front_office/booking/cece')?>">Cece</a></li>
+                        <li><a href="<?php echo site_url('front_office/booking/lily')?>">Lily</a></li>
                     </ul>
                 </li>
             </li>
@@ -277,11 +274,11 @@ $next = true;
                                                         //     echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Usia Piutang</span> <span class="selected"></span></a></li>';
                                                         //     break;
                                                         case "Stok":
-                                                            echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Ringkasan Persediaan</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Nilai Persediaan</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Rincian Persediaan</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/inventory/product/stock_warehouse') . '" style=""><span class="title">Kuantitas Stok Gudang</span> <span class="selected"></span></a></li>';
-                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/inventory/product/stock_valuation') . '" style=""><span class="title">Nilai Stok Gudang</span> <span class="selected"></span></a></li>';
+                                                            // echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Ringkasan Persediaan</span> <span class="selected"></span></a></li>';
+                                                            // echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Nilai Persediaan</span> <span class="selected"></span></a></li>';
+                                                            // echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Rincian Persediaan</span> <span class="selected"></span></a></li>';
+                                                            // echo '<li class="start"><a id="" data-id="" href="' . base_url('report/inventory/product/stock_warehouse') . '" style=""><span class="title">Kuantitas Stok Gudang</span> <span class="selected"></span></a></li>';
+                                                            // echo '<li class="start"><a id="" data-id="" href="' . base_url('report/inventory/product/stock_valuation') . '" style=""><span class="title">Nilai Stok Gudang</span> <span class="selected"></span></a></li>';
                                                             echo '<li class="start"><a id="" data-id="" href="' . base_url('report/inventory/product/stock_moving') . '" style=""><span class="title">Pergerakan Stok</span> <span class="selected"></span></a></li>';
                                                             break;
                                                         // case "Asset":

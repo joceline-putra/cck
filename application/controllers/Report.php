@@ -938,7 +938,7 @@ class Report extends MY_Controller{
                     // $firstdateofapp = date("d-m-Y", strtotime($firstdateofapp['trans_item_date']));
                     // $data['first_date_app'] = $firstdateofapp;
                     // var_dump($data['first_date_app']);die;
-
+                    $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag'=>1],null,null,null,'branch_name','asc');
                     // $data['identity'] = 1;
                     $data['title']  = 'Laporan Pergerakan Stok';
                     $data['_view']  = 'layouts/admin/menu/report/inventory/moving';

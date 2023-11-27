@@ -443,11 +443,9 @@ class Konfigurasi extends MY_Controller{
                 // );                                       
                 $columns = array(
                     '0' => 'branchs.branch_id',
-                    '1' => 'branchs.branch_code',
-                    '2' => 'branchs.branch_name',
-                    '3' => 'branchs.branch_phone_1',
-                    '4' => 'branchs.branch_email_1',                    
-                    '5' => 'branchs.branch_address',
+                    '1' => 'branchs.branch_name',
+                    '2' => 'branchs.branch_phone_1',
+                    '3' => 'branchs.branch_user_id'
                 );                           
                 $table = 'branchs';                                 
             } 

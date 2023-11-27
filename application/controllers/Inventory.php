@@ -1813,6 +1813,7 @@ class Inventory extends MY_Controller{
                                 'product_code' => $v['product_code'],
                                 'product_name' => $v['product_name'],
                                 'product_unit' => $v['product_unit'],
+                                'location_name' => $v['location_name'],
                                 'start_qty' => number_format($v['start_qty'],2,'.',''),
                                 'in_qty' => number_format($v['in_qty'],2,'.',''),
                                 'out_qty' => number_format($v['out_qty'],2,'.',''),

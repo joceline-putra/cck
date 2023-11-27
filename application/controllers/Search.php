@@ -510,7 +510,8 @@ class Search extends MY_Controller{
                     // $where_category = ' AND product_category_id > 0';
                     $where_category = '';
                 }else{
-                    $where_category = ' AND product_category_id < 1';
+                    $where_category = '';
+                    // $where_category = ' AND product_category_id < 1';
                 }
 
                 if($category=='add-on'){
@@ -559,7 +560,7 @@ class Search extends MY_Controller{
                         SELECT category_id AS id, category_name AS nama,
                             (SELECT CONCAT(IFNULL(`category_name`,''))) AS `text`
                         FROM categories
-                        WHERE category_branch_id=".$session_branch_id." AND category_code LIKE '%".$terms."%' OR category_name LIKE '%".$terms."%' 
+                        WHERE category_name LIKE '%".$terms."%' 
                         AND category_flag=1 AND category_type=".$tipe."
                     ");
                 }else{
@@ -567,7 +568,7 @@ class Search extends MY_Controller{
                         SELECT category_id AS id, category_name AS nama,
                             (SELECT CONCAT(IFNULL(`category_name`,''))) AS `text`
                         FROM categories
-                        WHERE category_branch_id=".$session_branch_id." AND category_flag=1 AND category_type=".$tipe." ORDER BY category_name ASC LIMIT 10;
+                        WHERE category_flag=1 AND category_type=".$tipe." ORDER BY category_name ASC LIMIT 10;
                     ");                    
                 }
                 $result = $query->result();
@@ -870,17 +871,17 @@ class Search extends MY_Controller{
                 if(!empty($terms)){                            
                     $query = $this->db->query("
                         SELECT location_id AS id, IFNULL(location_code,'-') AS kode, location_name AS nama,
-                            (SELECT CONCAT(IFNULL(location_code,''), ' - ', IFNULL(`location_name`,''))) AS `text`
+                            (SELECT CONCAT(IFNULL(`location_name`,''))) AS `text`
                         FROM locations
-                        WHERE location_branch_id=".$session_branch_id." AND location_flag=1 AND (location_code LIKE '%".$terms."%' OR location_name LIKE '%".$terms."%') 
+                        WHERE location_flag=1 AND (location_code LIKE '%".$terms."%' OR location_name LIKE '%".$terms."%') 
                         
                     ");
                 }else{
                     $query = $this->db->query("
                         SELECT location_id AS id, IFNULL(location_code,'-') AS kode, location_name AS nama,
-                            (SELECT CONCAT(IFNULL(location_code,''), ' - ', IFNULL(`location_name`,''))) AS `text`
+                            (SELECT CONCAT(IFNULL(`location_name`,''))) AS `text`
                         FROM locations
-                        WHERE location_branch_id=".$session_branch_id." AND location_flag=1 AND (location_code LIKE '%".$terms."%' OR location_name LIKE '%".$terms."%') 
+                        WHERE location_flag=1 AND (location_code LIKE '%".$terms."%' OR location_name LIKE '%".$terms."%') 
                         ORDER BY location_name ASC LIMIT 20
                     ");                    
                 }

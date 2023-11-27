@@ -79,6 +79,14 @@ class Produk extends MY_Controller{
             $data['title'] = 'Aset';
             $data['_view'] = 'layouts/admin/menu/product/asset';
             $file_js = 'layouts/admin/menu/product/asset_js.php';
+        }else if($identity == 4){ //Operasional / Barang Habis Pakai
+            $data['satuan'] = $this->Satuan_model->get_all_satuan();              
+            // $data['referensi'] = $this->Referensi_model->get_all_referensi(array('ref_type'=>6));
+
+            $data['identity'] = 4;            
+            $data['title'] = 'Barang Operasional';
+            $data['_view'] = 'layouts/admin/menu/product/operational';
+            $file_js = 'layouts/admin/menu/product/operational_js.php';
         }
 
         $data['image_width'] = intval($this->image_width);
@@ -132,10 +140,15 @@ class Produk extends MY_Controller{
                 ); 
             }else if($identity == 3){ //Aset - Inventaris 
                 $columns = array(
-                    '0' => 'product_code',
-                    '1' => 'product_name',
-                    '2' => 'ref_name',
-                    '3' => 'product_price_sell'
+                    '0' => 'product_name',
+                    '1' => 'branch_name',
+                    '3' => 'product_unit'
+                ); 
+            }else if($identity == 4){ //Aset - Inventaris 
+                $columns = array(
+                    '0' => 'product_name',
+                    '1' => 'branch_name',
+                    '3' => 'product_unit'
                 ); 
             }
 
@@ -819,9 +832,11 @@ class Produk extends MY_Controller{
                     }
 
                     if($identity==1){
-                        $params['product_type <'] = 3;
+                        // $params['product_type <'] = 3;
                     }else if($identity==3){ //Inventaris
                         $params['product_type'] = 3;
+                    }else if($identity==4){ //Inventaris
+                        $params['product_type'] = 4;
                     }
                 }
 

@@ -32,6 +32,7 @@
             index.ajax.reload();
         });
 
+        /*
         $('#filter_location').select2({
             minimumInputLength: 0,
             allowClear: true,
@@ -80,15 +81,16 @@
                     return datas.text;
                 }
                 //Custom Data Attribute
-                $(datas.element).attr('data-alamat', datas.alamat);
-                $(datas.element).attr('data-telepon', datas.telepon);
-                $(datas.element).attr('data-email', datas.email);
+                // $(datas.element).attr('data-alamat', datas.alamat);
+                // $(datas.element).attr('data-telepon', datas.telepon);
+                // $(datas.element).attr('data-email', datas.email);
                 if ($.isNumeric(datas.id) == true) {
                     return datas.text;
                     // return '<i class="fas fa-warehouse '+datas.id.toLowerCase()+'"></i> '+datas.text;
                 }
             }
         });
+        */
         $('#filter_product').select2({
             minimumInputLength: 0,
             allowClear: true,
@@ -105,8 +107,9 @@
                     var query = {
                         search: params.term,
                         tipe: 1,
-                        category: 1,
-                        source: 'products'
+                        // category: 1,
+                        branch: $("#filter_location").find(":selected").val(),
+                        source: 'products_other'
                     }
                     return query;
                 },
@@ -208,9 +211,9 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Kode", "searchable": false, "orderable": false},
-                {"targets": 1, "title": "Nama "+product_alias, "searchable": false, "orderable": false},
-                {"targets": 2, "title": "Satuan", "searchable": false, "orderable": false},
+                {"targets": 0, "title": "Nama "+product_alias, "searchable": false, "orderable": false},
+                {"targets": 1, "title": "Satuan", "searchable": false, "orderable": false},
+                {"targets": 2, "title": "Cabang", "searchable": false, "orderable": false},
                 {"targets": 3, "title": "Awal", "searchable": false, "orderable": false},
                 {"targets": 4, "title": "Masuk", "searchable": false, "orderable": false},
                 {"targets": 5, "title": "Keluar", "searchable": false, "orderable": false},
@@ -221,20 +224,11 @@
             //   [0, 'asc']
             // ],
             "columns": [{
-                    'data': 'product_code',
-                    render: function (data, meta, row) {
-                        var dsp = '';
-                        if(row.product_code != undefined){
-                            dsp += data;
-                        }else{
-                            dsp += '-';
-                        }
-                        return dsp;
-                    }                    
-                }, {
                     'data': 'product_name'
                 }, {
                     'data': 'product_unit'
+                }, {
+                    'data': 'location_name'
                 }, {
                     'data': 'start_qty', className: 'text-right',
                     render: function (data, meta, row) {
@@ -279,19 +273,6 @@
         //Datatable Config  
         $("#table-data_filter").css('display', 'none');
         $("#table-data_length").css('display', 'none');
-        $('#table-data').on('page.dt', function () {
-            var info = index.page.info();
-            // console.log( 'Showing page: '+info.page+' of '+info.pages);
-            var limit_start = info.start;
-            var limit_end = info.end;
-            var length = info.length;
-            var page = info.page;
-            var pages = info.pages;
-            console.log(limit_start, limit_end);
-            $("#table-data").attr('data-limit-start', limit_start);
-            $("#table-data").attr('data-limit-end', limit_end);
-        });
-
         $(document).on("change", "#filter_location", function (e) {
             index.ajax.reload();
         });

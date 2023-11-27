@@ -973,6 +973,7 @@
                 formData.append('harga_promo', $('#harga_promo').val());
                 formData.append('stok_minimal', $('#stok_minimal').val());
                 formData.append('stok_maksmal', $('#stok_maksimal').val());
+                formData.append('with_stock', 1);                
                 // formData.append('manufacture', $('#manufacture').val());      
                 formData.append('referensi', $('#referensi').find(':selected').val());
                 formData.append('satuan', $('#satuan').find(':selected').val());

@@ -321,7 +321,7 @@ class Kategori extends MY_Controller{
                 }
 
                 $params = array(
-                    'category_branch_id' => $branch_id,
+                    // 'category_branch_id' => $branch_id,ss
                     'category_type' => $identity
                 );
                 // var_dump($params);die;

@@ -67,7 +67,7 @@
                 {"targets": 4, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
-                [0, 'desc']
+                [0, 'asc']
             ],
             "columns": [{
                     'data': 'branch_name',
@@ -100,7 +100,7 @@
                         return dsp;
                     }
                 }, {
-                    'data': 'branch_email_1',
+                    'data': 'branch_phone_1',
                     className: 'text-left',
                     render: function (meta, data, row) {
                         var dsp = '';
@@ -643,7 +643,7 @@
                 form.append('action', 'create');
                 // form.append('upload1', $('#upload1')[0].files[0]);
                 form.append('tipe', identity);
-                form.append('kode', $('#kode').val());
+                // form.append('kode', $('#kode').val());
                 form.append('nama', $('#nama').val());
                 form.append('telepon_1', $('#telepon_1').val());
                 form.append('email_1', $('#email_1').val());

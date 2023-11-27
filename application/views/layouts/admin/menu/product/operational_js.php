@@ -6,7 +6,7 @@
         var identity = "<?php echo $identity; ?>";
         var menu_link = "<?php echo $_view; ?>";
         $(".nav-tabs").find('li[class="active"]').removeClass('active');
-        $(".nav-tabs").find('li[data-name="product/asset"]').addClass('active');
+        $(".nav-tabs").find('li[data-name="product/operational"]').addClass('active');
 
         //Nav Tabs Resep & Price    
         // $(".nav-tabs-detail").find('li[class="active"]').removeClass('active');
@@ -364,7 +364,7 @@
                 var formData = new FormData();
                 formData.append('action', 'create');
                 formData.append('upload1', $('#upload1')[0].files[0]);
-                formData.append('tipe', 3);
+                formData.append('tipe', 4);
                 // formData.append('kode', $('#kode').val());
                 formData.append('nama', $('#nama').val());
                 formData.append('keterangan', $('#keterangan').val());
@@ -375,10 +375,10 @@
                 // formData.append('stok_maksmal', $('#stok_maksimal').val());
                 formData.append('satuan', $('#satuan').find(':selected').val());
                 formData.append('status', $('#status').find(':selected').val());
-                // formData.append('with_stock', $('#with_stock').find(':selected').val());       
+                formData.append('with_stock', 1);       
                 // formData.append('categories', $('#categories').find(':selected').val()); 
                 // formData.append('manufacture', $('#manufacture').find(':selected').val());
-                formData.append('referensi', $('#product_ref_id').find(':selected').val());
+                // formData.append('referensi', $('#product_ref_id').find(':selected').val());
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());             
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
                 // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());      
@@ -597,7 +597,7 @@
                 formData.append('action', 'update');
                 formData.append('id', $('#id_document').val());
                 formData.append('upload1', $('#upload1')[0].files[0]);
-                formData.append('tipe', 3);
+                formData.append('tipe', 4);
                 // formData.append('kode', $('#kode').val());
                 formData.append('nama', $('#nama').val());
                 formData.append('keterangan', $('#keterangan').val());
@@ -607,10 +607,10 @@
                 // formData.append('stok_minimal', $('#stok_minimal').val());  
                 // formData.append('stok_maksmal', $('#stok_maksimal').val());
                 // formData.append('manufacture', $('#manufacture').val());      
-                formData.append('referensi', $('#product_ref_id').find(':selected').val());
+                // formData.append('referensi', $('#product_ref_id').find(':selected').val());
                 formData.append('satuan', $('#satuan').find(':selected').val());
                 formData.append('status', $('#status').find(':selected').val());
-                // formData.append('with_stock', $('#with_stock').find(':selected').val());      
+                formData.append('with_stock', 1);      
                 // formData.append('categories', $('#categories').find(':selected').val());
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());             
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
