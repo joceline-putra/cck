@@ -57,6 +57,62 @@ class Front_office extends MY_Controller{
             Resto = trans
         */
     }
+    function booking_type($type_name){
+            // Default First Date & End Date of Current Month
+            $firstdate = new DateTime('first day of this month');
+
+            $firstdateofmonth = $firstdate->format('d-m-Y');
+
+            $data['session'] = $this->session->userdata();  
+            $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+            $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
+            $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10],null,null,null,'ref_name','asc');
+            $data['first_date'] = $firstdateofmonth;
+            $data['end_date'] = date("d-m-Y");
+            
+            $now = new DateTime();
+            $date3 = $now->modify('+1 day')->format('Y-m-d H:i:s');
+
+            $data['booking_start_date'] = date("d-M-Y");
+            $data['booking_end_date'] = date("d-M-Y", strtotime($date3));              
+            
+            $data['hour'] = date("H:i");
+            $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
+
+            $data['image_width'] = intval($this->image_width);
+            $data['image_height'] = intval($this->image_height);
+
+            $data['module_approval']    = $this->module_approval;
+            $data['module_attachment'] = $this->module_attachment;                
+            /*
+            // Reference Model
+            $this->load->model('Reference_model');
+            $data['reference'] = $this->Reference_model->get_all_reference();
+            */
+            $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
+            $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10, 'references.ref_branch_id' => 1],null,null,null,'ref_name','asc');            
+            // $data['ref'] = $this->Ref_model->get_all_ref_price(['price_flag' => 1],null,null,null,'price_name','asc');    
+
+            $params = array(
+                'booking_item_id' => 'value'
+            );
+            $search = null; $limit = null; $start = null; $order  = 'order_item_id'; $dir = 'desc';
+            $get_booking_item = $this->Front_model->get_all_booking_item(null,$search,$limit,$start,$order,$dir);
+
+            // var_dump($get_booking_item);die;
+            $data['identity'] = $this->booking_identity;
+            if($type_name == 'cece'){
+                $data['title'] = 'Booking Cece';
+                $data['_view'] = 'layouts/admin/menu/front_office/cece';
+                $this->load->view('layouts/admin/index',$data);
+                $this->load->view('layouts/admin/menu/front_office/cece_js.php',$data);
+            }else if($type_name == 'lily'){
+                $data['title'] = 'Booking Lily';
+                $data['_view'] = 'layouts/admin/menu/front_office/lily';
+                $this->load->view('layouts/admin/index',$data);
+                $this->load->view('layouts/admin/menu/front_office/lily_js.php',$data);
+            }
+    }
     function booking(){
         if ($this->input->post()) {
             $return = new \stdClass();

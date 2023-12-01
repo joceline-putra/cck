@@ -265,3 +265,6 @@ $route['search']                = "search/index";
 
 /* Minio */
 	$route['minio/shortlink'] 					= "minio";    
+
+	$route['booking/cece']         = "front_office/booking_type/cece";
+	$route['booking/lily']         = "front_office/booking_type/lily";

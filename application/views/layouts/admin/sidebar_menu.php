@@ -182,8 +182,8 @@ $next = true;
                 </a>
                 <li class="start open">
                     <ul class="open sub-menu" style="display:block;">
-                        <li><a href="<?php echo site_url('front_office/booking/cece')?>">Cece</a></li>
-                        <li><a href="<?php echo site_url('front_office/booking/lily')?>">Lily</a></li>
+                        <li><a href="<?php echo site_url('booking/cece')?>">Cece</a></li>
+                        <li><a href="<?php echo site_url('booking/lily')?>">Lily</a></li>
                     </ul>
                 </li>
             </li>
