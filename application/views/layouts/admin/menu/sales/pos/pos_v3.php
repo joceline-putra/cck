@@ -858,7 +858,7 @@
                         </div>
                     </div>
                 </div>        
-            </div>           
+            </div>            
             <div class="tab-pane" id="tab2"> <!-- Form -->
                 <div class="row div_mobile">
                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
@@ -1364,4 +1364,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>1

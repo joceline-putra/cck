@@ -34,6 +34,31 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
+                
+                <!-- Child Tab-Pane -->
+                <div class="tab-content">
+                    <div class="tab-pane tab-pane-sub" id="tab11a">
+                        Lily 1 or Lily 2
+                    </div>
+                    <div class="tab-pane tab-pane-sub" id="tab11b">
+                        Bulanan and Harian 
+                    </div>                 
+                    <div class="tab-pane tab-pane-sub" id="tab11c">
+                        Jenis Kamar 
+                    </div>     
+                    <div class="tab-pane tab-pane-sub" id="tab11d">
+                        Nomor Kamar 
+                    </div> 
+                    <div class="tab-pane tab-pane-sub" id="tab11e">
+                        Jam Masuk 
+                    </div>
+                    <div class="tab-pane tab-pane-sub" id="tab11f">
+                        Nama <br>
+                        Telepon
+                    </div>                                                                                                    
+                <div>
+                <!-- End of Child Tab-Pane -->
+
             </div>
             <div class="tab-pane" id="tab2">
                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">

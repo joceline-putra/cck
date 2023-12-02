@@ -2,8 +2,8 @@
 <script>
     $(document).ready(function () {
         var identity = "<?php echo $identity; ?>";
-        // $(".nav-tabs").find('li[class="active"]').removeClass('active');
-        // $(".nav-tabs").find('li[data-name="front_office/booking"]').addClass('active');
+
+        // $("[class*='tab-pane-sub']").addClass('active');
 
         //Url
         var url = "<?= base_url('front_office/booking'); ?>";
