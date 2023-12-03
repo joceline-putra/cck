@@ -318,6 +318,7 @@ class Referensi extends MY_Controller{
                     'ref_name' => $data['nama'],
                     'ref_note' => $data['keterangan'],         
                     'ref_date_created' => date("YmdHis"),
+                    'ref_flag' => $data['status'],                    
                 );
                 $params_update = array(
                     'ref_branch_id' => $data['ref_branch_id'],
@@ -430,6 +431,7 @@ class Referensi extends MY_Controller{
                     );
 
                     if($identity == 10){
+                        $params_check['ref_branch_id'] = intval($data['ref_branch_id']);                        
                         $params_check = $params_check;
                     }else{
                         $params_check['ref_branch_id'] = intval($session_branch_id);
@@ -466,7 +468,8 @@ class Referensi extends MY_Controller{
                             );                         
                         }
                     }else{
-                        $return->message='Kode sudah digunakan';                    
+                        $return->message='Nama sudah digunakan';    
+                        $return->params_check = $params_check;                
                     }
                     break;
                 case "read":

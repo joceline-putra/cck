@@ -579,13 +579,19 @@ class Search extends MY_Controller{
                 ));                
             }
             else if($source=="references"){
+                $branch = $this->input->get('branch');
+                $where_branch = '';
+                if(intval($branch) > 0){
+                    $where_branch = ' AND ref_branch_id='.$branch.'';
+                }
+
                 if(!empty($terms)){
                     $query = $this->db->query("
                         SELECT ref_id AS id, ref_name AS nama,
                             (SELECT CONCAT(IFNULL(`ref_name`,''))) AS `text`
                         FROM `references`
                         WHERE ref_name LIKE '%".$terms."%' 
-                        AND ref_flag=1 AND ref_type=".$tipe."
+                        AND ref_flag=1 AND ref_type=".$tipe." $where_branch
                     ");
                         // AND ref_flag=1 AND ref_branch_id=".$session_branch_id." AND ref_type=".$tipe."                    
                 }else{
@@ -593,7 +599,7 @@ class Search extends MY_Controller{
                         SELECT ref_id AS id, ref_name AS nama,
                             (SELECT CONCAT(IFNULL(`ref_name`,''))) AS `text`
                         FROM `references`
-                        WHERE ref_flag=1 AND ref_type=".$tipe." ORDER BY ref_name ASC LIMIT 50;
+                        WHERE ref_flag=1 AND ref_type=".$tipe." $where_branch ORDER BY ref_name ASC LIMIT 50;
                     ");                    
                         // WHERE ref_flag=1 AND ref_branch_id=".$session_branch_id." AND ref_type=".$tipe." ORDER BY ref_name ASC LIMIT 50;                    
                 }

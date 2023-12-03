@@ -175,7 +175,7 @@
             index.ajax.reload();
         });  
 
-        $('#referensi').select2({
+        $('#referensii').select2({
             placeholder: '--- Pilih ---',
             allowClear:true,            
             minimumInputLength: 0,
@@ -187,7 +187,8 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        tipe: 7, //1=Produk, 2=News
+                        tipe: 10, //1=Produk, 2=News,
+                        branch: $("input[name='product_branch_id']:checked").val(),
                         source: 'references'
                     }
                     return query;
@@ -336,52 +337,17 @@
             //   }
             // }
 
-            // if(next==true){
-            //   if($("select[id='categories']").find(':selected').val() == 0){
-            //     notif(0,'Kategori wajib dipilih');
-            //     next=false;
-            //   }   
-            // }        
+            if(next==true){
+                if($("select[id='referensii']").find(':selected').val() == 0){
+                    notif(0,'Jenis Kamar wajib dipilih');
+                    next=false;
+                }   
+            }
 
             if (next == true) {
                 if ($("input[id='nama']").val().length == 0) {
                     notif(0, 'Nama wajib diisi');
                     $("#nama").focus();
-                    next = false;
-                }
-            }
-            if (next == true) {
-                if ($("select[id='product_manufacture']").find(':selected').val() == 0) {
-                    notif(0, 'Jenis produk wajib dipilih');
-                    next = false;
-                }
-            }
-
-            if (next == true) {
-                if ($("select[id='satuan']").find(':selected').val() == 0) {
-                    notif(0, 'Satuan wajib dipilih');
-                    next = false;
-                }
-            }
-
-            if (next == true) {
-                if ($("input[id='harga_jual']").val().length == 0) {
-                    notif(0, 'Harga Jual wajib diisi');
-                    $("#harga_jual").focus();
-                    next = false;
-                }
-            }
-
-            if (next == true) {
-                if ($("select[id='account_buy']").find(':selected').val() == 0) {
-                    notif(0, 'Akun Pembelian harus dipilih');
-                    next = false;
-                }
-            }
-
-            if (next == true) {
-                if ($("select[id='account_sell']").find(':selected').val() == 0) {
-                    notif(0, 'Akun Penjualan harus dipilih');
                     next = false;
                 }
             }
@@ -421,7 +387,7 @@
                 // formData.append('with_stock', $('#with_stock').find(':selected').val());
                 // formData.append('categories', 2);
                 // formData.append('manufacture', $('#manufacture').find(':selected').val());
-                formData.append('referensi', $('#referensi').find(':selected').val());
+                formData.append('referensi', $('#referensii').find(':selected').val());
                 // formData.append('akun_beli', $('#account_buy').find(':selected').val());
                 // formData.append('akun_jual', $('#account_sell').find(':selected').val());
                 // formData.append('akun_inventory', $('#account_inventory').find(':selected').val());
@@ -590,41 +556,12 @@
                 next = false;
             }
 
-            // if(next==true){
-            //   if($("select[id='categories']").find(':selected').val() == 0){
-            //     notif(0,'Kategori wajib dipilih');
-            //     next=false;
-            //   }   
-            // }        
-
-            if (next == true) {
-                if ($("select[id='satuan']").find(':selected').val() == 0) {
-                    notif(0, 'Satuan wajib dipilih');
-                    next = false;
-                }
-            }
-
-            if (next == true) {
-                // if ($("input[id='harga_jual']").val().length == 0) {
-                //     notif(0, 'Harga Jual wajib diisi');
-                //     $("#harga_jual").focus();
-                //     next = false;
-                // }
-            }
-
-            if (next == true) {
-                // if ($("select[id='account_buy']").find(':selected').val() == 0) {
-                //     notif(0, 'Akun Pembelian harus dipilih');
-                //     next = false;
-                // }
-            }
-
-            if (next == true) {
-                // if ($("select[id='account_sell']").find(':selected').val() == 0) {
-                //     notif(0, 'Akun Penjualan harus dipilih');
-                //     next = false;
-                // }
-            }
+            if(next==true){
+                if($("select[id='referensii']").find(':selected').val() == 0){
+                    notif(0,'Jenis Kamar wajib dipilih');
+                    next=false;
+                }   
+            }   
 
             if (next == true) {
                 /*var prepare = {
@@ -1631,7 +1568,6 @@
         var atributSelect = [
             "status",
             "categories",
-            "referensi"
         ];
         for (var i = 0; i <= atributSelect.lengthcategories; i++) {
             $("" + form + " select[name='" + atributSelect[i] + "']").attr('disabled', flag);

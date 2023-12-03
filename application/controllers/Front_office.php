@@ -107,6 +107,8 @@ class Front_office extends MY_Controller{
                 $this->load->view('layouts/admin/index',$data);
                 $this->load->view('layouts/admin/menu/front_office/cece_js.php',$data);
             }else if($type_name == 'lily'){
+                $data['branch_lily']      = $this->Branch_model->get_all_branch(['branch_flag' => 1],['branch_name' => 'Lily'],null,null,'branch_name','asc');            
+                                
                 $data['title'] = 'Booking Lily';
                 $data['_view'] = 'layouts/admin/menu/front_office/lily';
                 $this->load->view('layouts/admin/index',$data);

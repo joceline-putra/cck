@@ -2,9 +2,8 @@
 <script>
     $(document).ready(function () {
         var identity = "<?php echo $identity; ?>";
-
-        // $("[class*='tab-pane-sub']").addClass('active');
-
+        $("[class*='tab-pane-sub']").addClass('active');
+        $.alert('loadRoom() ');
         //Url
         var url = "<?= base_url('front_office/booking'); ?>";
         let url_print = "<?php base_url('front_office/booking'); ?>";
@@ -409,6 +408,93 @@
 
 
         //CRUD
+        $(document).on("click","#btn_save_booking", function(e) {
+            e.preventDefault(); e.stopPropagation();
+            let next = true;
+            /* If id not exist, UPDATE if id exist */
+            /*
+            if ($("#booking_id").val().length === 0 || parseInt($("#booking_id").val()) === 0) {
+                if ($("#booking_id").val().length === 0) {
+                    next = false;
+                    notif(0,'ID wajib diisi');
+                }
+            }
+            */
+            if(next){
+                if (!$("input[name='booking_branch_id']:checked").val()) {
+                    next = false;
+                    notif(0,'Cabang wajib pilih');
+                }
+            }
+            if(next){
+                if (!$("input[name='booking_ref_price_id']:checked").val()) {
+                    next = false;
+                    notif(0,'Tipe Pesanan wajib pilih');
+                }
+            }
+            if(next){
+                if (!$("input[name='booking_ref_id']:checked").val()) {
+                    next = false;
+                    notif(0,'Jenis Kamar wajib pilih');
+                }
+            }  
+            
+            if(next){
+                if ($("input[name='booking_contact_name']").val().length == 0) {
+                    next = false;
+                    notif(0,'Nama Pemesan wajib diisi');
+                }
+            }             
+            if(next){
+                if (orderPRICE.rawValue < 1) {
+                    next = false;
+                    notif(0,'Harga tidak boleh kosong');
+                }
+            }
+
+            /* Prepare ajax for UPDATE */
+            /* If Form Validation Complete checked */
+            if(next){
+                var form = new FormData($("#form_booking")[0]);
+                form.append('action', 'create_update');
+                form.append('order_type', identity);                
+                // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
+                form.set('order_start_date', $("#booking_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
+                form.set('order_end_date', $("#booking_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
+                form.set('order_price', orderPRICE.rawValue);                       
+                if(orderID > 0){
+                    form.append('order_id', orderID);
+                }
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,   
+                    beforeSend:function(x){
+                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            notif(s,m);
+                            order_table.ajax.reload();
+                            // $("#modal_order").modal("hide");
+                            /* hint zz_for or zz_each */
+                            
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        notif(0,err);
+                    }
+                });
+            }   
+        });        
         $(document).on("click","#btn_save_order2",function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1008,6 +1094,13 @@
                 });
             }            
         }); 
+        $(document).on("change", "input[type=radio][name=booking_branch_id]", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if(orderID == 0){
+                loadRoom();
+            }            
+        });          
         $(document).on("change", "input[type=radio][name=order_ref_price_id]", function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1059,6 +1152,46 @@
                 });
             }
         }
+        function loadRoom(){
+
+            $("#order_price").val(0);
+
+            if(parseInt($("input[name='order_ref_id']:checked").val()) > 0){
+                let form = new FormData();
+                form.append('action','room_get');
+                form.append('branch_id',  $("input[name=booking_branch_id]:checked").val());
+                form.append('ref_id',  $("input[name=booking_ref_id]:checked").val());                                                
+                // form.append('ref_price_sort',  $("input[name=order_ref_price_id]:checked").val());
+
+                // form.append('branch_id',obranch);                        
+                // form.append('ref_id',oref);                        
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,
+                    beforeSend:function(x){
+                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            // notif(s,m);
+                            $("#order_price").val(r.price_value);
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        notif(0,err);
+                    }
+                });
+            }
+        }        
         
         $(document).on("click","#btn_new_order",function(e) {
             formBookingReset();

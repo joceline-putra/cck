@@ -164,11 +164,11 @@
                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                 <div class="form-group">                        
                                                     <label class="form-label">Jenis Kamar *</label>
-                                                    <select id="referensi" name="referensi" class="form-control">
+                                                    <select id="referensii" name="referensii" class="form-control">
                                                         <option value="0">-- Pilih --</option>
                                                     </select>
                                                 </div>
-                                            </div>                                            
+                                            </div>                                                                                       
                                             <div class="col-lg-12 col-md-12 col-sm-8 col-xs-8 padding-remove-side">
                                                 <div class="form-group">
                                                     <label class="form-label">Nomor <?php echo $title; ?> *</label>

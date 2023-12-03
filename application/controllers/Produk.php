@@ -227,8 +227,12 @@ class Produk extends MY_Controller{
                 $product_type > 0  ? $params_check['product_type'] = $product_type : $params_check;                    
                 !empty($product_code) ? $params_check['product_code'] = $product_code : $params_check;
                 !empty($product_name) ? $params_check['product_name'] = $product_name : $params_check;
-                !empty($session_branch_id) ? $params_check['product_branch_id'] = $session_branch_id : $params_check;
-                
+                if($identity == 2){ //Room Only
+                    $params_check['product_branch_id'] = $this->input->post('product_branch_id');
+                }else{
+                    !empty($session_branch_id) ? $params_check['product_branch_id'] = $session_branch_id : $params_check;
+                }
+
                 $check_exists = $this->Produk_model->check_data_exist($params_check);
                 // var_dump($params,$product_type,$params_check,$check_exists);die;
                 /*
