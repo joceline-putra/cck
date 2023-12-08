@@ -4,21 +4,23 @@
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Test extends MY_Controller{
+class Test extends CI_Controller{
 
     function __construct(){
-        parent::__construct();
-        if(!$this->is_logged_in()){
-            // redirect(base_url("login"));
-            $this->session->set_userdata('url_before',base_url(uri_string()));
-            redirect(base_url("login/return_url"));              
-        }            
-        $this->load->model('User_model');        
-        $this->group_access = array(1); //Super Admin               
+        parent::__construct();         
     }
     function index(){
-        $q = $this->db->query("SELECT * FROM `orders_paids` ORDER BY paid_id DESC LIMIT 1");        
+        //Plan With Query
+        $q = $this->db->query("SELECT * FROM `grade_sub_details` LIMIT 1");        
         $d = $q->row_array(); 
+
+        //Plan With Array
+        $e = array(
+            'doc_id' => 1,
+            'doc_name' => 2
+        );
+
+        // $d = $e;
 
         $print = '';
         // print_r($d);
@@ -27,7 +29,7 @@ class Test extends MY_Controller{
             echo $k.' => '.$v.',<br>';
         endforeach;   
 
-        $print .= '<br><b>PHP : FORM VALIDATION</b><br>';
+        $print .= '<br><b>CODEIGNITER : FORM VALIDATION</b><br>';
         // $print .= "\$params = array(<br>";
         foreach($d as $k => $v):
             // $set = is_numeric($v) ? "intval(\$post['".$k."'])" : "\$post['$k']"; 
@@ -45,13 +47,38 @@ class Test extends MY_Controller{
         $print .= '&nbsp;&nbsp;&nbsp;&nbsp;/*<b> PHP : CREATE / UPDATE</b>*/<br>';
         $print .= "&nbsp;&nbsp;&nbsp;&nbsp;\$params = array(<br>";
         foreach($d as $kk => $vv):
-            $set = is_numeric($vv) ? "intval(\$post['".$kk."'])" : "\$post['$k']"; 
+            $set = is_numeric($vv) ? "intval(\$post['".$kk."'])" : "\$post['$kk']"; 
             $print .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'".$kk."' => !empty(\$post['".$kk."']) ? ".$set." : null,<br>";            
         endforeach;
         $print .= '&nbsp;&nbsp;&nbsp;&nbsp;);<br>';
         $print .= "}";
         echo $print."<br><br>";
+        
+        $print = '';
+        $print .= "<br><b>LARAVEL : VALIDATOR</b><br>";
+        $print .= "\$validation = Validator::make(\$post,[<br>";
+        foreach($d as $kk => $vv):
+            $set = is_numeric($vv) ? "intval(\$post['".$kk."'])" : "\$post['$kk']"; 
+            $print .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'".$kk."' => 'required',<br>";            
+        endforeach;
+        $print .= "],[<br>";
+        $print .= "&nbsp;&nbsp;&nbsp;&nbsp;'required' => ':attribute ini wajib diisi',<br>";
+        $print .= "]);<br>";
+        $print .= "if(\$validation->fails()){<br>";
+        $print .= "&nbsp;&nbsp;&nbsp;&nbsp;\$return->message = \$this->validator_response(\$validation->errors());<br>";
+        $print .= "}else{<br>";
+        $print .= "&nbsp;&nbsp;&nbsp;&nbsp;// Do Save/Create Row<br>";
+        $print .= "}<br>";
+        echo $print."<br><br>";
 
+        $print = '';
+        $print .= "<br><b>LARAVEL : \$fillable</b><br>";
+        $print .= "protected \$fillable = [<br>";
+        foreach($d as $kk => $vv):
+            $print .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'".$kk."',<br>";            
+        endforeach;
+        $print .= "];<br>";
+        echo $print."<br><br>";        
 
         $print = '';
         $print .= '<b>PHP : READ</b><br>';
@@ -173,7 +200,77 @@ class Test extends MY_Controller{
             $print .= '$("#'.$k.'").val(d.result.'.$k.');<br>';
         endforeach;
         // $print .= ');';
-        echo $print."<br>";           
+        echo $print."<br>";  
+        
+        $print = '';
+        $print .= '<br><b>FORM &lt;html> WEBARCH</b><br>';
+        foreach($d as $k => $v):
+            $print .= '&lt;div class="col-md-12 col-xs-12 padding-remove-side"><br>';
+            $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="form-group"><br>';
+            $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label class="form-label">'.$k.'</label><br>';
+            $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="controls"><br>';            
+            if(strpos($k,"_id")){
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="select-box"><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select class="wide" id="'.$k.'" name="'.$k.'"><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option data-display="'.$k.'" value="0" selected>'.$k.'</option><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div><br>';
+                $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select name="'.$k.'" id="'.$k.'" class="form-control" style="width:100%;><br>';
+                $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option value="0">Pilih&lt;/option><br>';                
+                $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select><br>';                
+            }else{
+                $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input name="'.$k.'" id="'.$k.'" type="text" class="form-control input-sm"><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="text" name="'.$k.'" id="'.$k.'" placeholder="'.$k.'" required=""><br>';
+            }
+            $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div><br>';
+            $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div><br>';  
+            $print .= '&lt;/div><br>';                                    
+        endforeach;
+        echo $print; 
+        
+
+        $print = '';
+        $print .= '<br><b>FORM &lt;html> VELZON</b><br>';
+        foreach($d as $k => $v):
+            $print .= '&lt;div class="col-md-12 col-xs-12 padding-remove-side"><br>';
+            $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&lt;label class="form-label">'.$k.'&lt;/label><br>';    
+            if(strpos($k,"_id")){
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="select-box"><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select class="wide" id="'.$k.'" name="'.$k.'"><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option data-display="'.$k.'" value="0" selected>'.$k.'</option><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div><br>';
+                $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select name="'.$k.'" id="'.$k.'" class="form-select mb-3"><br>';
+                $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option value="0">Pilih&lt;/option><br>';                
+                $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select><br>';                
+            }else{
+                $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input name="'.$k.'" id="'.$k.'" type="text" class="form-control"><br>';
+                // $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="text" name="'.$k.'" id="'.$k.'" placeholder="'.$k.'" required=""><br>';
+            }
+            $print .= '&lt;/div><br>';                                    
+        endforeach;
+        echo $print; 
+                
+        $print = '';
+        $print .= '<br><b>FORM &lt;html> WHITEHALL</b><br>';
+        foreach($d as $k => $v):
+                $print .= '&lt;div class="row"><br>';
+                    $print .= '&nbsp;&nbsp;&lt;div class="col-md-6"><br>';
+                    $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="form-group"><br>';
+                    if(strpos($k,"_id")){
+                        $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="select-box"><br>';
+                        $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select class="wide" id="'.$k.'" name="'.$k.'"><br>';
+                        $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option data-display="'.$k.'" value="0" selected>'.$k.'</option><br>';
+                        $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select><br>';
+                        $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div><br>';
+                    }else{
+                        $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input type="text" name="'.$k.'" id="'.$k.'" placeholder="'.$k.'" required=""><br>';
+                    }
+                    $print .= '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div><br>';  
+                    $print .= '&nbsp;&nbsp;&lt;/div><br>';      
+                $print .= '&lt;/div><br>';                                             
+        endforeach;
+        echo $print;         
     }
     function phpserver(){
         $indicesServer = array('PHP_SELF',

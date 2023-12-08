@@ -475,11 +475,11 @@
                                 '</option>');
                         $("select[name='categories']").val(d.result.category_id).trigger('change');
 
-                        $("select[name='referensi']").append('' +
+                        $("select[name='referensii']").append('' +
                                 '<option value="' + d.result.ref_id + '">' +
                                 d.result.ref_name +
                                 '</option>');
-                        $("select[name='referensi']").val(d.result.ref_id).trigger('change');
+                        $("select[name='referensii']").val(d.result.ref_id).trigger('change');
 
                         $("select[name='account_buy']").append('' +
                                 '<option value="' + d.result.buy_account_id + '">' +
@@ -598,7 +598,7 @@
                 // formData.append('stok_minimal', $('#stok_minimal').val());
                 // formData.append('stok_maksmal', $('#stok_maksimal').val());
                 // formData.append('manufacture', $('#manufacture').val());      
-                formData.append('referensi', $('#referensi').find(':selected').val());
+                formData.append('referensi', $('#referensii').find(':selected').val());
                 formData.append('satuan', 'unit');
                 // formData.append('status', $('#status').find(':selected').val());
                 // formData.append('with_stock', $('#with_stock').find(':selected').val());
@@ -1482,6 +1482,7 @@
         function formNew() {
             formMasterSetDisplay(0);
             $("#form-master input").not(':radio').val('');
+            $("#form-master select").not("#status").val(0).trigger('change');
             $("#btn-new").hide();
             $("#btn-save").show();
             $("#btn-cancel").show();
@@ -1567,7 +1568,7 @@
         //Attr Select yang perlu di setel
         var atributSelect = [
             "status",
-            "categories",
+            "categories","referensii",
         ];
         for (var i = 0; i <= atributSelect.lengthcategories; i++) {
             $("" + form + " select[name='" + atributSelect[i] + "']").attr('disabled', flag);

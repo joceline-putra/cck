@@ -2,8 +2,16 @@
 <script>
     $(document).ready(function () {
         var identity = "<?php echo $identity; ?>";
+
         $("[class*='tab-pane-sub']").addClass('active');
-        $.alert('loadRoom() ');
+        // $.alert('loadRoom() ');
+        /* Get Value */
+        // ($("#selector").is(":checked") == true) ? 1 : 0
+        // $("input[name='selector']:checked").val();
+        
+        /* Set Value */
+        // $("input[name='selector'][value='1']").prop("checked", true).change();
+        
         //Url
         var url = "<?= base_url('front_office/booking'); ?>";
         let url_print = "<?php base_url('front_office/booking'); ?>";
@@ -32,7 +40,7 @@
             }, 3000);
         });
 
-
+        var aa = '';
         //Croppie
         var upload_crop_img = $('#modal_croppie_canvas').croppie({
             enableExif: true,
@@ -408,7 +416,7 @@
 
 
         //CRUD
-        $(document).on("click","#btn_save_booking", function(e) {
+        $(document).on("click","#btn_save_order", function(e) {
             e.preventDefault(); e.stopPropagation();
             let next = true;
             /* If id not exist, UPDATE if id exist */
@@ -421,26 +429,32 @@
             }
             */
             if(next){
-                if (!$("input[name='booking_branch_id']:checked").val()) {
+                if (!$("input[name='order_branch_id']:checked").val()) {
                     next = false;
                     notif(0,'Cabang wajib pilih');
                 }
             }
             if(next){
-                if (!$("input[name='booking_ref_price_id']:checked").val()) {
+                if (!$("input[name='order_ref_price_id']:checked").val()) {
                     next = false;
                     notif(0,'Tipe Pesanan wajib pilih');
                 }
             }
             if(next){
-                if (!$("input[name='booking_ref_id']:checked").val()) {
+                if (!$("input[name='order_ref_id']:checked").val()) {
                     next = false;
                     notif(0,'Jenis Kamar wajib pilih');
                 }
             }  
+            if(next){
+                if (!$("input[name='order_product_id']:checked").val()) {
+                    next = false;
+                    notif(0,'Nomor Kamar wajib pilih');
+                }
+            }              
             
             if(next){
-                if ($("input[name='booking_contact_name']").val().length == 0) {
+                if ($("input[name='order_contact_name']").val().length == 0) {
                     next = false;
                     notif(0,'Nama Pemesan wajib diisi');
                 }
@@ -459,9 +473,10 @@
                 form.append('action', 'create_update');
                 form.append('order_type', identity);                
                 // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
-                form.set('order_start_date', $("#booking_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
-                form.set('order_end_date', $("#booking_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
-                form.set('order_price', orderPRICE.rawValue);                       
+                form.set('order_start_date', $("#order_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
+                form.set('order_end_date', $("#order_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
+                form.set('order_price', orderPRICE.rawValue);    
+                // form.append('upload_ktp', $("#files_preview").attr('data-save-img'));                   
                 if(orderID > 0){
                     form.append('order_id', orderID);
                 }
@@ -495,7 +510,7 @@
                 });
             }   
         });        
-        $(document).on("click","#btn_save_order2",function(e) {
+        $(document).on("click","#btn_save_order_2",function(e) {
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -546,7 +561,7 @@
                 });
             }
         });
-        $(document).on("click","#btn_save_order", function(e) {
+        $(document).on("click","#btn_save_order_1", function(e) {
             e.preventDefault(); e.stopPropagation();
             let next = true;
             /* If id not exist, UPDATE if id exist */
@@ -1078,7 +1093,7 @@
                             
                                 var dsp = '';
                                 r.forEach(async (v, i) => {
-                                    dsp += '<input id="ref_'+v['ref_id']+'" name="order_ref_id" value="'+v['ref_id']+'" type="radio"><label for="ref_'+v['ref_id']+'">'+v['ref_name']+'</label>';
+                                    dsp += '<input id="ref_'+v['ref_id']+'" name="order_ref_id" value="'+v['ref_id']+'" type="radio"><label class="radio_group_label radio_bg" for="ref_'+v['ref_id']+'">'+v['ref_name']+'</label>';
                                 });
                                 $("#order_ref_id").html(dsp);
                             }else{
@@ -1094,20 +1109,20 @@
                 });
             }            
         }); 
-        $(document).on("change", "input[type=radio][name=booking_branch_id]", function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if(orderID == 0){
-                loadRoom();
-            }            
-        });          
-        $(document).on("change", "input[type=radio][name=order_ref_price_id]", function(e) {
+        // $(document).on("change", "input[type=radio][name=order_branch_id]", function(e) {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     if(orderID == 0){
+        //         loadRoom();
+        //     }            
+        // });          
+        $(document).on("change", "input[type=radio][name=order_ref_price_id]", function(e) { //Not Used
             e.preventDefault();
             e.stopPropagation();
             if(orderID == 0){
                 loadRefPrice();
             }            
-        });   
+        });         
         $(document).on("change", "input[type=radio][name=order_ref_id]", function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1115,7 +1130,7 @@
                 loadRefPrice();
             }            
         });                
-        function loadRefPrice(){
+        function loadRefPrice(){ //Load ref_price and room
 
             $("#order_price").val(0);
 
@@ -1142,6 +1157,23 @@
                         if(parseInt(s) == 1){
                             // notif(s,m);
                             $("#order_price").val(r.price_value);
+
+                            //Display Room
+                            let re = d.rooms;
+                            let total_records = re.length;
+                            if(parseInt(total_records) > 0){
+                                $("#order_product_id").html('');
+                            
+                                let dsp = '';
+                                for(let a=0; a < total_records; a++) {
+                                    let value = re[a];
+                                    dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}">
+                                            <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}">${value['product_name']}</label>
+                                    `;                                        
+                            
+                                }
+                                $("#order_product_id").html(dsp);
+                            }
                         }else{
                             notif(s,m);
                         }
@@ -1152,10 +1184,10 @@
                 });
             }
         }
-        function loadRoom(){
+        function loadRoom(){ //Not Used
 
             $("#order_price").val(0);
-
+            
             if(parseInt($("input[name='order_ref_id']:checked").val()) > 0){
                 let form = new FormData();
                 form.append('action','room_get');
@@ -2667,6 +2699,61 @@
             window.open(params.paid_src,'Print','width=700,height=485,left=200,top=100').print();                
         }
 
+        //Image Croppie
+        // $(document).on('change', '#files', function(e) {
+        //     if($("#files").val() == ''){
+        //         $("#files_preview").attr('src', url_image);
+        //         $("#files_link").attr('href', url_image);            
+        //         $("#files_preview").attr('data-save-img', '');
+        //         return;
+        //     }
+        //     var reader = new FileReader();
+        //     reader.onload = function(e) {
+        //         upload_crop_img.croppie('bind', {
+        //             url: e.target.result
+        //         }).then(function (blob) {
+        //             // aa = btoa(blob);s
+        //             $("#modal_croppie").modal("show");
+        //             setTimeout(function(){$('#modal_croppie_canvas').croppie('bind');}, 300);
+        //         });
+        //     };
+        //     reader.readAsDataURL(this.files[0]);
+        // });
+        // $(document).on('click', '#modal_croppie_cancel', function(e){
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     $("#files").val('');
+        //     $("#files_preview").attr('data-save-img', '');
+        //     $("#files_preview").attr('src', url_image);
+        //     $("#files_link").attr('href', url_image);
+        // });
+        // $(document).on('click', '#modal_croppie_save', function(e){
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     upload_crop_img.croppie('result', {
+        //         type: 'canvas',
+        //         size: 'viewport',
+        //     }).then(function (resp) {
+        //         $("#files_preview").attr('src', resp);
+        //         $("#files_link").attr('href', resp);
+        //         $("#files_preview").attr('data-save-img', resp);
+        //         $("#modal_croppie").modal("hide");
+        //     });
+        // });          
+        // imgInp.onchange = evt => {
+        //     const [file] = imgInp.files
+        //     if (file) {
+        //         blah.src = URL.createObjectURL(file)
+        //     }
+        // }
+        $("#files").on("change", function(e){
+            const [file] = this.files;
+            console.log(file);
+            if (file) {
+                $("#files_preview").attr('src',URL.createObjectURL(file));
+            }
+        });
+                    
     }); //End of Document Ready
     function formBookingSetDisplay(value){ // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan
         if(value == 1){ var flag = true; }else{ var flag = false; }

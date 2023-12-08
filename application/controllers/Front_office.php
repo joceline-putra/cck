@@ -4,8 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Front_office extends MY_Controller{
 
     public $folder_upload = 'upload/booking/';
-    public $image_width   = 250;
-    public $image_height  = 250;
+    public $folder_upload_file = 'upload/file/';    
+    public $image_width   = 480;
+    public $image_height  = 240;
     public $file_size_limit = 2097152; //in Byte
 
     function __construct(){
@@ -30,7 +31,8 @@ class Front_office extends MY_Controller{
         $this->load->model('Order_model');          
         $this->load->model('Type_model');                
         $this->load->model('User_model');
-        $this->load->model('Produk_model');        
+        $this->load->model('Produk_model');
+        $this->load->model('File_model');                
 
         $this->print_to         = 1; //0 = Local, 1 = Bluetooth
         $this->whatsapp_config  = 1;
@@ -90,7 +92,9 @@ class Front_office extends MY_Controller{
             $data['reference'] = $this->Reference_model->get_all_reference();
             */
             $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
-            $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10, 'references.ref_branch_id' => 1],null,null,null,'ref_name','asc');            
+            if($type_name == 'cece'){
+                $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10, 'references.ref_branch_id' => 1],null,null,null,'ref_name','asc');            
+            }
             // $data['ref'] = $this->Ref_model->get_all_ref_price(['price_flag' => 1],null,null,null,'price_name','asc');    
 
             $params = array(
@@ -238,6 +242,7 @@ class Front_office extends MY_Controller{
                                 $create = $this->Front_model->add_booking($params);   
                                 if($create){
                                     $get_booking = $this->Front_model->get_booking($create);
+               
                                     $return->status  = 1;
                                     $return->message = 'Berhasil menambahkan '.$post['order_name'];
                                     $return->result= array(
@@ -363,6 +368,40 @@ class Front_office extends MY_Controller{
                                     // $create = true;
                                     if($create){
                                         $get_booking = $this->Front_model->get_booking($create);
+                                        
+                                        //Croppie Upload Image
+                                        $post_upload = !empty($_FILES['files']) ? $_FILES['files'] : "";
+                                        // var_dump($post_upload);die;
+                                        if(intval($_FILES['files']['size']) > 0){
+                                            $upload_process = upload_image2($this->folder_upload_file,$post_upload,250,250);
+                                            var_dump($upload_process);die;
+                                            if($upload_process->status == 1){
+                                                if ($get_booking && $get_booking['order_id']) {
+                                                    // $params_image = array(
+                                                    //     'product_image' => $upload_process->result['file_location']
+                                                    // );
+                                                    // $stat = $this->Produk_model->update_produk($product_id, $params_image);
+                                                    $file_session = $this->random_session(20);
+                                                    $params_image = array(
+                                                        'file_type' => 1,
+                                                        'file_from_table' => 'orders',
+                                                        'file_from_id' => $get_booking['order_id'],
+                                                        'file_session' => $file_session,
+                                                        'file_date_created' => date("YmdHis"),
+                                                        'file_user_id' => $session_user_id,
+                                                        'file_name' => $upload_process->result['file_name'] . $upload_process->result['file_ext'],
+                                                        'file_format' => str_replace(".","",$upload_process->result['file_ext']),
+                                                        'file_url' => $upload_process->result['file_location'],
+                                                        // 'file_size' => $upload_process['result']['file_size']
+                                                    );                                                    
+                                                    $stat = $this->File_model->add_file($params_image);
+                                                }
+                                            }else{
+                                                $return->message = 'Fungsi Gambar gagal';
+                                            }
+                                        }
+                                        //End of Croppie   
+                                                             
                                         
                                         $params_price = array(
                                             'price_ref_id' => $post['order_ref_id'],
@@ -878,7 +917,7 @@ class Front_office extends MY_Controller{
                         }
                     }   
                     break;
-                case "room_get":
+                case "room_get": //Not Used
                     $params = array(
                         'product_type' => 2,
                         'product_branch_id' => intval($post['branch_id']),
@@ -896,7 +935,8 @@ class Front_office extends MY_Controller{
                 case "room_ref":
                     $params = array(
                         'references.ref_type' => 10,
-                        'references.ref_branch_id' => $post['branch_id']       
+                        'references.ref_branch_id' => $post['branch_id'],
+                        'references.ref_flag' => 1    
                     );
                     // $params = null;
                     $search = null; $limit = null; $start = null; $order  = 'ref_name'; $dir = 'ASC';
@@ -912,7 +952,19 @@ class Front_office extends MY_Controller{
                     // $params = null;
                     $search = null; $limit = null; $start = null; $order  = 'price_name'; $dir = 'ASC';
                     $get_ref = $this->Ref_model->get_ref_price_custom($params);
+
+                    $params_rooms = array(
+                        'product_type' => 2,
+                        'product_branch_id' => intval($post['branch_id']),
+                        'product_ref_id' => intval($post['ref_id']),                        
+                        // 'product_category_id' => 2,                        
+                        'product_flag' => 1,                        
+                    );                    
+                    $search = null; $limit = null; $start = null; $order  = 'product_name'; $dir = 'ASC';
+                    $get_room = $this->Produk_model->get_all_produks($params_rooms,$search,$limit,$start,$order,$dir);
+
                     $return->result = $get_ref;
+                    $return->rooms = $get_room;
                     $return->status = 1;                    
                     break;    
                 case "load-order-items-for-report":
@@ -2076,6 +2128,15 @@ class Front_office extends MY_Controller{
     }
     function test2(){
         var_dump($this->day_diff("2023-01-02 12:00:00","2023-01-02 13:00:00"));die;
-    }
+    }   
+    function format_byte($bytes) {
+        if ($bytes > 0) {
+            $i = floor(log($bytes) / log(1024));
+            $sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+            return sprintf('%.02F', round($bytes / pow(1024, $i),1)) * 1 . ' ' . @$sizes[$i];
+        } else {
+            return 0;
+        }
+    }       
 }
 ?>

@@ -155,12 +155,13 @@
                     if($upload['is_image'] == 1){ //If Data IMAGE
                         $file_compress = [
                             'image_library' => 'gd2',
+                            'quality' => '20',
                             'source_image' => $path . $raw_file,
                             'create_thumb' => FALSE,
                             'maintain_ratio' => TRUE,
                             // 'width' => $this->image_width,
                             // 'height' => $this->image_height,
-                            'new_image' => $path . $raw_file
+                            'new_image' => $path . $raw_file,
                         ];                                    
                         $ci->load->library('image_lib', $file_compress);
                         $ci->image_lib->resize();
@@ -188,7 +189,7 @@
         $path = (substr($path, -1) != "/" ? $path . "/" : $path); // konfig directory data
         $path_data = FCPATH . $path;
         $type_data = "gif|jpg|png|jpeg";
-    
+        // var_dump($file);die;
         if (empty($path)) {
             return "";
         }
@@ -197,44 +198,51 @@
         }
     
         $config = [
-            'image_library' => 'gd2',
+            // 'image_library' => 'gd2',
             'upload_path' => $path_data,
             'allowed_types' => $type_data
         ];
         $ci->load->library('upload', $config);
         $ci->upload->initialize($config);
     
-        if ($ci->upload->do_upload($file)) {
+        if ($ci->upload->do_upload('source')) {
             $file_data = $ci->upload->data();
-            $raw_photo = date("YmdHis") . $file_data['file_ext'];
+            $raw_file = date("YmdHis") . $file_data['file_ext'];
             $old_name = $file_data['full_path'];
-            $new_name = $path_data . $raw_photo;
+            $new_name = $path_data . $raw_file;
     
             // renaming file
             if (rename($old_name, $new_name)) {
                 $compress = [
                     'image_library' => 'gd2',
-                    'source_image' => $path . $raw_photo,
+                    'source_image' => $path . $raw_file,
                     'create_thumb' => FALSE,
                     'maintain_ratio' => TRUE,
                     'width' => $image_width,
                     'height' => $image_height,
-                    'new_image' => $path . $raw_photo
+                    'new_image' => $path . $raw_file
                 ];
                 $ci->load->library('image_lib', $compress);
     
                 // resize ukuran image
                 if ($ci->image_lib->resize()) {
                     // return $path . $raw_photo;
-                    return $raw_photo;				
+                    // return $raw_photo;				
+                    $return['status'] = 1;
+                    $return['message'] = 'Success'; 
+                    $return['result'] = $file_data;      
+                    $return['file'] = $raw_file;                    
                 } else {
-                    return "";
+                    $return['status'] = 0;
+                    $return['message'] = $this->upload->display_errors();
                 }
             } else {
-                return "";
+                $return['status'] = 0;
+                $return['message'] = $this->upload->display_errors();
             }
         } else {
-            return "";
+            $return['status'] = 0;
+            $return['message'] = $this->upload->display_errors();
         }
     }    
 ?>
