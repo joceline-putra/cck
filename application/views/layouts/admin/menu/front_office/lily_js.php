@@ -2428,7 +2428,6 @@
             paidPreview(params);            
         });
         $(document).on("click","#btn_paid_delete", function(e){ //Not Used
-
         });
 
         function loadPaid(data_id){
@@ -2799,7 +2798,32 @@
         //         $("#files_preview").attr('src',URL.createObjectURL(file));
         //     }
         // });
-                    
+
+        //Child Tab Navigation
+        $(document).on("click", "input[name='order_branch_id']", function(e){ activeTab("tab12"); });
+        $(document).on("click", "input[name='order_ref_price_id']", function(e){ activeTab("tab13"); });
+        $(document).on("click", "input[name='order_ref_id']", function(e){ activeTab("tab14"); });
+        $(document).on("click", "input[name='order_product_id']", function(e){ activeTab("tab15"); });     
+        $(document).on("click", "#btn_tab_15", function(e){ activeTab("tab16"); });
+        $(document).on("click", "#btn_tab_16", function(e){ 
+            if($("#order_contact_name").val().length == 0){
+                notif(0,'Nama harus diisi');
+            }else if($("#order_contact_phone").val().length == 0){
+                notif(0,'Telepon harus diisi');
+            }else{
+                activeTab("tab17");
+            }
+        });     
+        $(document).on("click","#btn_tab_17", function(e){ activeTab("tab18"); });                
+                               
+
+        /* Get Value */
+        // ($("#selector").is(":checked") == true) ? 1 : 0
+        // $("input[name='selector']:checked").val();
+        
+        /* Set Value */
+        // $("input[name='selector'][value='1']").prop("checked", true).change();    
+    
     }); //End of Document Ready
     function formBookingSetDisplay(value){ // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan
         if(value == 1){ var flag = true; }else{ var flag = false; }

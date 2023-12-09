@@ -86,7 +86,7 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
-                <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                     <div class="col-md-6 col-xs-12 col-sm-12" style="padding-left: 0;">
                         <h5><b>Data <?php echo $title;?></b></h5>
                     </div>
@@ -108,9 +108,9 @@
                     </div>
                 </div>
                 <!-- Child Tab-Pane -->
-                <div class="col-md-12">
+                <div class="col-md-12 padding-remove-side">
                     <form id="form_booking" name="form_booking">
-                    <ul class="nav nav-tabs" role="tablist" style="display:inline;">      
+                    <ul class="nav nav-tabs hide" role="tablist">      
                         <li class="active"><a href="#tab11" role="tab" class="btn-tab-11" data-toggle="tab" aria-expanded="true" style="cursor:pointer;">11 Cabang</a></li>           
                         <li class=""><a href="#tab12" role="tab" class="btn-tab-12" data-toggle="tab" aria-expanded="false">12 Tipe</a></li>     
                         <li class=""><a href="#tab13" role="tab" class="btn-tab-13" data-toggle="tab" aria-expanded="false">13 Jenis Kamar</a></li>     
@@ -121,7 +121,7 @@
                         <li class=""><a href="#tab18" role="tab" class="btn-tab-18" data-toggle="tab" aria-expanded="false">18 Attachment</a></li>                                                                                                                                                                         
                     </ul>                        
                     <div class="tab-content">
-                        <div class="tab-pane tab-pane-sub" id="tab11" for="lily">
+                        <div class="tab-pane tab-pane-sub active" id="tab11" for="lily">
                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                 <div class="form-group">
                                     <label class="form-label">Cabang</label>
@@ -199,7 +199,7 @@
                                 </div>
                             </div>                                                
                             <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                <div class="col-md-4 col-xs-4 padding-remove-side">
+                                <div class="col-md-6 col-xs-6 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Jam Check-In</label>
                                         <div class="controls">
@@ -222,7 +222,7 @@
                                         </div>
                                     </div>
                                 </div>  
-                                <div class="col-md-4 col-xs-4 padding-remove-side">
+                                <div class="col-md-6 col-xs-6 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Jam Check-Out</label>
                                         <div class="controls">
@@ -245,17 +245,22 @@
                                         </div>
                                     </div>
                                 </div>                                                      
-                                <div class="col-lg-4 col-md-4 col-xs-6 padding-remove-side">
+                                <div class="col-lg-12 col-md-12 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Harga</label>
                                         <input id="order_price" name="order_price" type="text" value="" class="form-control" readonly/>
                                     </div>
                                 </div>                                                       
-                            </div>  
+                            </div>       
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                <button id="btn_tab_15" class="btn btn-primary" type="button" style="width:100%;">
+                                    <i class="fas fa-arrow-right"></i> Selanjutnya
+                                </button>                                                                             
+                            </div>                              
                         </div>
                         <div class="tab-pane tab-pane-sub" id="tab16" for="nama dan telepon">
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Nama</label>
                                         <input id="order_contact_name" name="order_contact_name" type="text" value="" class="form-control"/>
@@ -268,6 +273,11 @@
                                     </div>
                                 </div>                                                    
                             </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                <button id="btn_tab_16" class="btn btn-primary" type="button" style="width:100%;">
+                                    <i class="fas fa-arrow-right"></i> Selanjutnya
+                                </button>                                                                             
+                            </div>                                                          
                         </div>
                         <div class="tab-pane tab-pane-sub" id="tab17" for="konfirmasi">
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
@@ -283,7 +293,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                    <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
                                         <div class="form-group">
                                             <label class="form-label">Metode</label>
                                             <select id="paid_payment_method" name="paid_payment_method"class="form-control">
@@ -292,7 +302,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                    <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
                                         <div class="form-group">
                                             <label class="form-label">Jumlah (Rp)</label>
                                             <input id="paid_total" name="paid_total" type="text" class="form-control">
@@ -310,7 +320,10 @@
                                         </div>
                                     </div>
                                 </div>  
-                            </div>                            
+                            </div>      
+                            <button id="btn_tab_17" class="btn btn-primary" type="button" style="width:100%;">
+                                <i class="fas fa-arrow-right"></i> Selanjutnya
+                            </button>                                                     
                         </div>  
                         <div class="tab-pane tab-pane-sub" id="tab18" for="konfirmasi">
                             <button id="btn_save_order" class="btn btn-primary" type="button" style="width:45%;">
