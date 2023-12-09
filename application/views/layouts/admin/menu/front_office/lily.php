@@ -147,8 +147,8 @@
                                 <div class="form-group">
                                     <label class="form-label">Tipe Pesanan</label>
                                     <div class="radio_group">
-                                        <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_0">Bulanan</label>
+                                        <!-- <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_0">Bulanan</label> -->
                                         <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1">
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_1">Harian</label>
                                         <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2">
@@ -270,17 +270,47 @@
                             </div>
                         </div>
                         <div class="tab-pane tab-pane-sub" id="tab17" for="konfirmasi">
-                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
-                                <div class="form-group">
-                                    <label class="form-label">Foto KTP</label>
-                                    <a class="files_link" href="<?= site_url('upload/noimage.png'); ?>">
-                                        <img id="files_preview" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
-                                    </a>
-                                    <div class="custom-file">
-                                        <input class="form-control" id="files" name="files" type="file" tabindex="1">
+                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                        <div class="form-group">
+                                            <label class="form-label">Bukti Bayar</label>
+                                            <a class="files_link_1" href="<?= site_url('upload/noimage.png'); ?>">
+                                                <img id="files_preview_1" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
+                                            </a>
+                                            <div class="custom-file">
+                                                <input class="form-control" id="files_1" name="files_1" type="file" tabindex="1">
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>  
+                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                        <div class="form-group">
+                                            <label class="form-label">Metode</label>
+                                            <select id="paid_payment_method" name="paid_payment_method"class="form-control">
+                                            <option value="CASH" selected>Cash</option>
+                                            <option value="TRANSFER">Transfer</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                        <div class="form-group">
+                                            <label class="form-label">Jumlah (Rp)</label>
+                                            <input id="paid_total" name="paid_total" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                                    <div class="form-group">
+                                        <label class="form-label">Foto KTP</label>
+                                        <a class="files_link_2" href="<?= site_url('upload/noimage.png'); ?>">
+                                            <img id="files_preview_2" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
+                                        </a>
+                                        <div class="custom-file">
+                                            <input class="form-control" id="files_2" name="files_2" type="file" tabindex="1">
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>                            
                         </div>  
                         <div class="tab-pane tab-pane-sub" id="tab18" for="konfirmasi">
                             <button id="btn_save_order" class="btn btn-primary" type="button" style="width:45%;">
@@ -457,15 +487,28 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modal_croppie" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="modal_croppie_1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <div id="modal_croppie_canvas"></div>
+                <div id="modal_croppie_canvas_1"></div>
             </div>
             <div class="modal-footer">
-                <button id="modal_croppie_cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                <button id="modal_croppie_save" type="button" class="btn btn-primary">Crop</button>
+                <button id="modal_croppie_cancel_1" type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button id="modal_croppie_save_1" type="button" class="btn btn-primary">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_croppie_2" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="modal_croppie_canvas_2"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal_croppie_cancel_2" type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button id="modal_croppie_save_2" type="button" class="btn btn-primary">Crop</button>
             </div>
         </div>
     </div>

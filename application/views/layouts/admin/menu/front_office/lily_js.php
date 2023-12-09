@@ -3,7 +3,7 @@
     $(document).ready(function () {
         var identity = "<?php echo $identity; ?>";
 
-        $("[class*='tab-pane-sub']").addClass('active');
+        // $("[class*='tab-pane-sub']").addClass('active');
         // $.alert('loadRoom() ');
         /* Get Value */
         // ($("#selector").is(":checked") == true) ? 1 : 0
@@ -42,13 +42,19 @@
 
         var aa = '';
         //Croppie
-        var upload_crop_img = $('#modal_croppie_canvas').croppie({
+        var upload_crop_img_1 = $('#modal_croppie_canvas_1').croppie({
             enableExif: true,
             viewport: {width: image_width, height: image_height},
             boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
             url: url_image,
         });
-        $('.files_link').magnificPopup({
+        var upload_crop_img_2 = $('#modal_croppie_canvas_2').croppie({
+            enableExif: true,
+            viewport: {width: image_width, height: image_height},
+            boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
+            url: url_image,
+        });        
+        $('.files_link_1').magnificPopup({
             type: 'image',
             mainClass: 'mfp-with-zoom', // this class is for CSS animation below
                 zoom: {
@@ -65,6 +71,23 @@
                     }
                 }
         });
+        $('.files_link_2').magnificPopup({
+            type: 'image',
+            mainClass: 'mfp-with-zoom', // this class is for CSS animation below
+                zoom: {
+                    enabled: true, // By default it's false, so don't forget to enable it
+                    duration: 300, // duration of the effect, in milliseconds
+                    easing: 'ease-in-out', // CSS transition easing function
+                    // The "opener" function should return the element from which popup will be zoomed in
+                    // and to which popup will be scaled down
+                    // By defailt it looks for an image tag:
+                    opener: function (openerElement) {
+                        // openerElement is the element on which popup was initialized, in this case its <a> tag
+                        // you don't need to add "opener" option if this code matches your needs, it's defailt one.
+                        return openerElement.is('img') ? openerElement : openerElement.find('img');
+                    }
+                }
+        });        
         //Select2
         /*
         $('#select').select2({
@@ -173,6 +196,7 @@
             watchExternalChanges: true
         };
         let orderPRICE = new AutoNumeric('#order_price', autoNumericOption);
+        let paidTOTAL = new AutoNumeric('#paid_total', autoNumericOption);        
 
         //Datatable
         let order_table = $("#table_order").DataTable({
@@ -186,7 +210,7 @@
                 dataType: 'json',
                 cache: 'false',
                 data: function(d) {
-                    d.action = 'load';
+                    d.action = 'load_checkin';
                     d.tipe = 222;
                     d.search = {value:$("#filter_search").val()};
                     d.date_start = $("#filter_start_date").val();
@@ -204,19 +228,88 @@
             },
             "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             "columnDefs": [
-                {"targets":0, "title":"Tgl", "searchable":true, "orderable":true},
-                {"targets":1, "title":"Nomor", "searchable":true, "orderable":true},
-                {"targets":2, "title":"Type", "searchable":true, "orderable":true},
-                {"targets":3, "title":"Kamar", "searchable":true, "orderable":true},            
-                {"targets":4, "title":"Kontak", "searchable":true, "orderable":true},
-                {"targets":5, "title":"Total", "searchable":true, "orderable":true},
-                {"targets":6, "title":"Pembayaran", "searchable":true, "orderable":true},                    
-                {"targets":7, "title":"Status", "searchable":false, "orderable":true},    
-                {"targets":8, "title":"Attachment", "searchable":false, "orderable":true},                                
-                {"targets":9, "title":"Action", "searchable":true, "orderable":true},                
+                {"targets":0, "title":"Action", "searchable":true, "orderable":true},                    
+                {"targets":1, "title":"Tgl", "searchable":true, "orderable":true},
+                {"targets":2, "title":"Nomor", "searchable":true, "orderable":true},
+                {"targets":3, "title":"Type", "searchable":true, "orderable":true},
+                {"targets":4, "title":"Kamar", "searchable":true, "orderable":true},            
+                {"targets":5, "title":"Kontak", "searchable":true, "orderable":true},
+                {"targets":6, "title":"Total", "searchable":true, "orderable":true},
+                {"targets":7, "title":"Pembayaran", "searchable":true, "orderable":true},                    
+                {"targets":8, "title":"Status", "searchable":false, "orderable":true},               
             ],
             "order": [[0, 'ASC']],
-            "columns": [
+            "columns": [{
+                    'data': 'order_id',
+                    className: 'text-left',
+                    render: function(data, meta, row) {
+                        var dsp = ''; var label = 'Error Status'; var icon = 'fas fa-cog'; var color = 'white'; var bgcolor = '#d1dade';
+                        if(parseInt(row.order_flag) == 1){
+                        //  dsp += '<label style="color:#6273df;">Aktif</label>';
+                        label = 'Aktif';
+                        icon = 'fas fa-lock';
+                        bgcolor = '#0aa699';
+                        }else if(parseInt(row.order_flag) == 4){
+                        //  dsp += '<label style="color:#ff194f;">Terhapus</label>';
+                        label = 'Terhapus';
+                        icon = 'fas fa-trash';
+                        bgcolor = '#f35958';
+                        }else if(parseInt(row.order_flag) == 0){
+                        //   dsp += '<label style="color:#ff9019;">Nonaktif</label>';
+                        label = 'Nonaktif';
+                        icon = 'fas fa-unlock';
+                        // color = 'green';
+                        bgcolor = '#ff9019';
+                        }
+
+                        /* Button Action Concept 2 */
+                        dsp += '&nbsp;<div class="btn-group">';
+                        // dsp += '    <button class="btn btn-mini btn-default"><span class="fas fa-cog"></span></button>';
+                        dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" data-toggle="dropdown" aria-expanded="true"><span class="fas fa-cog"></span><span class="caret"></span> Aksi</button>';
+                        dsp += '    <ul class="dropdown-menu">';
+                        dsp += '        <li>';
+                        dsp += '            <a class="btn_edit_order" style="cursor:pointer;"';
+                        dsp += '                data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
+                        dsp += '                <span class="fas fa-eye"></span> Lihat';
+                        dsp += '            </a>';
+                        dsp += '        </li>';
+                        if(parseInt(row.order_flag) < 4) {
+                            if(parseInt(row.order_item_flag_checkin) === 0){
+                                    dsp += '<li>'; 
+                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
+                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="1" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'">';
+                                    dsp += '        <span class="fas fa-lock"></span> CheckIn';
+                                    dsp += '    </a>';
+                                    dsp += '</li>';
+                            }
+                            if(parseInt(row.order_item_flag_checkin) === 1){
+                                    dsp += '<li>';
+                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
+                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="2" data-order-session="'+row.order_session+'" data-product-name="'+row.product_name+'">';
+                                    dsp += '        <span class="fas fa-ban"></span> Checkout';
+                                    dsp += '    </a>';
+                                    dsp += '</li>';
+                            }
+                        }
+                        if(parseInt(row.order_flag) == 0) {                        
+                                dsp += '<li>';
+                                dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
+                                dsp += '        data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="4" data-order-session="'+row.order_session+'">';
+                                dsp += '        <span class="fas fa-trash"></span> Batal';
+                                dsp += '    </a>';
+                                dsp += '</li>';
+                        }
+                        dsp += '        <li class="divider"></li>';
+                        dsp += '        <li>';
+                        dsp += '            <a class="btn_print_order" style="cursor:pointer;" data-order="'+ data +'" data-order-session="'+row.order_session+'">';
+                        dsp += '                <span class="fas fa-print"></span> Print';
+                        dsp += '            </a>';
+                        dsp += '        </li>';
+                        dsp += '    </ul>';
+                        dsp += '</div>';
+                        return dsp;
+                    }
+                },
                 {
                     'data': 'order_item_start_date',
                     className: 'text-left',
@@ -306,98 +399,6 @@
                         }                       
                         return dsp;
                     }
-                },{
-                    'data': 'order_item_flag_checkin',
-                    className: 'text-left',
-                    render: function(data, meta, row) {
-                        var dsp = '';
-                        // if(parseInt(row.order_files_count) > 0){
-                            var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.price_name;
-                            var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
-                            dsp += '<span '+st+' class="btn-attachment-info-2 label label-inverse" style="cursor:pointer;color:white;"><span class="fas fa-paperclip"></span>&nbsp;'+row.order_files_count+'</span>';
-                            if(parseInt(row.order_paid) == 0){
-                                // var sts = 'Belum Lunas';
-                                // var ic = 'fas fa-thumbs-down';
-                                var lg = 'danger';
-                            }else if(parseInt(row.order_paid) == 1){
-                                // var sts = 'Lunas';
-                                // var ic = 'fas fa-thumbs-up';
-                                var lg = 'success';
-                            }                            
-                            dsp += '&nbsp;<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="fas fa-receipt"></span>&nbsp;'+row.order_order_paid_count+'</span>';                            
-                        // }         
-                        return dsp;
-                    }
-                },{
-                    'data': 'order_id',
-                    className: 'text-left',
-                    render: function(data, meta, row) {
-                        var dsp = ''; var label = 'Error Status'; var icon = 'fas fa-cog'; var color = 'white'; var bgcolor = '#d1dade';
-                        if(parseInt(row.order_flag) == 1){
-                        //  dsp += '<label style="color:#6273df;">Aktif</label>';
-                        label = 'Aktif';
-                        icon = 'fas fa-lock';
-                        bgcolor = '#0aa699';
-                        }else if(parseInt(row.order_flag) == 4){
-                        //  dsp += '<label style="color:#ff194f;">Terhapus</label>';
-                        label = 'Terhapus';
-                        icon = 'fas fa-trash';
-                        bgcolor = '#f35958';
-                        }else if(parseInt(row.order_flag) == 0){
-                        //   dsp += '<label style="color:#ff9019;">Nonaktif</label>';
-                        label = 'Nonaktif';
-                        icon = 'fas fa-unlock';
-                        // color = 'green';
-                        bgcolor = '#ff9019';
-                        }
-
-                        /* Button Action Concept 2 */
-                        dsp += '&nbsp;<div class="btn-group">';
-                        // dsp += '    <button class="btn btn-mini btn-default"><span class="fas fa-cog"></span></button>';
-                        dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" data-toggle="dropdown" aria-expanded="true"><span class="fas fa-cog"></span><span class="caret"></span> Aksi</button>';
-                        dsp += '    <ul class="dropdown-menu">';
-                        dsp += '        <li>';
-                        dsp += '            <a class="btn_edit_order" style="cursor:pointer;"';
-                        dsp += '                data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
-                        dsp += '                <span class="fas fa-eye"></span> Lihat';
-                        dsp += '            </a>';
-                        dsp += '        </li>';
-                        if(parseInt(row.order_flag) < 4) {
-                            if(parseInt(row.order_item_flag_checkin) === 0){
-                                    dsp += '<li>'; 
-                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
-                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="1" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'">';
-                                    dsp += '        <span class="fas fa-lock"></span> CheckIn';
-                                    dsp += '    </a>';
-                                    dsp += '</li>';
-                            }
-                            if(parseInt(row.order_item_flag_checkin) === 1){
-                                    dsp += '<li>';
-                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
-                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="2" data-order-session="'+row.order_session+'" data-product-name="'+row.product_name+'">';
-                                    dsp += '        <span class="fas fa-ban"></span> Checkout';
-                                    dsp += '    </a>';
-                                    dsp += '</li>';
-                            }
-                        }
-                        if(parseInt(row.order_flag) == 0) {                        
-                                dsp += '<li>';
-                                dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
-                                dsp += '        data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="4" data-order-session="'+row.order_session+'">';
-                                dsp += '        <span class="fas fa-trash"></span> Batal';
-                                dsp += '    </a>';
-                                dsp += '</li>';
-                        }
-                        dsp += '        <li class="divider"></li>';
-                        dsp += '        <li>';
-                        dsp += '            <a class="btn_print_order" style="cursor:pointer;" data-order="'+ data +'" data-order-session="'+row.order_session+'">';
-                        dsp += '                <span class="fas fa-print"></span> Print';
-                        dsp += '            </a>';
-                        dsp += '        </li>';
-                        dsp += '    </ul>';
-                        dsp += '</div>';
-                        return dsp;
-                    }
                 }
             ]
         });
@@ -475,8 +476,12 @@
                 // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
                 form.set('order_start_date', $("#order_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
                 form.set('order_end_date', $("#order_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
-                form.set('order_price', orderPRICE.rawValue);    
-                // form.append('upload_ktp', $("#files_preview").attr('data-save-img'));                   
+                form.set('order_price', orderPRICE.rawValue);
+                form.set('paid_total', paidTOTAL.rawValue);
+                form.set('files_1', 0); //Bukti Bayar
+                form.set('files_1', 0); //Foto KTP  
+                form.append('upload_1', $("#files_preview_1").attr('data-save-img'));
+                form.append('upload_2', $("#files_preview_2").attr('data-save-img'));                   
                 if(orderID > 0){
                     form.append('order_id', orderID);
                 }
@@ -2700,59 +2705,100 @@
         }
 
         //Image Croppie
-        // $(document).on('change', '#files', function(e) {
-        //     if($("#files").val() == ''){
-        //         $("#files_preview").attr('src', url_image);
-        //         $("#files_link").attr('href', url_image);            
-        //         $("#files_preview").attr('data-save-img', '');
-        //         return;
-        //     }
-        //     var reader = new FileReader();
-        //     reader.onload = function(e) {
-        //         upload_crop_img.croppie('bind', {
-        //             url: e.target.result
-        //         }).then(function (blob) {
-        //             // aa = btoa(blob);s
-        //             $("#modal_croppie").modal("show");
-        //             setTimeout(function(){$('#modal_croppie_canvas').croppie('bind');}, 300);
-        //         });
-        //     };
-        //     reader.readAsDataURL(this.files[0]);
-        // });
-        // $(document).on('click', '#modal_croppie_cancel', function(e){
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        //     $("#files").val('');
-        //     $("#files_preview").attr('data-save-img', '');
-        //     $("#files_preview").attr('src', url_image);
-        //     $("#files_link").attr('href', url_image);
-        // });
-        // $(document).on('click', '#modal_croppie_save', function(e){
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        //     upload_crop_img.croppie('result', {
-        //         type: 'canvas',
-        //         size: 'viewport',
-        //     }).then(function (resp) {
-        //         $("#files_preview").attr('src', resp);
-        //         $("#files_link").attr('href', resp);
-        //         $("#files_preview").attr('data-save-img', resp);
-        //         $("#modal_croppie").modal("hide");
-        //     });
-        // });          
+        $(document).on('change', '#files_1', function(e) {
+            if($("#files_1").val() == ''){
+                $("#files_preview_1").attr('src', url_image);
+                $("#files_link_1").attr('href', url_image);            
+                $("#files_preview_1").attr('data-save-img', '');
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                upload_crop_img_1.croppie('bind', {
+                    url: e.target.result
+                }).then(function (blob) {
+                    // aa = btoa(blob);s
+                    $("#modal_croppie_1").modal("show");
+                    setTimeout(function(){$('#modal_croppie_canvas_1').croppie('bind');}, 300);
+                });
+            };
+            reader.readAsDataURL(this.files[0]);
+        });
+        $(document).on('change', '#files_2', function(e) {
+            if($("#files_2").val() == ''){
+                $("#files_preview_2").attr('src', url_image);
+                $("#files_link_2").attr('href', url_image);            
+                $("#files_preview_2").attr('data-save-img', '');
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                upload_crop_img_2.croppie('bind', {
+                    url: e.target.result
+                }).then(function (blob) {
+                    // aa = btoa(blob);s
+                    $("#modal_croppie_2").modal("show");
+                    setTimeout(function(){$('#modal_croppie_canvas_2').croppie('bind');}, 300);
+                });
+            };
+            reader.readAsDataURL(this.files[0]);
+        });       
+        $(document).on('click', '#modal_croppie_cancel_1', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            $("#files_1").val('');
+            $("#files_preview_1").attr('data-save-img', '');
+            $("#files_preview_1").attr('src', url_image);
+            $("#files_link_1").attr('href', url_image);
+        });
+        $(document).on('click', '#modal_croppie_save_1', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            upload_crop_img_1.croppie('result', {
+                type: 'canvas',
+                size: 'viewport',
+            }).then(function (resp) {
+                $("#files_preview_1").attr('src', resp);
+                $("#files_link_1").attr('href', resp);
+                $("#files_preview_1").attr('data-save-img', resp);
+                $("#modal_croppie_1").modal("hide");
+            });
+        }); 
+        $(document).on('click', '#modal_croppie_cancel_2', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            $("#files_2").val('');
+            $("#files_preview_2").attr('data-save-img', '');
+            $("#files_preview_2").attr('src', url_image);
+            $("#files_link_2").attr('href', url_image);
+        });
+        $(document).on('click', '#modal_croppie_save_2', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            upload_crop_img_2.croppie('result', {
+                type: 'canvas',
+                size: 'viewport',
+            }).then(function (resp) {
+                $("#files_preview_2").attr('src', resp);
+                $("#files_link_2").attr('href', resp);
+                $("#files_preview_2").attr('data-save-img', resp);
+                $("#modal_croppie_2").modal("hide");
+            });
+        });           
+   
         // imgInp.onchange = evt => {
         //     const [file] = imgInp.files
         //     if (file) {
         //         blah.src = URL.createObjectURL(file)
         //     }
         // }
-        $("#files").on("change", function(e){
-            const [file] = this.files;
-            console.log(file);
-            if (file) {
-                $("#files_preview").attr('src',URL.createObjectURL(file));
-            }
-        });
+        // $("#files").on("change", function(e){
+        //     const [file] = this.files;
+        //     console.log(file);
+        //     if (file) {
+        //         $("#files_preview").attr('src',URL.createObjectURL(file));
+        //     }
+        // });
                     
     }); //End of Document Ready
     function formBookingSetDisplay(value){ // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan

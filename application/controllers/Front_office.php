@@ -113,7 +113,7 @@ class Front_office extends MY_Controller{
             }else if($type_name == 'lily'){
                 $data['branch_lily']      = $this->Branch_model->get_all_branch(['branch_flag' => 1],['branch_name' => 'Lily'],null,null,'branch_name','asc');            
                                 
-                $data['title'] = 'Booking Lily';
+                $data['title'] = 'GPS Produksi';
                 $data['_view'] = 'layouts/admin/menu/front_office/lily';
                 $this->load->view('layouts/admin/index',$data);
                 $this->load->view('layouts/admin/menu/front_office/lily_js.php',$data);
@@ -205,6 +205,75 @@ class Front_office extends MY_Controller{
                     $return->recordsTotal        = $return->total_records;
                     $return->recordsFiltered     = $return->total_records;
                     break;
+                case "load_checkin":
+                        $columns = array(
+                            '0' => 'order_item_product_id',
+                            '1' => 'order_date',
+                            '2' => 'order_number'
+                        );
+    
+                        $limit     = !empty($post['length']) ? $post['length'] : 10;
+                        $start     = !empty($post['start']) ? $post['start'] : 0;
+                        $order     = !empty($post['order']) ? $columns[$post['order'][0]['column']] : $columns[0];
+                        $dir       = !empty($post['order'][0]['dir']) ? $post['order'][0]['dir'] : "asc";
+                        
+                        $search    = [];
+                        if(!empty($post['search']['value'])) {
+                            $s = $post['search']['value'];
+                            foreach ($columns as $v) {
+                                $search[$v] = $s;
+                            }
+                        }
+    
+                        $params = array(
+                            'order_item_type' => intval($post['tipe'])
+                        );
+                        
+                        /* If Form Mode Transaction CRUD not Master CRUD
+                        !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
+                        !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
+                        */
+    
+                        //Default Params for Master CRUD Form
+                        // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
+                        // $params['order_name'] = !empty($post['order_name']) ? $post['order_name'] : $params;
+    
+                        /*
+                            if($post['other_column'] && $post['other_column'] > 0) {
+                                $params['other_column'] = $post['other_column'];
+                            }
+                            if($post['filter_type'] !== "All") {
+                                $params['order_type'] = $post['filter_type'];
+                            }
+                        */
+                        if($post['filter_branch'] !== "All") {
+                            $params['order_item_branch_id'] = intval($post['filter_branch']);
+                        }
+                        if($post['filter_ref'] !== "All") {
+                            $params['order_item_ref_id'] = intval($post['filter_ref']);
+                        }                    
+                        // if($post['filter_ref_price'] !== "All") {
+                        //     $params['order_item_ref_id'] = $post['filter_ref'];
+                        // }            
+                        if(is_numeric($post['filter_paid'])) {
+                            $params['order_paid'] = intval($post['filter_paid']);
+                        }                                        
+    
+                        $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
+                        if($get_count > 0){
+                            $get_data = $this->Front_model->get_all_booking_item($params, $search, $limit, $start, $order, $dir);
+                            $return->total_records   = $get_count;
+                            $return->status          = 1; 
+                            $return->result          = $get_data;
+                        }else{
+                            $return->total_records   = 0;
+                            $return->result          = [];
+                        }
+                        $return->params = $params;
+                        $return->message             = 'Load '.$return->total_records.' data';
+                        $return->recordsTotal        = $return->total_records;
+                        $return->recordsFiltered     = $return->total_records;
+                        break;
                 case "create_update":
                     $this->form_validation->set_rules('order_type', 'Type', 'required');
                     $this->form_validation->set_rules('order_ref_id', 'Jenis Kamar', 'greater_than[0]');                    
@@ -369,12 +438,42 @@ class Front_office extends MY_Controller{
                                     if($create){
                                         $get_booking = $this->Front_model->get_booking($create);
                                         
-                                        //Croppie Upload Image
-                                        $post_upload = !empty($_FILES['files']) ? $_FILES['files'] : "";
-                                        // var_dump($post_upload);die;
-                                        if(intval($_FILES['files']['size']) > 0){
-                                            $upload_process = upload_image2($this->folder_upload_file,$post_upload,250,250);
-                                            var_dump($upload_process);die;
+                                        //Croppie Upload Image [Bukti Bayar]
+                                        $post_upload = !empty($this->input->post('upload_1')) ? $this->input->post('upload_1') : "";
+                                        if(strlen($post_upload) > 10){
+                                            $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
+                                            if($upload_process->status == 1){
+                                                if ($get_booking && $get_booking['order_id']) {
+                                                    // $params_image = array(
+                                                    //     'product_image' => $upload_process->result['file_location']
+                                                    // );
+                                                    // $stat = $this->Produk_model->update_produk($product_id, $params_image);
+                                                    $file_session = $this->random_session(20);
+                                                    $params_image = array(
+                                                        'file_type' => 1,
+                                                        'file_from_table' => 'orders',
+                                                        'file_from_id' => $get_booking['order_id'],
+                                                        'file_session' => $file_session,
+                                                        'file_date_created' => date("YmdHis"),
+                                                        'file_user_id' => $session_user_id,
+                                                        'file_name' => $upload_process->result['file_name'] . $upload_process->result['file_ext'],
+                                                        'file_format' => str_replace(".","",$upload_process->result['file_ext']),
+                                                        'file_url' => $upload_process->result['file_location'],
+                                                        // 'file_size' => $upload_process['result']['file_size']
+                                                    );                                                    
+                                                    $stat = $this->File_model->add_file($params_image);
+                                                    $set_paid_url = $upload_process->result['file_location'];
+                                                }
+                                            }else{
+                                                $return->message = 'Fungsi Gambar gagal';
+                                            }
+                                        }
+                                        //End of Croppie   
+
+                                        //Croppie Upload Image [KTP]
+                                        $post_upload = !empty($this->input->post('upload_2')) ? $this->input->post('upload_2') : "";
+                                        if(strlen($post_upload) > 10){
+                                            $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
                                             if($upload_process->status == 1){
                                                 if ($get_booking && $get_booking['order_id']) {
                                                     // $params_image = array(
@@ -400,9 +499,26 @@ class Front_office extends MY_Controller{
                                                 $return->message = 'Fungsi Gambar gagal';
                                             }
                                         }
-                                        //End of Croppie   
-                                                             
+                                        //End of Croppie                                           
                                         
+                                        //Set Paid
+                                        $file_session = $this->random_session(20);
+                                        $paid_number = $this->request_number_for_order_paid();
+                                        $params = array(
+                                            // 'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : null,
+                                            'paid_order_id' => $get_booking['order_id'],
+                                            'paid_number' => $paid_number,
+                                            'paid_session' => $file_session,
+                                            'paid_date_created' => date("YmdHis"),
+                                            'paid_date' => date("YmdHis"),                                    
+                                            'paid_user_id' => $session_user_id,
+                                            'paid_url' => $set_paid_url,
+                                            'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_payment_method'] : null,
+                                            'paid_total' => !empty($post['paid_total']) ? str_replace(",","",$post['paid_total']) : null                           
+                                        );
+                                        $save_data = $this->Front_model->add_paid($params);
+                                        //End Set Paid
+
                                         $params_price = array(
                                             'price_ref_id' => $post['order_ref_id'],
                                             'price_sort' => $post['order_ref_price_id']
@@ -416,7 +532,7 @@ class Front_office extends MY_Controller{
                                             'order_item_type' => !empty($post['order_type']) ? intval($post['order_type']) : null,
                                             'order_item_type_name' => !empty($post['order_item_type_name']) ? $post['order_item_contact_id_2'] : null,
                                             'order_item_order_id' => $create,
-                                            // 'order_item_product_id' => !empty($post['order_item_product_id']) ? $post['order_item_contact_id_2'] : null,
+                                            'order_item_product_id' => !empty($post['order_product_id']) ? $post['order_product_id'] : null,
                                             'order_item_qty' => !empty($post['order_item_qty']) ? intval($post['order_item_qty']) : 1,
                                             // 'order_item_unit' => !empty($post['order_item_unit']) ? $post['order_item_contact_id_2'] : null,
                                             'order_item_price' => !empty($post['order_price']) ? str_replace(",","",$post['order_price']) : "0.00",
