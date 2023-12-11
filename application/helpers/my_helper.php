@@ -182,7 +182,127 @@
         //     $return['message'] = 'File not ready';
         // }
         return $return;
-    }        
+    } 
+    function upload_file_key($path = "", $file = "") {
+        // if(!empty($file) and ($file !== 'undefined')){
+            $image_height = 250;
+            $image_width = 250;
+
+            // $return          = new \stdClass();
+            // $return->status  = 0;
+            // $return->message = '';
+            // $return->result  = '';
+
+            $ci = &get_instance();
+            // $path = (substr($path, -1) != "/" ? $path . "/" : $path); // konfig directory data
+                            
+            // $path = FCPATH . $this->folder_upload;                       
+            $file_config = array(
+                'upload_path' => $path,
+                'allowed_types' => '*'
+            ); 
+            $ci->load->library('upload', $file_config);
+            $ci->upload->initialize($file_config);
+
+            if ($ci->upload->do_upload('file_key')) {
+                $upload = $ci->upload->data();
+                $raw_file = date("YmdHis") . $upload['file_ext']; //1231232.png
+                // $old_name = $upload['full_path']; // abc/uoload/ABC.png
+                // $new_name = $path . $raw_photo; // abc/upload/1231232.png
+
+                if (rename($upload['full_path'], $path . $raw_file)) {
+                    
+                    if($upload['is_image'] == 1){ //If Data IMAGE
+                        $file_compress = [
+                            'image_library' => 'gd2',
+                            'quality' => '20',
+                            'source_image' => $path . $raw_file,
+                            'create_thumb' => FALSE,
+                            'maintain_ratio' => TRUE,
+                            // 'width' => $this->image_width,
+                            // 'height' => $this->image_height,
+                            'new_image' => $path . $raw_file,
+                        ];                                    
+                        $ci->load->library('image_lib', $file_compress);
+                        $ci->image_lib->resize();
+                    }else{
+
+                    }
+                }
+                $return['status'] = 1;
+                $return['message'] = 'Success'; 
+                $return['result'] = $upload;      
+                $return['file'] = $raw_file;     
+            }else{
+                $return['status'] = 0;
+                $return['message'] = $ci->upload->display_errors();
+            }
+        // }else{
+        //     $return['status'] = 0;
+        //     $return['message'] = 'File not ready';
+        // }
+        return $return;
+    }  
+    function upload_file_deposit($path = "", $file = "") {
+        // if(!empty($file) and ($file !== 'undefined')){
+            $image_height = 250;
+            $image_width = 250;
+
+            // $return          = new \stdClass();
+            // $return->status  = 0;
+            // $return->message = '';
+            // $return->result  = '';
+
+            $ci = &get_instance();
+            // $path = (substr($path, -1) != "/" ? $path . "/" : $path); // konfig directory data
+                            
+            // $path = FCPATH . $this->folder_upload;                       
+            $file_config = array(
+                'upload_path' => $path,
+                'allowed_types' => '*'
+            ); 
+            $ci->load->library('upload', $file_config);
+            $ci->upload->initialize($file_config);
+
+            if ($ci->upload->do_upload('file_deposit')) {
+                $upload = $ci->upload->data();
+                $raw_file = date("YmdHis") . $upload['file_ext']; //1231232.png
+                // $old_name = $upload['full_path']; // abc/uoload/ABC.png
+                // $new_name = $path . $raw_photo; // abc/upload/1231232.png
+
+                if (rename($upload['full_path'], $path . $raw_file)) {
+                    
+                    if($upload['is_image'] == 1){ //If Data IMAGE
+                        $file_compress = [
+                            'image_library' => 'gd2',
+                            'quality' => '20',
+                            'source_image' => $path . $raw_file,
+                            'create_thumb' => FALSE,
+                            'maintain_ratio' => TRUE,
+                            // 'width' => $this->image_width,
+                            // 'height' => $this->image_height,
+                            'new_image' => $path . $raw_file,
+                        ];                                    
+                        $ci->load->library('image_lib', $file_compress);
+                        $ci->image_lib->resize();
+                    }else{
+
+                    }
+                }
+                $return['status'] = 1;
+                $return['message'] = 'Success'; 
+                $return['result'] = $upload;      
+                $return['file'] = $raw_file;     
+            }else{
+                $return['status'] = 0;
+                $return['message'] = $ci->upload->display_errors();
+            }
+        // }else{
+        //     $return['status'] = 0;
+        //     $return['message'] = 'File not ready';
+        // }
+        return $return;
+    }                
     //Backup
     function upload_image2($path = "", $file = "", $image_width = 250, $image_height = 250) {
         $ci = &get_instance();
