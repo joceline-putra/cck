@@ -60,14 +60,14 @@ class Front_model extends CI_Model{
         $this->db->select("references.ref_id, references.ref_name");
         $this->db->select("references_prices.price_id, references_prices.price_name");
         $this->db->select("products.product_id, products.product_name, product_flag");  
-        $this->db->select("branch_id, branch_name");              
+        $this->db->select("branch_id, branch_name, branch_code");              
     }
     
     function set_select_paid(){
         $this->db->select("orders_paids.*, fn_time_ago(orders_paids.paid_date) AS time_ago");
         $this->db->select("orders.order_id, orders.order_number, orders.order_total, orders.order_session");      
         $this->db->select("users.user_id, users.user_username, users.user_fullname"); 
-        $this->db->select("branchs.branch_id, branchs.branch_name");         
+        $this->db->select("branchs.branch_id, branchs.branch_name, branchs.branch_code");         
     }
 
     function get_all_booking($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {

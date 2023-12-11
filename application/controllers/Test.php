@@ -11,7 +11,7 @@ class Test extends CI_Controller{
     }
     function index(){
         //Plan With Query
-        $q = $this->db->query("SELECT * FROM `grade_sub_details` LIMIT 1");        
+        $q = $this->db->query("SELECT * FROM `orders_paids` ORDER BY paid_id DESC LIMIT 1");        
         $d = $q->row_array(); 
 
         //Plan With Array

@@ -43,7 +43,7 @@ class Ref_model extends CI_Model{
     function set_select(){
         $this->db->select("references.*");
         $this->db->select("parent.ref_id AS parent_id, parent.ref_name AS parent_name");
-        $this->db->select("branch_id, branch_name");
+        $this->db->select("branch_id, branch_name, branch_code");
     }
 
     function set_select_price(){

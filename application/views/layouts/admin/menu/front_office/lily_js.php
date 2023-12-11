@@ -2,16 +2,9 @@
 <script>
     $(document).ready(function () {
         var identity = "<?php echo $identity; ?>";
-
+        // $.alert('btn_update_flag_order_item when checkout');
         // $("[class*='tab-pane-sub']").addClass('active');
-        // $.alert('loadRoom() ');
-        /* Get Value */
-        // ($("#selector").is(":checked") == true) ? 1 : 0
-        // $("input[name='selector']:checked").val();
-        
-        /* Set Value */
-        // $("input[name='selector'][value='1']").prop("checked", true).change();
-        
+
         //Url
         var url = "<?= base_url('front_office/booking'); ?>";
         let url_print = "<?php base_url('front_office/booking'); ?>";
@@ -28,17 +21,6 @@
         
         var module_approval = parseInt("<?php echo $module_approval; ?>");
         var module_attachment = parseInt("<?php echo $module_attachment; ?>"); 
-
-        $(function() {
-            setInterval(function(){ 
-                //SummerNote
-                // $('#order_note').summernote({
-                //     placeholder: 'Tulis keterangan disini!',
-                //     tabsize: 4,
-                //     height: 350
-                // });  
-            }, 3000);
-        });
 
         var aa = '';
         //Croppie
@@ -61,12 +43,7 @@
                     enabled: true, // By default it's false, so don't forget to enable it
                     duration: 300, // duration of the effect, in milliseconds
                     easing: 'ease-in-out', // CSS transition easing function
-                    // The "opener" function should return the element from which popup will be zoomed in
-                    // and to which popup will be scaled down
-                    // By defailt it looks for an image tag:
                     opener: function (openerElement) {
-                        // openerElement is the element on which popup was initialized, in this case its <a> tag
-                        // you don't need to add "opener" option if this code matches your needs, it's defailt one.
                         return openerElement.is('img') ? openerElement : openerElement.find('img');
                     }
                 }
@@ -78,81 +55,11 @@
                     enabled: true, // By default it's false, so don't forget to enable it
                     duration: 300, // duration of the effect, in milliseconds
                     easing: 'ease-in-out', // CSS transition easing function
-                    // The "opener" function should return the element from which popup will be zoomed in
-                    // and to which popup will be scaled down
-                    // By defailt it looks for an image tag:
                     opener: function (openerElement) {
-                        // openerElement is the element on which popup was initialized, in this case its <a> tag
-                        // you don't need to add "opener" option if this code matches your needs, it's defailt one.
                         return openerElement.is('img') ? openerElement : openerElement.find('img');
                     }
                 }
         });        
-        //Select2
-        /*
-        $('#select').select2({
-            //dropdownParent:$("#modal-id"), //If Select2 Inside Modal
-            //placeholder: '<i class="fas fa-search"></i> Search',
-            //width:'100%',
-            placeholder: {
-                id: '0',
-                text: '-- Pilih --'
-            },
-            minimumInputLength: 0,
-            allowClear: true,
-            ajax: {
-                type: "get",
-                url: url_tool,
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                        action:'search',
-                        type: 1,
-                        source: 'select_source'
-                    };
-                    return query;
-                },
-                processResults: function (data){
-                    var datas = [];
-                    $.each(data, function(key, val){
-                        datas.push({
-                            'id' : val.id,
-                            'text' : val.text
-                        });
-                    });
-                    return {
-                        results: datas
-                    };
-                },
-            cache: true
-            },
-            escapeMarkup: function(markup){ 
-                return markup; 
-            },
-            templateResult: function(datas){ //When Select on Click
-                if (!datas.id) { return datas.text; }
-                if($.isNumeric(datas.id) == true){
-                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                    return datas.text;
-                }else{
-                    // return '<i class="fas fa-plus '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                    return datas.text;
-                }
-            },
-            templateSelection: function(datas) { //When Option on Click
-                if (!datas.id) { return datas.text; }
-                //Custom Data Attribute
-                $(datas.element).attr('data-alamat', datas.alamat);
-                return datas.text;
-            }
-        });
-        $("#select").on('change', function(e){
-            // Do Something
-        });
-        */
-        // $("select").select2();
 
         //Date Clock Picker
         $("#order_start_date, #order_end_date").datepicker({
@@ -200,8 +107,6 @@
 
         //Datatable
         let order_table = $("#table_order").DataTable({
-            // "processing": true,
-            // "rowReorder": { selector: 'td:nth-child(1)'},
             "responsive": true,
             "serverSide": true,
             "ajax": {
@@ -210,7 +115,7 @@
                 dataType: 'json',
                 cache: 'false',
                 data: function(d) {
-                    d.action = 'load_checkin';
+                    d.action = 'load_checkin_lily';
                     d.tipe = 222;
                     d.search = {value:$("#filter_search").val()};
                     d.date_start = $("#filter_start_date").val();
@@ -229,17 +134,19 @@
             "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             "columnDefs": [
                 {"targets":0, "title":"Action", "searchable":true, "orderable":true},                    
-                {"targets":1, "title":"Tgl", "searchable":true, "orderable":true},
-                {"targets":2, "title":"Nomor", "searchable":true, "orderable":true},
-                {"targets":3, "title":"Type", "searchable":true, "orderable":true},
-                {"targets":4, "title":"Kamar", "searchable":true, "orderable":true},            
-                {"targets":5, "title":"Kontak", "searchable":true, "orderable":true},
-                {"targets":6, "title":"Total", "searchable":true, "orderable":true},
-                {"targets":7, "title":"Pembayaran", "searchable":true, "orderable":true},                    
-                {"targets":8, "title":"Status", "searchable":false, "orderable":true},               
+                {"targets":1, "title":"Status", "searchable":false, "orderable":true},               
+                {"targets":2, "title":"Tgl", "searchable":true, "orderable":true},
+                {"targets":3, "title":"Nomor", "searchable":true, "orderable":true},
+                {"targets":4, "title":"Type", "searchable":true, "orderable":true},
+                {"targets":5, "title":"Kamar", "searchable":true, "orderable":true},            
+                {"targets":6, "title":"Kontak", "searchable":true, "orderable":true},
+                {"targets":7, "title":"Total", "searchable":true, "orderable":true},
+                {"targets":8, "title":"Pembayaran", "searchable":true, "orderable":true},   
+                {"targets":9, "title":"Attachment", "searchable":true, "orderable":true},                                    
             ],
-            "order": [[0, 'ASC']],
-            "columns": [{
+            "order": [[0, 'DESC']],
+            "columns": [
+                {
                     'data': 'order_id',
                     className: 'text-left',
                     render: function(data, meta, row) {
@@ -262,55 +169,103 @@
                         bgcolor = '#ff9019';
                         }
 
-                        /* Button Action Concept 2 */
-                        dsp += '&nbsp;<div class="btn-group">';
-                        // dsp += '    <button class="btn btn-mini btn-default"><span class="fas fa-cog"></span></button>';
-                        dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" data-toggle="dropdown" aria-expanded="true"><span class="fas fa-cog"></span><span class="caret"></span> Aksi</button>';
-                        dsp += '    <ul class="dropdown-menu">';
-                        dsp += '        <li>';
-                        dsp += '            <a class="btn_edit_order" style="cursor:pointer;"';
-                        dsp += '                data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
-                        dsp += '                <span class="fas fa-eye"></span> Lihat';
-                        dsp += '            </a>';
-                        dsp += '        </li>';
                         if(parseInt(row.order_flag) < 4) {
                             if(parseInt(row.order_item_flag_checkin) === 0){
-                                    dsp += '<li>'; 
-                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
-                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="1" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'">';
-                                    dsp += '        <span class="fas fa-lock"></span> CheckIn';
-                                    dsp += '    </a>';
-                                    dsp += '</li>';
+                                // var ofl = 1;
+                                    // dsp += '<button class="btn_update_flag_order_item btn btn-mini btn-primary" data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" 
+                                    // data-order-flag="1" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'>';
+                                    // dsp += '<span class="fas fa-lock"></span>CheckIn';
+                                    // dsp += '</button>';                                    
                             }
                             if(parseInt(row.order_item_flag_checkin) === 1){
-                                    dsp += '<li>';
-                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
-                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="2" data-order-session="'+row.order_session+'" data-product-name="'+row.product_name+'">';
-                                    dsp += '        <span class="fas fa-ban"></span> Checkout';
-                                    dsp += '    </a>';
-                                    dsp += '</li>';
+                                // var ofl = 2;
+                                    // dsp += '<button class="btn_update_flag_order_item btn btn-mini btn-primary" data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" 
+                                    // data-order-flag="2" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'>';
+                                    // dsp += '<span class="fas fa-ban"></span>Checkout';
+                                    // dsp += '</button>';   
                             }
                         }
-                        if(parseInt(row.order_flag) == 0) {                        
-                                dsp += '<li>';
-                                dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
-                                dsp += '        data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="4" data-order-session="'+row.order_session+'">';
-                                dsp += '        <span class="fas fa-trash"></span> Batal';
-                                dsp += '    </a>';
-                                dsp += '</li>';
+                        if(parseInt(row.order_flag) == 0) {          
+                            // var ofl = 4;
+                                // dsp += '<button class="btn_update_flag_order_item btn btn-mini btn-primary" data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="4" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'>';
+                                // dsp += '<span class="fas fa-trash"></span>Batal';
+                                // dsp += '</button>';   
                         }
-                        dsp += '        <li class="divider"></li>';
-                        dsp += '        <li>';
-                        dsp += '            <a class="btn_print_order" style="cursor:pointer;" data-order="'+ data +'" data-order-session="'+row.order_session+'">';
-                        dsp += '                <span class="fas fa-print"></span> Print';
-                        dsp += '            </a>';
-                        dsp += '        </li>';
-                        dsp += '    </ul>';
-                        dsp += '</div>';
+                        // dsp += '<button class="btn_print_order btn btn-mini btn-primary" data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'>';
+                        // dsp += '<span class="fas fa-print"></span>Print';
+                        // dsp += '</button>';    
+
+                        dsp += '<button class="btn_action_order btn btn-mini btn-primary" data-order-id="'+data+'"';
+                            dsp += 'data-order-flag="'+row.order_flag+'"';
+                            dsp += 'data-order-item-flag-checkin="'+row.order_item_flag_checkin+'" data-order-item-product-id="'+row.order_item_product_id+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'" data-product-name="'+row.product_name+'">';
+                        dsp += '<span class="fas fa-cog"></span>Action';
+                        dsp += '</button>';                      
+
+
+                        /* Button Action Concept 2 */
+                        // dsp += '&nbsp;<div class="btn-group">';
+                        // // dsp += '    <button class="btn btn-mini btn-default"><span class="fas fa-cog"></span></button>';
+                        // dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" data-toggle="dropdown" aria-expanded="true"><span class="fas fa-cog"></span><span class="caret"></span> Aksi</button>';
+                        // dsp += '    <ul class="dropdown-menu">';
+                        // dsp += '        <li>';
+                        // dsp += '            <a class="btn_edit_order" style="cursor:pointer;"';
+                        // dsp += '                data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
+                        // dsp += '                <span class="fas fa-eye"></span> Lihat';
+                        // dsp += '            </a>';
+                        // dsp += '        </li>';
+                        // if(parseInt(row.order_flag) < 4) {
+                        //     if(parseInt(row.order_item_flag_checkin) === 0){
+                        //             dsp += '<li>'; 
+                        //             dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
+                        //             dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="1" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'">';
+                        //             dsp += '        <span class="fas fa-lock"></span> CheckIn';
+                        //             dsp += '    </a>';
+                        //             dsp += '</li>';
+                        //     }
+                        //     if(parseInt(row.order_item_flag_checkin) === 1){
+                        //             dsp += '<li>';
+                        //             dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
+                        //             dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="2" data-order-session="'+row.order_session+'" data-product-name="'+row.product_name+'">';
+                        //             dsp += '        <span class="fas fa-ban"></span> Checkout';
+                        //             dsp += '    </a>';
+                        //             dsp += '</li>';
+                        //     }
+                        // }
+                        // if(parseInt(row.order_flag) == 0) {                        
+                        //         dsp += '<li>';
+                        //         dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
+                        //         dsp += '        data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="4" data-order-session="'+row.order_session+'">';
+                        //         dsp += '        <span class="fas fa-trash"></span> Batal';
+                        //         dsp += '    </a>';
+                        //         dsp += '</li>';
+                        // }
+                        // dsp += '        <li class="divider"></li>';
+                        // dsp += '        <li>';
+                        // dsp += '            <a class="btn_print_order" style="cursor:pointer;" data-order="'+ data +'" data-order-session="'+row.order_session+'">';
+                        // dsp += '                <span class="fas fa-print"></span> Print';
+                        // dsp += '            </a>';
+                        // dsp += '        </li>';
+                        // dsp += '    </ul>';
+                        // dsp += '</div>';
                         return dsp;
                     }
-                },
-                {
+                },{
+                    'data': 'order_item_flag_checkin',
+                    className: 'text-left',
+                    render: function(data, meta, row) {
+                        var dsp = '';
+                        if(parseInt(row.order_item_flag_checkin) == 0){
+                            dsp += '<label class="label" style="background-color:#ff9019;color:white;">Belum Checkin</label>';
+                        }else if(parseInt(row.order_item_flag_checkin) == 1){
+                            dsp += '<label class="label" style="background-color:#0aa699;color:white;">Check-In</label>';
+                        }else if(parseInt(row.order_item_flag_checkin) == 2){
+                            dsp += '<label class="label" style="background-color:#f35958;color:white;">Check-Out</label>';
+                        } else if(parseInt(row.order_item_flag_checkin) == 4){
+                            dsp += '<label class="label" style="background-color:#f35958;color:white;">Batal</label>';
+                        }                       
+                        return dsp;
+                    }
+                },{
                     'data': 'order_item_start_date',
                     className: 'text-left',
                     render: function(data, meta, row) {
@@ -388,15 +343,21 @@
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        if(parseInt(row.order_item_flag_checkin) == 0){
-                            dsp += '<label class="label" style="background-color:#ff9019;color:white;">Waiting</label>';
-                        }else if(parseInt(row.order_item_flag_checkin) == 1){
-                            dsp += '<label class="label" style="background-color:#0aa699;color:white;">Check-In</label>';
-                        }else if(parseInt(row.order_item_flag_checkin) == 2){
-                            dsp += '<label class="label" style="background-color:#f35958;color:white;">Check-Out</label>';
-                        } else if(parseInt(row.order_item_flag_checkin) == 4){
-                            dsp += '<label class="label" style="background-color:#f35958;color:white;">Batal</label>';
-                        }                       
+                        // if(parseInt(row.order_files_count) > 0){
+                            var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.price_name;
+                            var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
+                            dsp += '<span '+st+' class="btn-attachment-info-2 label label-inverse" style="cursor:pointer;color:white;"><span class="fas fa-paperclip"></span>&nbsp;'+row.order_files_count+'</span>';
+                            if(parseInt(row.order_paid) == 0){
+                                // var sts = 'Belum Lunas';
+                                // var ic = 'fas fa-thumbs-down';
+                                var lg = 'danger';
+                            }else if(parseInt(row.order_paid) == 1){
+                                // var sts = 'Lunas';
+                                // var ic = 'fas fa-thumbs-up';
+                                var lg = 'success';
+                            }                            
+                            dsp += '&nbsp;<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="fas fa-receipt"></span>&nbsp;'+row.order_order_paid_count+'</span>';                            
+                        // }         
                         return dsp;
                     }
                 }
@@ -420,15 +381,6 @@
         $(document).on("click","#btn_save_order", function(e) {
             e.preventDefault(); e.stopPropagation();
             let next = true;
-            /* If id not exist, UPDATE if id exist */
-            /*
-            if ($("#booking_id").val().length === 0 || parseInt($("#booking_id").val()) === 0) {
-                if ($("#booking_id").val().length === 0) {
-                    next = false;
-                    notif(0,'ID wajib diisi');
-                }
-            }
-            */
             if(next){
                 if (!$("input[name='order_branch_id']:checked").val()) {
                     next = false;
@@ -471,7 +423,7 @@
             /* If Form Validation Complete checked */
             if(next){
                 var form = new FormData($("#form_booking")[0]);
-                form.append('action', 'create_update');
+                form.append('action', 'create_update_lily');
                 form.append('order_type', identity);                
                 // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
                 form.set('order_start_date', $("#order_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
@@ -481,7 +433,7 @@
                 form.set('files_1', 0); //Bukti Bayar
                 form.set('files_1', 0); //Foto KTP  
                 form.append('upload_1', $("#files_preview_1").attr('data-save-img'));
-                form.append('upload_2', $("#files_preview_2").attr('data-save-img'));                   
+                form.append('upload_2', $("#files_preview_2").attr('data-save-img'));
                 if(orderID > 0){
                     form.append('order_id', orderID);
                 }
@@ -490,7 +442,7 @@
                     url: url,
                     data: form, 
                     dataType: 'json', cache: 'false', 
-                    contentType: false, processData: false,   
+                    contentType: false, processData: false,
                     beforeSend:function(x){
                         // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
                         // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
@@ -502,9 +454,9 @@
                         if(parseInt(s) == 1){
                             notif(s,m);
                             order_table.ajax.reload();
-                            // $("#modal_order").modal("hide");
-                            /* hint zz_for or zz_each */
-                            
+                            formBookingReset();
+                            // console.log(r.order_id);
+                            activeTab("tab2");
                         }else{
                             notif(s,m);
                         }
@@ -569,15 +521,6 @@
         $(document).on("click","#btn_save_order_1", function(e) {
             e.preventDefault(); e.stopPropagation();
             let next = true;
-            /* If id not exist, UPDATE if id exist */
-            /*
-            if ($("#order_id").val().length === 0 || parseInt($("#order_id").val()) === 0) {
-                if ($("#order_id").val().length === 0) {
-                    next = false;
-                    notif(0,'ID wajib diisi');
-                }
-            }
-            */
             if(next){
                 if (!$("input[name='order_branch_id']:checked").val()) {
                     next = false;
@@ -841,7 +784,7 @@
         }); 
 
         //CRUD ITEM
-        $(document).on("click",".btn_update_flag_order_item",function(e) {
+        $(document).on("click",".btn_update_flag_order_item",function(e) { //action lily
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -870,7 +813,9 @@
 
             if(do_checkin){
                 var obranch       = $(this).attr('data-order-branch-id');   
-                var oref          = $(this).attr('data-order-ref-id');             
+                var oref          = $(this).attr('data-order-ref-id');    
+                var opr           = $(this).attr('data-order-item-product-id');      
+                var oprn          = $(this).attr('data-product-name');                                             
                 // 'Apakah anda ingin '+msg+' <b>'+onu+'</b> ?'
                 let title   = 'Konfirmasi Check-IN';
                 $.confirm({
@@ -913,11 +858,14 @@
                             dsp += '<form id="jc_form">';
                                 dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
                                 dsp += '    <div class="form-group">';
-                                dsp += '    <label class="form-label">Pilih Kamar</label>';
+                                dsp += '    <label class="form-label">Kamar</label>';
                                 dsp += '        <select id="jc_select" name="jc_select" class="form-control">';
-                                dsp += '            <option value="1">Pilih Kamar</option>';
+                                // dsp += '            <option value="1">Pilih Kamar</option>';
                                 r.forEach(async (v, i) => {
-                                                    dsp += '<option value="'+v['product_id']+'">'+v['product_name']+' - ['+ v['branch_name'] +']</option>';
+                                    // console.log(v['product_id']+', '+opr);
+                                                if(v['product_id'] == opr){
+                                                    dsp += '<option value="'+v['product_id']+'" selected>'+v['product_name']+' - ['+ v['branch_name'] +']</option>';
+                                                }
                                 });
                                 dsp += '        </select>';
                                 dsp += '    </div>';
@@ -938,7 +886,7 @@
                     },
                     buttons: {
                         button_1: {
-                            text:'<i class="fas fa-check white"></i> Proses',
+                            text:'<i class="fas fa-check white"></i> Check IN',
                             btnClass: 'btn-primary',
                             keys: ['enter'],
                             action: function(){
@@ -951,7 +899,7 @@
                                     return false;
                                 } else{
                                     var form = new FormData();
-                                    form.append('action', 'update_flag_item');
+                                    form.append('action', 'update_flag_item_lily');
                                     form.append('order_id', oid);
                                     form.append('order_item_id', otd);                            
                                     form.append('order_session', oss);
@@ -996,45 +944,91 @@
                     var cnt ='Apakah anda ingin '+msg+' <b>'+onu+'</b> ?' 
                 }
                 $.confirm({
-                    title: 'Konfirmasi!',
-                    content: cnt,
+                    title: cnt,
+                    content: function(){
+                    },
+                    onContentReady: function(e){
+                        let self    = this;
+                        let content = '';
+                        let dsp     = '';
+
+                        // dsp += '<div>'+cnt+'</div>';
+                        dsp += '<form id="jc_form">';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Foto Kunci</label>';
+                            dsp += '        <input id="file_key" name="file_key" type="file" class="form-control">';
+                            dsp += '    </div>';
+                            dsp += '</div>';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Foto Pengembalian Deposit</label>';
+                            dsp += '        <input id="file_deposit" name="file_deposit" type="file" class="form-control">';
+                            dsp += '    </div>';
+                            dsp += '</div>';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Catatan</label>';
+                            dsp += '        <textarea id="file_note" name="file_note" class="form-control" rows="4"></textarea>';
+                            dsp += '    </div>';
+                            dsp += '</div>';
+                        dsp += '</form>';
+                        content = dsp;
+                        self.setContentAppend(content);
+                    },                    
                     buttons: {
                         confirm:{ 
                             btnClass: 'btn-primary',
-                            text: 'Ya',
-                            action: function () {
-                                
-                                var form = new FormData();
-                                form.append('action', 'update_flag_item');
-                                form.append('order_id', oid);
-                                form.append('order_item_id', otd);                            
-                                form.append('order_session', oss);
-                                form.append('order_number', onu);
-                                form.append('order_item_flag_checkin', oflag);
-                                form.append('product_name',opr);
+                            text: 'Ya, Checkout',
+                            action: function (e) {
+                                let self      = this;
 
-                                $.ajax({
-                                    type: "POST",
-                                    url : url,
-                                    data: form,
-                                    dataType:'json',
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    success:function(d){
-                                        if(parseInt(d.status)==1){ 
-                                            notif(d.status,d.message); 
-                                            order_table.ajax.reload(null,false);
-                                        }else{ 
-                                            notif(d.status,d.message); 
+                                let file_key     = self.$content.find('#file_key').val();
+                                let file_deposit = self.$content.find('#file_deposit').val();                                
+                                let file_note = self.$content.find('#file_note').val();                                                                
+
+                                if(!file_key){
+                                    $.alert('Foto kunci dipilih dahulu');
+                                    return false;
+                                } else if(!file_deposit){
+                                    $.alert('Foto pengembalian deposit dipilih dahulu');
+                                    return false; 
+                                } else{
+                                    var form = new FormData();
+                                    form.append('action', 'update_flag_item');
+                                    form.append('order_id', oid);
+                                    form.append('order_item_id', otd);                            
+                                    form.append('order_session', oss);
+                                    form.append('order_number', onu);
+                                    form.append('order_item_flag_checkin', oflag);
+                                    form.append('product_name',opr);
+                                    form.append('file_key',file_key);
+                                    form.append('file_deposit',file_deposit);                                    
+                                    form.append('file_note',file_note);                                                                        
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url : url,
+                                        data: form,
+                                        dataType:'json',
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        success:function(d){
+                                            if(parseInt(d.status)==1){ 
+                                                notif(d.status,d.message); 
+                                                order_table.ajax.reload(null,false);
+                                            }else{ 
+                                                notif(d.status,d.message); 
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
                         },
                         cancel:{
                             btnClass: 'btn-danger',
-                            text: 'Batal', 
+                            text: 'Tutup', 
                             action: function () {
                                 // $.alert('Canceled!');
                             }
@@ -1042,32 +1036,10 @@
                     }
                 });
             }
-        });        
-        /*
-        $(document).on("click",".btn_save_order_item",function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
         });
-        $(document).on("click",".btn_edit_order_item",function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-        });
-        $(document).on("click",".btn_update_order_item",function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-        });
-        $(document).on("click",".btn_delete_order_item",function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-        });
-        */
 
-        //Additional
-        $("input[type=radio][name=order_branch_id]").on("change", function(e) {
+        // Radio Checked
+        $(document).on("change","input[type=radio][name=order_branch_id]", function(e) {
             
             $("#order_price").val(0);
             
@@ -1084,6 +1056,7 @@
                     dataType: 'json', cache: 'false', 
                     contentType: false, processData: false,
                     beforeSend:function(x){
+                        $("#order_ref_id").html('<p>Loading...</p>');
                         // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
                         // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
                     },
@@ -1098,7 +1071,7 @@
                             
                                 var dsp = '';
                                 r.forEach(async (v, i) => {
-                                    dsp += '<input id="ref_'+v['ref_id']+'" name="order_ref_id" value="'+v['ref_id']+'" type="radio"><label class="radio_group_label radio_bg" for="ref_'+v['ref_id']+'">'+v['ref_name']+'</label>';
+                                    dsp += '<input id="ref_'+v['ref_id']+'" name="order_ref_id" value="'+v['ref_id']+'" type="radio" data-name="'+v['ref_name']+'"><label class="radio_group_label radio_bg" for="ref_'+v['ref_id']+'">'+v['ref_name']+'</label>';
                                 });
                                 $("#order_ref_id").html(dsp);
                             }else{
@@ -1113,14 +1086,7 @@
                     }
                 });
             }            
-        }); 
-        // $(document).on("change", "input[type=radio][name=order_branch_id]", function(e) {
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        //     if(orderID == 0){
-        //         loadRoom();
-        //     }            
-        // });          
+        });
         $(document).on("change", "input[type=radio][name=order_ref_price_id]", function(e) { //Not Used
             e.preventDefault();
             e.stopPropagation();
@@ -1152,6 +1118,7 @@
                     dataType: 'json', cache: 'false', 
                     contentType: false, processData: false,
                     beforeSend:function(x){
+                        $("#order_product_id").html('Loading...');
                         // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
                         // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
                     },
@@ -1171,10 +1138,18 @@
                             
                                 let dsp = '';
                                 for(let a=0; a < total_records; a++) {
+                                    // class="radio_group"
+                                    // if (a % 2 === 1) {
+                                        // dsp += `<div class="radio_group">`;
+                                    // }
+                                    // console.log(a % 2);
                                     let value = re[a];
-                                    dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}">
+                                    dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
                                             <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}">${value['product_name']}</label>
-                                    `;                                        
+                                        `;
+                                    // if (a % 2 === 1) {
+                                    //     dsp += `</div>`;
+                                    // }                                        
                             
                                 }
                                 $("#order_product_id").html(dsp);
@@ -1188,47 +1163,7 @@
                     }
                 });
             }
-        }
-        function loadRoom(){ //Not Used
-
-            $("#order_price").val(0);
-            
-            if(parseInt($("input[name='order_ref_id']:checked").val()) > 0){
-                let form = new FormData();
-                form.append('action','room_get');
-                form.append('branch_id',  $("input[name=booking_branch_id]:checked").val());
-                form.append('ref_id',  $("input[name=booking_ref_id]:checked").val());                                                
-                // form.append('ref_price_sort',  $("input[name=order_ref_price_id]:checked").val());
-
-                // form.append('branch_id',obranch);                        
-                // form.append('ref_id',oref);                        
-                $.ajax({
-                    type: "post",
-                    url: url,
-                    data: form, 
-                    dataType: 'json', cache: 'false', 
-                    contentType: false, processData: false,
-                    beforeSend:function(x){
-                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
-                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
-                    },
-                    success:function(d){
-                        let s = d.status;
-                        let m = d.message;
-                        let r = d.result;
-                        if(parseInt(s) == 1){
-                            // notif(s,m);
-                            $("#order_price").val(r.price_value);
-                        }else{
-                            notif(s,m);
-                        }
-                    },
-                    error:function(xhr,status,err){
-                        notif(0,err);
-                    }
-                });
-            }
-        }        
+        }    
         
         $(document).on("click","#btn_new_order",function(e) {
             formBookingReset();
@@ -1300,22 +1235,25 @@
         }
 
         function formBookingReset(){
-            $("#form_order input[type='text']")
+            console.log('formBookingReset()');
+            $("#form_booking input[type='text']")
             .not("input[id='order_start_date']")
             .not("input[id='order_end_date']").val('');
+
+            $("#form_booking input[type='file']").val('');
 
             $("#order_start_hour").val("14:00").trigger('change');
             $("#order_end_hour").val("12:00").trigger('change');
 
-            // $("#order_start_date").datepicker("update", moment().format("d-M-yyyy"));
-            // $("#order_end_date").datepicker("update", moment().add(365, "days").format("d-M-yyyy"));            
-
-            // $("#form_order textarea").val('');
-
-            // $("#files_link").attr('href',url_image);
-            // $("#files_preview").attr('src',url_image);
-            // $("#files_preview").attr('data-save-img',url_image);
             orderID = 0;
+            orderPRICE = 0;
+            paidTOTAL = 0;
+            $("#files_link_1").attr('href',url_image);
+            $("#files_preview_1").attr('src',url_image);
+            $("#files_preview_1").attr('data-save-img','');               
+            $("#files_link_2").attr('href',url_image);
+            $("#files_preview_2").attr('src',url_image);   
+            $("#files_preview_2").attr('data-save-img','');                                 
             loadAttachment(0);
         } 
 
@@ -1855,7 +1793,6 @@
         });  
 
         //Attachment Info
-                
         //Approval Function
         // loadAttachment() on btn-save, btn-read
         function loadApproval(data_id){
@@ -2785,19 +2722,21 @@
             });
         });           
    
-        // imgInp.onchange = evt => {
-        //     const [file] = imgInp.files
-        //     if (file) {
-        //         blah.src = URL.createObjectURL(file)
-        //     }
-        // }
-        // $("#files").on("change", function(e){
-        //     const [file] = this.files;
-        //     console.log(file);
-        //     if (file) {
-        //         $("#files_preview").attr('src',URL.createObjectURL(file));
-        //     }
-        // });
+        /*
+            imgInp.onchange = evt => {
+                const [file] = imgInp.files
+                if (file) {
+                    blah.src = URL.createObjectURL(file)
+                }
+            }
+            $("#files").on("change", function(e){
+                const [file] = this.files;
+                console.log(file);
+                if (file) {
+                    $("#files_preview").attr('src',URL.createObjectURL(file));
+                }
+            });
+        */
 
         //Child Tab Navigation
         $(document).on("click", "input[name='order_branch_id']", function(e){ activeTab("tab12"); });
@@ -2808,23 +2747,151 @@
         $(document).on("click", "#btn_tab_16", function(e){ 
             if($("#order_contact_name").val().length == 0){
                 notif(0,'Nama harus diisi');
+                $("#order_contact_name").focus();
             }else if($("#order_contact_phone").val().length == 0){
                 notif(0,'Telepon harus diisi');
+                $("#order_contact_phone").focus();
             }else{
                 activeTab("tab17");
             }
         });     
-        $(document).on("click","#btn_tab_17", function(e){ activeTab("tab18"); });                
-                               
+        $(document).on("click","#btn_tab_17", function(e){ 
+            if(document.getElementById("files_1").files.length == 0 ){
+                notif(0,'Bukti Bayar belum di pilih');
+            }else if($("#paid_total").val().length == 0){
+                notif(0,'Jumlah harus diisi');
+            }else{
+                var file = document.getElementById("files_1").files[0];
+                var fileType = file["type"];
+                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                if ($.inArray(fileType, validImageTypes) < 0) {
+                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
+                }else{
+                    var size_kb = file.size / 1024;
+                    console.log(size_kb);
+                    if(size_kb < 1280){
+                        activeTab("tab18"); 
+                    }else{
+                        notif(0,'Maksimal 1 MB');
+                    }
+                } 
+            }
+        });
+        $(document).on("click","#btn_tab_18", function(e){ 
+            if(document.getElementById("files_2").files.length == 0 ){
+                notif(0,'Foto KTP belum di pilih');
+            }else{
+                var file = document.getElementById("files_2").files[0];
+                var fileType = file["type"];
+                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                if ($.inArray(fileType, validImageTypes) < 0) {
+                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
+                }else{
+                    var size_kb = file.size / 1024;
+                    if(size_kb < 1280){
+                        activeTab("tab19"); 
+                        loadBeforeBooking();
+                    }else{
+                        notif(0,'Maksimal 1 MB');
+                    }
+                }
+            }
+        });            
+        //Child Back Button
+        $(document).on("click", "#btn_tab_12b", function(e){ activeTab("tab11"); });
+        $(document).on("click", "#btn_tab_13b", function(e){ activeTab("tab12"); });
+        $(document).on("click", "#btn_tab_14b", function(e){ activeTab("tab13"); });
+        $(document).on("click", "#btn_tab_15b", function(e){ activeTab("tab14"); });
+        $(document).on("click", "#btn_tab_16b", function(e){ activeTab("tab15"); });
+        $(document).on("click", "#btn_tab_17b", function(e){ activeTab("tab16"); });
+        $(document).on("click", "#btn_tab_18b", function(e){ activeTab("tab17"); });
+        $(document).on("click", "#btn_tab_19b", function(e){ activeTab("tab18"); });                                
 
-        /* Get Value */
-        // ($("#selector").is(":checked") == true) ? 1 : 0
-        // $("input[name='selector']:checked").val();
+        function loadBeforeBooking(){
+            var dsp = '';
+            dsp += `<tr><td>Cabang</td><td>:</td><td>${$("input[name='order_branch_id']:checked").attr('data-name')}</td></tr>`;
+            dsp += `<tr><td>Tipe</td><td>:</td><td>${$("input[name='order_ref_price_id']:checked").attr('data-name')}</td></tr>`; 
+            dsp += `<tr><td>Jenis Kamar</td><td>:</td><td>${$("input[name='order_ref_id']:checked").attr('data-name')}</td></tr>`;
+            dsp += `<tr><td>Kamar</td><td>:</td><td>${$("input[name='order_product_id']:checked").attr('data-name')}</td></tr>`;
+            dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-mm-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-mm-yyyy')}</td></tr>`; 
+            dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}</td></tr>`;                                                            
+            dsp += `<tr><td>Harga</td><td>:</td><td>${$("#order_price").val()}</td></tr>`;
+            dsp += `<tr><td>Dibayar</td><td>:</td><td>${$("#paid_total").val()} - ${$("#paid_payment_method").find(":selected").val()}</td></tr>`;
+            dsp += `<tr><td>Pemesan</td><td>:</td><td>${$("#order_contact_name").val()} - ${$("#order_contact_phone").val()}</td></tr>`;            
+            $("#table_confirm").append(dsp);
+        }
+        $(document).on("click",".btn_action_order", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            let this_form = $(this);
+            let title   = 'Action';
+            $.confirm({
+                title: title,
+                // icon: 'fas fa-check',
+                columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',      
+                // autoClose: 'button_2|10000',
+                // closeIcon: true, closeIconClass: 'fas fa-times', 
+                animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                content: function(){
+                },
+                onContentReady: function(e){
+                    let self    = this;
+                    let content = '';
+                    let dsp     = '';
+            
+                    var id = $(this).attr('data-id');
+
+                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                    dsp += '<ul class="ul-user-navigation">';
+
+                    // console.log(this_form.attr('data-order-flag'));
+
+                    if(parseInt(this_form.attr('data-order-flag')) < 4) {
+                        if(parseInt(this_form.attr('data-order-item-flag-checkin')) === 0){
+                            dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'"';
+                            dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="1" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                            dsp += '<i class="fas fa-lock"></i><span style="position: relative;">&nbsp;CheckIn</span></a></li>';
+                        }
+                        if(parseInt(this_form.attr('data-order-item-flag-checkin')) === 1){
+                            dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'"';
+                            dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="2" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                            dsp += '<i class="fas fa-ban"></i><span style="position: relative;">&nbsp;Checkout</span></a></li>';
+                        }                        
+                    }
+                    if(parseInt(this_form.attr('data-order-flag')) == 0) {
+                        dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="4" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                        dsp += '<i class="fas fa-trash"></i><span style="position: relative;">&nbsp;Batal</span></a></li>';
+                    }
+                    dsp += '<li><a href="#" class="btn_print_order" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="'+this_form.attr('data-order-flag')+'" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'"><i class="fa fa-print"></i><span style="position: relative;">&nbsp;Print</span></a></li>';
+                        // dsp += '<li><a href="#" class="btn-user-theme"><i class="fas fa-fill-drip"></i><span style="position: relative;">&nbsp;Warna Interface</span></a></li>';
+                        // dsp += '<li><a href="#"><i class="fa fa-power-off"></i><span style="position: relative;">&nbsp;Keluar</span></a></li>';
+                    dsp += '</ul>';
+                    dsp += '</div>';
+                    content = dsp;
+                    self.setContentAppend(content);
+                    // self.buttons.button_1.disable();
+                    // self.buttons.button_2.disable();
+            
+                    // this.$content.find('form').on('submit', function (e) {
+                    //      e.preventDefault();
+                    //      self.$$formSubmit.trigger('click'); // reference the button and click it
+                    // });
+                },
+                buttons: {button_2: {
+                        text: '<i class="fas fa-times white"></i> Tutup',
+                        btnClass: 'btn-default',
+                        keys: ['Escape'],
+                        action: function(){
+                            //Close
+                        }
+                    }
+                }
+            });
+        });
         
-        /* Set Value */
-        // $("input[name='selector'][value='1']").prop("checked", true).change();    
-    
+                               
     }); //End of Document Ready
+
     function formBookingSetDisplay(value){ // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan
         if(value == 1){ var flag = true; }else{ var flag = false; }
         //Attr Input yang perlu di setel

@@ -77,38 +77,40 @@
         <ul class="nav nav-tabs" role="tablist" style="display:inline;">      
             <li class="active">
                 <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="true" style="cursor:pointer;">
-                <span class="fas fa-calendar-alt"></span> Form</a>
+                <span class="fas fa-plus-square"></span> Form</a>
             </li>           
             <li class="">
                 <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="false">
-                <span class="fas fa-plus-square"></span> Check In</a>
+                <span class="fas fa-calendar-alt"></span> Check In</a>
             </li>                                            
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
+                <!-- 
                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                     <div class="col-md-6 col-xs-12 col-sm-12" style="padding-left: 0;">
-                        <h5><b>Data <?php echo $title;?></b></h5>
+                        <h5><b>Data <?php #echo $title;?></b></h5>
                     </div>
                     <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-right">
                         <div class="pull-right">
-                            <!-- <button id="btn_export_order" onClick="" class="btn btn-default btn-small" type="button" style="display: inline;">
+                            <button id="btn_export_order" onClick="" class="btn btn-default btn-small" type="button" style="display: inline;">
                                 <i class="fas fa-file-excel"></i>
                                 Ekspor Excel
-                            </button> -->
-                            <!-- <button id="btn_new_order_2" class="btn btn-success btn-small" type="button" style="display: inline;">
+                            </button>
+                            <button id="btn_new_order_2" class="btn btn-success btn-small" type="button" style="display: inline;">
                                 <i class="fas fa-check-double"></i>
                                 Status Kamar
-                            </button> -->
+                            </button>
                             <button id="btn_new_order" class="btn btn-success btn-small" type="button" style="display: inline;">
                                 <i class="fas fa-plus"></i>
-                                Buat <?php echo $title; ?> Baru
+                                Buat <?php #echo $title; ?> Baru
                             </button>
                         </div>
                     </div>
                 </div>
+                     -->
                 <!-- Child Tab-Pane -->
-                <div class="col-md-12 padding-remove-side">
+                <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                     <form id="form_booking" name="form_booking">
                     <ul class="nav nav-tabs hide" role="tablist">      
                         <li class="active"><a href="#tab11" role="tab" class="btn-tab-11" data-toggle="tab" aria-expanded="true" style="cursor:pointer;">11 Cabang</a></li>           
@@ -117,8 +119,9 @@
                         <li class=""><a href="#tab14" role="tab" class="btn-tab-14" data-toggle="tab" aria-expanded="false">14 Nomor Kamar</a></li>     
                         <li class=""><a href="#tab15" role="tab" class="btn-tab-15" data-toggle="tab" aria-expanded="false">15 Tgl Checkin</a></li>     
                         <li class=""><a href="#tab16" role="tab" class="btn-tab-16" data-toggle="tab" aria-expanded="false">16 Customer</a></li>     
-                        <li class=""><a href="#tab17" role="tab" class="btn-tab-17" data-toggle="tab" aria-expanded="false">17 Attachment</a></li>
-                        <li class=""><a href="#tab18" role="tab" class="btn-tab-18" data-toggle="tab" aria-expanded="false">18 Attachment</a></li>                                                                                                                                                                         
+                        <li class=""><a href="#tab17" role="tab" class="btn-tab-17" data-toggle="tab" aria-expanded="false">17 Bukti Bayar</a></li>
+                        <li class=""><a href="#tab18" role="tab" class="btn-tab-18" data-toggle="tab" aria-expanded="false">18 Foto KTP</a></li>
+                        <li class=""><a href="#tab19" role="tab" class="btn-tab-19" data-toggle="tab" aria-expanded="false">19 Konfirmasi</a></li>                                                                                                                                                                                                 
                     </ul>                        
                     <div class="tab-content">
                         <div class="tab-pane tab-pane-sub active" id="tab11" for="lily">
@@ -133,7 +136,7 @@
                                                 // $c = 'checked';
                                             }
                                         ?>
-                                            <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="order_branch_id" value="<?php echo $v['branch_id']; ?>" <?php echo $c; ?>>
+                                            <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="order_branch_id" value="<?php echo $v['branch_id']; ?>" data-name="<?php echo $v['branch_name']; ?>" <?php echo $c; ?>>
                                             <label class="radio_group_label radio_bg" for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
                                         <?php 
                                         } 
@@ -147,19 +150,26 @@
                                 <div class="form-group">
                                     <label class="form-label">Tipe Pesanan</label>
                                     <div class="radio_group">
-                                        <!-- <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0">
+                                        <!-- <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0" data-name="Bulanan">
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_0">Bulanan</label> -->
-                                        <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1">
+                                        <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" data-name="Harian">
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_1">Harian</label>
-                                        <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_2">Midnight</label>
-                                        <input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_3">4 Jam</label>
-                                        <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_4">2 Jam</label>    
+                                        <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2" data-name="Midnight">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_2">Midnight</label>  
                                     </div>
+                                    <div class="radio_group">
+                                        <input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3" data-name="4 Jam">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_3">4 Jam</label>
+                                        <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4" data-name="2 Jam">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_4">2 Jam</label>    
+                                    </div>                                    
                                 </div>
                             </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
+                                <button id="btn_tab_12b" class="btn btn-default" type="button" style="width:100%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                                                                                                       
+                            </div>                                                        
                         </div>                 
                         <div class="tab-pane tab-pane-sub" id="tab13" for="jenis kamar">
                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
@@ -169,6 +179,11 @@
                                     </div>
                                 </div>
                             </div> 
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
+                                <button id="btn_tab_13b" class="btn btn-default" type="button" style="width:100%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                                                                                                       
+                            </div>                               
                         </div>     
                         <div class="tab-pane tab-pane-sub" id="tab14" for="nomor kamar">
                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
@@ -178,6 +193,11 @@
                                     </div>
                                 </div>
                             </div> 
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
+                                <button id="btn_tab_14b" class="btn btn-default" type="button" style="width:100%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                                                                                                       
+                            </div>                            
                         </div> 
                         <div class="tab-pane tab-pane-sub" id="tab15" for="jam masuk">
                             <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
@@ -252,10 +272,13 @@
                                     </div>
                                 </div>                                                       
                             </div>       
-                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                <button id="btn_tab_15" class="btn btn-primary" type="button" style="width:100%;">
-                                    <i class="fas fa-arrow-right"></i> Selanjutnya
-                                </button>                                                                             
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
+                                <button id="btn_tab_15b" class="btn btn-default" type="button" style="width:45%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                                       
+                                <button id="btn_tab_15" class="btn btn-primary" type="button" style="width:50%;">
+                                    Selanjutnya <i class="fas fa-arrow-right"></i>
+                                </button>                                                                                                       
                             </div>                              
                         </div>
                         <div class="tab-pane tab-pane-sub" id="tab16" for="nama dan telepon">
@@ -273,66 +296,88 @@
                                     </div>
                                 </div>                                                    
                             </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                <button id="btn_tab_16" class="btn btn-primary" type="button" style="width:100%;">
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
+                                <button id="btn_tab_16b" class="btn btn-default" type="button" style="width:45%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                                    
+                                <button id="btn_tab_16" class="btn btn-primary" type="button" style="width:50%;">
                                     <i class="fas fa-arrow-right"></i> Selanjutnya
                                 </button>                                                                             
                             </div>                                                          
                         </div>
-                        <div class="tab-pane tab-pane-sub" id="tab17" for="konfirmasi">
+                        <div class="tab-pane tab-pane-sub" id="tab17" for="bukti bayar">
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
-                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                        <div class="form-group">
-                                            <label class="form-label">Bukti Bayar</label>
-                                            <a class="files_link_1" href="<?= site_url('upload/noimage.png'); ?>">
-                                                <img id="files_preview_1" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
-                                            </a>
-                                            <div class="custom-file">
-                                                <input class="form-control" id="files_1" name="files_1" type="file" tabindex="1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
-                                        <div class="form-group">
-                                            <label class="form-label">Metode</label>
-                                            <select id="paid_payment_method" name="paid_payment_method"class="form-control">
-                                            <option value="CASH" selected>Cash</option>
-                                            <option value="TRANSFER">Transfer</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
-                                        <div class="form-group">
-                                            <label class="form-label">Jumlah (Rp)</label>
-                                            <input id="paid_total" name="paid_total" type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>  
-                                <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                     <div class="form-group">
-                                        <label class="form-label">Foto KTP</label>
-                                        <a class="files_link_2" href="<?= site_url('upload/noimage.png'); ?>">
-                                            <img id="files_preview_2" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
+                                        <label class="form-label">Bukti Bayar</label>
+                                        <a class="files_link_1" href="<?= site_url('upload/noimage.png'); ?>">
+                                            <img id="files_preview_1" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                         </a>
                                         <div class="custom-file">
-                                            <input class="form-control" id="files_2" name="files_2" type="file" tabindex="1">
+                                            <input class="form-control" id="files_1" name="files_1" type="file" tabindex="1">
                                         </div>
                                     </div>
-                                </div>  
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                    <div class="form-group">
+                                        <label class="form-label">Metode</label>
+                                        <select id="paid_payment_method" name="paid_payment_method"class="form-control">
+                                        <option value="CASH" selected>Cash</option>
+                                        <option value="TRANSFER">Transfer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                    <div class="form-group">
+                                        <label class="form-label">Jumlah (Rp)</label>
+                                        <input id="paid_total" name="paid_total" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
+                                <button id="btn_tab_17b" class="btn btn-default" type="button" style="width:45%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                                 
+                                <button id="btn_tab_17" class="btn btn-primary" type="button" style="width:50%;">
+                                    <i class="fas fa-arrow-right"></i> Selanjutnya
+                                </button>                                                     
+                            </div>
+                        </div> 
+                        <div class="tab-pane tab-pane-sub" id="tab18" for="ktp">
+                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                <div class="form-group">
+                                    <label class="form-label">Foto KTP</label>
+                                    <a class="files_link_2" href="<?= site_url('upload/noimage.png'); ?>">
+                                        <img id="files_preview_2" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
+                                    </a>
+                                    <div class="custom-file">
+                                        <input class="form-control" id="files_2" name="files_2" type="file" tabindex="1">
+                                    </div>
+                                </div>
                             </div>      
-                            <button id="btn_tab_17" class="btn btn-primary" type="button" style="width:100%;">
-                                <i class="fas fa-arrow-right"></i> Selanjutnya
-                            </button>                                                     
-                        </div>  
-                        <div class="tab-pane tab-pane-sub" id="tab18" for="konfirmasi">
-                            <button id="btn_save_order" class="btn btn-primary" type="button" style="width:45%;">
-                                <i class="fas fa-save"></i> Simpan
-                            </button>
-                            <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="width:45%;">
-                                <i class="fas fa-times"></i>Batal
-                            </button>
-                        </div>                        
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">                            
+                                <button id="btn_tab_18b" class="btn btn-default" type="button" style="width:45%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                             
+                                <button id="btn_tab_18" class="btn btn-primary" type="button" style="width:50%;">
+                                    <i class="fas fa-arrow-right"></i> Selanjutnya
+                                </button>                                                     
+                            </div>
+                        </div>                          
+                        <div class="tab-pane tab-pane-sub" id="tab19" for="konfirmasi">
+                            <div class="col-md-12 col-xs-12 table-responsive">
+                                <table id="table_confirm" class="table table-bordered" style="width:100%;">
+                                </table>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
+                                <button id="btn_tab_19b" class="btn btn-default" type="button" style="width:45%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                             
+                                <button id="btn_save_order" class="btn btn-primary" type="button" style="width:50%;">
+                                    <i class="fas fa-arrow-right"></i> Proses
+                                </button>   
+                            </div>
+                        </div>                      
                     </div>
                     </form>
                 </div>
@@ -372,8 +417,7 @@
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
                                             <div class="clearfix"></div>
 
-                                            <div class="col-md-12 col-xs-12">
-
+                                            <div class="hide col-md-12 col-xs-12">
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <label class="form-label">Periode Awal</label>
                                                     <div class="col-md-12 col-sm-12 padding-remove-side">
@@ -405,7 +449,7 @@
                                                         <select id="filter_branch" name="filter_branch" class="form-control">
                                                             <option value="All">Semua</option>
                                                             <?php
-                                                            foreach($branch as $val){
+                                                            foreach($branch_lily as $val){
                                                                 echo '<option value="'.$val['branch_id'].'">'.$val['branch_name'].'</option>';
                                                             }
                                                             ?>
@@ -421,7 +465,7 @@
                                                             <option value="2">Midnight</option>
                                                             <option value="3">4 jam</option>
                                                             <option value="4">2 jam</option>
-                                                            <option value="0">Bulanan</option>                                                                                                                        
+                                                            <!-- <option value="0">Bulanan</option>                                                                                                                         -->
                                                         </select>
                                                     </div>
                                                 </div>  
