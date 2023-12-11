@@ -173,7 +173,7 @@ $next = true;
             <?php } ?>
             <?php
             //Start of Only Joe
-            if($session['user_data']['user_name'] == 'root'){
+            // if($session['user_data']['user_name'] == 'root'){
             ?>
             <li class="start"> 
                 <a href="#">
@@ -188,7 +188,7 @@ $next = true;
                 </li>
             </li>
             <?php                
-            }
+            // }
             //End of Only Joe  
             ?>          
             <?php  

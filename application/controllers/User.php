@@ -259,8 +259,8 @@ class User extends MY_Controller{
                                     'activity_action' => 4,
                                     'activity_table' => 'users',
                                     'activity_table_id' => $id,
-                                    'activity_text_1' => strtoupper($data['nama']),
-                                    'activity_text_2' => ucwords(strtolower($data['nama'])),
+                                    // 'activity_text_1' => strtoupper($data['nama']),
+                                    // 'activity_text_2' => ucwords(strtolower($data['nama'])),
                                     'activity_date_created' => date('YmdHis'),
                                     'activity_flag' => 0
                                 );
