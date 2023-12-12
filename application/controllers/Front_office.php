@@ -207,74 +207,148 @@ class Front_office extends MY_Controller{
                     $return->recordsFiltered     = $return->total_records;
                     break;
                 case "load_checkin":
-                        $columns = array(
-                            '0' => 'order_item_product_id',
-                            '1' => 'order_date',
-                            '2' => 'order_number'
-                        );
-    
-                        $limit     = !empty($post['length']) ? $post['length'] : 10;
-                        $start     = !empty($post['start']) ? $post['start'] : 0;
-                        $order     = !empty($post['order']) ? $columns[$post['order'][0]['column']] : $columns[0];
-                        $dir       = !empty($post['order'][0]['dir']) ? $post['order'][0]['dir'] : "asc";
-                        
-                        $search    = [];
-                        if(!empty($post['search']['value'])) {
-                            $s = $post['search']['value'];
-                            foreach ($columns as $v) {
-                                $search[$v] = $s;
-                            }
+                    $columns = array(
+                        '0' => 'order_item_product_id',
+                        '1' => 'order_date',
+                        '2' => 'order_number'
+                    );
+
+                    $limit     = !empty($post['length']) ? $post['length'] : 10;
+                    $start     = !empty($post['start']) ? $post['start'] : 0;
+                    $order     = !empty($post['order']) ? $columns[$post['order'][0]['column']] : $columns[0];
+                    $dir       = !empty($post['order'][0]['dir']) ? $post['order'][0]['dir'] : "asc";
+                    
+                    $search    = [];
+                    if(!empty($post['search']['value'])) {
+                        $s = $post['search']['value'];
+                        foreach ($columns as $v) {
+                            $search[$v] = $s;
                         }
-    
-                        $params = array(
-                            'order_item_type' => intval($post['tipe'])
-                        );
-                        
-                        /* If Form Mode Transaction CRUD not Master CRUD
-                        !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
-                        !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
-                        */
-    
-                        //Default Params for Master CRUD Form
-                        // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
-                        // $params['order_name'] = !empty($post['order_name']) ? $post['order_name'] : $params;
-    
-                        /*
-                            if($post['other_column'] && $post['other_column'] > 0) {
-                                $params['other_column'] = $post['other_column'];
-                            }
-                            if($post['filter_type'] !== "All") {
-                                $params['order_type'] = $post['filter_type'];
-                            }
-                        */
-                        if($post['filter_branch'] !== "All") {
-                            $params['order_item_branch_id'] = intval($post['filter_branch']);
+                    }
+
+                    $params = array(
+                        'order_item_type' => intval($post['tipe'])
+                    );
+                    
+                    /* If Form Mode Transaction CRUD not Master CRUD
+                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
+                    !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
+                    */
+
+                    //Default Params for Master CRUD Form
+                    // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
+                    // $params['order_name'] = !empty($post['order_name']) ? $post['order_name'] : $params;
+
+                    /*
+                        if($post['other_column'] && $post['other_column'] > 0) {
+                            $params['other_column'] = $post['other_column'];
                         }
-                        if($post['filter_ref'] !== "All") {
-                            $params['order_item_ref_id'] = intval($post['filter_ref']);
-                        }                    
-                        // if($post['filter_ref_price'] !== "All") {
-                        //     $params['order_item_ref_id'] = $post['filter_ref'];
-                        // }            
-                        if(is_numeric($post['filter_paid'])) {
-                            $params['order_paid'] = intval($post['filter_paid']);
-                        }                                        
-    
-                        $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
-                        if($get_count > 0){
-                            $get_data = $this->Front_model->get_all_booking_item($params, $search, $limit, $start, $order, $dir);
-                            $return->total_records   = $get_count;
-                            $return->status          = 1; 
-                            $return->result          = $get_data;
-                        }else{
-                            $return->total_records   = 0;
-                            $return->result          = [];
+                        if($post['filter_type'] !== "All") {
+                            $params['order_type'] = $post['filter_type'];
                         }
-                        $return->params = $params;
-                        $return->message             = 'Load '.$return->total_records.' data';
-                        $return->recordsTotal        = $return->total_records;
-                        $return->recordsFiltered     = $return->total_records;
-                        break;
+                    */
+                    if($post['filter_branch'] !== "All") {
+                        $params['order_item_branch_id'] = intval($post['filter_branch']);
+                    }
+                    if($post['filter_ref'] !== "All") {
+                        $params['order_item_ref_id'] = intval($post['filter_ref']);
+                    }                    
+                    // if($post['filter_ref_price'] !== "All") {
+                    //     $params['order_item_ref_id'] = $post['filter_ref'];
+                    // }            
+                    if(is_numeric($post['filter_paid'])) {
+                        $params['order_paid'] = intval($post['filter_paid']);
+                    }                                        
+
+                    $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
+                    if($get_count > 0){
+                        $get_data = $this->Front_model->get_all_booking_item($params, $search, $limit, $start, $order, $dir);
+                        $return->total_records   = $get_count;
+                        $return->status          = 1; 
+                        $return->result          = $get_data;
+                    }else{
+                        $return->total_records   = 0;
+                        $return->result          = [];
+                    }
+                    $return->params = $params;
+                    $return->message             = 'Load '.$return->total_records.' data';
+                    $return->recordsTotal        = $return->total_records;
+                    $return->recordsFiltered     = $return->total_records;
+                    break;
+                case "load_checkin_cece":
+                    $columns = array(
+                        '0' => 'order_item_order_id',
+                        '1' => 'order_item_flag_checkin',
+                        '2' => 'order_date',
+                        '3' => 'order_number',
+                        '4' => 'order_item_ref_id',
+                        '5' => 'product_name'
+                    );
+
+                    $limit     = !empty($post['length']) ? $post['length'] : 10;
+                    $start     = !empty($post['start']) ? $post['start'] : 0;
+                    $order     = !empty($post['order']) ? $columns[$post['order'][0]['column']] : $columns[0];
+                    $dir       = !empty($post['order'][0]['dir']) ? $post['order'][0]['dir'] : "asc";
+                    
+                    $search    = [];
+                    if(!empty($post['search']['value'])) {
+                        $s = $post['search']['value'];
+                        foreach ($columns as $v) {
+                            $search[$v] = $s;
+                        }
+                    }
+
+                    $params = array(
+                        'order_item_type' => intval($post['tipe']),
+                        'branch_code' => 1,
+                        'order_item_flag_checkin <' => 3
+                    );
+                    
+                    /* If Form Mode Transaction CRUD not Master CRUD
+                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
+                    !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
+                    */
+
+                    //Default Params for Master CRUD Form
+                    // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
+                    // $params['order_name'] = !empty($post['order_name']) ? $post['order_name'] : $params;
+
+                    /*
+                        if($post['other_column'] && $post['other_column'] > 0) {
+                            $params['other_column'] = $post['other_column'];
+                        }
+                        if($post['filter_type'] !== "All") {
+                            $params['order_type'] = $post['filter_type'];
+                        }
+                    */
+                    if($post['filter_branch'] !== "All") {
+                        $params['order_item_branch_id'] = intval($post['filter_branch']);
+                    }
+                    if($post['filter_ref'] !== "All") {
+                        $params['order_item_ref_id'] = intval($post['filter_ref']);
+                    }                    
+                    // if($post['filter_ref_price'] !== "All") {
+                    //     $params['order_item_ref_id'] = $post['filter_ref'];
+                    // }            
+                    if(is_numeric($post['filter_paid'])) {
+                        $params['order_paid'] = intval($post['filter_paid']);
+                    }                                        
+
+                    $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
+                    if($get_count > 0){
+                        $get_data = $this->Front_model->get_all_booking_item($params, $search, $limit, $start, $order, $dir);
+                        $return->total_records   = $get_count;
+                        $return->status          = 1; 
+                        $return->result          = $get_data;
+                    }else{
+                        $return->total_records   = 0;
+                        $return->result          = [];
+                    }
+                    $return->params = $params;
+                    $return->message             = 'Load '.$return->total_records.' data';
+                    $return->recordsTotal        = $return->total_records;
+                    $return->recordsFiltered     = $return->total_records;
+                    break;
                 case "load_checkin_lily":
                     $columns = array(
                         '0' => 'order_item_order_id',

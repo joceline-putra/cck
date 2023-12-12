@@ -743,6 +743,80 @@ class MY_Controller extends CI_Controller{
         }
         return $r;
     }
+    public function file_upload($path = null, $file, $params = null) { //Binary Upload File
+        $return          = new \stdClass();
+        $return->status  = 0;
+        $return->message = '';
+        $return->result  = '';
+
+        if(!empty($file) and ($file !== 'undefined')){
+            $image_height   = !empty($params['height']) ? $params['height'] : 480;
+            $image_width    = !empty($params['width']) ? $params['width'] : 480;
+
+            $file_size = $file['size'] / 1024; // 94018 / 1024 = 91 byte
+            $file_name = $file['name']; // apsaja.jpg
+            $file_type = $file['type']; // image/jpeg
+                     
+            $file_config = array(
+                'upload_path' => FCPATH . $path,
+                'allowed_types' => 'gif|jpg|png|jpeg|pdf|doc|xml|xls|xlsx|docx'
+            ); 
+            $this->load->library('upload', $file_config);
+            $this->upload->initialize($file_config);
+            
+            //Make Directory if Not Exists
+            $folder = FCPATH . $path;
+            if(!file_exists($folder)){
+                mkdir($folder, 0775, true);
+            }
+
+            //Process Upload
+            if ($this->upload->do_upload('files')) {
+                $upload = $this->upload->data();
+                // $rename_file = date("YmdHis") . $upload['file_ext']; //1231232.png
+                $rename_file = $this->random_session(20) . $upload['file_ext'];
+                // $old_name = $upload['full_path']; // abc/uoload/ABC.png
+                // $new_name = $path . $raw_photo; // abc/upload/1231232.png
+
+                if (rename($upload['full_path'], $path . $rename_file)) {
+                    if($upload['is_image'] == 1){ //If Data IMAGE
+                        $file_compress = [
+                            'image_library' => 'gd2',
+                            'source_image' => $path . $rename_file,
+                            'create_thumb' => FALSE,
+                            'maintain_ratio' => TRUE,
+                            'width' => $image_width,
+                            'height' => $image_height,
+                            'new_image' => $path . $rename_file
+                        ];                                    
+                        $this->load->library('image_lib', $file_compress);
+                        $this->image_lib->resize();
+                        $file_size = ($upload['is_image'] == 1) ? filesize($path . $rename_file) : $upload['file_size'];
+                        $file_size = $file_size / 1024;
+                    }else{
+                        $file_size = $upload['file_size'];
+                    }
+                }
+
+                $return->status   = 0;
+                $return->message  = 'Upload success'; 
+                $return->result   = $upload;      
+                $return->file     = array(
+                    'name' => $rename_file, //123.jpg
+                    'path' => $path, // upload/test
+                    'directory' => $path . $rename_file, // upload/test/123.jpg
+                    'size' => $file_size, // 91.81 in KB
+                    'type' => str_replace('.','',$upload['file_ext']), // jpeg
+                );     
+            }else{
+                $return['status'] = 0;
+                $return['message'] = $this->upload->display_errors();
+            }
+        }else{
+            $return->message = 'File not ready';
+        }
+        return $return;
+    }      
 }
 
 ?>

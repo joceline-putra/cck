@@ -178,7 +178,7 @@ $next = true;
             <li class="start"> 
                 <a href="#">
                     <i class="fas fa-wallet"></i>
-                    <span class="title">Bookings</span> <span class="selected"></span>
+                    <span class="title">Booking</span> <span class="selected"></span>
                 </a>
                 <li class="start open">
                     <ul class="open sub-menu" style="display:block;">

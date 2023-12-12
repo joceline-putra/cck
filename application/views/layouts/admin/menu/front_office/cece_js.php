@@ -115,7 +115,7 @@
                 dataType: 'json',
                 cache: 'false',
                 data: function(d) {
-                    d.action = 'load_checkin_lily';
+                    d.action = 'load_checkin_cece';
                     d.tipe = 222;
                     d.search = {value:$("#filter_search").val()};
                     d.date_start = $("#filter_start_date").val();
