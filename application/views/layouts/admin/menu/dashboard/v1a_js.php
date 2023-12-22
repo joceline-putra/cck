@@ -6,728 +6,681 @@
         var url_dashboard = "<?= base_url('dashboard'); ?>";
         var url_trans = "<?= base_url('transaksi/manage'); ?>";
 
-        // $(function() {
-        // });
-
-        // Start of Daterange
-        var start = moment().subtract(1, 'days');
-        var end = moment();
-
-        function set_daterangepicker(start, end) {
-            $("#filter_date").attr('data-start', start.format('DD-MM-YYYY'));
-            $("#filter_date").attr('data-end', end.format('DD-MM-YYYY'));
-            $('#filter_date span').html(start.format('D-MMM-YYYY') + '&nbsp;&nbsp;&nbsp;&nbsp;sd&nbsp;&nbsp;&nbsp;&nbsp;' + end.format('D-MMM-YYYY'));
-        }
-        $('#filter_date').daterangepicker({
-            startDate: start, //mm/dd/yyyy
-            endDate: end, ////mm/dd/yyyy
-            "showDropdowns": true,
-            "minYear": 2019,
-            // "maxYear": 2020,
-            "autoApply": false,
-            "alwaysShowCalendars": true,
-            "opens": "center",
-            "buttonClasses": "btn btn-sms",
-            "applyButtonClasses": "btn-primaryd",
-            "cancelClass": "btn-defaults",
-            "ranges": {
-                'Hari ini': [moment(), moment()],
-                'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
-                '30 hari terakhir': [moment().subtract(29, 'days'), moment()],
-                'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
-                'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            },
-            "locale": {
-                "format": "MM/DD/YYYY",
-                "separator": " - ",
-                "applyLabel": "Apply",
-                "cancelLabel": "Cancel",
-                "fromLabel": "From",
-                "toLabel": "To",
-                "customRangeLabel": "Custom",
-                "weekLabel": "W",
-                "daysOfWeek": ["Mn", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"],
-                "monthNames": ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
-                "firstDay": 1
-            }
-        }, function (start, end, label) {
-            // console.log(start.format('YYYY-MM-DD')+' to '+end.format('YYYY-MM-DD'));
-            set_daterangepicker(start, end);
-            // checkup_table.ajax.reload();
-        });
-        // $("#filter_date").on('change',function(e){
-        //     console.log('here');
-        // });
-        $('#filter_date').on('apply.daterangepicker', function (ev, picker) {
-            console.log(ev + ', ' + picker);
-            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-            $("#dashboard-notif").html('');
-            checkDashboardActivity(1);
-        });
-        set_daterangepicker(start, end);
-        // End of Daterange
-
-        var randomScalingFactor = function () {
-            return Math.round(Math.random() * 100 * (Math.random() > 0.5 ? -1 : 1));
-        };
-
-        //Dashboard Scroll
-        var limit_start = 1;
-        var next_ = true; // true = data ada dimuat kembali & false = data tidak ada!
-        if (next_ == true) { //Start on Refresh Page
-            next_ = false;
-            checkDashboardActivity(limit_start);
-        }
-
-        $(window).on("scroll", function (e) {
-            var scrollTop = Math.round($(window).scrollTop());
-            var height = Math.round($(window).height());
-            var dashboardHeight = Math.round($(document).height());
-            // console.log('Top:'+parseInt(scrollTop)+', Height:'+height+', Notif:'+dashboardHeight+', Next: '+next_+', Limit: '+limit_start);  
-            // if($(window).scrollTop() + $(window).height() > $("#dashboard-notif").height() && next_ == true){
-            if ($(window).scrollTop() + $(window).height() > ($(document).height() - 100) && next_ == true) {
-                next_ = false;
-                limit_start = limit_start + 1;
-                checkDashboardActivity(limit_start);
-            }
-        });
-
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            onOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-
-        var params = {
-            title: 'Are you sure ?',
-            size: 'lg',
-            button: [
-                {
-                    text: 'Ok',
-                    class: 'btn-primary',
-                    action: ''
-                },
-                {
-                    text: 'Cancel',
-                    class: 'btn-danger',
-                    action: ''
-                }
-            ]
-        };
-        // modal_form(params);
-
-        $('#dashboard_user').select2();
-        $('.date').datepicker({
-            // defaultDate: new Date(),
-            format: 'dd-mm-yyyy',
-            autoclose: true,
-            enableOnReadOnly: true,
-            language: "id",
-            todayHighlight: true,
-            weekStart: 1
-        }).on("changeDate", function (e) {
-        });
-
-        $("#tgl_2").val("<?php echo $end_date; ?>");
-        var tglawal = $("#tgl_1").val();
-        var tglakhir = $("#tgl_2").val();
-
-        if ($("#iduser").val() == 2) {
-
-        } else {
-            //   checkDashboardActivity();
-        }
-
-        // checkTaskApproval();
-        // checkBarangProduksi();
-        // chartDokumenBCMasuk();
-        // chartDokumenBCKeluar();
-        // checkBarangTerjual();
-        // checkBarangTerbeli();
-        $("#tgl_awal, #tgl_akhir, #dashboard_user").on('change', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            // console.log('Haha');
-            $("#dashboard-notif").html('');
-            checkDashboardActivity(1);
-        });
-
-        $(document).on("click", ".link", function (e) {
-            var url = $(this).data('url');
-            window.open(url, '_blank');
-        });
-
-        //Approval
-        $(document).on("click", ".btn-approvel-user", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var id = $(this).attr('data-user-id');
-            var name = $(this).attr('data-user-name');
-            $.alert('Function belum tersedia');
-        });
-        $(document).on("click", ".btn-approval-print", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var url = $(this).data('url');
-            window.open(url, '_blank');
-        });
-        $(document).on("click", ".btn-approval-action", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var approval_session = $(this).attr('data-approval-session');
-            var trans_session = $(this).attr('data-trans-session');
-            var trans_number = $(this).attr('data-trans-number');
-            var trans_total = $(this).attr('data-trans-total');
-            var contact_name = $(this).attr('data-contact-name');
-            // $.alert('Function belum tersedia'+session+', '+trans_number);
-            $.confirm({
-                title: 'Konfirmasi Persetujuan',
-                content: 'Apakah anda ingin menindaklanjuti dokumen <b>' + trans_number + '</b> @' + contact_name + ' senilai <b>IDR ' + addCommas(trans_total) + '</b> ?',
-                columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
-                // autoClose: 'button_5|60000',
-                closeIcon: true,
-                closeIconClass: 'fas fa-times',
-                animation: 'zoom',
-                closeAnimation: 'bottom',
-                animateFromElement: false,
-                onContentReady: function(e){
-                    let self    = this;
-                    let content = '';
-                    let dsp     = '';
-            
-                    // dsp += '<div>Content is ready after process !</div>';
-                    dsp += '<form id="jc_form">';
-                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                        dsp += '    <div class="form-group">';
-                        dsp += '    <label class="form-label">Komentar</label>';
-                        dsp += '        <textarea id="jc_textarea" name="alamat" class="form-control" rows="1" style="height:48px!important;"></textarea>';
-                        dsp += '    </div>';
-                        dsp += '</div>';
-                    dsp += '</form>';
-                    content = dsp;
-                    self.setContentAppend(content);
-                    // self.buttons.button_1.disable();
-                    // self.buttons.button_2.disable();
-            
-                    // this.$content.find('form').on('submit', function (e) {
-                    //      e.preventDefault();
-                    //      self.$$formSubmit.trigger('click'); // reference the button and click it
-                    // });
-                },                
-                buttons: {
-                    button_1: {
-                        text: '<i class="fas fa-check-square"></i> Setujui', btnClass: 'btn-primary',
-                        action: function () {
-                            let self      = this;
-                            // let input = self.$content.find("#jc_textarea").val();
-                            // if(!input){
-                                // $.alert('Mohon isi komentarnya');
-                                // return false;
-                            // }else{
-                                $.ajax({type: "post", url: url_approval,
-                                    data: {
-                                        action: 'update',
-                                        approval_session: approval_session,
-                                        approval_flag:1,
-                                        approval_comment:input
-                                    }, dataType: 'json', cache: 'false',
-                                    success: function (d) {
-                                        notif(d.status, d.message);
-                                        checkApprovalRequest();
-                                    }
-                                });
-                            // }
-                        }
-                    },
-                    button_3: {
-                        text: '<i class="fas fa-times"></i> Tolak', btnClass: 'btn-danger',
-                        action: function () {
-                            let self      = this;
-                            let input = self.$content.find("#jc_textarea").val();
-                            if(!input){
-                                $.alert('Mohon isi komentarnya');
-                                self.$content.focus();
-                                return false;
-                            }else{
-                                $.ajax({type: "post", url: url_approval,
-                                    data: {
-                                        action: 'update',
-                                        approval_session: approval_session,
-                                        approval_flag: 3,
-                                        approval_comment:input
-                                    }, dataType: 'json', cache: 'false',
-                                    success: function (d) {
-                                        notif(d.status, d.message);
-                                        checkApprovalRequest();
-                                    }
-                                });
-                            }
-                        }
-                    }
+        // Variable
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             });
-        });
+            const randomScalingFactor = function () {
+                return Math.round(Math.random() * 100 * (Math.random() > 0.5 ? -1 : 1));
+            };
+            $('#dashboard_user').select2();
+            $('.date').datepicker({
+                // defaultDate: new Date(),
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                enableOnReadOnly: true,
+                language: "id",
+                todayHighlight: true,
+                weekStart: 1
+            }).on("changeDate", function (e) {
+                console.log('changeDate from .date');
+            });
 
-        /* CHART Demo */
-        var id_chart_one = document.getElementById("chart-one").getContext("2d");
-        gradient = id_chart_one.createLinearGradient(0, 0, 0, 200);
-        gradient.addColorStop(0, 'rgba(105, 220, 219, .1)');
-        gradient.addColorStop(0.25, 'rgba(105, 220, 219, .1)');
-        gradient.addColorStop(1, 'rgba(105, 220, 219, 1)');
-        var config_chart_one = {
-            type: 'line',
-            data: {
-                labels: ["1", "2", "3", "4", "5", "6"],
-                datasets: [
-                    {
-                        label: "Pemasukan",
-                        data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()],
-                        borderWidth: 2,
-                        pointBorderColor: '#36a6a3',
-                        pointBackgroundColor: 'white',
-                        backgroundColor: '#36a6a36b',
-                        borderColor: '#36a6a3'
+        // Start of Daterange
+            var start = moment().subtract(1, 'days');
+            var end = moment();
+            $('#filter_date').daterangepicker({
+                startDate: start, //mm/dd/yyyy
+                endDate: end, ////mm/dd/yyyy
+                "showDropdowns": true,
+                "minYear": 2019,
+                // "maxYear": 2020,
+                "autoApply": false,
+                "alwaysShowCalendars": true,
+                "opens": "center",
+                "buttonClasses": "btn btn-sms",
+                "applyButtonClasses": "btn-primaryd",
+                "cancelClass": "btn-defaults",
+                "ranges": {
+                    'Hari ini': [moment(), moment()],
+                    'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
+                    '30 hari terakhir': [moment().subtract(29, 'days'), moment()],
+                    'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                    'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                "locale": {
+                    "format": "MM/DD/YYYY",
+                    "separator": " - ",
+                    "applyLabel": "Apply",
+                    "cancelLabel": "Cancel",
+                    "fromLabel": "From",
+                    "toLabel": "To",
+                    "customRangeLabel": "Custom",
+                    "weekLabel": "W",
+                    "daysOfWeek": ["Mn", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"],
+                    "monthNames": ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+                    "firstDay": 1
+                }
+            }, function (start, end, label) {
+                // console.log(start.format('YYYY-MM-DD')+' to '+end.format('YYYY-MM-DD'));
+                set_daterangepicker(start, end);
+                // checkup_table.ajax.reload();
+            });
+            $('#filter_date').on('apply.daterangepicker', function (ev, picker) {
+                console.log(ev + ', ' + picker);
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                $("#dashboard-notif").html('');
+                checkDashboardActivity(1);
+            });
+            function set_daterangepicker(start, end) {
+                $("#filter_date").attr('data-start', start.format('DD-MM-YYYY'));
+                $("#filter_date").attr('data-end', end.format('DD-MM-YYYY'));
+                $('#filter_date span').html(start.format('D-MMM-YYYY') + '&nbsp;&nbsp;&nbsp;&nbsp;sd&nbsp;&nbsp;&nbsp;&nbsp;' + end.format('D-MMM-YYYY'));
+            }        
+            set_daterangepicker(start, end);
+        // End of Daterange
+
+        // Dashboard Scroll Activities
+            var limit_start = 1;
+            var next_ = true; // true = data ada dimuat kembali & false = data tidak ada!
+            if (next_ == true) { //Start on Refresh Page
+                next_ = false;
+                checkDashboardActivity(limit_start);
+            }
+            $(window).on("scroll", function (e) {
+                var scrollTop = Math.round($(window).scrollTop());
+                var height = Math.round($(window).height());
+                var dashboardHeight = Math.round($(document).height());
+                if ($(window).scrollTop() + $(window).height() > ($(document).height() - 100) && next_ == true) {
+                    next_ = false;
+                    limit_start = limit_start + 1;
+                    checkDashboardActivity(limit_start);
+                }
+            });
+        // End of Dashboard School
+
+        // Approval
+            $(document).on("click", ".btn-approvel-user", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var id = $(this).attr('data-user-id');
+                var name = $(this).attr('data-user-name');
+                $.alert('Function belum tersedia');
+            });
+            $(document).on("click", ".btn-approval-print", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var url = $(this).data('url');
+                window.open(url, '_blank');
+            });
+            $(document).on("click", ".btn-approval-action", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var approval_session = $(this).attr('data-approval-session');
+                var trans_session = $(this).attr('data-trans-session');
+                var trans_number = $(this).attr('data-trans-number');
+                var trans_total = $(this).attr('data-trans-total');
+                var contact_name = $(this).attr('data-contact-name');
+                // $.alert('Function belum tersedia'+session+', '+trans_number);
+                $.confirm({
+                    title: 'Konfirmasi Persetujuan',
+                    content: 'Apakah anda ingin menindaklanjuti dokumen <b>' + trans_number + '</b> @' + contact_name + ' senilai <b>IDR ' + addCommas(trans_total) + '</b> ?',
+                    columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                    // autoClose: 'button_5|60000',
+                    closeIcon: true,
+                    closeIconClass: 'fas fa-times',
+                    animation: 'zoom',
+                    closeAnimation: 'bottom',
+                    animateFromElement: false,
+                    onContentReady: function(e){
+                        let self    = this;
+                        let content = '';
+                        let dsp     = '';
+                
+                        // dsp += '<div>Content is ready after process !</div>';
+                        dsp += '<form id="jc_form">';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Komentar</label>';
+                            dsp += '        <textarea id="jc_textarea" name="alamat" class="form-control" rows="1" style="height:48px!important;"></textarea>';
+                            dsp += '    </div>';
+                            dsp += '</div>';
+                        dsp += '</form>';
+                        content = dsp;
+                        self.setContentAppend(content);
+                        // self.buttons.button_1.disable();
+                        // self.buttons.button_2.disable();
+                
+                        // this.$content.find('form').on('submit', function (e) {
+                        //      e.preventDefault();
+                        //      self.$$formSubmit.trigger('click'); // reference the button and click it
+                        // });
+                    },                
+                    buttons: {
+                        button_1: {
+                            text: '<i class="fas fa-check-square"></i> Setujui', btnClass: 'btn-primary',
+                            action: function () {
+                                let self      = this;
+                                // let input = self.$content.find("#jc_textarea").val();
+                                // if(!input){
+                                    // $.alert('Mohon isi komentarnya');
+                                    // return false;
+                                // }else{
+                                    $.ajax({type: "post", url: url_approval,
+                                        data: {
+                                            action: 'update',
+                                            approval_session: approval_session,
+                                            approval_flag:1,
+                                            approval_comment:input
+                                        }, dataType: 'json', cache: 'false',
+                                        success: function (d) {
+                                            notif(d.status, d.message);
+                                            checkApprovalRequest();
+                                        }
+                                    });
+                                // }
+                            }
+                        },
+                        button_3: {
+                            text: '<i class="fas fa-times"></i> Tolak', btnClass: 'btn-danger',
+                            action: function () {
+                                let self      = this;
+                                let input = self.$content.find("#jc_textarea").val();
+                                if(!input){
+                                    $.alert('Mohon isi komentarnya');
+                                    self.$content.focus();
+                                    return false;
+                                }else{
+                                    $.ajax({type: "post", url: url_approval,
+                                        data: {
+                                            action: 'update',
+                                            approval_session: approval_session,
+                                            approval_flag: 3,
+                                            approval_comment:input
+                                        }, dataType: 'json', cache: 'false',
+                                        success: function (d) {
+                                            notif(d.status, d.message);
+                                            checkApprovalRequest();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+            $(document).on("click", ".link", function (e) {
+                $.alert('Not Ready');
+                var url = $(this).data('url');
+                window.open(url, '_blank');
+            });
+        // Enf of Approval
+
+        /* Chart One chart_trans_last_order() */
+            var id_chart_one = document.getElementById("chart-one").getContext("2d");
+            gradient = id_chart_one.createLinearGradient(0, 0, 0, 200);
+            gradient.addColorStop(0, 'rgba(105, 220, 219, .1)');
+            gradient.addColorStop(0.25, 'rgba(105, 220, 219, .1)');
+            gradient.addColorStop(1, 'rgba(105, 220, 219, 1)');
+            var config_chart_one = {
+                type: 'line',
+                data: {
+                    labels: ["1", "2", "3", "4", "5", "6"],
+                    datasets: [
+                        {
+                            label: "Pemasukan",
+                            data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()],
+                            borderWidth: 2,
+                            pointBorderColor: '#36a6a3',
+                            pointBackgroundColor: 'white',
+                            backgroundColor: '#36a6a36b',
+                            borderColor: '#36a6a3'
+                        },
+                        {
+                            label: "Biaya Operasional",
+                            data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()],
+                            borderWidth: 2,
+                            pointBorderColor: '#ef6605',
+                            pointBackgroundColor: 'white',
+                            backgroundColor: '#ef66057a',
+                            borderColor: '#ef6605'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    title: {
+                        display: false,
+                        text: 'Chart.js Line Chart - Legend'
                     },
-                    {
-                        label: "Biaya Operasional",
-                        data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()],
-                        borderWidth: 2,
-                        pointBorderColor: '#ef6605',
-                        pointBackgroundColor: 'white',
-                        backgroundColor: '#ef66057a',
-                        borderColor: '#ef6605'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                title: {
-                    display: false,
-                    text: 'Chart.js Line Chart - Legend'
-                },
-                animation: {
-                    easing: 'easeInOutQuad',
-                    duration: 520,
-                    onComplete: function () {
-                        // var chartInstance = this.chart,
-                        // ctx = chartInstance.ctx;
+                    animation: {
+                        easing: 'easeInOutQuad',
+                        duration: 520,
+                        onComplete: function () {
+                            // var chartInstance = this.chart,
+                            // ctx = chartInstance.ctx;
 
-                        // ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-                        // ctx.textAlign = 'center';
-                        // ctx.textBaseline = 'bottom';
+                            // ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                            // ctx.textAlign = 'center';
+                            // ctx.textBaseline = 'bottom';
 
-                        // this.data.datasets.forEach(function(dataset, i) {
-                        //   var meta = chartInstance.controller.getDatasetMeta(i);
-                        //   meta.data.forEach(function(bar, index) {
-                        //     var data = dataset.data[index];
-                        //     ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                        //   });
-                        // });
-                    }
-                },
-                legend: {
-                    display: true,
-                    position: 'bottom'
-                },
-                elements: {
-                    line: {
-                        tension: 0.4
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                            type: 'category',
-                            lineWidth: 2,
-                            display: true,
-                            color: 'rgba(200, 200, 200, 0.05)',
-                            gridLines: {
+                            // this.data.datasets.forEach(function(dataset, i) {
+                            //   var meta = chartInstance.controller.getDatasetMeta(i);
+                            //   meta.data.forEach(function(bar, index) {
+                            //     var data = dataset.data[index];
+                            //     ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                            //   });
+                            // });
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.4
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                                type: 'category',
+                                lineWidth: 2,
+                                display: true,
                                 color: 'rgba(200, 200, 200, 0.05)',
-                                lineWidth: 2
-                            },
-                            scaleLabel: {
-                                display: false,
-                                labelString: 'date'
-                            }
-                        }],
-                    yAxes: [
-                        {
-                            display: true,
-                            lineWidth: 1,
-                            color: 'rgba(200, 200, 150, 0.08)',
-                            gridLines: {
-                                color: 'rgba(200, 200, 200, 0.08)',
-                                lineWidth: 1
-                            },
-                            scaleLabel: {
-                                display: false,
-                                labelString: 'order'
-                            },
-                            ticks: {
-                                callback: function (value, index, values) {
-                                    var ret = value;
-                                    return parseInt(ret).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                gridLines: {
+                                    color: 'rgba(200, 200, 200, 0.05)',
+                                    lineWidth: 2
+                                },
+                                scaleLabel: {
+                                    display: false,
+                                    labelString: 'date'
+                                }
+                            }],
+                        yAxes: [
+                            {
+                                display: true,
+                                lineWidth: 1,
+                                color: 'rgba(200, 200, 150, 0.08)',
+                                gridLines: {
+                                    color: 'rgba(200, 200, 200, 0.08)',
+                                    lineWidth: 1
+                                },
+                                scaleLabel: {
+                                    display: false,
+                                    labelString: 'order'
+                                },
+                                ticks: {
+                                    callback: function (value, index, values) {
+                                        var ret = value;
+                                        return parseInt(ret).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                    }
                                 }
                             }
+                        ]
+                    },
+                    point: {
+                        backgroundColor: 'white'
+                    },
+                    tooltips: {
+                        titleFontFamily: 'Open Sans',
+                        backgroundColor: 'rgba(0,0,0,0.3)',
+                        titleFontColor: 'white',
+                        caretSize: 5,
+                        cornerRadius: 2,
+                        xPadding: 10,
+                        yPadding: 10
+                    }
+                }
+            };
+            window.chart_one = new Chart(id_chart_one, config_chart_one);
+
+        /* Chart Two chart_trans_buy_sell() */
+            var id_chart_two = document.getElementById('chart-two').getContext('2d');
+            var config_chart_two = {
+                type: 'bar',
+                data: {
+                    labels: ['-', '-', '-', '-', '-', '-'],
+                    datasets: [
+                        {
+                            label: 'Pembelian',
+                            data: [30, 10, 20, 45, 25, 15],
+                            backgroundColor: '#DB2E59',
+                            borderWidth: 4,
+                            pointBorderColor: '#DB2E59',
+                            pointBackgroundColor: 'white',
+                            borderColor: '#DB2E59'
+                        }, {
+                            label: 'Penjualan',
+                            data: [40, 30, 75, 100, 65, 50],
+                            backgroundColor: '#0090d9',
+                            borderWidth: 4,
+                            pointBorderColor: '#0090d9',
+                            pointBackgroundColor: 'white',
+                            borderColor: '#0090d9'
                         }
                     ]
                 },
-                point: {
-                    backgroundColor: 'white'
-                },
-                tooltips: {
-                    titleFontFamily: 'Open Sans',
-                    backgroundColor: 'rgba(0,0,0,0.3)',
-                    titleFontColor: 'white',
-                    caretSize: 5,
-                    cornerRadius: 2,
-                    xPadding: 10,
-                    yPadding: 10
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scaleShowValues: true,
+                    title: {
+                        display: false,
+                        text: 'Grafik Jual Beli'
+                    },
+                    animation: {
+                        easing: 'easeInOutQuad',
+                        duration: 520,
+                        onComplete: function () {
+                            var chartInstance = this.chart,
+                                    ctx = chartInstance.ctx;
+                            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+
+                            this.data.datasets.forEach(function (dataset, i) {
+                                var meta = chartInstance.controller.getDatasetMeta(i);
+                                meta.data.forEach(function (bar, index) {
+                                    var data = dataset.data[index];
+                                    // ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                                });
+                            });
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        display: true,
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.2
+                        }
+                    },
+                    scales: {
+                        xAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: false,
+                                    display: true,
+                                    callback: function (value, index, values) {
+                                        return value.toLocaleString();
+                                    }
+                                },
+                                gridLines: {
+                                    color: 'rgba(200, 200, 200, 0.08)',
+                                    lineWidth: 1
+                                }
+                            }
+                        ],
+                        yAxes: [{
+                                ticks: {
+                                    beginAtZero: false,
+                                    display: true,
+                                    callback: function (value, index, values) {
+                                        return value.toLocaleString();
+                                    }
+                                },
+                                gridLines: {
+                                    color: 'rgba(200, 200, 200, 0.08)',
+                                    lineWidth: 1
+                                }
+                            }]
+                    },
                 }
-            }
-        };
-        window.chart_one = new Chart(id_chart_one, config_chart_one);
+            };
+            window.chart_two = new Chart(id_chart_two, config_chart_two);
 
-        var id_chart_two = document.getElementById('chart-two').getContext('2d');
-        var config_chart_two = {
-            type: 'bar',
-            data: {
-                labels: ['-', '-', '-', '-', '-', '-'],
-                datasets: [
-                    {
-                        label: 'Pembelian',
-                        data: [30, 10, 20, 45, 25, 15],
-                        backgroundColor: '#DB2E59',
-                        borderWidth: 4,
-                        pointBorderColor: '#DB2E59',
-                        pointBackgroundColor: 'white',
-                        borderColor: '#DB2E59'
-                    }, {
-                        label: 'Penjualan',
-                        data: [40, 30, 75, 100, 65, 50],
-                        backgroundColor: '#0090d9',
-                        borderWidth: 4,
-                        pointBorderColor: '#0090d9',
-                        pointBackgroundColor: 'white',
-                        borderColor: '#0090d9'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                scaleShowValues: true,
-                title: {
-                    display: false,
-                    text: 'Grafik Jual Beli'
-                },
-                animation: {
-                    easing: 'easeInOutQuad',
-                    duration: 520,
-                    onComplete: function () {
-                        var chartInstance = this.chart,
-                                ctx = chartInstance.ctx;
-                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'bottom';
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var data = dataset.data[index];
-                                // ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                            });
-                        });
-                    }
-                },
-                legend: {
-                    position: 'bottom',
-                    display: true,
-                },
-                elements: {
-                    line: {
-                        tension: 0.2
-                    }
-                },
-                scales: {
-                    xAxes: [
+        /* Chart Three chart_trans_three() */
+            var id_chart_three = document.getElementById('chart-three').getContext('2d');
+            var config_chart_three = {
+                type: 'line',
+                data: {
+                    labels: ['-', '-', '-', '-', '-', '-'],
+                    datasets: [
                         {
-                            ticks: {
-                                beginAtZero: false,
-                                display: true,
-                                callback: function (value, index, values) {
-                                    return value.toLocaleString();
-                                }
-                            },
-                            gridLines: {
-                                color: 'rgba(200, 200, 200, 0.08)',
-                                lineWidth: 1
-                            }
-                        }
-                    ],
-                    yAxes: [{
-                            ticks: {
-                                beginAtZero: false,
-                                display: true,
-                                callback: function (value, index, values) {
-                                    return value.toLocaleString();
-                                }
-                            },
-                            gridLines: {
-                                color: 'rgba(200, 200, 200, 0.08)',
-                                lineWidth: 1
-                            }
-                        }]
-                },
-            }
-        };
-        window.chart_two = new Chart(id_chart_two, config_chart_two);
-
-        var id_chart_three = document.getElementById('chart-three').getContext('2d');
-        var config_chart_three = {
-            type: 'line',
-            data: {
-                labels: ['-', '-', '-', '-', '-', '-'],
-                datasets: [
-                    {
-                        label: 'Beli',
-                        data: [30, 10, 20, 45, 25, 15],
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        pointBorderColor: '#DB2E59',
-                        pointBackgroundColor: '#DB2E59',
-                        borderColor: '#DB2E59'
-                    }, {
-                        label: 'Jual',
-                        data: [40, 30, 75, 100, 65, 50],
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        pointBorderColor: '#0090d9',
-                        pointBackgroundColor: '#0090d9',
-                        borderColor: '#0090d9'
-                    }, {
-                        label: 'Pemasukan',
-                        data: [90, 60, 35, 100, 60, 40],
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        pointBorderColor: '#36a6a3',
-                        pointBackgroundColor: '#36a6a3',
-                        borderColor: '#36a6a3'
-                    }, {
-                        label: 'Biaya',
-                        data: [50, 40, 20, 80, 50, 20],
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        pointBorderColor: '#ef6605',
-                        pointBackgroundColor: '#ef6605',
-                        borderColor: '#ef6605'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                title: {
-                    display: false,
-                    text: 'Grafik Jual Beli'
-                },
-                animation: {
-                    easing: 'easeInOutQuad',
-                    duration: 520,
-                    onComplete: function () {
-                        var chartInstance = this.chart,
-                                ctx = chartInstance.ctx;
-                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'bottom';
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var data = dataset.data[index];
-                                // ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                            });
-                        });
-                    }
-                },
-                legend: {
-                    position: 'bottom',
-                    display: true,
-                },
-                elements: {
-                    line: {
-                        tension: 0.1
-                    }
-                },
-                scales: {
-                    xAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true,
-                                callback: function (value, index, values) {
-                                    return value.toLocaleString();
-                                }
-                            },
-                            gridLines: {
-                                color: 'rgba(200, 200, 200, 0.08)',
-                                lineWidth: 1
-                            }
-                        }
-                    ],
-                    yAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true,
-                                callback: function (value, index, values) {
-                                    var dsp = '';
-                                    dsp += value.toLocaleString();
-                                    // dsp += numberToLabel(value);
-                                    return dsp;
-                                }
-                            },
-                            gridLines: {
-                                // color: 'rgba(200, 200, 200, 0.04)',
-                                // lineWidth: 1
-                            }
+                            label: 'Beli',
+                            data: [30, 10, 20, 45, 25, 15],
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointBorderColor: '#DB2E59',
+                            pointBackgroundColor: '#DB2E59',
+                            borderColor: '#DB2E59'
+                        }, {
+                            label: 'Jual',
+                            data: [40, 30, 75, 100, 65, 50],
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointBorderColor: '#0090d9',
+                            pointBackgroundColor: '#0090d9',
+                            borderColor: '#0090d9'
+                        }, {
+                            label: 'Pemasukan',
+                            data: [90, 60, 35, 100, 60, 40],
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointBorderColor: '#36a6a3',
+                            pointBackgroundColor: '#36a6a3',
+                            borderColor: '#36a6a3'
+                        }, {
+                            label: 'Biaya',
+                            data: [50, 40, 20, 80, 50, 20],
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointBorderColor: '#ef6605',
+                            pointBackgroundColor: '#ef6605',
+                            borderColor: '#ef6605'
                         }
                     ]
-                }
-            }
-        };
-        window.chart_three = new Chart(id_chart_three, config_chart_three);
-        /* End of Chart Demo */
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    title: {
+                        display: false,
+                        text: 'Grafik Jual Beli'
+                    },
+                    animation: {
+                        easing: 'easeInOutQuad',
+                        duration: 520,
+                        onComplete: function () {
+                            var chartInstance = this.chart,
+                                    ctx = chartInstance.ctx;
+                            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
 
-        var id_chart_account = document.getElementById('chart-account').getContext('2d');
-        var config_chart_account = {
-            type: 'bar',
-            data: {
-                labels: ['-', '-', '-', '-', '-', '-'],
-                datasets: [
-                    {
-                        label: '',
-                        data: [100, 100, 100, 100, 100, 100],
-                        backgroundColor: ['#36A6A3', '#F99EB4', '#8AC5F3', '#FDE19A', '#BF9EFE', '#FBC48E'],
-                        borderWidth: 0,
-                        // pointBorderColor: '#36a6a3',
-                        // pointBackgroundColor: 'white',
-                        // borderColor: '#36a6a3'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                scaleShowValues: true,
-                title: {
-                    display: false,
-                    text: 'Grafik Jual Beli'
-                },
-                animation: {
-                    easing: 'easeInOutQuad',
-                    duration: 520,
-                    onComplete: function () {
-                        // var chartInstance = this.chart,
-                        // ctx = chartInstance.ctx;
-
-                        // ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-                        // ctx.textAlign = 'center';
-                        // ctx.textBaseline = 'bottom';
-
-                        // this.data.datasets.forEach(function(dataset, i) {
-                        //   var meta = chartInstance.controller.getDatasetMeta(i);
-                        //   meta.data.forEach(function(bar, index) {
-                        //     var data = dataset.data[index];
-                        //     ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                        //   });
-                        // });
-                    }
-                },
-                legend: {
-                    position: 'bottom',
-                    display: false,
-                },
-                elements: {
-                    line: {
-                        tension: 0.1
-                    }
-                },
-                scales: {
-                    xAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: false,
-                                display: true,
-                                callback: function (value, index, values) {
-                                    return value.toLocaleString();
-                                }
-                            },
-                            gridLines: {
-                                color: 'rgba(200, 200, 200, 0.08)',
-                                lineWidth: 1
-                            }
+                            this.data.datasets.forEach(function (dataset, i) {
+                                var meta = chartInstance.controller.getDatasetMeta(i);
+                                meta.data.forEach(function (bar, index) {
+                                    var data = dataset.data[index];
+                                    // ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                                });
+                            });
                         }
-                    ],
-                    yAxes: [{
-                            ticks: {
-                                beginAtZero: false,
-                                display: true,
-                                callback: function (value, index, values) {
-                                    return value.toLocaleString();
+                    },
+                    legend: {
+                        position: 'bottom',
+                        display: true,
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.1
+                        }
+                    },
+                    scales: {
+                        xAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        return value.toLocaleString();
+                                    }
+                                },
+                                gridLines: {
+                                    color: 'rgba(200, 200, 200, 0.08)',
+                                    lineWidth: 1
                                 }
-                            },
-                            gridLines: {
-                                color: 'rgba(200, 200, 200, 0.08)',
-                                lineWidth: 1
                             }
-                        }]
-                },
-            }
-        };
-        window.chart_account = new Chart(id_chart_account, config_chart_account);
-
-        var id_chart_expense = document.getElementById('chart-expense').getContext('2d');
-        var config_chart_expense = {
-            type: 'pie',
-            data: {
-                labels: ['-', '-', '-', '-', '-', '-'],
-                datasets: [
-                    {
-                        data: [100, 100, 100, 100, 100, 100],
-                        backgroundColor: ['#ff6384', '#4bc0c0', '#36a2eb', '#ffcd56', '#ff9f40'],
+                        ],
+                        yAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function (value, index, values) {
+                                        var dsp = '';
+                                        dsp += value.toLocaleString();
+                                        // dsp += numberToLabel(value);
+                                        return dsp;
+                                    }
+                                },
+                                gridLines: {
+                                    // color: 'rgba(200, 200, 200, 0.04)',
+                                    // lineWidth: 1
+                                }
+                            }
+                        ]
                     }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                title: {
-                    display: false,
-                    text: 'Grafik Jual Beli'
-                },
-                animation: {
-                    easing: 'easeInOutQuad',
-                    duration: 520,
-                },
-                legend: {
-                    position: 'bottom',
-                    display: true,
-                },
-                elements: {
-                    line: {
-                        tension: 0.2
-                    }
-                },
-            }
-        };
-        window.chart_expense = new Chart(id_chart_expense, config_chart_expense);
+                }
+            };
+            window.chart_three = new Chart(id_chart_three, config_chart_three);
 
-        function chart_trans_last_order(type) {
+        /* Chart Account chart_account_realtime() */
+            var id_chart_account = document.getElementById('chart-account').getContext('2d');
+            var config_chart_account = {
+                type: 'bar',
+                data: {
+                    labels: ['-', '-', '-', '-', '-', '-'],
+                    datasets: [
+                        {
+                            label: '',
+                            data: [100, 100, 100, 100, 100, 100],
+                            backgroundColor: ['#36A6A3', '#F99EB4', '#8AC5F3', '#FDE19A', '#BF9EFE', '#FBC48E'],
+                            borderWidth: 0,
+                            // pointBorderColor: '#36a6a3',
+                            // pointBackgroundColor: 'white',
+                            // borderColor: '#36a6a3'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scaleShowValues: true,
+                    title: {
+                        display: false,
+                        text: 'Grafik Jual Beli'
+                    },
+                    animation: {
+                        easing: 'easeInOutQuad',
+                        duration: 520,
+                        onComplete: function () {
+                            // var chartInstance = this.chart,
+                            // ctx = chartInstance.ctx;
+
+                            // ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                            // ctx.textAlign = 'center';
+                            // ctx.textBaseline = 'bottom';
+
+                            // this.data.datasets.forEach(function(dataset, i) {
+                            //   var meta = chartInstance.controller.getDatasetMeta(i);
+                            //   meta.data.forEach(function(bar, index) {
+                            //     var data = dataset.data[index];
+                            //     ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                            //   });
+                            // });
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        display: false,
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.1
+                        }
+                    },
+                    scales: {
+                        xAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: false,
+                                    display: true,
+                                    callback: function (value, index, values) {
+                                        return value.toLocaleString();
+                                    }
+                                },
+                                gridLines: {
+                                    color: 'rgba(200, 200, 200, 0.08)',
+                                    lineWidth: 1
+                                }
+                            }
+                        ],
+                        yAxes: [{
+                                ticks: {
+                                    beginAtZero: false,
+                                    display: true,
+                                    callback: function (value, index, values) {
+                                        return value.toLocaleString();
+                                    }
+                                },
+                                gridLines: {
+                                    color: 'rgba(200, 200, 200, 0.08)',
+                                    lineWidth: 1
+                                }
+                            }]
+                    },
+                }
+            };
+            window.chart_account = new Chart(id_chart_account, config_chart_account);
+            
+        /* Chart Expense chart_account_expense() */
+            var id_chart_expense = document.getElementById('chart-expense').getContext('2d');
+            var config_chart_expense = {
+                type: 'pie',
+                data: {
+                    labels: ['-', '-', '-', '-', '-', '-'],
+                    datasets: [
+                        {
+                            data: [100, 100, 100, 100, 100, 100],
+                            backgroundColor: ['#ff6384', '#4bc0c0', '#36a2eb', '#ffcd56', '#ff9f40'],
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    title: {
+                        display: false,
+                        text: 'Grafik Jual Beli'
+                    },
+                    animation: {
+                        easing: 'easeInOutQuad',
+                        duration: 520,
+                    },
+                    legend: {
+                        position: 'bottom',
+                        display: true,
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.2
+                        }
+                    },
+                }
+            };
+            window.chart_expense = new Chart(id_chart_expense, config_chart_expense);
+
+        function chart_trans_last_order(type) { //Chart One 
             var data = {
                 action: 'chart-trans-last'
             };
@@ -762,7 +715,7 @@
                 }
             });
         }
-        function chart_trans_buy_sell(type) {
+        function chart_trans_buy_sell(type) { //Chart Two
             var data = {
                 action: 'chart-trans-buy-sell',
                 type: type
@@ -798,7 +751,7 @@
                 }
             });
         }
-        function chart_trans_threes(type) {
+        function chart_trans_threes(type) { //Chart Three NOT USED
             var data = {
                 action: 'chart-trans-buy-sell',
                 type: type
@@ -834,7 +787,7 @@
                 }
             });
         }
-        function chart_trans_three(type) {
+        function chart_trans_three(type) { //Chart Three
             var data = {
                 action: 'chart-trans-last',
                 type: type
@@ -890,7 +843,7 @@
                 }
             });
         }
-        function chart_account_realtime() {
+        function chart_account_realtime() { //Chart Account
             var data = {
                 action: 'chart-account',
             };
@@ -940,7 +893,7 @@
                 }
             });
         }
-        function chart_account_expense() {
+        function chart_account_expense() { //Chart Expense
             var data = {
                 action: 'chart-expense',
             };
@@ -951,8 +904,8 @@
                 dataType: 'json',
                 cache: 'false',
                 success: function (d) {
+                    $('.expense-no-data').remove();
                     if (parseInt(d.status) === 1) {
-                        $('.expense-no-data').remove();
                         // $('.top-expense-data').remove();             
                         var disp = '';
                         $.each(d['results'], function (i, obj) {
@@ -986,29 +939,76 @@
                 }
             });
         }
+        function chart_recap_all(){
+            var data = {
+                action: 'chart-trans-last',
+            };
+            $.ajax({
+                url: '<?= base_url('dashboard/manage') ?>',
+                data: data,
+                type: 'post',
+                dataType: 'json',
+                cache: 'false',
+                success: function (d) {
+                    if (parseInt(d.status) === 1) {
+                        var res = d.results;
 
-        top_product(1);
-        top_product(2);
+                        var labels          = [];
+                        var result_buy      = [];
+                        var result_sell     = [];
+                        var result_income   = [];
+                        var result_expense  = [];
 
-        total_transaction_month(1);
-        total_transaction_month(2);
+                        for (var i = 0; i < res.length; i++) {
+                            labels.push(res[i].chart_name);
+                            result_buy.push(parseInt(res[i].chart_buy));
+                            result_sell.push(parseInt(res[i].chart_sell));
+                            result_income.push(parseInt(res[i].chart_income));
+                            result_expense.push(parseInt(res[i].chart_expense));
+                        }
+
+                        config_chart_three.data.labels = labels;
+                        config_chart_three.data.datasets[0].data = result_buy;
+                        config_chart_three.data.datasets[1].data = result_sell;
+                        config_chart_three.data.datasets[2].data = result_income;
+                        config_chart_three.data.datasets[3].data = result_expense;
+                        chart_three.update();
+
+                        config_chart_two.data.labels = labels;
+                        config_chart_two.data.datasets[0].data = result_buy;
+                        config_chart_two.data.datasets[1].data = result_sell;                 
+                        chart_two.update();    
+                        
+                        config_chart_one.data.labels = labels;
+                        config_chart_one.data.datasets[0].data = result_income;
+                        config_chart_one.data.datasets[1].data = result_expense;                 
+                        chart_one.update();                            
+                    }
+                }
+            });            
+        }
+        //Enable 
+        /* CARD */
+        total_transaction_month();
         total_cash_in_month('2,3');
         total_cash_out_month('1,4,8');
 
-        total_transaction_day(1);
-        total_transaction_day(2);
+        /* CHART */
+        // chart_trans_last_order(1);
+        // chart_trans_buy_sell(1);
+        // chart_trans_three(1);
+        // chart_account_realtime();
+        // chart_account_expense();
+        chart_recap_all(); //Need Disable chart_trans_last_order(), chart_trans_buy_sell(), chart_trans_three()
 
-        chart_trans_last_order(1);
-        chart_trans_buy_sell(1);
-        chart_trans_three(1);
-
-        chart_account_realtime();
-        chart_account_expense();
-
-        top_contact(1);
-        top_trans_overdue(1);
-        top_trans_overdue(2);
-
+        //Disabled
+        // total_transaction_day(1);
+        // total_transaction_day(2);
+        // top_product(1); 
+        // top_product(2);
+        // top_contact(1);
+        // top_trans_overdue(1);
+        // top_trans_overdue(2);
 
         /* info payment method */
         // get_payment_method(1);
@@ -1017,6 +1017,7 @@
         // get_payment_method(4);
         // get_payment_method(5);
         // get_payment_method(6);
+
         /* Dashboard Activity */
         function checkDashboardActivity(limit_start) {
             // $.playSound("http://www.noiseaddicts.com/samples_1w72b820/3721.mp3");
@@ -1382,7 +1383,6 @@
             });
             var waktu = setTimeout("checkDashboardActivity()", 6000000);
         }
-
         function intlFormat(num) {
             return new Intl.NumberFormat().format(Math.round(num * 10) / 10);
         }
@@ -1396,11 +1396,124 @@
     });
     // End1 of document ready
 
-    /* Info Selling */
+    /* Info Selling 19 Load */
     var url = "<?= base_url('dashboard/manage'); ?>";
     var url_trans = "<?= base_url('transaksi/manage'); ?>";
 
-    function top_product(type) {
+
+    function top_contact() { console.log('top_contact() 1');
+        var start = $("#start").val();
+        var end = $("#end").val();
+        var data = {
+            action: 'finance-list-top-contact',
+            type: [2, 3],
+            limit: 5,
+            start: start,
+            end: end
+        };
+        $.ajax({
+            type: "post",
+            url: url,
+            data: data,
+            dataType: 'json',
+            cache: 'false',
+            beforeSend: function () {},
+            success: function (d) {
+                if (parseInt(d.status) === 1) {
+                    var datas = d.result;
+                    //Prepare List Contact
+                    $("#table-top-contact tbody").html('');
+                    if (parseInt(datas.length) > 0) {
+                        $("#top_contact").show(300);
+                        var dsp = '';
+                        $.each(datas, function (i, val) {
+                            dsp += '<tr>';
+                            dsp += '<td class="v-align-middle btn-contact-info" data-id="' + val['contact_id'] + '" data-type="trans" data-trans-type=""><span><a href="#" style="cursor:pointer;color:#156397;">' + val['name'] + '</a></span></td>';
+                            dsp += '<td class="text-right"><span>Rp. ' + addCommas(val['total']) + '</span></td>';
+                            // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
+                            dsp += '</tr>';
+                        });
+                    } else {
+                        $("#top_contact").hide(300);                        
+                        dsp += '<tr>';
+                        dsp += '<td class="text-center" colspan="2">Tidak ada data</td>';
+                        dsp += '</tr>';
+                    }
+                    $("#table-top-contact tbody").html(dsp);
+                } else {
+                    notifError(d.message);
+                }
+            },
+            error: function (xhr, Status, err) {
+                notifError(err);
+            }
+        });
+    }
+    function top_trans_overdue(type) { console.log('top_trans_overdue() 2');
+        var data = {
+            action: 'trans-unpaid-and-overdue',
+            type: type
+        };
+        $.ajax({
+            type: "post",
+            url: url_trans,
+            data: data,
+            dataType: 'json',
+            cache: 'false',
+            beforeSend: function () {},
+            success: function (d) {
+                if (parseInt(d.status) === 1) {
+                    var datas = d.result;
+
+                    if (type == 1) {
+                        $("#table-top-buy-overdue tbody").html('');
+                        if (parseInt(datas.length) > 0) {
+                            $("#top_buy_overdue").show(300);                                
+                            var dsp = '';
+                            $.each(datas, function (i, val) {
+                                dsp += '<tr>';
+                                dsp += '<td class="v-align-middle"><span><a href="#" style="cursor:pointer;color:#156397;">' + val['label'] + '</a></span></td>';
+                                dsp += '<td class="text-right"><span>Rp. ' + addCommas(val['total']) + '</span></td>';
+                                // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
+                                dsp += '</tr>';
+                            });
+                        } else {
+                            $("#top_buy_overdue").hide(300);                                
+                            dsp += '<tr>';
+                            dsp += '<td class="text-center" colspan="2">Tidak ada data</td>';
+                            dsp += '</tr>';
+                        }
+                        $("#table-top-buy-overdue tbody").html(dsp);
+                    } else if (type == 2) {
+                        $("#table-top-sell-overdue tbody").html('');
+                        if (parseInt(datas.length) > 0) {
+                            $("#top_sell_overdue").show(300);                                      
+                            var dsp = '';
+                            $.each(datas, function (i, val) {
+                                dsp += '<tr>';
+                                dsp += '<td class="v-align-middle"><span><a href="#" style="cursor:pointer;color:#156397;">' + val['label'] + '</a></span></td>';
+                                dsp += '<td class="text-right"><span>Rp. ' + addCommas(val['total']) + '</span></td>';
+                                // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
+                                dsp += '</tr>';
+                            });
+                        } else {
+                            $("#top_sell_overdue").hide(300);                                  
+                            dsp += '<tr>';
+                            dsp += '<td class="text-center" colspan="2">Tidak ada data</td>';
+                            dsp += '</tr>';
+                        }
+                        $("#table-top-sell-overdue tbody").html(dsp);
+                    }
+                } else {
+                    notifError(d.message);
+                }
+            },
+            error: function (xhr, Status, err) {
+                notifError(err);
+            }
+        });
+    }
+    function top_product(type) { console.log('top_product() 2');
         var request = 'top-product';
         var data = {
             action: request,
@@ -1419,6 +1532,7 @@
                     $('.data-top-buy').remove();
                     var disp = '';
                     if (d['result'].length > 0) {
+                        $("#top_buy_data").show(300);
                         $.each(d['result'], function (i, obj) {
                             disp += '<tr class="data-top-buy">';
                             disp += '<td class="v-align-middle btn-header-product-stock-min-track" data-id="' + obj.product_id + '" data-name="' + obj.product_name + '"><span class="text-danger" style="cursor:pointer;">' + obj.product_name + '</span></td>';
@@ -1428,6 +1542,7 @@
                             disp += '</tr>';
                         });
                     } else {
+                        $("#top_buy_data").css('display','none');
                         disp += '<tr class="buy-no-data"><td colspan="3" style="text-align: center;">-- Data tidak tersedia --</td></tr>';
                     }
                     $(".top-buy-data").append(disp);
@@ -1436,6 +1551,7 @@
                     $('.data-top-sell').remove();
                     var disp = '';
                     if (d['result'].length > 0) {
+                        $("#top_sell_data").hide(300);                        
                         $.each(d['result'], function (i, obj) {
                             disp += '<tr class="data-top-sell">';
                             disp += '<td class="v-align-middle btn-header-product-stock-min-track" data-id="' + obj.product_id + '" data-name="' + obj.product_name + '"><span class="text-success" style="cursor:pointer;">' + obj.product_name + '</span></td>';
@@ -1445,6 +1561,7 @@
                             disp += '</tr>';
                         });
                     } else {
+                        $("#top_sell_data").css('display','none');                        
                         disp += '<tr class="sell-no-data"><td colspan="3" style="text-align: center;">-- Data tidak tersedia --</td></tr>';
                     }
                     $(".top-sell-data").append(disp);
@@ -1453,73 +1570,8 @@
             error: function (data) {
             }
         });
-    }
-    function total_transaction_month(type) {
-        var request = 'total-transaction-month';
-        var data = {
-            action: request,
-            type: type
-        };
-        $.ajax({
-            type: "post",
-            url: url,
-            data: data,
-            dataType: 'json',
-            cache: false,
-            asynch: true,
-            success: function (d) {
-                var total = '';
-                if (d['result'].total_selling_month == null) {
-                    total = 0;
-                } else {
-                    // total = d['result'].total_selling_month.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                    total = addCommas(d.result.total_selling_month);
-                }
-
-                if (parseInt(type) == 1) {
-                    $('#total-buy-month').text('Rp. ' + total + '');
-                } else if (parseInt(type) == 2) {
-                    $('#total-sell-month').text('Rp. ' + total + '');
-                } else {
-
-                }
-            },
-            error: function (data) {
-            }
-        });
-    }
-    function total_transaction_day(type) {
-        var request = 'total-transaction-day';
-        var data = {
-            action: request,
-            type: type
-        };
-        $.ajax({
-            type: "post",
-            url: url,
-            data: data,
-            dataType: 'json',
-            cache: false,
-            success: function (d) {
-                var total = '';
-                if (d['result'].total_transaction_day == null) {
-                    total = 0;
-                } else {
-                    // total = d['result'].total_transaction_day.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                    total = addCommas(d.result.total_transaction_day);
-                }
-
-                if (parseInt(type) == 1) {
-                    $('.total-buy-day').text('Rp. ' + total + '');
-                } else if (parseInt(type) == 2) {
-                    $('.total-sell-day').text('Rp. ' + total + '');
-                }
-            },
-            error: function (data) {
-            }
-        });
-    }
-    function total_cash_in_month(type) {
+    }    
+    function total_cash_in_month(type) { console.log('total_cash_in_month() 1');
         var request = 'total-cash-in-month';
         var data = {
             action: request,
@@ -1553,7 +1605,7 @@
             }
         });
     }
-    function total_cash_out_month(type) {
+    function total_cash_out_month(type) { console.log('total_cash_out_month() 1');
         var request = 'total-cash-out-month';
         var data = {
             action: request,
@@ -1587,117 +1639,31 @@
             }
         });
     }
-
-    function top_contact() {
-        var start = $("#start").val();
-        var end = $("#end").val();
+    function total_transaction_month() { console.log('total_transaction_month() 2');
+        var request = 'total-transaction-month';
         var data = {
-            action: 'finance-list-top-contact',
-            type: [2, 3],
-            limit: 5,
-            start: start,
-            end: end
+            action: request
         };
         $.ajax({
             type: "post",
             url: url,
             data: data,
             dataType: 'json',
-            cache: 'false',
-            beforeSend: function () {},
+            cache: false,
+            asynch: true,
             success: function (d) {
-                if (parseInt(d.status) === 1) {
-                    var datas = d.result;
-                    //Prepare List Contact
-                    $("#table-top-contact tbody").html('');
-                    if (parseInt(datas.length) > 0) {
-                        var dsp = '';
-                        $.each(datas, function (i, val) {
-                            dsp += '<tr>';
-                            dsp += '<td class="v-align-middle btn-contact-info" data-id="' + val['contact_id'] + '" data-type="trans" data-trans-type=""><span><a href="#" style="cursor:pointer;color:#156397;">' + val['name'] + '</a></span></td>';
-                            dsp += '<td class="text-right"><span>Rp. ' + addCommas(val['total']) + '</span></td>';
-                            // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
-                            dsp += '</tr>';
-                        });
-                    } else {
-                        dsp += '<tr>';
-                        dsp += '<td class="text-center" colspan="2">Tidak ada data</td>';
-                        dsp += '</tr>';
-                    }
-                    $("#table-top-contact tbody").html(dsp);
-                } else {
-                    notifError(d.message);
+                var total_records = d.result;
+                for(let a=0; a < total_records.length; a++) {
+                    $('#total-buy-month').text('Rp. ' + addCommas(d.result[0].total_month) + '');
+                    $('#total-sell-month').text('Rp. ' + addCommas(d.result[1].total_month) + '');
                 }
             },
-            error: function (xhr, Status, err) {
-                notifError(err);
+            error: function (data) {
             }
         });
     }
-    function top_trans_overdue(type) {
-        var data = {
-            action: 'trans-unpaid-and-overdue',
-            type: type
-        };
-        $.ajax({
-            type: "post",
-            url: url_trans,
-            data: data,
-            dataType: 'json',
-            cache: 'false',
-            beforeSend: function () {},
-            success: function (d) {
-                if (parseInt(d.status) === 1) {
-                    var datas = d.result;
-
-                    if (type == 1) {
-                        $("#table-top-buy-overdue tbody").html('');
-                        if (parseInt(datas.length) > 0) {
-                            var dsp = '';
-                            $.each(datas, function (i, val) {
-                                dsp += '<tr>';
-                                dsp += '<td class="v-align-middle"><span><a href="#" style="cursor:pointer;color:#156397;">' + val['label'] + '</a></span></td>';
-                                dsp += '<td class="text-right"><span>Rp. ' + addCommas(val['total']) + '</span></td>';
-                                // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
-                                dsp += '</tr>';
-                            });
-                        } else {
-                            dsp += '<tr>';
-                            dsp += '<td class="text-center" colspan="2">Tidak ada data</td>';
-                            dsp += '</tr>';
-                        }
-                        $("#table-top-buy-overdue tbody").html(dsp);
-                    } else if (type == 2) {
-                        $("#table-top-sell-overdue tbody").html('');
-                        if (parseInt(datas.length) > 0) {
-                            var dsp = '';
-                            $.each(datas, function (i, val) {
-                                dsp += '<tr>';
-                                dsp += '<td class="v-align-middle"><span><a href="#" style="cursor:pointer;color:#156397;">' + val['label'] + '</a></span></td>';
-                                dsp += '<td class="text-right"><span>Rp. ' + addCommas(val['total']) + '</span></td>';
-                                // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
-                                dsp += '</tr>';
-                            });
-                        } else {
-                            dsp += '<tr>';
-                            dsp += '<td class="text-center" colspan="2">Tidak ada data</td>';
-                            dsp += '</tr>';
-                        }
-                        $("#table-top-sell-overdue tbody").html(dsp);
-                    }
-                } else {
-                    notifError(d.message);
-                }
-            },
-            error: function (xhr, Status, err) {
-                notifError(err);
-            }
-        });
-    }
-    //For Tembakau
-    function top_custom(type) {
-        //type = 1 Beli & Jual, 2=Keuangan, 3=Produk, 4=Coli
-        var request = 'top-custom';
+    function total_transaction_day(type) { console.log('total_transaction_day() 2');
+        var request = 'total-transaction-day';
         var data = {
             action: request,
             type: type
@@ -1709,75 +1675,18 @@
             dataType: 'json',
             cache: false,
             success: function (d) {
+                var total = '';
+                if (d['result'].total_transaction_day == null) {
+                    total = 0;
+                } else {
+                    // total = d['result'].total_transaction_day.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    total = addCommas(d.result.total_transaction_day);
+                }
+
                 if (parseInt(type) == 1) {
-                    $('.top-custom-1-no-data').remove();
-                    // $('.top-custom-1').remove();
-                    var dsp = '';
-                    $.each(d['result'], function (i, obj) {
-                        dsp += '<tr class="top-custom-1">';
-                        dsp += '<td class="v-align-middle"><span class="">' + obj.type_name + '</span></td>';
-                        dsp += '<td class="text-right"><span class="">Rp. ' + obj.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</span> </td>';
-                        dsp += '<td class="text-right"><span class="">' + obj.average + '</span> </td>';
-                        dsp += '</tr>';
-                    });
-
-                    var total_records = d['result'];
-                    if (parseInt(total_records.length) == 0) {
-                        var dsp = '<tr><td colspan="3" style="text-align:left;">Data tidak ditemukan</td></tr>';
-                    }
-                    $(".top-custom-1").html(dsp);
+                    $('.total-buy-day').text('Rp. ' + total + '');
                 } else if (parseInt(type) == 2) {
-                    $('.top-custom-2-no-data').remove();
-                    // $('.top-custom-2').remove();
-                    var dsp = '';
-                    $.each(d['result'], function (i, obj) {
-                        dsp += '<tr class="top-custom-2">';
-                        dsp += '<td class="v-align-middle"><span class="">' + obj.account_name + '</span></td>';
-                        dsp += '<td class="text-right"><span class="">Rp. ' + addCommas(obj.balance) + '</span> </td>';
-                        dsp += '</tr>';
-                    });
-
-                    var total_records = d['result'];
-                    if (parseInt(total_records.length) == 0) {
-                        var dsp = '<tr><td colspan="3" style="text-align:left;">Data tidak ditemukan</td></tr>';
-                    }
-                    $(".top-custom-2").html(dsp);
-                } else if (parseInt(type) == 3) {
-                    $('.top-custom-3-no-data').remove();
-                    // $('.top-custom-2').remove();
-                    var dsp = '';
-                    $.each(d['result'], function (i, obj) {
-                        dsp += '<tr class="top-custom-3">';
-                        dsp += '<td class="v-align-middle"><span class="">' + obj.product_name + '</span></td>';
-                        dsp += '<td class="v-align-middle"><span class="">' + obj.location_name + '</span></td>';
-                        dsp += '<td class="text-right"><span class="">' + addCommas(obj.balance) + ' ' + obj.product_unit + '</span> </td>';
-                        dsp += '</tr>';
-                    });
-
-                    var total_records = d['result'];
-                    if (parseInt(total_records.length) == 0) {
-                        var dsp = '<tr><td colspan="3" style="text-align:left;">Data tidak ditemukan</td></tr>';
-                    }
-                    $(".top-custom-3").html(dsp);
-                } else if (parseInt(type) == 4) {
-                    $('.top-custom-4-no-data').remove();
-                    // $('.top-custom-2').remove();
-                    var dsp = '';
-                    $.each(d['result'], function (i, obj) {
-                        dsp += '<tr class="top-custom-4">';
-                        dsp += '<td class="text-right"><span class="">' + addCommas(obj.coli_jadi) + '</td>';
-                        dsp += '<td class="text-right"><span class="">' + addCommas(obj.coli_kirim) + '</td>';
-                        dsp += '<td class="text-right"><span class="">' + addCommas(obj.coli_gudang) + '</td>';
-                        dsp += '<td class="text-right"><span class="">' + addCommas(obj.coli_terjual) + '</td>';
-                        dsp += '<td class="text-right"><span class="">' + addCommas(obj.coli_didjarum) + '</td>';
-                        dsp += '</tr>';
-                    });
-
-                    var total_records = d['result'];
-                    if (parseInt(total_records.length) == 0) {
-                        var dsp = '<tr><td colspan="2" style="text-align:left;">Data tidak ditemukan</td></tr>';
-                    }
-                    $(".top-custom-4").html(dsp);
+                    $('.total-sell-day').text('Rp. ' + total + '');
                 }
             },
             error: function (data) {
@@ -1785,40 +1694,38 @@
         });
     }
     /*
-     function get_payment_method($payment_method){
-     var request = 'get-payment-method';
-     var data = {
-     request: request,
-     payment_method: $payment_method
-     };
-     $.ajax({
-     type: "post",
-     url: url,
-     data: data,
-     dataType: 'json',
-     cache: false,
-     success: function(d){
-     if(d.method == 1){
-     $('.payment.cash').text(d.result.total_paid_type);
-     }else if(d.method == 2){
-     $('.payment.card').text(d.result.total_paid_type);
-     }else if(d.method == 3){
-     $('.payment.dana').text(d.result.total_paid_type);
-     }else if(d.method == 4){
-     $('.payment.gopay').text(d.result.total_paid_type);
-     }else if(d.method == 5){
-     $('.payment.ovo').text(d.result.total_paid_type);
-     }else if(d.method == 6){
-     $('.payment.shopeepay').text(d.result.total_paid_type);
-     }
-     
-     },
-     error : function(data){
-     }
-     });
-     }*/
-    function checkApprovalRequest() {
-        // console.log('Dashboard: Approval Request');
+        function get_payment_method($payment_method){
+            var request = 'get-payment-method';
+            var data = {
+                request: request,
+                payment_method: $payment_method
+            };
+            $.ajax({
+            type: "post",
+            url: url,
+            data: data,
+            dataType: 'json',
+            cache: false,
+            success: function(d){
+                if(d.method == 1){
+                $('.payment.cash').text(d.result.total_paid_type);
+                }else if(d.method == 2){
+                $('.payment.card').text(d.result.total_paid_type);
+                }else if(d.method == 3){
+                $('.payment.dana').text(d.result.total_paid_type);
+                }else if(d.method == 4){
+                $('.payment.gopay').text(d.result.total_paid_type);
+                }else if(d.method == 5){
+                $('.payment.ovo').text(d.result.total_paid_type);
+                }else if(d.method == 6){
+                $('.payment.shopeepay').text(d.result.total_paid_type);
+                }
+            },
+            error : function(data){
+            }
+        });
+    }*/
+    function checkApprovalRequest() { console.log('checkApprovalRequest() 1');
         $.ajax({
             type: "post",
             data: {
@@ -1871,6 +1778,8 @@
         });
         // var waktu = setTimeout("checkApprovalRequest()",6000000);
     }
+
+    //Additional
     function notif($type,$msg) {
         if (parseInt($type) === 1) {
             //Toastr.success($msg);
@@ -1899,22 +1808,6 @@
             swal.close();
         }
     }
-    /*
-     function notif($type,$msg) {
-     if (parseInt($type) === 1) {
-     //Toastr.success($msg);
-     Toast.fire({
-     type: 'success',
-     title: $msg
-     });
-     } else if (parseInt($type) === 0) {
-     //Toastr.error($msg);
-     Toast.fire({
-     type: 'error',
-     title: $msg
-     });
-     }
-     }*/
     function modal_form(params) {
         $("#modal-form .modal-title").html(params['title']);
         $("#modal-form #modal-size").addClass('modal-' + params['size']);
@@ -1924,6 +1817,8 @@
             console.log(params.button[i]);
         }
         $("#modal-form").modal({backdrop: 'static', keyboard: false});
-    }
+    }    
+
     checkApprovalRequest();
+
 </script>

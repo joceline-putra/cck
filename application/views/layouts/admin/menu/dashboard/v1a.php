@@ -27,26 +27,13 @@
         font-weight: 600;
     }
 </style> 
-
 <?php
-//Beacukai cannot access
 if ($session['user_data']['user_id'] == 0) {
-    ?>
-
-    <?php
 } else {
     ?>
 
     <!-- Dashboard For User -->
     <div class="row">
-        <!--
-        <div class="col-md-12 col-sm-12 col-xs-12">       
-                <div class="grid simple">
-                <div class="grid-body">    
-                        Div With Empty Element
-                </div>
-                </div>
-        </div>-->  
         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
             <div class="panel-group" id="accordion" data-toggle="collapse">
                 <div id="panel-zero" class="panel panel-default" style="display:none;">
@@ -71,7 +58,7 @@ if ($session['user_data']['user_id'] == 0) {
         </div> 
         <div class="hide col-md-12 col-sm-12 col-xs-12">
             <div class="grid simple">
-                <div class="grid-body">    
+                <div class="grid-body">
                     <!-- payment type -->
                     <div class="col-md-2 col-sm-2 col-xs-6 m-b-10">
                         <div class="tiles white ">
@@ -209,103 +196,109 @@ if ($session['user_data']['user_id'] == 0) {
             </div>
         </div>    
         <div class="clearfix"></div>
-        <div class="col-md-3 col-sm-12 col-xs-12">
+        <div class="col-md-12 col-sm-12 col-xs-12">        
             <div class="grid simple">
-                <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #DB2E59;">
-                    <h5 class="" style="width:70%;color:white;"><b><i class="fas fa-shopping-cart" style="color:white;"></i> Pembelian Bulan Ini</b></h5>
-                    <div class="tools">
-                        <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
-                        <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
-                        <a href="javascript:;" class="reload" style="color:white;"></a>
-                        <a href="javascript:;" class="remove" style="color:white;"></a>
-                    </div>
-                </div>      
-                <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #DB2E59;">                   
-                    <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
-                    <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
-                            <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
-                    </div>
-                    <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="grid-body" style="padding-bottom: 4px;">
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="grid simple">
+                            <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #DB2E59;">
+                                <h5 class="" style="width:70%;color:white;"><b><i class="fas fa-shopping-cart" style="color:white;"></i> Pembelian Bulan Ini</b></h5>
+                                <div class="tools">
+                                    <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
+                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
+                                    <a href="javascript:;" class="reload" style="color:white;"></a>
+                                    <a href="javascript:;" class="remove" style="color:white;"></a>
+                                </div>
+                            </div>      
+                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #DB2E59;">                   
+                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
+                                <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
+                                        <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
 
-                        <h4 id="total-buy-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
-                    </div>          
-                    <!-- </div> -->
+                                    <h4 id="total-buy-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
+                                </div>          
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="grid simple">
+                            <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #0090d9;">
+                                <h5 class="" style="width:70%;color:white;"><b><i class="fas fa-cash-register" class="" style="color:white;"></i> 
+                                        Penjualan Bulan Ini</b></h5>
+                                <div class="tools">
+                                    <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
+                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
+                                    <a href="javascript:;" class="reload" style="color:white;"></a>
+                                    <a href="javascript:;" class="remove" style="color:white;"></a>
+                                </div>
+                            </div>      
+                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #0090d9;">                   
+                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
+                                <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
+                                        <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+
+                                    <h4 id="total-sell-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
+                                </div>          
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="grid simple">
+                            <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #0aa699;">
+                                <h5 class="" style="width:70%;color:white;"><b><i class="fas fa-arrow-circle-down" style="color:white;"></i> Pemasukan Bulan Ini</b></h5>
+                                <div class="tools">
+                                    <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
+                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
+                                    <a href="javascript:;" class="reload" style="color:white;"></a>
+                                    <a href="javascript:;" class="remove" style="color:white;"></a>
+                                </div>
+                            </div>      
+                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #0aa699;">                   
+                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
+                                <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
+                                        <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+
+                                    <h4 id="total-cash-in-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
+                                </div>          
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="grid simple">
+                            <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #ef6605;">
+                                <h5 class="" style="width:70%;color:white"><b><i class="fas fa-arrow-circle-up" style="color:white;"></i> Biaya Bulan Ini</b></h5>
+                                <div class="tools">
+                                    <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
+                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
+                                    <a href="javascript:;" class="reload" style="color:white;"></a>
+                                    <a href="javascript:;" class="remove" style="color:white;"></a>
+                                </div>
+                            </div>      
+                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #ef6605;">                   
+                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
+                                <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
+                                        <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+
+                                    <h4 id="total-cash-out-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
+                                </div>          
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </div>   
         </div>
-        <div class="col-md-3 col-sm-12 col-xs-12">
-            <div class="grid simple">
-                <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #0090d9;">
-                    <h5 class="" style="width:70%;color:white;"><b><i class="fas fa-cash-register" class="" style="color:white;"></i> 
-                            Penjualan Bulan Ini</b></h5>
-                    <div class="tools">
-                        <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
-                        <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
-                        <a href="javascript:;" class="reload" style="color:white;"></a>
-                        <a href="javascript:;" class="remove" style="color:white;"></a>
-                    </div>
-                </div>      
-                <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #0090d9;">                   
-                    <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
-                    <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
-                            <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
-                    </div>
-                    <div class="col-md-12 col-xs-12 col-sm-12">
-
-                        <h4 id="total-sell-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
-                    </div>          
-                    <!-- </div> -->
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-12 col-xs-12">
-            <div class="grid simple">
-                <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #0aa699;">
-                    <h5 class="" style="width:70%;color:white;"><b><i class="fas fa-arrow-circle-down" style="color:white;"></i> Pemasukan Bulan Ini</b></h5>
-                    <div class="tools">
-                        <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
-                        <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
-                        <a href="javascript:;" class="reload" style="color:white;"></a>
-                        <a href="javascript:;" class="remove" style="color:white;"></a>
-                    </div>
-                </div>      
-                <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #0aa699;">                   
-                    <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
-                    <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
-                            <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
-                    </div>
-                    <div class="col-md-12 col-xs-12 col-sm-12">
-
-                        <h4 id="total-cash-in-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
-                    </div>          
-                    <!-- </div> -->
-                </div>
-            </div>
-        </div> 
-        <div class="col-md-3 col-sm-12 col-xs-12">
-            <div class="grid simple">
-                <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #ef6605;">
-                    <h5 class="" style="width:70%;color:white"><b><i class="fas fa-arrow-circle-up" style="color:white;"></i> Biaya Bulan Ini</b></h5>
-                    <div class="tools">
-                        <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
-                        <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
-                        <a href="javascript:;" class="reload" style="color:white;"></a>
-                        <a href="javascript:;" class="remove" style="color:white;"></a>
-                    </div>
-                </div>      
-                <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #ef6605;">                   
-                    <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
-                    <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
-                            <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
-                    </div>
-                    <div class="col-md-12 col-xs-12 col-sm-12">
-
-                        <h4 id="total-cash-out-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
-                    </div>          
-                    <!-- </div> -->
-                </div>
-            </div>
-        </div>   
         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top:10px;">
             <div class="col-lg-7 col-md-12 col-xs-12 padding-remove-side">
                 <ul class="nav nav-tabs" role="tablist">
@@ -314,7 +307,7 @@ if ($session['user_data']['user_id'] == 0) {
                             <i class="fas fa-chalkboard-teacher"></i> Aktivitas
                         </a>
                     </li>
-                    <li class="hide">
+                    <li class="">
                         <a href="#tab2" onclick="" role="tab" data-toggle="tab" aria-expanded="false">
                             <i class="fas fa-chart-bar"></i> Statistik
                         </a>
@@ -328,23 +321,6 @@ if ($session['user_data']['user_id'] == 0) {
                             <div class="grid simple">
                                 <div class="grid-body">
                                     <div class="col-md-12 col-sm-12 padding-remove-side">
-                                        <!--
-                                        <div class="form-group col-md-4 col-sm-12 col-xs-12 padding-remove-left">
-                                                <div class="col-md-12 col-sm-12 padding-remove-side">
-                                                        <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                                <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
-                                                                <input name="tgl_awal" id="tgl_awal" type="text" class="form-control input-sm" value="<?php echo $end_date; ?>">
-                                                        </div>
-                                                </div>  
-                                        </div>
-                                        <div class="form-group col-md-4 col-sm-12 col-xs-12 padding-remove-left">
-                                                <div class="col-md-12 col-sm-12 padding-remove-side">
-                                                        <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                                <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
-                                                                <input name="tgl_akhir" id="tgl_akhir" type="text" class="form-control input-sm" value="<?php echo $end_date; ?>">
-                                                        </div>
-                                                </div>  
-                                        </div> -->
                                         <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 padding-remove-left">
                                             <!-- <label class="form-label">Tanggal</label> -->
                                             <div id="filter_date" data-start="<?php echo $end_date; ?>" data-end="<?php echo $end_date; ?>" class="filter-daterangepicker" style="padding-top:4px;padding-bottom:4px;">
@@ -397,114 +373,7 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="tab2">
-                        <div class="row">
-                            <div class="col-md-4 col-sm-12 animated bounceIn">
-                                <div class="tiles black m-b-10">
-                                    <div class="tiles-body">
-                                        <div class="controller">
-                                            <a href="javascript:;" class="reload"></a>
-                                            <a href="javascript:;" class="remove"></a>
-                                        </div>
-                                        <div class="tiles-title text-black">OVERALL VISITS </div>
-                                        <h3 class="text-black bold "><span data-animation-duration="900" data-value="15489" class="animate-number">15,489</span></h3>
-                                        <div class="progress transparent progress-small no-radius no-margin">
-                                            <div class="progress-bar progress-bar-black animate-progress-bar" data-percentage="45%" style="width: 45%;"></div>
-                                        </div>
-                                        <p class="text-black  p-t-5 p-b-5 small-text">webarch 258 USD</p>
-                                        <div class="progress transparent progress-small no-radius no-margin ">
-                                            <div class="progress-bar progress-bar-black animate-progress-bar" data-percentage="20%" style="width: 20%;"></div>
-                                        </div>
-                                        <p class="text-black p-t-5 small-text">revox 258 USD</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="col-md-8 m-b-10 animated bounceIn">
-                                <!-- BEGIN SALES WIDGET WITH FLOT CHART -->
-                                <div class="tiles white add-margin">
-                                    <div class="p-t-20 p-l-20 p-r-20 p-b-20">
-                                        <div class="row b-grey b-b xs-p-b-20">
-                                            <div class="col-md-4 col-sm-4">
-                                                <h4 class="text-black semi-bold">Total Income</h4>
-                                                <h3 class="text-success semi-bold">$15,354</h3>
-                                            </div>
-                                            <div class="col-md-3 col-sm-3">
-                                                <div class="m-t-20">
-                                                    <h5 class="text-black semi-bold">Total due</h5>
-                                                    <h4 class="text-success semi-bold">$4,653</h4>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5 col-sm-5">
-                                                <div class="m-t-20">
-                                                    <input type="text" class="dark form-control" id="txtinput3" placeholder="Search">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row b-grey">
-                                            <div class="col-md-3 col-sm-3">
-                                                <div class="m-t-10">
-                                                    <p class="text-success">Open</p>
-                                                    <p class="text-black">16:203.26</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 col-sm-4">
-                                                <div class="m-t-10">
-                                                    <p class="text-success">Day Range</p>
-                                                    <p class="text-black">01.12.13 - 01.01.14</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5 col-sm-5">
-                                                <div class="m-t-10">
-                                                    <div class="pull-left">
-                                                        Cash
-                                                    </div>
-                                                    <div class="pull-right">
-                                                        <span class="text-success">$10,525</span>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <div class="pull-left">
-                                                        Visa Classic
-                                                    </div>
-                                                    <div class="pull-right">
-                                                        <span class="text-success">$5,989</span>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tiles grey" id="chart_1" style="height: 260px; width: 100%; padding: 0px;"><canvas class="base" width="519" height="260"></canvas><canvas class="overlay" width="519" height="260" style="position: absolute; left: 0px; top: 0px;"></canvas></div>
-                                </div>
-                                <!-- END SALES WIDGET WITH FLOT CHART -->
-                            </div>                                      
-                        </div>
-                        <div class="row">   
-                            <div class="col-md-12 col-sm-12 padding-remove-side">
-                                <div class="tiles white m-b-10">
-                                    <div class="tiles-body">
-                                        <div class="controller">
-                                            <a href="javascript:;" class="reload"></a>
-                                            <a href="javascript:;" class="remove"></a>
-                                        </div>
-                                        <div class="tiles-title text-black">Example Chart</div>
-                                        <canvas id="exampleChart" width="400" height="100"></canvas>
-                                    </div>
-                                </div>
-                            </div> 
-                            <div class="col-md-12 col-sm-12 padding-remove-side">
-                                <div class="tiles white m-b-10">
-                                    <div class="tiles-body">
-                                        <div class="controller">
-                                            <a href="javascript:;" class="reload"></a>
-                                            <a href="javascript:;" class="remove"></a>
-                                        </div>
-                                        <div class="tiles-title text-black">Produk Terlaris</div>
-                                        <canvas id="produkTerlarisChart" width="400" height="100"></canvas>
-                                    </div>
-                                </div>
-                            </div>                   
-                        </div>                       
+                    <div class="tab-pane" id="tab2">                     
                     </div>                                                    
                 </div>
             </div>
@@ -578,21 +447,20 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                    <div id="top_buy_data" class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:none;">
                         <div class="grid simple">
                             <div class="grid-title no-border">
                                 <h5>10 Pembelian Produk</h5>
                                 <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
-                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
-                                    <a onclick="top_product(1);" href="javascript:;" class="reload"></a>
+                                    <a onclick="" href="javascript:;" class="reload"></a>
                                     <a href="javascript:;" class="remove"></a>
                                 </div>
                             </div>      
                             <div class="grid-body no-border" style="padding:10px;">                   
                                 <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
                                 <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
-                                <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                                <!-- <canvas id="chart-four" width="400" height="180"></canvas>-->
                                 </div>
                                 <!-- </div> -->
                                 <table class="table no-more-tables">
@@ -613,14 +481,14 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                    <div id="top_contact" class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:none;">
                         <div class="grid simple">
                             <div class="grid-title no-border">
                                 <h5>Top Contact Payment</h5>
                                 <div class="tools">
                                     <a href="javascript:;" class="collapse"></a>
                                     <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
-                                    <a onclick="top_product(1);" href="javascript:;" class="reload"></a>
+                                    <a onclick="" href="javascript:;" class="reload"></a>
                                     <a href="javascript:;" class="remove"></a>
                                 </div>
                             </div>      
@@ -647,7 +515,7 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                    <div id="top_buy_overdue" class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:none;">
                         <div class="grid simple">
                             <div class="grid-title no-border">
                                 <h5>Hutang Sampai Hari Ini</h5>
@@ -681,7 +549,7 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                    <div id="top_sell_overdue" class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:none;">
                         <div class="grid simple">
                             <div class="grid-title no-border">
                                 <h5>Tagihan Sampai Hari Ini</h5>
@@ -715,7 +583,7 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>        
-                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                    <div id="top_sell_data" class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:none;">
                         <div class="grid simple">
                             <div class="grid-title no-border">
                                 <h5>10 Penjualan Produk</h5>
