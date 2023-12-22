@@ -30,7 +30,8 @@
         let price1 = new AutoNumeric('#order_ref_price_id_1', autoNumericOption);
         let price2 = new AutoNumeric('#order_ref_price_id_2', autoNumericOption);
         let price3 = new AutoNumeric('#order_ref_price_id_3', autoNumericOption);                        
-        let price4 = new AutoNumeric('#order_ref_price_id_4', autoNumericOption);                                
+        let price4 = new AutoNumeric('#order_ref_price_id_4', autoNumericOption);  
+        let price5 = new AutoNumeric('#order_ref_price_id_5', autoNumericOption);                                        
 
         var index = $("#table-data").DataTable({
             // "processing": true,
@@ -53,18 +54,36 @@
                 }
             },
             "columnDefs": [
-                {"targets": 0, "title": "Jenis Kamar", "searchable": true, "orderable": true},
-                {"targets": 1, "title": "Cabang", "searchable": true, "orderable": true},
-                {"targets": 2, "title": "Action", "searchable": false, "orderable": false}
+                {"targets": 0, "title": "Cabang", "searchable": true, "orderable": true},
+                {"targets": 1, "title": "Jenis Kamar", "searchable": true, "orderable": true},
+                {"targets": 2, "title": "Bulanan", "searchable": true, "orderable": true},
+                {"targets": 3, "title": "Harian", "searchable": true, "orderable": true},
+                {"targets": 4, "title": "Midnight", "searchable": true, "orderable": true},                
+                {"targets": 5, "title": "4 Jam", "searchable": true, "orderable": true},
+                {"targets": 6, "title": "2 Jam", "searchable": true, "orderable": true},        
+                {"targets": 7, "title": "Promo", "searchable": true, "orderable": true},                                                                                        
+                {"targets": 8, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
                 [0, 'asc']
             ],
             "columns": [{
-                    'data': 'ref_name'
-                }, {
                     'data': 'branch_name'
                 }, {
+                    'data': 'ref_name'
+                }, {
+                    'data': 'ref_price_1',className: 'text-right'
+                }, {
+                    'data': 'ref_price_2',className: 'text-right'
+                }, {
+                    'data': 'ref_price_3',className: 'text-right'
+                }, {
+                    'data': 'ref_price_4',className: 'text-right'
+                }, {                    
+                    'data': 'ref_price_5',className: 'text-right'
+                }, {
+                    'data': 'ref_price_0',className: 'text-right'
+                }, {                                        
                     'data': 'ref_id',
                     className: 'text-left',
                     render: function (data, meta, row) {
@@ -117,6 +136,19 @@
             $("#table-data-in").attr('data-limit-end', limit_end);
         });
 
+        $(document).on("click","#btn-new", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            formNew();
+            $("#modal_ref").modal('show');
+        });
+        $(document).on("click","#btn-cancel", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            formCancel();
+            $("#modal_ref").modal('hide');
+        });
+
         // Save Button
         $(document).on("click", "#btn-save", function (e) {
             e.preventDefault();
@@ -149,11 +181,12 @@
                     nama: $("input[id='nama']").val(),
                     keterangan: $("input[id='keterangan']").val(),
                     status: $("select[id='status']").find(':selected').val(),
-                    order_ref_price_id_0: $("#order_ref_price_id_0").val(),
-                    order_ref_price_id_1: $("#order_ref_price_id_1").val(),
-                    order_ref_price_id_2: $("#order_ref_price_id_2").val(),
-                    order_ref_price_id_3: $("#order_ref_price_id_3").val(),
-                    order_ref_price_id_4: $("#order_ref_price_id_4").val(),         
+                    order_ref_price_id_0: price0.rawValue,
+                    order_ref_price_id_1: price1.rawValue,
+                    order_ref_price_id_2: price2.rawValue,
+                    order_ref_price_id_3: price3.rawValue,
+                    order_ref_price_id_4: price4.rawValue,   
+                    order_ref_price_id_5: price5.rawValue,                 
                     ref_branch_id: $("input[name='ref_branch_id']:checked").val()                                                                                           
                 }
                 var prepare_data = JSON.stringify(prepare);
@@ -206,32 +239,33 @@
                     if (parseInt(d.status) == 1) { /* Success Message */
                         activeTab('tab1'); // Open/Close Tab By ID
                         // notif(1,d.result.id);ss
-                        $("#form-master input[name='id_document']").val(d.result.ref_id);
+                        $("#id_document").val(d.result.ref_id);
                         // $("#form-master input[name='kode']").val(d.result.ref_code);
-                        $("#form-master input[name='nama']").val(d.result.ref_name);
-                        $("#form-master input[name='keterangan']").val(d.result.ref_note);
-                        $("#form-master select[name='status']").val(d.result.ref_flag).trigger('change');
+                        $("#nama").val(d.result.ref_name);
+                        $("#keterangan").val(d.result.ref_note);
+                        $("#status").val(d.result.ref_flag).trigger('change');
 
                         $("input[name='ref_branch_id'][value="+d.result.ref_branch_id+"]").prop("checked", true).change();
 
-                        price_data = d.result_price;
-                        if(price_data.length > 0){
-                            for(var i = 0; i < price_data.length; i++){
-                                $("#order_ref_price_id_"+i).val(d.result_price[i].price_value);
-                            }
-                        }else{
-                            for(var i = 0; i < 5; i++){
-                                $("#order_ref_price_id_"+i).val(0);
-                            }
-                        }
+                        // price_data = d.result_price;
+                        // if(price_data.length > 0){
+                        //     for(var i = 0; i < price_data.length; i++){
+                        //         $("#order_ref_price_id_"+i).val(d.result_price[i].price_value);
+                        //     }
+                        // }else{
+                        //     for(var i = 0; i < 5; i++){
+                        //         $("#order_ref_price_id_"+i).val(0);
+                        //     }
+                        // }
                         
-                        // $("#order_ref_price_id_0").val(d.result_price[0].price_value);
-                        // $("#order_ref_price_id_1").val(d.result_price[1].price_value);
-                        // $("#order_ref_price_id_2").val(d.result_price[2].price_value);
-                        // $("#order_ref_price_id_3").val(d.result_price[3].price_value);
-                        // $("#order_ref_price_id_4").val(d.result_price[4].price_value);   
-                                
-                        $("#btn-new").hide();
+                        $("#order_ref_price_id_0").val(d.result.ref_price_0);
+                        $("#order_ref_price_id_1").val(d.result.ref_price_1);
+                        $("#order_ref_price_id_2").val(d.result.ref_price_2);
+                        $("#order_ref_price_id_3").val(d.result.ref_price_3);
+                        $("#order_ref_price_id_4").val(d.result.ref_price_4);
+                        $("#order_ref_price_id_5").val(d.result.ref_price_5);                         
+
+                        $("#modal_ref").modal('show');
                         $("#btn-save").hide();
                         $("#btn-update").show();
                         $("#btn-cancel").show();
@@ -284,6 +318,7 @@
                     order_ref_price_id_2: price2.rawValue,
                     order_ref_price_id_3: price3.rawValue,
                     order_ref_price_id_4: price4.rawValue,   
+                    order_ref_price_id_5: price5.rawValue,
                     ref_branch_id: $("input[name='ref_branch_id']:checked").val()                 
                 }
                 var prepare_data = JSON.stringify(prepare);
@@ -300,7 +335,6 @@
                     beforeSend: function () {},
                     success: function (d) {
                         if (parseInt(d.status) == 1) {
-                            $("#btn-new").show();
                             $("#btn-save").hide();
                             $("#btn-update").hide();
                             $("#btn-cancel").hide();
@@ -436,49 +470,47 @@
     function formNew() {
         formMasterSetDisplay(0);
         $("#form-master input").val();
-        $("#btn-new").hide();
         $("#btn-save").show();
         $("#btn-cancel").show();
     }
     function formCancel() {
         formMasterSetDisplay(1);
         $("#form-master input").val();
-        $("#btn-new").show();
         $("#btn-save").hide();
         $("#btn-update").hide();
         $("#btn-cancel").hide();
     }
     function formMasterSetDisplay(value) { // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan
-        if (value == 1) {
-            var flag = true;
-        } else {
-            var flag = false;
-        }
-        //Attr Input yang perlu di setel
-        var form = '#form-master';
-        var attrInput = [
-            // "kode",
-            "nama",
-            "keterangan",
-            "order_ref_price_id_0", "order_ref_price_id_1", "order_ref_price_id_2", "order_ref_price_id_3", "order_ref_price_id_4"
-        ];
-
-        for (var i = 0; i <= attrInput.length; i++) {
-            $("" + form + " input[name='" + attrInput[i] + "']").attr('readonly', flag);
-        }
-
-        // Attr Textarea yang perlu di setel
-        // var attrText = [
-        //   "keterangan"
+        // if (value == 1) {
+        //     var flag = true;
+        // } else {
+        //     var flag = false;
+        // }
+        // //Attr Input yang perlu di setel
+        // var form = '#form-master';
+        // var attrInput = [
+        //     // "kode",
+        //     "nama",
+        //     "keterangan",
+        //     "order_ref_price_id_0", "order_ref_price_id_1", "order_ref_price_id_2", "order_ref_price_id_3", "order_ref_price_id_4"
         // ];
-        // for (var i=0; i<=attrText.length; i++) { $(""+ form +" textarea[name='"+attrText[i]+"']").attr('readonly',flag); }
 
-        //Attr Select yang perlu di setel
-        var atributSelect = [
-            "status"
-        ];
-        for (var i = 0; i <= atributSelect.length; i++) {
-            $("" + form + " select[name='" + atributSelect[i] + "']").attr('disabled', flag);
-        }
+        // for (var i = 0; i <= attrInput.length; i++) {
+        //     $("" + form + " input[name='" + attrInput[i] + "']").attr('readonly', flag);
+        // }
+
+        // // Attr Textarea yang perlu di setel
+        // // var attrText = [
+        // //   "keterangan"
+        // // ];
+        // // for (var i=0; i<=attrText.length; i++) { $(""+ form +" textarea[name='"+attrText[i]+"']").attr('readonly',flag); }
+
+        // //Attr Select yang perlu di setel
+        // var atributSelect = [
+        //     "status"
+        // ];
+        // for (var i = 0; i <= atributSelect.length; i++) {
+        //     $("" + form + " select[name='" + atributSelect[i] + "']").attr('disabled', flag);
+        // }
     }
 </script>

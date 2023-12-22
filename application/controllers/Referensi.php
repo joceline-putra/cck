@@ -318,7 +318,13 @@ class Referensi extends MY_Controller{
                     'ref_name' => $data['nama'],
                     'ref_note' => $data['keterangan'],         
                     'ref_date_created' => date("YmdHis"),
-                    'ref_flag' => $data['status'],                    
+                    'ref_flag' => $data['status'],          
+                    'ref_price_0' => !empty($data['order_ref_price_id_0']) ? $data['order_ref_price_id_0'] : 0,
+                    'ref_price_1' => !empty($data['order_ref_price_id_1']) ? $data['order_ref_price_id_1'] : 0,                        
+                    'ref_price_2' => !empty($data['order_ref_price_id_2']) ? $data['order_ref_price_id_2'] : 0,                        
+                    'ref_price_3' => !empty($data['order_ref_price_id_3']) ? $data['order_ref_price_id_3'] : 0,                        
+                    'ref_price_4' => !empty($data['order_ref_price_id_4']) ? $data['order_ref_price_id_4'] : 0,                        
+                    'ref_price_5' => !empty($data['order_ref_price_id_5']) ? $data['order_ref_price_id_5'] : 0                                
                 );
                 $params_update = array(
                     'ref_branch_id' => $data['ref_branch_id'],
@@ -326,11 +332,22 @@ class Referensi extends MY_Controller{
                     'ref_note' => $data['keterangan'],  
                     'ref_date_updated' => date("YmdHis"),
                     'ref_flag' => $data['status'],
+                    'ref_price_0' => !empty($data['order_ref_price_id_0']) ? $data['order_ref_price_id_0'] : 0,
+                    'ref_price_1' => !empty($data['order_ref_price_id_1']) ? $data['order_ref_price_id_1'] : 0,                        
+                    'ref_price_2' => !empty($data['order_ref_price_id_2']) ? $data['order_ref_price_id_2'] : 0,                        
+                    'ref_price_3' => !empty($data['order_ref_price_id_3']) ? $data['order_ref_price_id_3'] : 0,                        
+                    'ref_price_4' => !empty($data['order_ref_price_id_4']) ? $data['order_ref_price_id_4'] : 0,                        
+                    'ref_price_5' => !empty($data['order_ref_price_id_5']) ? $data['order_ref_price_id_5'] : 0                                
                 );                        
                 $columns = array(
-                    '0' => 'ref_name',
-                    '1' => 'ref_note',
-                    '2' => 'branch_name',
+                    '0' => 'branch_name',
+                    '1' => 'ref_name',
+                    '2' => 'ref_price_0',
+                    '3' => 'ref_price_1',
+                    '4' => 'ref_price_2',
+                    '5' => 'ref_price_3',
+                    '6' => 'ref_price_4',
+                    '6' => 'ref_price_5'                                                                                
                 );
                 $table = 'reference';
             }
@@ -427,7 +444,7 @@ class Referensi extends MY_Controller{
                     $params_check = array(
                         'ref_type' => $data['tipe'],
                         // 'ref_code' => $data['kode'],
-                        'ref_name' => $data['nama']
+                        'ref_name' => $data['nama'],                     
                     );
 
                     if($identity == 10){
@@ -440,13 +457,13 @@ class Referensi extends MY_Controller{
                     if($check_exists==false){
                         $set_data=$this->Referensi_model->add_referensi($params);
                         if($set_data==true){
-                            if($identity == 10){ //Room Type update price
-                                $do0 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => 'Bulanan', 'price_sort' => 0, 'price_value' => $data['order_ref_price_id_0']]);
-                                $do1 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => 'Harian', 'price_sort' => 1, 'price_value' => $data['order_ref_price_id_1']]);                            
-                                $do2 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => 'Midnight', 'price_sort' => 2, 'price_value' => $data['order_ref_price_id_2']]);
-                                $do3 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => '4 Jam', 'price_sort' => 3, 'price_value' => $data['order_ref_price_id_3']]);
-                                $do4 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => '2 Jam', 'price_sort' => 4, 'price_value' => $data['order_ref_price_id_4']]);                                                                                    
-                            }                            
+                            // if($identity == 10){ //Room Type update price
+                            //     $do0 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => 'Bulanan', 'price_sort' => 0, 'price_value' => $data['order_ref_price_id_0']]);
+                            //     $do1 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => 'Harian', 'price_sort' => 1, 'price_value' => $data['order_ref_price_id_1']]);                            
+                            //     $do2 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => 'Midnight', 'price_sort' => 2, 'price_value' => $data['order_ref_price_id_2']]);
+                            //     $do3 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => '4 Jam', 'price_sort' => 3, 'price_value' => $data['order_ref_price_id_3']]);
+                            //     $do4 = $this->Ref_model->add_ref_price(['price_ref_id' => $set_data, 'price_name' => '2 Jam', 'price_sort' => 4, 'price_value' => $data['order_ref_price_id_4']]);                                                                                    
+                            // }                            
                             //Aktivitas
                             $params = array(
                                 'activity_user_id' => $session_user_id,
