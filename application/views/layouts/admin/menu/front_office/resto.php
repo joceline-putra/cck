@@ -11,6 +11,9 @@
         outline:none;
         /*font-family:Helvetica Neue,helvetica,arial,verdana,sans-serif;*/
     }
+    .table-responsive{
+        overflow-x: unset;
+    }    
     /* Checkbox n Toggle */
         .toggles{
             width:48px;

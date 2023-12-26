@@ -2,13 +2,12 @@
 <script>
     $(document).ready(function () {
         var identity = "<?php echo $identity; ?>";
-        // $.alert('btn_update_flag_order_item when checkout');
-        // $("[class*='tab-pane-sub']").addClass('active');
+        // $(".tab-pane-sub").addClass('active');
 
         //Url
         var url = "<?= base_url('front_office/booking'); ?>";
-        let url_print = "<?php base_url('front_office/booking'); ?>";
-            
+        // let url_print = "<?php base_url('front_office/booking'); ?>";
+        var url_print = "<?= base_url('front_office/prints'); ?>";
         let url_tool = "<?php base_url('search/manage'); ?>";
         var url_image = "<?php site_url('upload/noimage.png'); ?>";
 
@@ -285,11 +284,23 @@
                         return dsp;
                     }
                 },{
-                    'data': 'price_name',
+                    'data': 'order_item_ref_price_sort',
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        dsp += row.price_name;
+                        if(data == 0){
+                            dsp += 'Promo';
+                        }else if(data == 1){
+                            dsp += 'Bulanan';
+                        }else if(data == 2){
+                            dsp += 'Harian';
+                        }else if(data == 3){
+                            dsp += 'Midnight';
+                        }else if(data == 4){
+                            dsp += '4 Jam';
+                        }else if(data == 5){
+                            dsp += '2 Jam';
+                        }
                         return dsp;
                     }
                 },{
@@ -434,6 +445,7 @@
                 form.set('files_1', 0); //Foto KTP  
                 form.append('upload_1', $("#files_preview_1").attr('data-save-img'));
                 form.append('upload_2', $("#files_preview_2").attr('data-save-img'));
+                form.append('order_item_ref_price_sort',$("input[name=order_ref_price_id]:checked").val());
                 if(orderID > 0){
                     form.append('order_id', orderID);
                 }
@@ -446,6 +458,8 @@
                     beforeSend:function(x){
                         // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
                         // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                        $('#btn_save_order').html('<i class="fas fa-spinner"></i> Please wait...');
+                        $('#btn_save_order').prop('disabled', true);  
                     },
                     success:function(d){
                         let s = d.status;
@@ -454,20 +468,32 @@
                         if(parseInt(s) == 1){
                             notif(s,m);
                             order_table.ajax.reload();
-                            formBookingReset();
                             // console.log(r.order_id);
-                            activeTab("tab2");
+                            formBookingReset();
+                            // activeTab("tab11");
+                            var p = {
+                                order_id:r.order_id,
+                                order_number:r.order_number,
+                                order_date:r.order_date,
+                                order_session:r.order_session,
+                                contact_name:r.contact_name,
+                                contact_phone:r.contact_phone,
+                                order_item:r.order_item                                                                                                                                                                                                                                  
+                            }
+                            transSuccess(p);
                         }else{
                             notif(s,m);
                         }
+                        $('#btn_save_order').html('<i class="fas fa-arrow-right"></i> Proses');
+                        $('#btn_save_order').prop('disabled', false);
                     },
                     error:function(xhr,status,err){
                         notif(0,err);
                     }
                 });
             }   
-        });        
-        $(document).on("click","#btn_save_order_2",function(e) {
+        });            
+        $(document).on("click","#btn_save_order_2",function(e) { //Old Not User
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -518,7 +544,7 @@
                 });
             }
         });
-        $(document).on("click","#btn_save_order_1", function(e) {
+        $(document).on("click","#btn_save_order_1", function(e) { //Old Not User
             e.preventDefault(); e.stopPropagation();
             let next = true;
             if(next){
@@ -1102,15 +1128,15 @@
             }            
         });                
         function loadRefPrice(){ //Load ref_price and room
-
+            console.log('loadRefPrice()');
+            var ref_check = $("input[name=order_ref_price_id]:checked").val();
             $("#order_price").val(0);
-
             if(parseInt($("input[name='order_ref_id']:checked").val()) > 0){
                 let form = new FormData();
                 form.append('action', 'room_price');
                 form.append('branch_id',  $("input[name=order_branch_id]:checked").val());
                 form.append('ref_id',  $("input[name=order_ref_id]:checked").val());                                                
-                form.append('ref_price_sort',  $("input[name=order_ref_price_id]:checked").val());
+                form.append('ref_price_sort', $("input[name=order_ref_price_id]:checked").val());
                 $.ajax({
                     type: "post",
                     url: url,
@@ -1126,10 +1152,28 @@
                         let s = d.status;
                         let m = d.message;
                         let r = d.result;
+                        let rr = d.result_ref;                        
                         if(parseInt(s) == 1){
                             // notif(s,m);
-                            $("#order_price").val(r.price_value);
-
+                            var set_price = 0;
+                            if(ref_check == 0){
+                                set_price = rr.ref_price_0;
+                            }else if(ref_check == 1){
+                                set_price = rr.ref_price_1;
+                            }else if(ref_check == 2){
+                                set_price = rr.ref_price_2;
+                            }else if(ref_check == 3){
+                                set_price = rr.ref_price_3;
+                            }else if(ref_check == 4){
+                                set_price = rr.ref_price_4;
+                            }else if(ref_check == 5){
+                                set_price = rr.ref_price_5;
+                            }else{
+                                set_price = 0;
+                            }
+                            // $("#order_price").val(r.price_value);
+                            $("#order_price").val(set_price);                            
+                            console.log('Price: '+set_price);
                             //Display Room
                             let re = d.rooms;
                             let total_records = re.length;
@@ -1153,6 +1197,8 @@
                             
                                 }
                                 $("#order_product_id").html(dsp);
+                            }else{
+                                $("#order_product_id").html('Kamar belum di tambahkan');
                             }
                         }else{
                             notif(s,m);
@@ -1183,12 +1229,151 @@
                 var x = screen.width / 2 - 700 / 2;
                 var y = screen.height / 2 - 450 / 2;
                 var print_url = url_print+'?action=print&data='+session;
-                var win = window.open(print_url,'Print','width=700,height=485,left=' + x + ',top=' + y + '').print();
-                //var win = window.open(print_url,'_blank');
+                // var win = window.open(print_url,'Print','width=700,height=485,left=' + x + ',top=' + y + '').print();
+                // var win = window.open(print_url,'_blank');
+                var par = {
+                    order_id:id
+                }
+                printReceipt(par);
             }else{
                 notif(0,'Dokumen belum di buka');
             }
         });
+        // Print
+        function printFromUrl(url) {
+            var beforeUrl = 'intent:';
+            var afterUrl = '#Intent;';
+            // Intent call with component
+            //afterUrl += 'component=ru.a402d.rawbtprinter.activity.PrintDownloadActivity;'
+            afterUrl += 'package=ru.a402d.rawbtprinter;end;';
+            document.location = beforeUrl + encodeURI(url) + afterUrl;
+            return false;
+        }        
+        function printReceipt(params){
+            var x = screen.width / 2 - 700 / 2;
+            var y = screen.height / 2 - 450 / 2;
+            var print_url = url_print + '/' + params['order_id'];
+
+            // var print_url = url_print_payment + '/' + tsession;
+            // var win = window.open(print_url, 'Print Payment', 'width=700,height=485,left=' + x + ',top=' + y + '').print();
+            if(parseInt(params['order_id']) > 0){
+                var set_print_url = url_print + '_booking/' + params['order_id'];
+                $.ajax({
+                    type: "get",
+                    url: set_print_url,
+                    data: {action: 'print_raw'},
+                    dataType: 'json',cache: 'false',
+                    beforeSend: function () {
+                        notif(1, 'Perintah print dikirim');
+                    },
+                    success: function (d) {
+                        var s = d.status;
+                        var m = d.message;
+                        if (parseInt(s) == 1) {
+                            if(parseInt(d.print_to) == 0){
+                                //For Localhost
+                                window.open(d.print_url).print();
+                            }else{
+                                //For RawBT                                
+                                return printFromUrl(d.print_url);                              
+                            }
+                        } else {
+                            notif(s, m);
+                        }
+                    }, error: function (xhr, Status, err) {
+                        notif(0, 'Error');
+                    }
+                });
+            }else{
+                notif(0,'Data tidak ditemukan / belum dibayar');
+            } 
+        }   
+        /*
+        var s = {
+            "order_id": "11",
+            "order_number": "BOOK-2312-00008",
+            "order_session": "R93HLWAPUV9QBSSUVGBL",
+            "order_date": "2023-12-23 08:42:59",
+            "contact_name": "Yoceline",
+            "contact_phone": "6281225518117",
+            "order_item": {
+                "order_id": "11",
+                "order_number": "BOOK-2312-00008",
+                "order_date": "2023-12-23 08:42:59",
+                "order_session": "R93HLWAPUV9QBSSUVGBL",
+                "order_contact_code": "",
+                "order_contact_name": "Yoceline",
+                "order_contact_phone": "6281225518118",
+                "order_files_count": "0",
+                "order_order_paid_count": "1",
+                "order_total": "300000.00",
+                "order_paid": "1",
+                "order_total_paid": "300000.00",
+                "order_flag": "0",
+                "order_item_id": "11",
+                "order_item_branch_id": "4",
+                "order_item_type": "222",
+                "order_item_type_name": "Booking",
+                "order_item_order_id": "11",
+                "order_item_qty": "1.00",
+                "order_item_price": "300000.00",
+                "order_item_total": "0.00",
+                "order_item_date_created": "2023-12-23 08:42:59",
+                "order_item_flag": "0",
+                "order_item_order_session": "R93HLWAPUV9QBSSUVGBL",
+                "order_item_type_2": "Transit",
+                "order_item_ref_id": "489",
+                "order_item_ref_price_sort": "2",
+                "order_item_ref_price_id": "23",
+                "order_item_start_date": "2023-12-23 14:00:00",
+                "order_item_end_date": "2023-12-24 12:00:00",
+                "order_item_flag_checkin": "0",
+                "order_item_product_id": "22",
+                "ref_id": "489",
+                "ref_name": "Besar",
+                "product_id": "22",
+                "product_name": "Kamar 4",
+                "product_flag": "1",
+                "branch_id": "4",
+                "branch_name": "Lily 1",
+                "branch_code": "2"
+            }
+        };
+        transSuccess(s);  
+        */
+        function transSuccess(params){ // OLD paymentSuccess()
+            var d = params; 
+            // console.log(d);
+
+            //Prepare Print
+            $("#modal-print-title").html(d.message);
+
+            //Set Text
+            $(".modal-print-trans-number").html(': ' + d.order_number);
+            $(".modal-print-trans-date").html(': ' + moment(d.order_date).format("DD-M-YYYY, HH:mm"));
+            
+            $("#modal-print-contact-name").val(' ' + d.contact_name);
+            $("#modal-print-contact-phone").val(' ' + d.contact_phone);
+
+            $(".modal_print_branch_name").html(': ' + d.order_item.branch_name);            
+            $(".modal_print_start_date").html(': ' + moment(d.order_item.order_item_start_date).format("DD-M-YYYY, HH:mm"));   
+            $(".modal_print_product_name").html(': ' + d.order_item.product_name);               
+            $(".modal_print_total").html(': ' + addCommas(Math.floor(d.order_item.order_total)));  
+            $(".modal_print_total_paid").html(': ' + addCommas(Math.floor(d.order_item.order_total_paid)));                
+            // console.log(d.order_item.order_total_paid);
+            $("#btn_print_trans").attr('data-order-id', d.order_id);
+            $("#btn_print_trans").attr('data-order-number', d.order_number);
+            $("#btn_print_trans").attr('data-order-session', d.order_session);
+
+            $(".btn_send_whatsapp").attr('data-id',d.order_id)
+                .attr('data-order-number',d.order_number)
+                .attr('data-order-date',d.order_date)
+                .attr('data-contact-name',d.contact_name)
+                .attr('data-contact-phone',d.contact_phone);            
+            
+            $("#modal-trans-print").modal({backdrop: 'static', keyboard: false});
+        }  
+
         $(document).on("click","#btn_export_order",function(e) {
             e.stopPropagation();
             $.alert('Fungsi belum dibuat');
@@ -1236,6 +1421,7 @@
 
         function formBookingReset(){
             console.log('formBookingReset()');
+            activeTab("tab11");
             $("#form_booking input[type='text']")
             .not("input[id='order_start_date']")
             .not("input[id='order_end_date']").val('');
@@ -2743,8 +2929,14 @@
         $(document).on("click", "input[name='order_ref_price_id']", function(e){ activeTab("tab13"); });
         $(document).on("click", "input[name='order_ref_id']", function(e){ activeTab("tab14"); });
         $(document).on("click", "input[name='order_product_id']", function(e){ activeTab("tab15"); });     
-        $(document).on("click", "#btn_tab_15", function(e){ activeTab("tab16"); });
-        $(document).on("click", "#btn_tab_16", function(e){ 
+        $(document).on("click", "#btn_tab_15", function(e){ 
+            var pr = orderPRICE.rawValue;
+            if(pr > 0){
+                activeTab("tab16"); 
+            }else{
+                notif(0,'Harga belum di konfigurasi');
+            }
+        });$(document).on("click", "#btn_tab_16", function(e){ 
             if($("#order_contact_name").val().length == 0){
                 notif(0,'Nama harus diisi');
                 $("#order_contact_name").focus();
@@ -2756,46 +2948,59 @@
             }
         });     
         $(document).on("click","#btn_tab_17", function(e){ 
+            /*
             if(document.getElementById("files_1").files.length == 0 ){
                 notif(0,'Bukti Bayar belum di pilih');
-            }else if($("#paid_total").val().length == 0){
+            }
+            */ 
+            if($("#paid_total").val().length == 0){
                 notif(0,'Jumlah harus diisi');
+                $("#paid_total").focus();
             }else{
-                var file = document.getElementById("files_1").files[0];
-                var fileType = file["type"];
-                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-                if ($.inArray(fileType, validImageTypes) < 0) {
-                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
-                }else{
-                    var size_kb = file.size / 1024;
-                    console.log(size_kb);
-                    if(size_kb < 1280){
-                        activeTab("tab18"); 
+                if(document.getElementById("files_1").files.length > 0){
+                    var file = document.getElementById("files_1").files[0];
+                    var fileType = file["type"];
+                    var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                    if ($.inArray(fileType, validImageTypes) < 0) {
+                        notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
                     }else{
-                        notif(0,'Maksimal 1 MB');
-                    }
-                } 
+                        var size_kb = file.size / 1024;
+                        console.log(size_kb);
+                        if(size_kb < 1280){
+                            activeTab("tab18"); 
+                        }else{
+                            notif(0,'Maksimal 1 MB');
+                        }
+                    } 
+                }else{
+                    activeTab("tab18");
+                }
             }
         });
         $(document).on("click","#btn_tab_18", function(e){ 
-            if(document.getElementById("files_2").files.length == 0 ){
-                notif(0,'Foto KTP belum di pilih');
-            }else{
-                var file = document.getElementById("files_2").files[0];
-                var fileType = file["type"];
-                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-                if ($.inArray(fileType, validImageTypes) < 0) {
-                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
-                }else{
-                    var size_kb = file.size / 1024;
-                    if(size_kb < 1280){
-                        activeTab("tab19"); 
-                        loadBeforeBooking();
+            // if(document.getElementById("files_2").files.length == 0 ){
+                // notif(0,'Foto KTP belum di pilih');
+            // }else{
+                if(document.getElementById("files_2").files.length > 0){
+                    var file = document.getElementById("files_2").files[0];
+                    var fileType = file["type"];
+                    var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                    if ($.inArray(fileType, validImageTypes) < 0) {
+                        notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
                     }else{
-                        notif(0,'Maksimal 1 MB');
+                        var size_kb = file.size / 1024;
+                        if(size_kb < 1280){
+                            activeTab("tab19"); 
+                            loadBeforeBooking();
+                        }else{
+                            notif(0,'Maksimal 1 MB');
+                        }
                     }
+                }else{
+                    activeTab("tab19");
+                    loadBeforeBooking();
                 }
-            }
+            // }
         });            
         //Child Back Button
         $(document).on("click", "#btn_tab_12b", function(e){ activeTab("tab11"); });
@@ -2808,6 +3013,7 @@
         $(document).on("click", "#btn_tab_19b", function(e){ activeTab("tab18"); });                                
 
         function loadBeforeBooking(){
+            $("#table_confirm").html('');
             var dsp = '';
             dsp += `<tr><td>Cabang</td><td>:</td><td>${$("input[name='order_branch_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Tipe</td><td>:</td><td>${$("input[name='order_ref_price_id']:checked").attr('data-name')}</td></tr>`; 
@@ -2888,7 +3094,6 @@
                 }
             });
         });
-        
                                
     }); //End of Document Ready
 

@@ -29,7 +29,7 @@ class Pos3 extends MY_Controller{
         $this->load->model('Account_map_model'); 
         $this->load->model('Referensi_model');         
 
-        $this->print_to         = 0; //0 = Local, 1 = Bluetooth
+        $this->print_to         = 1; //0 = Local, 1 = Bluetooth
         $this->whatsapp_config  = 1;          
 
         $this->contact_1_alias  = 'Customer';
@@ -626,268 +626,6 @@ class Pos3 extends MY_Controller{
         // $this->load->view('layouts/admin/index',$data);
         $this->load->view('layouts/admin/menu/sales/pos/printer.php');    
     }
-    public function set_line($char, $width) {
-        // $lines=array();
-        // foreach (explode("\n",wordwrap($kolom1,$len=32)) as $line)
-        //     $lines[]=str_pad($line,$len,' ',STR_PAD_BOTH);
-        // return implode("\n",$lines)."\n";
-        $ret = '';
-        for($a=0; $a<$width; $a++){
-            $ret .= $char;
-        }
-        return $ret."\n";
-    }
-    public function set_wrap_0($kolom1,$separator,$padding) {
-        if($padding=='BOTH'){ $set_padding = STR_PAD_BOTH ;
-        }else if($padding=='LEFT'){ $set_padding = STR_PAD_LEFT;
-        }else if($padding=='RIGHT'){ $set_padding = STR_PAD_RIGHT;
-        }
-        $lines=array();
-        foreach (explode("\n",wordwrap($kolom1,$len=29)) as $line)
-            $lines[]=str_pad($line,$len,$separator,$set_padding);
-        return implode("\n",$lines)."\n";
-    }
-    public function set_wrap_1($kolom1) {
-        $lines=array();
-        foreach (explode("\n",wordwrap($kolom1,$len=120)) as $line)
-            $lines[]=str_pad($line,$len,' ',STR_PAD_BOTH);
-        return implode("\n",$lines)."\n";
-    }
-    public function set_wrap_2($kolom1, $kolom2) {
-        // Mengatur lebar setiap kolom (dalam satuan karakter)
-        $lebar_kolom_1 = 15;
-        $lebar_kolom_2 = 13;
-        // Melakukan wordwrap(), jadi jika karakter teks melebihi lebar kolom, ditambahkan \n 
-        $kolom1 = wordwrap($kolom1, $lebar_kolom_1, "\n", true);
-        $kolom2 = wordwrap($kolom2, $lebar_kolom_2, "\n", true);
-        // Merubah hasil wordwrap menjadi array, kolom yang memiliki 2 index array berarti memiliki 2 baris (kena wordwrap)
-        $kolom1Array = explode("\n", $kolom1);
-        $kolom2Array = explode("\n", $kolom2);
-        // Mengambil jumlah baris terbanyak dari kolom-kolom untuk dijadikan titik akhir perulangan
-        $jmlBarisTerbanyak = max(count($kolom1Array), count($kolom2Array));
-        // Mendeklarasikan variabel untuk menampung kolom yang sudah di edit
-        $hasilBaris = array();
-        // Melakukan perulangan setiap baris (yang dibentuk wordwrap), untuk menggabungkan setiap kolom menjadi 1 baris 
-        for ($i = 0; $i < $jmlBarisTerbanyak; $i++) {
-            // memberikan spasi di setiap cell berdasarkan lebar kolom yang ditentukan, 
-            $hasilKolom1 = str_pad((isset($kolom1Array[$i]) ? $kolom1Array[$i] : ""), $lebar_kolom_1, " ");
-            $hasilKolom2 = str_pad((isset($kolom2Array[$i]) ? $kolom2Array[$i] : ""), $lebar_kolom_2, " ", STR_PAD_LEFT);
-            // memberikan rata kanan pada kolom 3 dan 4 karena akan kita gunakan untuk harga dan total harga
-            // $hasilKolom3 = str_pad((isset($kolom3Array[$i]) ? $kolom3Array[$i] : ""), $lebar_kolom_3, " ", STR_PAD_LEFT);
-            // $hasilKolom4 = str_pad((isset($kolom4Array[$i]) ? $kolom4Array[$i] : ""), $lebar_kolom_4, " ", STR_PAD_LEFT);
-            // Menggabungkan kolom tersebut menjadi 1 baris dan ditampung ke variabel hasil (ada 1 spasi disetiap kolom)
-            $hasilBaris[] = $hasilKolom1 . " " . $hasilKolom2;
-        }
-        // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
-        return implode($hasilBaris, "\n") . "\n";
-    }
-    public function set_wrap_3($kolom1, $kolom2, $kolom3) {
-        // Mengatur lebar setiap kolom (dalam satuan karakter)
-        $lebar_kolom_1 = 14;
-        $lebar_kolom_2 = 1;
-        $lebar_kolom_3 = 12;
-        // Melakukan wordwrap(), jadi jika karakter teks melebihi lebar kolom, ditambahkan \n 
-        $kolom1 = wordwrap($kolom1, $lebar_kolom_1, "\n", true);
-        $kolom2 = wordwrap($kolom2, $lebar_kolom_2, "\n", true);
-        $kolom3 = wordwrap($kolom3, $lebar_kolom_3, "\n", true);
-        // Merubah hasil wordwrap menjadi array, kolom yang memiliki 2 index array berarti memiliki 2 baris (kena wordwrap)
-        $kolom1Array = explode("\n", $kolom1);
-        $kolom2Array = explode("\n", $kolom2);
-        $kolom3Array = explode("\n", $kolom3);
-        // Mengambil jumlah baris terbanyak dari kolom-kolom untuk dijadikan titik akhir perulangan
-        $jmlBarisTerbanyak = max(count($kolom1Array), count($kolom2Array), count($kolom3Array));
-        // Mendeklarasikan variabel untuk menampung kolom yang sudah di edit
-        $hasilBaris = array();
-        // Melakukan perulangan setiap baris (yang dibentuk wordwrap), untuk menggabungkan setiap kolom menjadi 1 baris 
-        for ($i = 0; $i < $jmlBarisTerbanyak; $i++) {
-            // memberikan spasi di setiap cell berdasarkan lebar kolom yang ditentukan, 
-            $hasilKolom1 = str_pad((isset($kolom1Array[$i]) ? $kolom1Array[$i] : ""), $lebar_kolom_1, " ");
-            $hasilKolom2 = str_pad((isset($kolom2Array[$i]) ? $kolom2Array[$i] : ""), $lebar_kolom_2, " ");
-            // memberikan rata kanan pada kolom 3 dan 4 karena akan kita gunakan untuk harga dan total harga
-            $hasilKolom3 = str_pad((isset($kolom3Array[$i]) ? $kolom3Array[$i] : ""), $lebar_kolom_3, " ", STR_PAD_LEFT);
-            // Menggabungkan kolom tersebut menjadi 1 baris dan ditampung ke variabel hasil (ada 1 spasi disetiap kolom)
-            $hasilBaris[] = $hasilKolom1 . " " . $hasilKolom2 . " " . $hasilKolom3;
-        }
-        // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
-        return implode($hasilBaris, "\n") . "\n";
-    }
-    public function set_wrap_4($kolom1, $kolom2, $kolom3, $kolom4) {
-        // Mengatur lebar setiap kolom (dalam satuan karakter)
-        $lebar_kolom_1 = 12;
-        $lebar_kolom_2 = 8;
-        $lebar_kolom_3 = 8;
-        $lebar_kolom_4 = 9;
-
-        // Melakukan wordwrap(), jadi jika karakter teks melebihi lebar kolom, ditambahkan \n 
-        $kolom1 = wordwrap($kolom1, $lebar_kolom_1, "\n", true);
-        $kolom2 = wordwrap($kolom2, $lebar_kolom_2, "\n", true);
-        $kolom3 = wordwrap($kolom3, $lebar_kolom_3, "\n", true);
-        $kolom4 = wordwrap($kolom4, $lebar_kolom_4, "\n", true);
-        // Merubah hasil wordwrap menjadi array, kolom yang memiliki 2 index array berarti memiliki 2 baris (kena wordwrap)
-        $kolom1Array = explode("\n", $kolom1);
-        $kolom2Array = explode("\n", $kolom2);
-        $kolom3Array = explode("\n", $kolom3);
-        $kolom4Array = explode("\n", $kolom4);
-        // Mengambil jumlah baris terbanyak dari kolom-kolom untuk dijadikan titik akhir perulangan
-        $jmlBarisTerbanyak = max(count($kolom1Array), count($kolom2Array), count($kolom3Array), count($kolom4Array));
-        // Mendeklarasikan variabel untuk menampung kolom yang sudah di edit
-        $hasilBaris = array();
-        // Melakukan perulangan setiap baris (yang dibentuk wordwrap), untuk menggabungkan setiap kolom menjadi 1 baris 
-        for ($i = 0; $i < $jmlBarisTerbanyak; $i++) {
-            // memberikan spasi di setiap cell berdasarkan lebar kolom yang ditentukan, 
-            $hasilKolom1 = str_pad((isset($kolom1Array[$i]) ? $kolom1Array[$i] : ""), $lebar_kolom_1, " ");
-            $hasilKolom2 = str_pad((isset($kolom2Array[$i]) ? $kolom2Array[$i] : ""), $lebar_kolom_2, " ");
-            // memberikan rata kanan pada kolom 3 dan 4 karena akan kita gunakan untuk harga dan total harga
-            $hasilKolom3 = str_pad((isset($kolom3Array[$i]) ? $kolom3Array[$i] : ""), $lebar_kolom_3, " ", STR_PAD_LEFT);
-            $hasilKolom4 = str_pad((isset($kolom4Array[$i]) ? $kolom4Array[$i] : ""), $lebar_kolom_4, " ", STR_PAD_LEFT);
-            // Menggabungkan kolom tersebut menjadi 1 baris dan ditampung ke variabel hasil (ada 1 spasi disetiap kolom)
-            $hasilBaris[] = $hasilKolom1 . " " . $hasilKolom2 . " " . $hasilKolom3 . " " . $hasilKolom4;
-        }
-        // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
-        return implode($hasilBaris, "\n") . "\n";
-    }
-    function prints_transaction($id){ // ID = TRANS ID Print Thermal 58mm Done 
-        $text = '';
-        $word_wrap_width = 29;
-
-        $get_trans  = $this->Transaksi_model->get_transaksi($id);
-        $get_branch = $this->Branch_model->get_branch($get_trans['trans_branch_id']);
-        $get_trans_items  = $this->Transaksi_model->get_transaksi_item_custom(array('trans_item_trans_id'=>$get_trans['trans_id']));
-
-        $get_order = $this->Order_model->get_all_orders(array('order_trans_id'=> $id),$search = null,$limit = null,$start = null,$order = null,$dir = null);
-        $order_data = array();
-        if(count($get_order)>0){
-            foreach($get_order as $h){
-                $get_order_item = $this->Order_model->get_all_order_items(array('order_item_order_id'=> $h['order_id']),$search = null,$limit = null,$start = null,$order = null,$dir = null);
-                $order_data[] = array(
-                    'order_id' => $h['order_id'],
-                    'order_number' => $h['order_number'],
-                    'order_date' => $h['order_date'],
-                    'order_total' => $h['order_total'],
-                    'order_total_down_payment' => $h['order_with_dp'],
-                    'order_total_grand' => $h['order_total']-$h['order_with_dp'],                            
-                    'ref_id' => $h['ref_id'],
-                    'ref_name' => $h['ref_name'],
-                    'contact_name' => $h['contact_name'],
-                    'employee_name' => $h['employee_name'],                    
-                    'user_name' => $h['user_fullname'],           
-                    'order_contact_name' => $h['order_contact_name'],
-                    'order_contact_phone' => $h['order_contact_phone'],                                         
-                    'order_items' => $get_order_item
-                );
-            }
-        }
-
-        //Process if Data Found
-        if($get_trans){
-            $paid_type_name = '';
-            if($get_trans['trans_paid_type'] > 0){
-                $get_type_paid = $this->Type_model->get_type_paid($get_trans['trans_paid_type']);
-                $paid_type_name = $get_type_paid['paid_name'];
-            }else{
-                $paid_type_name = '-'; // Piutang
-            }
-
-            //Header
-            $text .= $this->set_wrap_1($get_branch['branch_name']);
-            $text .= $this->set_wrap_1($get_branch['branch_address']);
-            $text .= $this->set_wrap_1($get_branch['branch_phone_1']);                
-            $text .= $this->set_wrap_1($get_trans['trans_number']);
-            $text .= $this->set_wrap_1(date("d/m/Y - H:i:s", strtotime($get_trans['trans_date'])));    
-            // $text .= $this->set_wrap_2('Cashier',$get_trans['contact_name']);
-
-            $text .= "\n";
-            $text .= $this->set_line('-',$word_wrap_width);
-
-            $text .= $this->set_wrap_2("Item", "Total");
-            $text .= $this->set_line('-',$word_wrap_width);
-
-            
-            //Content Order Items
-            $num = 0;
-            foreach($order_data as $i => $v):
-                //$text .= $v['order_number']."\n";
-                $text .= $this->set_wrap_0($v['order_number'],'-','BOTH');
-                $text .= $v['ref_name']."\n";
-                $text .= $v['order_date']."\n";  
-                $text .= $v['employee_name']."\n";
-                $text .= $v['user_name']."\n";         
-                $text .= "\n";                      
-                foreach($v['order_items'] as $i):
-                    $text .= $this->set_wrap_0($i['product_name'],' ','RIGHT');
-                    $text .= $this->set_wrap_2(' '.number_format($i['order_item_price'],0,'',',') . ' x '. number_format($i['order_item_qty'],0,'',','), number_format($i['order_item_total'],0,'',','));
-                    if($i['order_item_discount'] > 0){
-                        $text.= $this->set_wrap_2(' Dis. '.number_format($i['order_item_discount']),' ');
-                    }
-                    $num++;
-                endforeach;            
-                $text .= "\n"; 
-            endforeach;
-
-            //Content Trans Items / Hanya tampil jika order_item kosong, maka ambil dari trans_items
-            if($num < 1){
-                foreach($get_trans_items as $v):
-                    $text .= $v['product_name']."\n";
-                    $text .= $this->set_wrap_2(' '.number_format($v['trans_item_out_qty'],0,'',',') . ' x '. number_format($v['trans_item_sell_price'],0,'',','), number_format($v['trans_item_sell_total'],0,'',','));            
-                endforeach;  
-            }     
-
-            // $text .= "\n";
-            $text .= $this->set_line('-',$word_wrap_width);
-            $text .= $this->set_wrap_3('Subtotal',':',number_format($get_trans['trans_total_dpp'],0,'',','));
-            if(!empty($get_trans['trans_voucher']) && $get_trans['trans_voucher'] > 0){
-                $text .= $this->set_wrap_3('Voucher',':','-'.number_format($get_trans['trans_voucher'],0,'',','));    
-            }
-            if(!empty($get_trans['trans_discount']) && $get_trans['trans_discount'] > 0){
-                $text .= $this->set_wrap_3('Diskon',':','-'.number_format($get_trans['trans_discount'],0,'',','));    
-            }            
-            if((!empty($get_trans['trans_voucher'])) or (!empty($get_trans['trans_discount']))){
-                $text .= $this->set_wrap_3('Grand Total',':',number_format($get_trans['trans_total'],0,'',','));    
-            }            
-            $text .= $this->set_wrap_3('Dibayar',':',number_format($get_trans['trans_received'],0,'',','));
-            if(!empty($get_trans['trans_change']) && $get_trans['trans_change'] > 0){
-                $text .= $this->set_wrap_3('Kembali',':',number_format($get_trans['trans_change'],0,'',','));
-            }     
-            $text .= $this->set_wrap_3('Pembayaran',':',$paid_type_name);
-
-            //Footer
-            $text .= "\n";
-            $text .= $this->set_wrap_1("-- Terima Kasih --");     
-
-            //Save to Print Spoiler
-            $params = array(
-                'spoiler_content' => $text, 'spoiler_source_table' => 'trans',
-                'spoiler_source_id' => $id, 'spoiler_flag' => 0, 'spoiler_date' => date('YmdHis')
-            );
-            $this->Print_spoiler_model->add_print_spoiler($params);
-        }else{
-            $text = "Transaksi tidak ditemukan\n";
-        }
-
-        //Open / Write to print.txt
-        $file = fopen("print_transaction_".$get_branch['branch_id'].".txt", "w") or die("Unable to open file");
-        // $justify = chr(27) . chr(64) . chr(27) . chr(97). chr(1);
-
-        $text .= chr(27).chr(10);
-
-        //Write and Save
-        fwrite($file,$text);
-        // fclose($file);
-
-        if(fclose($file)){
-            echo json_encode(array('status'=>1,'print_url'=>base_url('print_transaction_'.$get_branch['branch_id'].'.txt'),'print_to'=>$this->print_to));
-        }else{
-            echo json_encode(array('status'=>0,'message'=>'Print raw error','print_to'=>$this->print_to));
-        }
-
-        //Preview to HTML
-        // $this->output->set_content_type('text/plain', 'UTF-8');
-        // $this->output->set_output($text);
-        
-        //Need Activate to Copy File into Print Enqueue
-        // copy($file, "//localhost/printer-share-name"); # Do Print
-        // unlink($file);
-    }
     function report(){
         $request = $this->input->get('request');
         $format  = $this->input->get('format');        
@@ -1233,12 +971,12 @@ class Pos3 extends MY_Controller{
             }
 
             //Header
-            $text .= dot_set_wrap_1($word_wrap_width,$get_branch['branch_name']);
+            $text .= dot_set_wrap_1($word_wrap_width,$get_branch['branch_name']," ","BOTH");
             $text .= dot_set_wrap_1($word_wrap_width,$get_branch['branch_address']);
             $text .= dot_set_wrap_1($word_wrap_width,$get_branch['branch_phone_1']);                
             $text .= dot_set_wrap_1($word_wrap_width,$get_trans['trans_number']);
             $text .= dot_set_wrap_1($word_wrap_width,date("d/m/Y - H:i:s", strtotime($get_trans['trans_date'])));    
-            // $text .= $this->set_wrap_2('Cashier',$get_trans['contact_name']);
+            // $text .= dot_set_wrap_2('Cashier',$get_trans['contact_name']);
 
             $text .= "\n";
             $text .= dot_set_line('-',$word_wrap_width);
@@ -1328,6 +1066,148 @@ class Pos3 extends MY_Controller{
         $this->output->set_content_type('text/plain', 'UTF-8');
         $this->output->set_output($text);
         
-    }       
+    }  
+    function prints_transaction($id){ // ID = TRANS ID Print Thermal 58mm Done 
+        $text = '';
+        $word_wrap_width = 29;
+
+        $get_trans  = $this->Transaksi_model->get_transaksi($id);
+        $get_branch = $this->Branch_model->get_branch($get_trans['trans_branch_id']);
+        $get_trans_items  = $this->Transaksi_model->get_transaksi_item_custom(array('trans_item_trans_id'=>$get_trans['trans_id']));
+
+        $get_order = $this->Order_model->get_all_orders(array('order_trans_id'=> $id),$search = null,$limit = null,$start = null,$order = null,$dir = null);
+        $order_data = array();
+        if(count($get_order)>0){
+            foreach($get_order as $h){
+                $get_order_item = $this->Order_model->get_all_order_items(array('order_item_order_id'=> $h['order_id']),$search = null,$limit = null,$start = null,$order = null,$dir = null);
+                $order_data[] = array(
+                    'order_id' => $h['order_id'],
+                    'order_number' => $h['order_number'],
+                    'order_date' => $h['order_date'],
+                    'order_total' => $h['order_total'],
+                    'order_total_down_payment' => $h['order_with_dp'],
+                    'order_total_grand' => $h['order_total']-$h['order_with_dp'],                            
+                    'ref_id' => $h['ref_id'],
+                    'ref_name' => $h['ref_name'],
+                    'contact_name' => $h['contact_name'],
+                    'employee_name' => $h['employee_name'],                    
+                    'user_name' => $h['user_fullname'],           
+                    'order_contact_name' => $h['order_contact_name'],
+                    'order_contact_phone' => $h['order_contact_phone'],                                         
+                    'order_items' => $get_order_item
+                );
+            }
+        }
+
+        //Process if Data Found
+        if($get_trans){
+            $paid_type_name = '';
+            if($get_trans['trans_paid_type'] > 0){
+                $get_type_paid = $this->Type_model->get_type_paid($get_trans['trans_paid_type']);
+                $paid_type_name = $get_type_paid['paid_name'];
+            }else{
+                $paid_type_name = '-'; // Piutang
+            }
+
+            //Header
+            $text .= dot_set_wrap_0($get_branch['branch_name']," ","BOTH");
+            $text .= dot_set_wrap_0($get_branch['branch_address']," ","BOTH");
+            $text .= dot_set_wrap_0($get_branch['branch_phone_1']," ","BOTH");                
+            $text .= dot_set_wrap_0($get_trans['trans_number']," ","BOTH");
+            $text .= dot_set_wrap_0(date("d/m/Y - H:i:s", strtotime($get_trans['trans_date']))," ","BOTH");    
+            // $text .= dot_set_wrap_2('Cashier',$get_trans['contact_name']);
+
+            $text .= "\n";
+            $text .= dot_set_line('-',$word_wrap_width);
+
+            $text .= dot_set_wrap_2("Item", "Total");
+            $text .= dot_set_line('-',$word_wrap_width);
+
+            
+            //Content Order Items
+            $num = 0;
+            foreach($order_data as $i => $v):
+                //$text .= $v['order_number']."\n";
+                $text .= dot_set_wrap_0($v['order_number'],'-','BOTH');
+                $text .= $v['ref_name']."\n";
+                $text .= $v['order_date']."\n";  
+                $text .= $v['employee_name']."\n";
+                $text .= $v['user_name']."\n";         
+                $text .= "\n";                      
+                foreach($v['order_items'] as $i):
+                    $text .= dot_set_wrap_0($i['product_name'],' ','RIGHT');
+                    $text .= dot_set_wrap_2(' '.number_format($i['order_item_price'],0,'',',') . ' x '. number_format($i['order_item_qty'],0,'',','), number_format($i['order_item_total'],0,'',','));
+                    if($i['order_item_discount'] > 0){
+                        $text.= dot_set_wrap_2(' Dis. '.number_format($i['order_item_discount']),' ');
+                    }
+                    $num++;
+                endforeach;            
+                $text .= "\n"; 
+            endforeach;
+
+            //Content Trans Items / Hanya tampil jika order_item kosong, maka ambil dari trans_items
+            if($num < 1){
+                foreach($get_trans_items as $v):
+                    $text .= $v['product_name']."\n";
+                    $text .= dot_set_wrap_2(' '.number_format($v['trans_item_out_qty'],0,'',',') . ' x '. number_format($v['trans_item_sell_price'],0,'',','), number_format($v['trans_item_sell_total'],0,'',','));            
+                endforeach;  
+            }     
+
+            // $text .= "\n";
+            $text .= dot_set_line('-',$word_wrap_width);
+            $text .= dot_set_wrap_3('Subtotal',':',number_format($get_trans['trans_total_dpp'],0,'',','));
+            if(!empty($get_trans['trans_voucher']) && $get_trans['trans_voucher'] > 0){
+                $text .= dot_set_wrap_3('Voucher',':','-'.number_format($get_trans['trans_voucher'],0,'',','));    
+            }
+            if(!empty($get_trans['trans_discount']) && $get_trans['trans_discount'] > 0){
+                $text .= dot_set_wrap_3('Diskon',':','-'.number_format($get_trans['trans_discount'],0,'',','));    
+            }            
+            if((!empty($get_trans['trans_voucher'])) or (!empty($get_trans['trans_discount']))){
+                $text .= dot_set_wrap_3('Grand Total',':',number_format($get_trans['trans_total'],0,'',','));    
+            }            
+            $text .= dot_set_wrap_3('Dibayar',':',number_format($get_trans['trans_received'],0,'',','));
+            if(!empty($get_trans['trans_change']) && $get_trans['trans_change'] > 0){
+                $text .= dot_set_wrap_3('Kembali',':',number_format($get_trans['trans_change'],0,'',','));
+            }     
+            $text .= dot_set_wrap_3('Pembayaran',':',$paid_type_name);
+
+            //Footer
+            $text .= "\n";
+            $text .= dot_set_wrap_0("-- Terima Kasih --"," ","BOTH");     
+
+            //Save to Print Spoiler
+            $params = array(
+                'spoiler_content' => $text, 'spoiler_source_table' => 'trans',
+                'spoiler_source_id' => $id, 'spoiler_flag' => 0, 'spoiler_date' => date('YmdHis')
+            );
+            $this->Print_spoiler_model->add_print_spoiler($params);
+        }else{
+            $text = "Transaksi tidak ditemukan\n";
+        }
+
+        //Open / Write to print.txt
+        $file = fopen("print_transaction_".$get_branch['branch_id'].".txt", "w") or die("Unable to open file");
+        // $justify = chr(27) . chr(64) . chr(27) . chr(97). chr(1);
+
+        $text .= chr(27).chr(10);
+
+        //Write and Save
+        fwrite($file,$text);
+        // fclose($file);
+
+        if(fclose($file)){
+            echo json_encode(array('status'=>1,'print_url'=>base_url('print_transaction_'.$get_branch['branch_id'].'.txt'),'print_to'=>$this->print_to));
+        }else{
+            echo json_encode(array('status'=>0,'message'=>'Print raw error','print_to'=>$this->print_to));
+        }
+
+        //Preview to HTML
+        // $this->output->set_content_type('text/plain', 'UTF-8');
+        // $this->output->set_output($text);
+        
+        //Need Activate to Copy File into Print Enqueue
+        // copy($file, "//localhost/printer-share-name"); # Do Print
+        // unlink($file);
+    }    
 }
 ?>

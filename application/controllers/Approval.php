@@ -558,7 +558,8 @@ class Approval extends MY_Controller{
                                     $set_color = 'color:white;background-color:#0aa65e!important;';
                                 }
 
-                                $file_src = site_url() . $this->folder_upload . $v['file_url'];
+                                // $file_src = site_url() . $this->folder_upload . $v['file_url'];
+                                $file_src = site_url() . $v['file_url'];                                
                                 if($v['file_type'] == 2){
                                     $file_src = $v['file_url'];
                                 }
@@ -683,9 +684,9 @@ class Approval extends MY_Controller{
                                 $upload_helper = upload_file($this->folder_upload, $this->input->post('source'));
                                 if ($upload_helper['status'] == 1) {
                                     $params_image = array(
-                                        'file_name' => $upload_helper['result']['client_name'],
+                                        'file_name' => $upload_helper['file'],
                                         'file_format' => str_replace(".","",$upload_helper['result']['file_ext']),
-                                        'file_url' => $upload_helper['file'],
+                                        'file_url' => $this->folder_upload . $upload_helper['file'],
                                         'file_size' => $upload_helper['result']['file_size']
                                     );
                                     /*
@@ -778,34 +779,36 @@ class Approval extends MY_Controller{
             $this->load->view('approval/js.php',$data);         
         }
     }
-    // function file_unit_size($bytes){
-    //     if ($bytes >= 1073741824)
-    //     {
-    //         $bytes = number_format($bytes / 1073741824, 0) . ' GB';
-    //     }
-    //     elseif ($bytes >= 1048576)
-    //     {
-    //         $bytes = number_format($bytes / 1048576, 0) . ' MB';
-    //     }
-    //     elseif ($bytes >= 1024)
-    //     {
-    //         $bytes = number_format($bytes / 1024, 0) . ' KB';
-    //     }
-    //     elseif ($bytes > 1)
-    //     {
-    //         $bytes = $bytes . ' bytes';
-    //     }
-    //     elseif ($bytes == 1)
-    //     {
-    //         $bytes = $bytes . ' byte';
-    //     }
-    //     else
-    //     {
-    //         $bytes = '0 bytes';
-    //     }
+    /*
+    function file_unit_size($bytes){
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 0) . ' GB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 0) . ' MB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 0) . ' KB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' bytes';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' byte';
+        }
+        else
+        {
+            $bytes = '0 bytes';
+        }
 
-    //     return $bytes;
-    // } 
+        return $bytes;
+    } 
+    */
     function file_unit_size($bytes){
         if ($bytes >= 1073741824)
         {

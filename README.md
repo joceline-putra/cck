@@ -3,26 +3,14 @@ Cecekost.com
 
 CECE
 =====
-- Gambar Bukti Bayar wajib
-- Gambar KTP wajib
-- Gambar Plat wajib
+	- Gambar Bukti Bayar wajib
+	- Gambar KTP wajib
+	- Gambar Plat wajib
 - Diskon
 - Biaya Parkir Mobil Rp 500.000
 - Jumlah Mobil yg di bawa
 - Nomor Plat Mobil
 
-LILY
-=====
-- Gambar Bukti Bayar Opsional
-- Gambar KTP Opsional
-
-
-#Lily 1
-    - Besar 
-    - Sedang
-#Lily 2
-    - Besar
-    - Sedang   
 #Cece 2
     - Non AC (4 kamar)
 #Cece 3
@@ -34,3 +22,28 @@ LILY
     - Sedang 2
     - Sedang 3
     - Sedang 4
+	
+LILY
+=====
+- Gambar Bukti Bayar Opsional
+- Gambar KTP Opsional
+#Lily 1
+    - Besar 
+    - Sedang
+#Lily 2
+    - Besar
+    - Sedang   
+
+
+
+Upload File -> files -> function helper upload_file()
+Upload Bukti Bayar -> order_paids -> function helper upload_file()
+
+Fom Lily
+Upload KTP -> files -> core/MY -> $this->file_upload_image()
+Upload Bukti Bayar -> files -> core/MY -> $this->file_upload_image()
+
+Form Cece
+Upload KTP -> files -> core/MY -> $this->file_upload_image()
+Upload Bukti Bayar -> files -> core/MY -> $this->file_upload_image()
+Upload Plat Kend -> files -> core/MY -> $this->file_upload_image()

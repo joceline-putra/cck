@@ -3,37 +3,37 @@
     function joe_helper(){
         return 'Hai Joe, this is helper';
     }
-    function dot_set_line($char, $len) {
+    function dot_set_line($char, $width) {
         // $lines=array();
         // foreach (explode("\n",wordwrap($kolom1,$len=32)) as $line)
         //     $lines[]=str_pad($line,$len,' ',STR_PAD_BOTH);
         // return implode("\n",$lines)."\n";
         $ret = '';
-        for($a=0; $a<$len; $a++){
+        for($a=0; $a<$width; $a++){
             $ret .= $char;
         }
         return $ret."\n";
     }
-    function dot_set_wrap_0($len,$kolom1,$separator,$padding) {
+    function dot_set_wrap_0($kolom1,$separator,$padding) {
         if($padding=='BOTH'){ $set_padding = STR_PAD_BOTH ;
         }else if($padding=='LEFT'){ $set_padding = STR_PAD_LEFT;
         }else if($padding=='RIGHT'){ $set_padding = STR_PAD_RIGHT;
         }
         $lines=array();
-        foreach (explode("\n",wordwrap($kolom1,$len)) as $line)
+        foreach (explode("\n",wordwrap($kolom1,$len=29)) as $line)
             $lines[]=str_pad($line,$len,$separator,$set_padding);
         return implode("\n",$lines)."\n";
     }
-    function dot_set_wrap_1($len,$kolom1) {
+    function dot_set_wrap_1($kolom1) {
         $lines=array();
-        foreach (explode("\n",wordwrap($kolom1,$len)) as $line)
+        foreach (explode("\n",wordwrap($kolom1,$len=120)) as $line)
             $lines[]=str_pad($line,$len,' ',STR_PAD_BOTH);
         return implode("\n",$lines)."\n";
     }
-    function dot_set_wrap_2($len,$kolom1, $kolom2) {
+    function dot_set_wrap_2($kolom1, $kolom2) {
         // Mengatur lebar setiap kolom (dalam satuan karakter)
-        $lebar_kolom_1 = $len/2;
-        $lebar_kolom_2 = $len/2;
+        $lebar_kolom_1 = 15;
+        $lebar_kolom_2 = 13;
         // Melakukan wordwrap(), jadi jika karakter teks melebihi lebar kolom, ditambahkan \n 
         $kolom1 = wordwrap($kolom1, $lebar_kolom_1, "\n", true);
         $kolom2 = wordwrap($kolom2, $lebar_kolom_2, "\n", true);
@@ -58,7 +58,7 @@
         // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
         return implode($hasilBaris, "\n") . "\n";
     }
-    function dot_set_wrap_3($len,$kolom1, $kolom2, $kolom3) {
+    function dot_set_wrap_3($kolom1, $kolom2, $kolom3) {
         // Mengatur lebar setiap kolom (dalam satuan karakter)
         $lebar_kolom_1 = 14;
         $lebar_kolom_2 = 1;
@@ -88,7 +88,7 @@
         // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
         return implode($hasilBaris, "\n") . "\n";
     }
-    function dot_set_wrap_4($len,$kolom1, $kolom2, $kolom3, $kolom4) {
+    function dot_set_wrap_4($kolom1, $kolom2, $kolom3, $kolom4) {
         // Mengatur lebar setiap kolom (dalam satuan karakter)
         $lebar_kolom_1 = 12;
         $lebar_kolom_2 = 8;
@@ -122,7 +122,7 @@
         }
         // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
         return implode($hasilBaris, "\n") . "\n";
-    }    
+    }
     function upload_file($path = "", $file = "") {
         // if(!empty($file) and ($file !== 'undefined')){
             $image_height = 250;

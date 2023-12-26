@@ -38,7 +38,7 @@ class Front_model extends CI_Model{
     function set_join_item(){
         $this->db->join('orders','order_id=order_item_order_id','left');
         $this->db->join('references','ref_id=order_item_ref_id','left');
-        $this->db->join('references_prices','price_id=order_item_ref_price_id','left');
+        // $this->db->join('references_prices','price_id=order_item_ref_price_id','left');
         $this->db->join('products','product_id=order_item_product_id','left');  
         $this->db->join("branchs","order_branch_id=branch_id","left");                
     }
@@ -50,15 +50,15 @@ class Front_model extends CI_Model{
     }
 
     function set_select(){
-        $this->db->select("orders.order_id, orders.order_branch_id, orders.order_type, orders.order_number, orders.order_date, orders.order_total_dpp, orders.order_with_dp, orders.order_total, orders.order_user_id, orders.order_ref_id, orders.order_date_created, orders.order_flag, orders.order_session, orders.order_contact_code, orders.order_contact_name, orders.order_contact_phone, orders.order_files_count, orders.order_label");
+        $this->db->select("orders.order_id, orders.order_branch_id, orders.order_type, orders.order_number, orders.order_date, orders.order_total_dpp, orders.order_with_dp, orders.order_total, orders.order_user_id, orders.order_ref_id, orders.order_date_created, orders.order_flag, orders.order_session, orders.order_contact_code, orders.order_contact_name, orders.order_contact_phone, orders.order_files_count, orders.order_label, orders.order_vehicle_plate_number, orders.order_vehicle_count, orders.order_vehicle_cost");
     }
 
     function set_select_item(){
-        $this->db->select("orders.order_id, orders.order_number, orders.order_date, orders.order_session, orders.order_contact_code, orders.order_contact_name, orders.order_contact_phone, orders.order_files_count, orders.order_order_paid_count, orders.order_total, orders.order_paid, orders.order_total_paid, orders.order_flag");        
+        $this->db->select("orders.order_id, orders.order_number, orders.order_date, orders.order_session, orders.order_contact_code, orders.order_contact_name, orders.order_contact_phone, orders.order_files_count, orders.order_order_paid_count, orders.order_total, orders.order_paid, orders.order_total_paid, orders.order_flag, orders.order_vehicle_plate_number, orders.order_vehicle_count, orders.order_vehicle_cost");        
         $this->db->select("orders_items.order_item_id, orders_items.order_item_branch_id, orders_items.order_item_type, orders_items.order_item_type_name, orders_items.order_item_order_id, orders_items.order_item_qty, orders_items.order_item_price, orders_items.order_item_total, orders_items.order_item_date_created, orders_items.order_item_flag, orders_items.order_item_order_session");
-        $this->db->select("orders_items.order_item_type_2, orders_items.order_item_ref_id, orders_items.order_item_ref_price_id, orders_items.order_item_start_date, orders_items.order_item_end_date, orders_items.order_item_flag_checkin, orders_items.order_item_product_id");
+        $this->db->select("orders_items.order_item_type_2, orders_items.order_item_ref_id, orders_items.order_item_ref_price_sort, orders_items.order_item_ref_price_id, orders_items.order_item_start_date, orders_items.order_item_end_date, orders_items.order_item_flag_checkin, orders_items.order_item_product_id");
         $this->db->select("references.ref_id, references.ref_name");
-        $this->db->select("references_prices.price_id, references_prices.price_name");
+        // $this->db->select("references_prices.price_id, references_prices.price_name");
         $this->db->select("products.product_id, products.product_name, product_flag");  
         $this->db->select("branch_id, branch_name, branch_code");              
     }

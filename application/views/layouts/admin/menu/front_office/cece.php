@@ -15,7 +15,9 @@
     .popover {
         z-index: 9999;
     }    
-
+    .table-responsive{
+        overflow-x: unset;
+    }
     /* Radio Custom */
     .radio_group input{
         margin:0;padding:0;
@@ -121,7 +123,8 @@
                         <li class=""><a href="#tab16" role="tab" class="btn-tab-16" data-toggle="tab" aria-expanded="false">16 Customer</a></li>     
                         <li class=""><a href="#tab17" role="tab" class="btn-tab-17" data-toggle="tab" aria-expanded="false">17 Bukti Bayar</a></li>
                         <li class=""><a href="#tab18" role="tab" class="btn-tab-18" data-toggle="tab" aria-expanded="false">18 Foto KTP</a></li>
-                        <li class=""><a href="#tab19" role="tab" class="btn-tab-19" data-toggle="tab" aria-expanded="false">19 Konfirmasi</a></li>                                                                                                                                                                                                 
+                        <li class=""><a href="#tab19" role="tab" class="btn-tab-19" data-toggle="tab" aria-expanded="false">19 Foto Plat</a></li>                                                                                                                                                                                                 
+                        <li class=""><a href="#tab20" role="tab" class="btn-tab-20" data-toggle="tab" aria-expanded="false">20 Konfirmasi</a></li>                                                                                                                                                                                                 
                     </ul>                        
                     <div class="tab-content">
                         <div class="tab-pane tab-pane-sub active" id="tab11" for="lily">
@@ -150,19 +153,21 @@
                                 <div class="form-group">
                                     <label class="form-label">Tipe Pesanan</label>
                                     <div class="radio_group">
-                                        <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0" data-name="Bulanan">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_0">Bulanan</label>
-                                        <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" data-name="Harian">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_1">Harian</label>
-                                        <!-- <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2" data-name="Midnight">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_2">Midnight</label>   -->
-                                    </div>
-                                    <div class="radio_group">
-                                        <!-- <input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3" data-name="4 Jam"> -->
-                                        <!-- <label class="radio_group_label radio_bg" for="order_ref_price_id_3">4 Jam</label> -->
-                                        <!-- <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4" data-name="2 Jam"> -->
-                                        <!-- <label class="radio_group_label radio_bg" for="order_ref_price_id_4">2 Jam</label>     -->
-                                    </div>                                    
+                                        <!-- <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0" data-name="Promo">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_0">Promo</label> -->
+                                        <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" data-name="Bulanan">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_1">Bulanan</label>
+                                        <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2" data-name="Harian">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_2">Harian</label>  
+                                        <!-- <input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3" data-name="Midnight">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_3">Midnight</label> -->
+                                        <!-- </div>
+                                    <div class="radio_group"> -->
+                                        <!-- <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4" data-name="4 Jam">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_4">4 Jam</label>
+                                        <input id="order_ref_price_id_5" type="radio" name="order_ref_price_id" value="5" data-name="2 Jam">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_5">2 Jam</label>                                             -->
+                                    </div>                                      
                                 </div>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
@@ -283,13 +288,13 @@
                         </div>
                         <div class="tab-pane tab-pane-sub" id="tab16" for="nama dan telepon">
                             <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Nama</label>
                                         <input id="order_contact_name" name="order_contact_name" type="text" value="" class="form-control"/>
                                     </div>
                                 </div>                                                         
-                                <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Telepon</label>
                                         <input id="order_contact_phone" name="order_contact_phone" type="text" value="" class="form-control"/>
@@ -309,7 +314,7 @@
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                     <div class="form-group">
-                                        <label class="form-label">Bukti Bayar</label>
+                                        <label class="form-label">Bukti Bayar (wajib)</label>
                                         <a class="files_link_1" href="<?= site_url('upload/noimage.png'); ?>">
                                             <img id="files_preview_1" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                         </a>
@@ -346,7 +351,7 @@
                         <div class="tab-pane tab-pane-sub" id="tab18" for="ktp">
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="form-group">
-                                    <label class="form-label">Foto KTP</label>
+                                    <label class="form-label">Foto KTP (wajib)</label>
                                     <a class="files_link_2" href="<?= site_url('upload/noimage.png'); ?>">
                                         <img id="files_preview_2" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                     </a>
@@ -363,14 +368,59 @@
                                     <i class="fas fa-arrow-right"></i> Selanjutnya
                                 </button>                                                     
                             </div>
-                        </div>                          
-                        <div class="tab-pane tab-pane-sub" id="tab19" for="konfirmasi">
+                        </div>   
+                        <div class="tab-pane tab-pane-sub" id="tab19" for="kendaraan">
+                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                <div class="form-group">
+                                    <label class="form-label">Foto Plat Kendaraan (wajib)</label>
+                                    <a class="files_link_3" href="<?= site_url('upload/noimage.png'); ?>">
+                                        <img id="files_preview_3" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
+                                    </a>
+                                    <div class="custom-file">
+                                        <input class="form-control" id="files_3" name="files_3" type="file" tabindex="1">
+                                    </div>
+                                </div>
+                            </div>   
+                            <div class="col-md-12 col-xs-12 padding-remove-side">
+                                <div class="form-group">
+                                    <label class="form-label">Nomor Plat Kendaraan (wajib)</label>
+                                    <div class="controls">
+                                        <input name="order_vehicle_plate_number" id="order_vehicle_plate_number" type="text" class="form-control input-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12 padding-remove-side">
+                                <div class="form-group">
+                                    <label class="form-label">Jumlah Kendaraan yg di bawa (wajib)</label>
+                                    <div class="controls">
+                                        <input name="order_vehicle_count" id="order_vehicle_count" type="text" class="form-control input-sm">
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-md-12 col-xs-12 padding-remove-side">
+                                <div class="form-group">
+                                    <label class="form-label">Biaya Parkir (wajib)</label>
+                                    <div class="controls">
+                                        <input name="order_vehicle_cost" id="order_vehicle_cost" type="text" class="form-control input-sm" value="500000">
+                                    </div>
+                                </div>
+                            </div>                                                           
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">                            
+                                <button id="btn_tab_19b" class="btn btn-default" type="button" style="width:45%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                             
+                                <button id="btn_tab_19" class="btn btn-primary" type="button" style="width:50%;">
+                                    <i class="fas fa-arrow-right"></i> Selanjutnya
+                                </button>                                                     
+                            </div>
+                        </div>                                                  
+                        <div class="tab-pane tab-pane-sub" id="tab20" for="konfirmasi">
                             <div class="col-md-12 col-xs-12 table-responsive">
                                 <table id="table_confirm" class="table table-bordered" style="width:100%;">
                                 </table>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
-                                <button id="btn_tab_19b" class="btn btn-default" type="button" style="width:45%;">
+                                <button id="btn_tab_20b" class="btn btn-default" type="button" style="width:45%;">
                                     <i class="fas fa-arrow-left"></i> Kembali
                                 </button>                             
                                 <button id="btn_save_order" class="btn btn-primary" type="button" style="width:50%;">
@@ -566,6 +616,86 @@
             <div class="modal-footer">
                 <button id="modal_croppie_cancel_2" type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 <button id="modal_croppie_save_2" type="button" class="btn btn-primary">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_croppie_3" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="modal_croppie_canvas_3"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal_croppie_cancel_3" type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button id="modal_croppie_save_3" type="button" class="btn btn-primary">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-trans-print" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #f3f5f6;">
+                <h4 style="color:black;text-align:left;"><b id="modal-print-title">Berhasil Tersimpan</b></h4>
+                <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                    <i class="fas fa-times"></i>                                 
+                    Tutup
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 padding-remove-side">
+                        <table class="table">      
+                            <tr>
+                                <td>Nomor</td>
+                                <td class="modal-print-trans-number">:</td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal</td>
+                                <td class="modal-print-trans-date">:</td>
+                            </tr>                 
+                            <tr>
+                                <td>Kontak</td>
+                                <td>:<input id="modal-print-contact-name" name="modal-contact-name" value="" style="border:none!important;"></td>
+                            </tr>         
+                            <tr>
+                                <td>Telepon</td>
+                                <td>:<input id="modal-print-contact-phone" name="modal-contact-phone" value="" style="border:none!important;"></td>
+                            </tr>   
+                            <tr>
+                                <td>Cabang</td>
+                                <td class="modal_print_branch_name">:</td>
+                            </tr>
+                            <tr>
+                                <td>Check-In</td>
+                                <td class="modal_print_start_date">:</td>
+                            </tr>
+                            <tr>
+                                <td>Kamar</td>
+                                <td class="modal_print_product_name">:</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td class="modal_print_total">:</td>
+                            </tr>
+                            <tr>
+                                <td>Total Dibayar</td>
+                                <td class="modal_print_total_paid">:</td>
+                            </tr>
+                        </table>
+                    </div>           
+                </div>
+            </div>
+            <div class="modal-footer flex-center">
+                <button type="button" class="hide btn_send_whatsapp btn btn-primary" 
+                    data-order-id="0" data-order-number="" data-order-date="" data-total="" data-contact-id="" data-contact-name="" data-contact-phone="" style="width:45%;">
+					<span class="fab fa-whatsapp white"></span> Kirim WhatsApp
+				</button>
+				<button type="button" id="btn_print_trans" class="btn_print_order btn btn-success" 
+                    data-order-id="0" data-order-number="0" data-order-session="" style="width:100%;">
+					<span class="fas fa-file-invoice white"></span> Cetak Struk
+				</button>                  
             </div>
         </div>
     </div>

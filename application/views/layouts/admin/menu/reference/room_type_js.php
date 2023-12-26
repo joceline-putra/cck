@@ -154,8 +154,8 @@
             e.preventDefault();
             var next = true;
 
-            // var kode = $("#form-master input[name='kode']");
-            var nama = $("#form-master input[name='nama']");
+            // var kode = $("#form_ref input[name='kode']");
+            var nama = $("#form_ref input[name='nama']");
 
             if (next == true) {
                 // if ($("input[id='kode']").val().length == 0) {
@@ -219,7 +219,7 @@
         // Edit Button
         $(document).on("click", ".btn-edit", function (e) {
             formMasterSetDisplay(0);
-            // $("#form-master input[name='kode']").attr('readonly', true);
+            // $("#form_ref input[name='kode']").attr('readonly', true);
 
             e.preventDefault();
             var id = $(this).data("id");
@@ -240,7 +240,7 @@
                         activeTab('tab1'); // Open/Close Tab By ID
                         // notif(1,d.result.id);ss
                         $("#id_document").val(d.result.ref_id);
-                        // $("#form-master input[name='kode']").val(d.result.ref_code);
+                        // $("#form_ref input[name='kode']").val(d.result.ref_code);
                         $("#nama").val(d.result.ref_name);
                         $("#keterangan").val(d.result.ref_note);
                         $("#status").val(d.result.ref_flag).trigger('change');
@@ -284,9 +284,9 @@
         $(document).on("click", "#btn-update", function (e) {
             e.preventDefault();
             var next = true;
-            var id = $("#form-master input[name='id_dokumen']").val();
-            // var kode = $("#form-master input[name='kode']");
-            var nama = $("#form-master input[name='nama']");
+            var id = $("#form_ref input[name='id_dokumen']").val();
+            // var kode = $("#form_ref input[name='kode']");
+            var nama = $("#form_ref input[name='nama']");
 
             if (id == '') {
                 notif(0, 'ID tidak ditemukan');
@@ -338,7 +338,7 @@
                             $("#btn-save").hide();
                             $("#btn-update").hide();
                             $("#btn-cancel").hide();
-                            $("#form-master input").val();
+                            $("#form_ref input").val();
                             formMasterSetDisplay(1);
                             notif(1, d.message);
                             index.ajax.reload(null, false);
@@ -469,13 +469,13 @@
 
     function formNew() {
         formMasterSetDisplay(0);
-        $("#form-master input").val();
+        $("#form_ref input").val();
         $("#btn-save").show();
         $("#btn-cancel").show();
     }
     function formCancel() {
         formMasterSetDisplay(1);
-        $("#form-master input").val();
+        $("#form_ref input").val();
         $("#btn-save").hide();
         $("#btn-update").hide();
         $("#btn-cancel").hide();
@@ -487,7 +487,7 @@
         //     var flag = false;
         // }
         // //Attr Input yang perlu di setel
-        // var form = '#form-master';
+        // var form = '#form_ref';
         // var attrInput = [
         //     // "kode",
         //     "nama",

@@ -733,12 +733,17 @@ class MY_Controller extends CI_Controller{
                 $this->image_lib->clear();
             */
 
+            $bytes = strlen(base64_decode($img_data));
+            $roughsize = (((int)$bytes) / 1024.0);
+            $file_size = round($roughsize,2);
+
             $r->status=1;
             $r->result = array(
                 'file_directory' => $dir, /* upload/product/ */
                 'file_name' => $file_name, /* 1231421*/
                 'file_ext' => $file_ext, /* .png */
-                'file_location' => $dir . $file_name . $file_ext
+                'file_location' => $dir . $file_name . $file_ext,
+                'file_size' => $file_size
             );
         }
         return $r;

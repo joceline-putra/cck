@@ -230,11 +230,23 @@
                         return dsp;
                     }
                 },{
-                    'data': 'price_name',
+                    'data': 'order_item_ref_price_sort',
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        dsp += row.price_name;
+                        if(data == 0){
+                            dsp += 'Promo';
+                        }else if(data == 1){
+                            dsp += 'Bulanan';
+                        }else if(data == 2){
+                            dsp += 'Harian';
+                        }else if(data == 3){
+                            dsp += 'Midnight';
+                        }else if(data == 4){
+                            dsp += '4 Jam';
+                        }else if(data == 5){
+                            dsp += '2 Jam';
+                        }
                         return dsp;
                     }
                 },{
@@ -580,12 +592,18 @@
                         // $('#order_note').summernote('code', d.result.order_note);
                         $("#order_flag").val(d.result.order_flag).trigger('change');
                         // $("#order_date_created").val(d.result.order_date_created);
-
+                        // order_branch_id
+                        $("input[name='order_branch_id'][value='"+d.result_item.order_item_branch_id+"']").prop("checked", true).change();
+                        $("input[name='order_ref_price_id'][value='"+d.result_item.order_item_ref_price_sort+"']").prop("checked", true).change();
                         // $("#files_preview").attr('src',d.result.Booking_image);
                         // $(".files_link").attr('href',d.result.Booking_image);
-                        $(".order_branch_id[value=branch_"+d.result_item.order_item_branch_id+"]").prop("checked", true).change();
+                        // $(".order_branch_id[value=branch_"+d.result_item.order_item_branch_id+"]").prop("checked", true).change();
                         // $(".order_type_2[value="+d.result_item.price_name+"]").prop("checked", true).change();                        
-                        $(".order_ref[value="+d.result_item.ref_id+"]").prop("checked", true).change();  
+                        // $(".order_ref[value="+d.result_item.ref_id+"]").prop("checked", true).change();  
+                        $("input[name='order_ref_id'][value='"+d.result_item.ref_id+"']").prop("checked", true).change();
+                        
+                        $("#order_product_id").val(d.result_item.product_name);
+                        $("#order_product_id").attr('data-product-id',d.result_item.product_id);                        
 
                         $("#order_start_date").datepicker("update", moment(d.result_item.order_item_start_date).format("DD-MM-YYYY"));
                         $("#order_end_date").datepicker("update", moment(d.result_item.order_item_end_date).format("DD-MM-YYYY")); 

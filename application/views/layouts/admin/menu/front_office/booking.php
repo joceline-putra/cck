@@ -15,6 +15,9 @@
     .popover {
         z-index: 9999;
     }    
+    .table-responsive{
+        overflow-x: unset;
+    }
 </style>
 <link
     rel="stylesheet"
@@ -44,11 +47,11 @@
                                                     <!-- <button id="btn_new_order_2" class="btn btn-success btn-small" type="button" style="display: inline;">
                                                         <i class="fas fa-check-double"></i>
                                                         Status Kamar
-                                                    </button> -->
+                                                    </button>
                                                     <button id="btn_new_order" class="btn btn-success btn-small" type="button" style="display: inline;">
                                                         <i class="fas fa-plus"></i>
-                                                        Buat <?php echo $title; ?> Baru
-                                                    </button>
+                                                        Buat <?php #echo $title; ?> Baru
+                                                    </button> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -75,7 +78,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group padding-remove-side prs-15">
+                                                <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group padding-remove-right prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Cari</label>
                                                         <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
@@ -100,11 +103,11 @@
                                                         <label class="form-label">Type</label>
                                                         <select id="filter_ref_price" name="filter_ref_price" class="form-control">
                                                             <option value="All">Semua</option>
-                                                            <option value="1">Harian</option>
-                                                            <option value="2">Midnight</option>
-                                                            <option value="3">4 jam</option>
-                                                            <option value="4">2 jam</option>
-                                                            <option value="0">Bulanan</option>                                                                                                                        
+                                                            <option value="1">Bulanan</option>                                                                                                                        
+                                                            <option value="2">Harian</option>
+                                                            <option value="3">Midnight</option>
+                                                            <option value="4">4 jam</option>
+                                                            <option value="5">2 jam</option>
                                                         </select>
                                                     </div>
                                                 </div>  
@@ -241,11 +244,17 @@
                                                     <div class="form-group">
                                                         <label class="form-label">Type</label>
                                                         <div class="radio radio-success">
-                                                        <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0"><label for="order_ref_price_id_0">Bulanan</label>                                                            
+                                                            <!-- <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0"><label for="order_ref_price_id_0">Bulanan</label>
                                                             <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" checked><label for="order_ref_price_id_1">Harian</label>
                                                             <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2"><label for="order_ref_price_id_2">Midnight</label>
                                                             <input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3"><label for="order_ref_price_id_3">4 Jam</label>
-                                                            <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4"><label for="order_ref_price_id_4">2 Jam</label>                                                            
+                                                            <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4"><label for="order_ref_price_id_4">2 Jam</label>                                                             -->
+                                                            <!-- <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0"><label for="order_ref_price_id_0">Bulanan</label> -->
+                                                            <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" checked><label for="order_ref_price_id_1">Bulanan</label>
+                                                            <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2"><label for="order_ref_price_id_2">Harian</label>
+                                                            <input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3"><label for="order_ref_price_id_3">Midnight</label>
+                                                            <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4"><label for="order_ref_price_id_4">4 Jam</label>
+                                                            <input id="order_ref_price_id_5" type="radio" name="order_ref_price_id" value="5"><label for="order_ref_price_id_5">2 Jam</label>    
                                                         </div>
                                                     </div>
                                                 </div>                                                
@@ -276,7 +285,15 @@
                                                             <!-- <input id="Cabang1" type="radio" name="order_branch" value="1" checked><label for="Cabang1">Cabang1</label> -->
                                                         </div>
                                                     </div>
-                                                </div>                                                  
+                                                </div>                 
+                                                <div class="col-md-12 col-xs-12 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Kamar</label>
+                                                        <div class="controls">
+                                                            <input name="order_product_id" id="order_product_id" type="text" class="form-control input-sm">
+                                                        </div>
+                                                    </div>
+                                                </div>                                 
                                                 <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
                                                     <label class="form-label">Tanggal Mulai</label>
                                                     <div class="col-md-12 col-sm-12 padding-remove-side">
