@@ -1441,6 +1441,12 @@
             $("#files_preview_2").attr('src',url_image);   
             $("#files_preview_2").attr('data-save-img','');                                 
             loadAttachment(0);
+
+            var sd = $("#form_booking input[id='order_start_date']");
+            var ed = $("#form_booking input[id='order_end_date']");   
+
+            sd.val(sd.attr('data-original'));
+            ed.val(ed.attr('data-original'));                 
         } 
 
         //Approval Button

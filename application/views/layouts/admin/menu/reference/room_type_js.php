@@ -72,17 +72,17 @@
                 }, {
                     'data': 'ref_name'
                 }, {
-                    'data': 'ref_price_1',className: 'text-right'
+                    'data': 'ref_price_1',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
                 }, {
-                    'data': 'ref_price_2',className: 'text-right'
+                    'data': 'ref_price_2',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
                 }, {
-                    'data': 'ref_price_3',className: 'text-right'
+                    'data': 'ref_price_3',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
                 }, {
-                    'data': 'ref_price_4',className: 'text-right'
+                    'data': 'ref_price_4',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
                 }, {                    
-                    'data': 'ref_price_5',className: 'text-right'
+                    'data': 'ref_price_5',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
                 }, {
-                    'data': 'ref_price_0',className: 'text-right'
+                    'data': 'ref_price_0',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
                 }, {                                        
                     'data': 'ref_id',
                     className: 'text-left',

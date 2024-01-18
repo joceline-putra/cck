@@ -287,7 +287,8 @@
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        dsp += moment(row.order_item_start_date).format("DD-MMM-YYYY");
+                        dsp += moment(row.order_item_start_date).format("DD-MMM-YYYY")+'<br>';
+                        dsp += moment(row.order_item_end_date).format("DD-MMM-YYYY");
                         return dsp;
                     }
                 },{
@@ -1390,8 +1391,14 @@
             $("#files_preview_2").attr('src',url_image);   
             $("#files_preview_2").attr('data-save-img','');                                 
             loadAttachment(0);
-        } 
 
+            var sd = $("#form_booking input[id='order_start_date']");
+            var ed = $("#form_booking input[id='order_end_date']");   
+
+            sd.val(sd.attr('data-original'));
+            ed.val(ed.attr('data-original'));            
+        } 
+        // formBookingReset();
         //Approval Button
         var approval_table = 'orders';
         $(document).on("click",".btn-attachment-info-2",function(e) {

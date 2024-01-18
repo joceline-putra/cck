@@ -3784,6 +3784,9 @@ $switch_do = !empty($this->session->flashdata('switch_branch')) ?  intval($this-
 
 		 	return string.split(',').join("");
 		}
+		function numberWithCommas(x) {
+		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}		
   	</script>   
 	<!-- <script src="<?php #echo base_url();?>assets/pwa.min.js" type="text/javascript"></script> -->
 	<script>
