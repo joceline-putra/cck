@@ -1584,22 +1584,30 @@
                     dsp += '<form id="jc_form">';
                         dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
                         dsp += '    <div class="form-group">';
-                        dsp += '    <label class="form-label">Kategori '+alias1+'</label>';
-                        dsp += '        <select id="filter_category2" name="filter_category2" class="form-control">';
+                        dsp += '    <label class="form-label">Cabang '+alias1+'</label>';
+                        dsp += '        <select id="filter_branch2" name="filter_branch2" class="form-control">';
                         dsp += '            <option value="0">Semua</option>';
                         dsp += '        </select>';
                         dsp += '    </div>';
                         dsp += '</div>';
                         dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
                         dsp += '    <div class="form-group">';
-                        dsp += '    <label class="form-label">Tipe '+alias1+'</label>';
-                        dsp += '        <select id="filter_type2" name="filter_type2" class="form-control">';
+                        dsp += '    <label class="form-label">Kategori '+alias1+'</label>';
+                        dsp += '        <select id="filter_category2" name="filter_category2" class="form-control">';
                         dsp += '            <option value="0">Semua</option>';
-                        dsp += '            <option value="1">Barang</option>';
-                        dsp += '            <option value="2">Jasa</option>';                                                                                                                                           
                         dsp += '        </select>';
                         dsp += '    </div>';
-                        dsp += '</div>';         
+                        dsp += '</div>';
+                        // dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                        // dsp += '    <div class="form-group">';
+                        // dsp += '    <label class="form-label">Tipe '+alias1+'</label>';
+                        // dsp += '        <select id="filter_type2" name="filter_type2" class="form-control">';
+                        // dsp += '            <option value="0">Semua</option>';
+                        // dsp += '            <option value="1">Barang</option>';
+                        // dsp += '            <option value="2">Jasa</option>';                                                                                                                                           
+                        // dsp += '        </select>';
+                        // dsp += '    </div>';
+                        // dsp += '</div>';         
                         dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
                         dsp += '    <div class="form-group">';
                         dsp += '    <label class="form-label">Status '+alias1+'</label>';
@@ -1638,6 +1646,45 @@
                     content = dsp;
                     self.setContentAppend(content);
 
+                    $('#filter_branch2').select2({
+                        dropdownParent:$(".jconfirm-box-container"), //If Select2 Inside Modal
+                        // tags:true,
+                        minimumInputLength: 0,
+                        allowClear: true,
+                        minimumResultsForSearch: Infinity,
+                        placeholder: {
+                            id: '0',
+                            text: 'Semua'
+                        },                          
+                        ajax: {
+                            type: "get",
+                            url: "<?= base_url('search/manage'); ?>",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                var query = {
+                                    search: params.term,
+                                    tipe: 1,
+                                    source: 'branchs'
+                                }
+                                return query;
+                            },
+                            processResults: function (data) {
+                                return {
+                                    results: data
+                                };
+                            },
+                            cache: true
+                        },
+                        templateSelection: function (datas) { //When Option on Click
+                            if (!datas.id) {
+                                return datas.text;
+                            }
+                            if (parseInt(datas.id) > 0) {
+                                return datas.text;
+                            }
+                        }
+                    });                          
                     $('#filter_category2').select2({
                         dropdownParent:$(".jconfirm-box-container"), //If Select2 Inside Modal
                         // tags:true,
@@ -1688,6 +1735,7 @@
                             let filter_order    = self.$content.find('#filter_order2').val();
                             let filter_dir      = self.$content.find('#filter_dir2').val(); 
                             let filter_cat      = self.$content.find('#filter_category2').val();
+                            let filter_branch   = self.$content.find('#filter_branch2').val();                            
                             let filter_type      = self.$content.find('#filter_type2').val();   
                             let filter_flag      = self.$content.find('#filter_flag2').find(':selected').val();                                                                                                                
                             
@@ -1704,8 +1752,8 @@
                                 // var filter_order    = 0;
                                 // var filter_dir      = 0;
                                 var request = $('.btn-print-all').data('request');
-                                var p = url_print_all + '?cat=' + filter_cat;
-                                    p += '&type=' + filter_type + '&flag=' + filter_flag;
+                                var p = url_print_all + '?branch='+filter_branch+'&cat=' + filter_cat;
+                                    p += '&type=1&flag=' + filter_flag;
                                     p += '&start=0&limit=0'; 
                                     p += '&order=' + filter_order + '&dir=' + filter_dir;
                                     p += '&image=0';

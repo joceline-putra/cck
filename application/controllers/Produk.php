@@ -1317,7 +1317,8 @@ class Produk extends MY_Controller{
             $data['show_price'] = 0;
         }
 
-        $cat        = $this->input->get('cat');
+        $gbranch     = !empty($this->input->get('branch')) ? $this->input->get('branch') : $session_branch_id;
+        $cat        = $this->input->get('cat');        
         $type       = $this->input->get('type');  
         $flag       = $this->input->get('flag');
         $order      = $this->input->get('order'); 
@@ -1340,14 +1341,15 @@ class Produk extends MY_Controller{
             '1' => 'Barang',
             '2' => 'Jasa'
         );
-
-        $data['branch'] = $this->Branch_model->get_branch($session_branch_id);
-        if($data['branch']['branch_logo'] == null){
-            $get_branch = $this->Branch_model->get_branch($session_branch_id);
+        // var_dump($gbranch);die;
+        // $data['branch'] = $this->Branch_model->get_branch($gbranch);
+        // if($data['branch']['branch_logo'] == null){
+            $get_branch = $this->Branch_model->get_branch($gbranch);
             $data['branch_logo'] = site_url().$get_branch['branch_logo'];
-        }else{
-            $data['branch_logo'] = site_url().$data['branch']['branch_logo'];
-        }
+        // }else{
+            // $data['branch_logo'] = site_url().$data['branch']['branch_logo'];
+        // }
+        $data['branch'] = !empty($this->input->get('branch')) ?  $get_branch['branch_name'] : 'Semua';
 
         $limit  = 0;
         $start  = 0;
@@ -1378,6 +1380,11 @@ class Produk extends MY_Controller{
             }
         }       
 
+        $set_branch = !empty($this->input->get('branch')) ? $this->input->get('branch') : 0;
+        if($set_branch > 0){
+            $params_datatable['product_branch_id'] = $gbranch;
+        }
+
         $get_count = $this->Produk_model->get_all_produks_count($params_datatable,$search);
         $limit = $get_count;
         if($get_count > 0){
@@ -1385,12 +1392,21 @@ class Produk extends MY_Controller{
             foreach($get_data as $v){
 
                 $type_name = '-';
+                $file_name = '';
                 if(intval($v['product_type']) ==0){
                     $type_name = '-';
                 }else if(intval($v['product_type']) == 1){
-                    $type_name = 'Barang';
+                    $type_name = 'Makanan';
+                    $file_name = '_makanan';                    
                 }else if(intval($v['product_type']) == 2){
-                    $type_name = 'Jasa';
+                    $type_name = 'Kamar';
+                    $file_name = '_kamar';                    
+                }else if(intval($v['product_type']) == 3){
+                    $type_name = 'Aset';
+                    $file_name = '_aset';                    
+                }else if(intval($v['product_type']) == 4){
+                    $type_name = 'Barang Operasional';
+                    $file_name = '_barang_operasional';                    
                 }
 
                 $flag_name = '-';
@@ -1418,18 +1434,26 @@ class Produk extends MY_Controller{
                     'product_flag' => $v['product_flag'],
                     'product_flag_name' => $flag_name,
                     'category_name' => $v['category_name'],
+                    'branch_name' => $v['branch_name'],
+                    'ref_name' => $v['ref_name'],
+                    'ref_price_0' => $v['ref_price_0'],
+                    'ref_price_1' => $v['ref_price_1'],                    
+                    'ref_price_2' => $v['ref_price_2'],
+                    'ref_price_3' => $v['ref_price_3'],
+                    'ref_price_4' => $v['ref_price_4'],
+                    'ref_price_5' => $v['ref_price_5'],                                                                                
                     'price' => $this->Product_price_model->get_all_product_price(array('product_price_product_id'=>$v['product_id']),null,null,null,'product_price_price','asc'),
                     // 'image' => $this->Product_item_model->get_all_product_item(array('product_item_product_id'=>$v['product_id']),null,null,null,null,null)
                  );
             }
-
+            // echo json_encode($datas);die;
             $params = array(
                 'activity_user_id' => $session['user_data']['user_id'],
                 'activity_action' => 6,
                 'activity_table' => 'products',
                 'activity_table_id' => null,
                 'activity_text_1' => '1',
-                'activity_text_2' => 'Data Produk',
+                'activity_text_2' => 'Data '.$type_name,
                 'activity_date_created' => date('YmdHis'),
                 'activity_flag' => 0
             );
@@ -1438,12 +1462,12 @@ class Produk extends MY_Controller{
             $datas = array();
         }
         $data['content'] = $datas;
-        $data['title'] = 'Print Data Produk';
+        $data['title'] = 'Print Data '.$type_name;
         $data['url'] = site_url();
         $data['description'] = '';
         $data['author'] = 'Author';
         $data['image'] = $data['branch_logo'];        
         $data['price_item'] = 1;
-        $this->load->view('layouts/admin/menu/prints/data/print_product',$data);               
+        $this->load->view('layouts/admin/menu/prints/data/print_product'.$file_name,$data);               
     }
 }

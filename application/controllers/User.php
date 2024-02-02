@@ -266,10 +266,10 @@ class User extends MY_Controller{
                                 );
                                 $this->save_activity($params);
                                 $return->status=1;
-                                $return->message='Berhasil memperbarui '.$data['nama'];  
+                                $return->message='Berhasil memperbarui';  
                                 $return->result= array(
                                     'id' => $id,
-                                    'nama' => $data['nama']
+                                    'nama' => $data['username']
                                 ); 
                             }
                         }else{
