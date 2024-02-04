@@ -185,8 +185,10 @@
                     d.date_start = $("#filter_start_date").val();
                     d.date_end = $("#filter_end_date").val();
                     d.filter_branch = $("#filter_branch").find(':selected').val();
-                    d.filter_ref_price = $("#filter_ref_price").find(':selected').val();
+                    // d.filter_ref_price = $("#filter_ref_price").find(':selected').val();
+                    d.filter_item_type_2 = $("#filter_item_type_2").find(":selected").val();
                     d.filter_ref = $("#filter_ref").find(':selected').val();     
+                    d.filter_flag_checkin = $("#filter_flag_checkin").find(":selected").val();
                     d.filter_paid = $("#filter_paid_flag").find(':selected').val();                                                            
                     d.filter_flag = $("#filter_flag").find(':selected').val();
                     d.length = $("#filter_length").find(':selected').val();
@@ -230,23 +232,24 @@
                         return dsp;
                     }
                 },{
-                    'data': 'order_item_ref_price_sort',
+                    'data': 'order_item_type_2', //order_item_ref_price_sort
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        if(data == 0){
-                            dsp += 'Promo';
-                        }else if(data == 1){
-                            dsp += 'Bulanan';
-                        }else if(data == 2){
-                            dsp += 'Harian';
-                        }else if(data == 3){
-                            dsp += 'Midnight';
-                        }else if(data == 4){
-                            dsp += '4 Jam';
-                        }else if(data == 5){
-                            dsp += '2 Jam';
-                        }
+                        // if(data == 0){
+                        //     dsp += 'Promo';
+                        // }else if(data == 1){
+                        //     dsp += 'Bulanan';
+                        // }else if(data == 2){
+                        //     dsp += 'Harian';
+                        // }else if(data == 3){
+                        //     dsp += 'Midnight';
+                        // }else if(data == 4){
+                        //     dsp += '4 Jam';
+                        // }else if(data == 5){
+                        //     dsp += '2 Jam';
+                        // }
+                        dsp += data;
                         return dsp;
                     }
                 },{
@@ -269,11 +272,11 @@
                         return dsp;
                     }
                 },{
-                    'data': 'order_total',
+                    'data': 'order_total_paid',
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        dsp += addCommas(row.order_total);
+                        dsp += addCommas(row.order_total_paid);
                         return dsp;
                     }
                 },{
@@ -416,7 +419,10 @@
         $("#filter_branch").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref_price").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref").on('change', function(e){ order_table.ajax.reload(); });                
-        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });                
+        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });         
+        $("#filter_item_type_2").on('change', function(e){ order_table.ajax.reload(); });    
+        $("#filter_flag_checkin").on('change', function(e){ order_table.ajax.reload(); });    
+                  
         $("#filter_search").on('input', function(e){ var ln = $(this).val().length; if(parseInt(ln) > 3){ order_table.ajax.reload(); }else if(parseInt(ln) < 1){ order_table.ajax.reload();} });
 
 

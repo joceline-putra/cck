@@ -1485,7 +1485,8 @@ class Report extends MY_Controller{
             $data['contact_alias']      = $this->customer_alias;
             // $data['employee_alias']     = $this->employee_alias;
             // $data['ref_alias']          = $this->ref_alias;  
-            $data['product_alias']      = $this->product_alias;          
+            $data['product_alias']      = $this->product_alias;         
+            
             $this->load->view('layouts/admin/menu/prints/reports/report_sales_sell_detail',$data);
         }
         function report_sales_order_detail($date_start,$date_end,$contact){
@@ -1494,6 +1495,7 @@ class Report extends MY_Controller{
             $session_user_id = $session['user_data']['user_id'];
             $branch = $this->input->get('branch');
 
+            $act = $this->input->get('act');
             $product = $this->input->get('product');
             $order = $this->input->get('order');
             $dir = $this->input->get('dir');
@@ -1547,7 +1549,14 @@ class Report extends MY_Controller{
             // $data['employee_alias']     = $this->employee_alias;
             // $data['ref_alias']          = $this->ref_alias;  
             $data['product_alias']      = $this->product_alias;            
-            $this->load->view('layouts/admin/menu/prints/reports/report_sales_order_detail',$data);
+
+            $view_url = 'layouts/admin/menu/prints/reports/report_sales_order_detail';
+            if($act == 11){
+                $view_url = 'layouts/admin/menu/prints/reports/report_sales_order_detail_complete';
+                $data['title'] .= ' Complete';
+            } 
+            // var_dump($view_url);die;
+            $this->load->view($view_url,$data);            
         }
         function report_sales_prepare_detail($date_start,$date_end,$contact){
             $session = $this->session->userdata(); 

@@ -56,7 +56,8 @@
             $hasilBaris[] = $hasilKolom1 . " " . $hasilKolom2;
         }
         // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
-        return implode($hasilBaris, "\n") . "\n";
+        // return implode($hasilBaris, "\n") . "\n";
+        return implode("\n", $hasilBaris) . "\n";        
     }
     function dot_set_wrap_3($kolom1, $kolom2, $kolom3) {
         // Mengatur lebar setiap kolom (dalam satuan karakter)
@@ -86,7 +87,8 @@
             $hasilBaris[] = $hasilKolom1 . " " . $hasilKolom2 . " " . $hasilKolom3;
         }
         // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
-        return implode($hasilBaris, "\n") . "\n";
+        // return implode($hasilBaris, "\n") . "\n";
+        return implode("\n", $hasilBaris) . "\n";            
     }
     function dot_set_wrap_4($kolom1, $kolom2, $kolom3, $kolom4) {
         // Mengatur lebar setiap kolom (dalam satuan karakter)
@@ -121,7 +123,8 @@
             $hasilBaris[] = $hasilKolom1 . " " . $hasilKolom2 . " " . $hasilKolom3 . " " . $hasilKolom4;
         }
         // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
-        return implode($hasilBaris, "\n") . "\n";
+        // return implode($hasilBaris, "\n") . "\n";
+        return implode("\n", $hasilBaris) . "\n";            
     }
     function upload_file($path = "", $file = "") {
         // if(!empty($file) and ($file !== 'undefined')){

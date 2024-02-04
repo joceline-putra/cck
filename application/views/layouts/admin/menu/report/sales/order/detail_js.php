@@ -60,8 +60,8 @@
                 {"targets": 1, "title": "Nomor", "searchable": false, "orderable": false},
                 {"targets": 2, "title": "Cabang", "searchable": false, "orderable": false},                
                 {"targets": 3, "title": contact_alias, "searchable": false, "orderable": false},
-                {"targets": 4, "title": "Tipe", "searchable": false, "orderable": false},
-                {"targets": 5, "title": "Jenis Kamar", "searchable": false, "orderable": false},
+                {"targets": 4, "title": "Jenis Kamar", "searchable": false, "orderable": false},
+                {"targets": 5, "title": "Kamar", "searchable": false, "orderable": false},
                 {"targets": 6, "title": "Untuk", "searchable": false, "orderable": false},
                 {"targets": 7, "title": "Total Nilai", "searchable": false, "orderable": false}
             ],
@@ -90,12 +90,12 @@
                 }, {
                     'data': 'order_contact_name'
                 }, {
-                    'data': 'price_name'
+                    'data': 'ref_name'
                 }, {
-                    'data': 'ref_name',
+                    'data': 'product_name',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        dsp += row.ref_name;
+                        dsp += row.product_name;
                         // dsp += '<a class="btn-edit" data-id="'+ row.trans_id +'" style="cursor:pointer;">';
                         // dsp += '<span class="fas fa-file-alt"></span>&nbsp;'+row.trans_number;
                         // dsp += '</a>';
@@ -304,7 +304,7 @@
                     + request + '/'
                     + $("#start").val() + '/'
                     + $("#end").val() + '/'
-                    + contact + "?branch=" + branch + "&format=" + format + "&order=" + order + "&dir=" + dir;
+                    + "contact?"+ contact +"&act=" + action +"&branch=" + branch + "&format=" + format + "&order=" + order + "&dir=" + dir;
             window.open(print_url, '_blank');
             // var request = $('.btn-print-all').data('request');
             // var print_url = url_print +'/'+ request + '/'+ $("#start").val() +'/'+ $("#end").val();

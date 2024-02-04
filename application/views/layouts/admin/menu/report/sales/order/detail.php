@@ -51,6 +51,11 @@
                                                         <i class="fas fa-file-pdf"></i>&nbsp;&nbsp;PDF
                                                     </a>
                                                 </li>
+                                                <li>
+                                                    <a href="#" class="btn-print-all" data-action="11" data-format="html" data-request="report_sales_order_detail">
+                                                        <i class="fas fa-file-pdf"></i>&nbsp;&nbsp;PDF Rinci
+                                                    </a>
+                                                </li>                                                
                                                 <li class="hide">
                                                     <a href="#" class="btn-print-all" data-action="2" data-format="xls" data-request="report_sales_order_detail">
                                                         <i class="fas fa-file-excel"></i>&nbsp;&nbsp;Excel
@@ -93,9 +98,9 @@
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <label class="form-label">Sorting</label>
                                             <select id="filter_order" name="filter_order" class="form-control">
-                                                <option value="0">Tanggal</option>
-                                                <option value="1">Nomor</option>
-                                                <option value="4">Nama Barang</opton>
+                                                <option value="0">Tanggal Booking</option>
+                                                <option value="1">Nomor Booking</option>
+                                                <option value="4">Kamar</opton>
                                             </select>
                                         </div>
                                     </div>

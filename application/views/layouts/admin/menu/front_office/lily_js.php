@@ -21,6 +21,7 @@
         var module_approval = parseInt("<?php echo $module_approval; ?>");
         var module_attachment = parseInt("<?php echo $module_attachment; ?>"); 
 
+        let dayBooking = 1;
         var aa = '';
         //Croppie
         var upload_crop_img_1 = $('#modal_croppie_canvas_1').croppie({
@@ -69,9 +70,18 @@
             language: "id",
             todayHighlight: true,
             weekStart: 1,
+            minDate: 0,
             // timezone:"+0700"
         }).on('change', function(e){
+            var sd = $("#order_start_date").datepicker("getFormattedDate","yyyy-mm-dd");
+            var ed = $("#order_end_date").datepicker("getFormattedDate","yyyy-mm-dd");
+            // var sh = $("#order_start_hour").find(":selected").val();
+            // var eh = $("#order_end_hour").find(":selected").val();
+            // dayBooking = get_date_diff(sd+' '+sh+":00",ed+' '+eh+":00");
+            dayBooking = get_date_diff(sd,ed);
+            console.log(dayBooking);  
         });
+
         $('.clockpicker').clockpicker({
             default: 'now',
             placement: 'bottom',
@@ -446,6 +456,7 @@
                 form.append('upload_1', $("#files_preview_1").attr('data-save-img'));
                 form.append('upload_2', $("#files_preview_2").attr('data-save-img'));
                 form.append('order_item_ref_price_sort',$("input[name=order_ref_price_id]:checked").val());
+                form.append('day_booking',dayBooking);
                 if(orderID > 0){
                     form.append('order_id', orderID);
                 }
@@ -1013,13 +1024,21 @@
                                 let file_deposit = self.$content.find('#file_deposit')[0].files[0];                                
                                 let file_note = self.$content.find('#file_note').val();                                                                
 
-                                if(!file_key){
-                                    $.alert('Foto kunci dipilih dahulu');
-                                    return false;
-                                } else if(!file_deposit){
-                                    $.alert('Foto pengembalian deposit dipilih dahulu');
-                                    return false; 
-                                } else{
+                                var ne = true;
+                                if(oflag == 4){
+                                    ne = false;
+                                }else{
+                                    ne = true;
+                                    if(!file_key){
+                                        $.alert('Foto kunci dipilih dahulu');
+                                        return false;
+                                    } else if(!file_deposit){
+                                        $.alert('Foto pengembalian deposit dipilih dahulu');
+                                        return false; 
+                                    }                                     
+                                }
+                                
+                                if(ne){
                                     var form = new FormData();
                                     form.append('action', 'update_flag_item_lily');
                                     form.append('order_id', oid);
@@ -1172,7 +1191,8 @@
                                 set_price = 0;
                             }
                             // $("#order_price").val(r.price_value);
-                            $("#order_price").val(set_price);                            
+                            $("#order_price").val(set_price);   
+                            $("#paid_total").val(set_price);                                                        
                             console.log('Price: '+set_price);
                             //Display Room
                             let re = d.rooms;

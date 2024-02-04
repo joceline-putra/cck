@@ -3786,7 +3786,19 @@ $switch_do = !empty($this->session->flashdata('switch_branch')) ?  intval($this-
 		}
 		function numberWithCommas(x) {
 		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}		
+		}	
+        function get_date_diff(start_date,end_date){
+            // console.log('get_date_diff('+start_date+','+end_date+')');
+            let d1 = moment(start_date, 'YYYY-MM-DD H:m:s').toDate();
+            let d2 = moment(end_date, 'YYYY-MM-DD H:m:s').toDate();
+            // console.log(d1);
+            // console.log(d2);
+            // start_date  = Thu Feb 01 2024 00:00:00 GMT+0700 (Western Indonesia Time);
+            // end_date = Mon Feb 05 2024 00:00:00 GMT+0700 (Western Indonesia Time);
+            var dd = ((d2-d1)/1000/60/60/24) + 1;
+			console.log('get_date_diff() => '+start_date+', '+end_date+' ? '+dd);
+            return dd;
+        }			
   	</script>   
 	<!-- <script src="<?php #echo base_url();?>assets/pwa.min.js" type="text/javascript"></script> -->
 	<script>

@@ -183,7 +183,13 @@ class Front_office extends MY_Controller{
                     }
                     if($post['filter_ref'] !== "All") {
                         $params['order_item_ref_id'] = intval($post['filter_ref']);
-                    }                    
+                    }              
+                    if($post['filter_item_type_2'] !== "All") {
+                        $params['order_item_type_2'] = $post['filter_item_type_2'];
+                    }      
+                    if($post['filter_flag_checkin'] !== "All") {
+                        $params['order_item_flag_checkin'] = $post['filter_flag_checkin'];
+                    }                                                      
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
@@ -870,6 +876,22 @@ class Front_office extends MY_Controller{
                             }
                             
                             if($next){
+                                $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
+                                $sdate = $post['order_start_date']." 00:00:00";
+                                $edate = $post['order_end_date']." 23:59:59";
+                                // $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
+                                // $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
+                                $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
+                                // var_dump($check_room_available,$room_id,$sdate,$edate);die;
+                                if($check_room_available > 0){
+                                    $get_product = $this->Produk_model->get_produk_quick($post['order_product_id']);
+
+                                    $next = false;
+                                    $message = $get_product['product_name'].' tidak tersedia';
+                                }
+                            }
+
+                            if($next){
                                 /* Check Existing Data */
                                 $params_check = [
                                     'order_item_type_2' => !empty($post['order_type_2']) ? $post['order_type_2'] : null,
@@ -1208,6 +1230,22 @@ class Front_office extends MY_Controller{
                                 }         
                             }
                             
+                            if($next){
+                                $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
+                                $sdate = $post['order_start_date']." 00:00:00";
+                                $edate = $post['order_end_date']." 23:59:59";
+                                // $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
+                                // $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
+                                $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
+                                // var_dump($check_room_available,$room_id,$sdate,$edate);die;
+                                if($check_room_available > 0){
+                                    $get_product = $this->Produk_model->get_produk_quick($post['order_product_id']);
+
+                                    $next = false;
+                                    $message = $get_product['product_name'].' tidak tersedia';
+                                }
+                            }
+
                             if($next){
                                 /* Check Existing Data */
                                 $params_check = [
@@ -1769,7 +1807,7 @@ class Front_office extends MY_Controller{
                                                 //Save Data First
                                                 $file_session = $this->random_session(20);
                                                 $params = array(
-                                                    'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : null,
+                                                    'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : 'orders',
                                                     'file_from_id' => !empty($post['order_id']) ? $post['order_id'] : null,
                                                     'file_session' => $file_session,
                                                     'file_date_created' => date("YmdHis"),
@@ -1804,7 +1842,7 @@ class Front_office extends MY_Controller{
                                                 //Save Data First
                                                 $file_session = $this->random_session(20);
                                                 $params = array(
-                                                    'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : null,
+                                                    'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : 'orders',
                                                     'file_from_id' => !empty($post['order_id']) ? $post['order_id'] : null,
                                                     'file_session' => $file_session,
                                                     'file_date_created' => date("YmdHis"),
@@ -2205,7 +2243,7 @@ class Front_office extends MY_Controller{
             $data['reference'] = $this->Reference_model->get_all_reference();
             */
             $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
-            $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10, 'references.ref_branch_id' => 1],null,null,null,'ref_name','asc');            
+            $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10],null,null,null,'branch_name','asc');            
             // $data['ref'] = $this->Ref_model->get_all_ref_price(['price_flag' => 1],null,null,null,'price_name','asc');    
 
             $params = array(

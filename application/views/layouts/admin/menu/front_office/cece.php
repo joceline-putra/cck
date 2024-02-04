@@ -309,46 +309,8 @@
                                     <i class="fas fa-arrow-right"></i> Selanjutnya
                                 </button>                                                                             
                             </div>                                                          
-                        </div>
-                        <div class="tab-pane tab-pane-sub" id="tab17" for="bukti bayar">
-                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                    <div class="form-group">
-                                        <label class="form-label">Bukti Bayar (wajib)</label>
-                                        <a class="files_link_1" href="<?= site_url('upload/noimage.png'); ?>">
-                                            <img id="files_preview_1" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
-                                        </a>
-                                        <div class="custom-file">
-                                            <input class="form-control" id="files_1" name="files_1" type="file" tabindex="1">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
-                                    <div class="form-group">
-                                        <label class="form-label">Metode</label>
-                                        <select id="paid_payment_method" name="paid_payment_method"class="form-control">
-                                        <option value="CASH" selected>Cash</option>
-                                        <option value="TRANSFER">Transfer</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
-                                    <div class="form-group">
-                                        <label class="form-label">Jumlah (Rp)</label>
-                                        <input id="paid_total" name="paid_total" type="text" class="form-control">
-                                    </div>
-                                </div>
-                            </div>  
-                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
-                                <button id="btn_tab_17b" class="btn btn-default" type="button" style="width:45%;">
-                                    <i class="fas fa-arrow-left"></i> Kembali
-                                </button>                                 
-                                <button id="btn_tab_17" class="btn btn-primary" type="button" style="width:50%;">
-                                    <i class="fas fa-arrow-right"></i> Selanjutnya
-                                </button>                                                     
-                            </div>
-                        </div> 
-                        <div class="tab-pane tab-pane-sub" id="tab18" for="ktp">
+                        </div>   
+                        <div class="tab-pane tab-pane-sub" id="tab17" for="ktp">
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="form-group">
                                     <label class="form-label">Foto KTP (wajib)</label>
@@ -361,15 +323,15 @@
                                 </div>
                             </div>      
                             <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">                            
-                                <button id="btn_tab_18b" class="btn btn-default" type="button" style="width:45%;">
+                                <button id="btn_tab_17b" class="btn btn-default" type="button" style="width:45%;">
                                     <i class="fas fa-arrow-left"></i> Kembali
                                 </button>                             
-                                <button id="btn_tab_18" class="btn btn-primary" type="button" style="width:50%;">
+                                <button id="btn_tab_17" class="btn btn-primary" type="button" style="width:50%;">
                                     <i class="fas fa-arrow-right"></i> Selanjutnya
                                 </button>                                                     
                             </div>
-                        </div>   
-                        <div class="tab-pane tab-pane-sub" id="tab19" for="kendaraan">
+                        </div>
+                        <div class="tab-pane tab-pane-sub" id="tab18" for="kendaraan">
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="form-group">
                                     <label class="form-label">Foto Plat Kendaraan (wajib)</label>
@@ -406,14 +368,52 @@
                                 </div>
                             </div>                                                           
                             <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">                            
-                                <button id="btn_tab_19b" class="btn btn-default" type="button" style="width:45%;">
+                                <button id="btn_tab_18b" class="btn btn-default" type="button" style="width:45%;">
                                     <i class="fas fa-arrow-left"></i> Kembali
                                 </button>                             
+                                <button id="btn_tab_18" class="btn btn-primary" type="button" style="width:50%;">
+                                    <i class="fas fa-arrow-right"></i> Selanjutnya
+                                </button>                                                     
+                            </div>
+                        </div>
+                        <div class="tab-pane tab-pane-sub" id="tab19" for="bukti bayar">
+                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                    <div class="form-group">
+                                        <label class="form-label">Bukti Bayar (wajib)</label>
+                                        <a class="files_link_1" href="<?= site_url('upload/noimage.png'); ?>">
+                                            <img id="files_preview_1" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
+                                        </a>
+                                        <div class="custom-file">
+                                            <input class="form-control" id="files_1" name="files_1" type="file" tabindex="1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                    <div class="form-group">
+                                        <label class="form-label">Metode</label>
+                                        <select id="paid_payment_method" name="paid_payment_method"class="form-control">
+                                        <option value="CASH" selected>Cash</option>
+                                        <option value="TRANSFER">Transfer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                    <div class="form-group">
+                                        <label class="form-label">Jumlah (Rp)</label>
+                                        <input id="paid_total" name="paid_total" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
+                                <button id="btn_tab_19b" class="btn btn-default" type="button" style="width:45%;">
+                                    <i class="fas fa-arrow-left"></i> Kembali
+                                </button>                                 
                                 <button id="btn_tab_19" class="btn btn-primary" type="button" style="width:50%;">
                                     <i class="fas fa-arrow-right"></i> Selanjutnya
                                 </button>                                                     
                             </div>
-                        </div>                                                  
+                        </div>                                                                           
                         <div class="tab-pane tab-pane-sub" id="tab20" for="konfirmasi">
                             <div class="col-md-12 col-xs-12 table-responsive">
                                 <table id="table_confirm" class="table table-bordered" style="width:100%;">

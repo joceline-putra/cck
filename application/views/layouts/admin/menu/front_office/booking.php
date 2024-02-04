@@ -100,14 +100,16 @@
                                                 </div>    
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                                        <label class="form-label">Type</label>
-                                                        <select id="filter_ref_price" name="filter_ref_price" class="form-control">
+                                                        <label class="form-label">Tipe</label>
+                                                        <select id="filter_item_type_2" name="filter_item_type_2" class="form-control">
                                                             <option value="All">Semua</option>
-                                                            <option value="1">Bulanan</option>                                                                                                                        
+                                                            <!-- <option value="1">Bulanan</option>                                                                                                                        
                                                             <option value="2">Harian</option>
                                                             <option value="3">Midnight</option>
                                                             <option value="4">4 jam</option>
-                                                            <option value="5">2 jam</option>
+                                                            <option value="5">2 jam</option> -->
+                                                            <option value="Transit">Transit</option>
+                                                            <option value="Bulanan">Bulanan</option>                                                            
                                                         </select>
                                                     </div>
                                                 </div>  
@@ -119,7 +121,7 @@
                                                             <option value="All">Semua</option>
                                                             <?php
                                                             foreach($ref as $b){
-                                                                echo '<option value="'.$b['branch_id'].'">'.$b['branch_name'].' - '.$b['ref_name'].'</option>';
+                                                                echo '<option value="'.$b['ref_id'].'">'.$b['branch_name'].' - '.$b['ref_name'].'</option>';
                                                             }
                                                             ?>
                                                         </select>
@@ -135,6 +137,18 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Status</label>
+                                                        <select id="filter_flag_checkin" name="filter_flag_checkin" class="form-control">
+                                                            <option value="All">Semua</option>
+                                                            <option value="0">Waiting</option>
+                                                            <option value="1">Checkin</option>
+                                                            <option value="2">Checkout</option>
+                                                            <option value="4">Batal</option>                                                                                                                        
+                                                        </select>
+                                                    </div>
+                                                </div>                                                
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Tampil</label>

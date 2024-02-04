@@ -205,6 +205,7 @@
                         if (parseInt(d.status) == 1) { /* Success Message */
                             notif(1, d.message);
                             index.ajax.reload();
+                            $("#modal_ref").modal('hide');
                         } else { //Error
                             notif(0, d.message);
                         }
@@ -341,6 +342,7 @@
                             $("#form_ref input").val();
                             formMasterSetDisplay(1);
                             notif(1, d.message);
+                            $("#modal_ref").modal('hide');
                             index.ajax.reload(null, false);
                         } else {
                             notif(0, d.message);
