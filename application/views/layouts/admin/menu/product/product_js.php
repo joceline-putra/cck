@@ -84,10 +84,10 @@
                 {"targets": 0, "title": "Makanan", "searchable": true, "orderable": true},
                 {"targets": 1, "title": "Jenis", "searchable": true, "orderable": true},
                 {"targets": 2, "title": "Harga Jual", "searchable": true, "orderable": true},
-                {"targets": 3, "title": "Stok", "searchable": false, "orderable": true, "className": "text-right"},
-                {"targets": 4, "title": "Stok Minimal", "searchable": false, "orderable": true, "className": "text-right"},                
-                {"targets": 5, "title": "Cabang", "searchable": false, "orderable": true},                
-                {"targets": 6, "title": "Action", "searchable": false, "orderable": false}
+                // {"targets": 3, "title": "Stok", "searchable": false, "orderable": true, "className": "text-right"},
+                // {"targets": 4, "title": "Stok Minimal", "searchable": false, "orderable": true, "className": "text-right"},                
+                {"targets": 3, "title": "Cabang", "searchable": false, "orderable": true},                
+                {"targets": 4, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
                 [0, 'asc']
@@ -140,57 +140,60 @@
                         }
                         return dsp;
                     }
-                }, {
-                    'data': 'product_stock',
-                    render: function (data, meta, row) {
-                        var dsp = '';
-                        if (row.product_type == 1) {
-                            if (parseFloat(data) > 0) {
-                                dsp += '<a href="#" class="btn-product-stock" data-product-id="' + row.product_id + '" data-product-name="' + row.product_name + '" data-product-unit="' + row.product_unit + '"><b>' + data + '</b></a>';
-                            } else {
-                                dsp += data;
-                            }
-                            dsp += ' ' + row.product_unit;
+                }, 
+                // {
+                //     'data': 'product_stock',
+                //     render: function (data, meta, row) {
+                //         var dsp = '';
+                //         if (row.product_type == 1) {
+                //             if (parseFloat(data) > 0) {
+                //                 dsp += '<a href="#" class="btn-product-stock" data-product-id="' + row.product_id + '" data-product-name="' + row.product_name + '" data-product-unit="' + row.product_unit + '"><b>' + data + '</b></a>';
+                //             } else {
+                //                 dsp += data;
+                //             }
+                //             dsp += ' ' + row.product_unit;
 
-                            // if (parseInt(row.product_with_stock) == 1) {
-                            //     var product_stock = parseFloat(row.product_stock);
-                            //     var stock_min = parseFloat(row.product_min_stock_limit);
-                            //     if (product_stock < stock_min) {
-                            //         dsp += '<br><span class="label" style="background-color:#ef873e;color:white;padding:1px 4px;">Stok Akan Habis</span>';
-                            //     }
-                            // } else {
-                            // }
-                        } else {
-                            dsp += '-';
-                        }
-                        return dsp;
-                    }
-                }, {
-                    'data': 'product_min_stock_limit',
-                    render: function (data, meta, row) {
-                        var dsp = '';
-                        if (row.product_type == 1) {
-                            // if (parseFloat(data) > 0) {
-                            //     dsp += '<a href="#" class="btn-product-stock" data-product-id="' + row.product_id + '" data-product-name="' + row.product_name + '" data-product-unit="' + row.product_unit + '"><b>' + data + '</b></a>';
-                            // } else {
-                            //     dsp += data;
-                            // }
-                            dsp += ' ' + row.product_min_stock_limit + ' ' +row.product_unit;
+                //             // if (parseInt(row.product_with_stock) == 1) {
+                //             //     var product_stock = parseFloat(row.product_stock);
+                //             //     var stock_min = parseFloat(row.product_min_stock_limit);
+                //             //     if (product_stock < stock_min) {
+                //             //         dsp += '<br><span class="label" style="background-color:#ef873e;color:white;padding:1px 4px;">Stok Akan Habis</span>';
+                //             //     }
+                //             // } else {
+                //             // }
+                //         } else {
+                //             dsp += '-';
+                //         }
+                //         return dsp;
+                //     }
+                // }, 
+                // {
+                //     'data': 'product_min_stock_limit',
+                //     render: function (data, meta, row) {
+                //         var dsp = '';
+                //         if (row.product_type == 1) {
+                //             // if (parseFloat(data) > 0) {
+                //             //     dsp += '<a href="#" class="btn-product-stock" data-product-id="' + row.product_id + '" data-product-name="' + row.product_name + '" data-product-unit="' + row.product_unit + '"><b>' + data + '</b></a>';
+                //             // } else {
+                //             //     dsp += data;
+                //             // }
+                //             dsp += ' ' + row.product_min_stock_limit + ' ' +row.product_unit;
 
-                            // if (parseInt(row.product_with_stock) == 1) {
-                            //     var product_stock = parseFloat(row.product_stock);
-                            //     var stock_min = parseFloat(row.product_min_stock_limit);
-                            //     if (product_stock < stock_min) {
-                            //         dsp += '<br><span class="label" style="background-color:#ef873e;color:white;padding:1px 4px;">Stok Akan Habis</span>';
-                            //     }
-                            // } else {
-                            // }
-                        } else {
-                            dsp += '-';
-                        }
-                        return dsp;
-                    }
-                }, {
+                //             // if (parseInt(row.product_with_stock) == 1) {
+                //             //     var product_stock = parseFloat(row.product_stock);
+                //             //     var stock_min = parseFloat(row.product_min_stock_limit);
+                //             //     if (product_stock < stock_min) {
+                //             //         dsp += '<br><span class="label" style="background-color:#ef873e;color:white;padding:1px 4px;">Stok Akan Habis</span>';
+                //             //     }
+                //             // } else {
+                //             // }
+                //         } else {
+                //             dsp += '-';
+                //         }
+                //         return dsp;
+                //     }
+                // }, 
+                {
                     'data': 'branch_name',
                     className: 'text-left',
                     render: function (data, meta, row) {

@@ -434,7 +434,7 @@
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
                                 <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 form-group padding-remove-left prs-0">
                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
-                                        <label class="form-label">Cabang / Perusahaan</label>
+                                        <label class="form-label">Cabang</label>
                                         <select id="filter_branch" name="filter_branch" class="form-control">       
                                             <option value="0">Semua</option>                                                    
                                         </select>
