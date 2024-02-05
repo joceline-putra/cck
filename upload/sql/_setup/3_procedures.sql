@@ -4445,3 +4445,26 @@ BEGIN
     ORDER BY oi.`order_item_start_date` DESC;
 END $$
 DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `sp_room_check`$$
+CREATE PROCEDURE `sp_room_check`(
+  IN vROOM_ID VARCHAR(255),
+  IN vSD DATETIME, IN vED DATETIME
+)
+BEGIN
+	/*
+    SELECT COUNT(*) AS room_is_available FROM orders_items WHERE order_item_type=222 AND order_item_product_id=vROOM_ID
+    AND order_item_flag_checkin IN(0,1)
+    AND ((order_item_start_date <= vSD AND order_item_end_date >= vSD)
+    OR (order_item_start_date < vED AND order_item_end_date >= vED)
+    OR (vSD <= order_item_start_date AND vED >= order_item_start_date));
+    */
+	SELECT COUNT(*) AS room_is_available FROM orders_items WHERE order_item_type=222 AND order_item_product_id=vROOM_ID
+	AND order_item_flag_checkin IN(0,1)
+	AND ((order_item_start_date <= vSD AND order_item_end_date >= vSD)
+	OR (vED <= order_item_start_date AND vED >= order_item_start_date)
+	OR (order_item_start_date < vED AND order_item_end_date >= vED));    
+
+END $$
+DELIMITER ;

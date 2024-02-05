@@ -357,7 +357,7 @@ class Front_model extends CI_Model{
     function delete_paid_custom($where){
         return $this->db->delete('orders_paids',$where);
     }    
-    function get_room_available_count($room_id,$start_date,$end_date){
+    function get_room_available_count($room_id,$start_date,$end_date){ //Old not used, move to SP sp_room_check
         // 0=notcheckin, 1=checkin, 2=checkout, 4=batal
         $this->db->from('orders_items')
             ->where('order_item_type',222);
@@ -369,5 +369,15 @@ class Front_model extends CI_Model{
         $this->db->where('order_item_flag_checkin IN(0,1)');
         return $this->db->count_all_results();
     }    
+    function sp_room_check($room_id,$start_date,$end_date){
+        $prepare="CALL sp_room_check($room_id,'$start_date','$end_date')";
+        // log_message('debug',$prepare);
+        // var_dump($prepare);die;
+        $query=$this->db->query($prepare);
+        mysqli_next_result($this->db->conn_id);
+        // $query->free_result();
+        $result = $query->result_array();
+        return $result;
+    }        
 }
 ?>

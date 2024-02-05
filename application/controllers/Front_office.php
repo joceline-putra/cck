@@ -881,9 +881,10 @@ class Front_office extends MY_Controller{
                                 $edate = $post['order_end_date']." 23:59:59";
                                 // $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
                                 // $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
-                                $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
-                                // var_dump($check_room_available,$room_id,$sdate,$edate);die;
-                                if($check_room_available > 0){
+                                // $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
+                                $check_room_available = $this->Front_model->sp_room_check($room_id,$sdate,$edate);
+                                var_dump($check_room_available[0]['room_is_available'],$room_id,$sdate,$edate);die;                                
+                                if(intval($check_room_available[0]['room_is_available']) == 1){
                                     $get_product = $this->Produk_model->get_produk_quick($post['order_product_id']);
 
                                     $next = false;
@@ -1236,9 +1237,10 @@ class Front_office extends MY_Controller{
                                 $edate = $post['order_end_date']." 23:59:59";
                                 // $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
                                 // $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
-                                $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
-                                var_dump($check_room_available,$room_id,$sdate,$edate);die;
-                                if($check_room_available > 0){
+                                // $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
+                                $check_room_available = $this->Front_model->sp_room_check($room_id,$sdate,$edate);
+                                var_dump($check_room_available[0]['room_is_available'],$room_id,$sdate,$edate);die;
+                                if(intval($check_room_available[0]['room_is_available']) == 1){
                                     $get_product = $this->Produk_model->get_produk_quick($post['order_product_id']);
 
                                     $next = false;
