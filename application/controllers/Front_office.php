@@ -711,6 +711,7 @@ class Front_office extends MY_Controller{
                                             // 'order_item_session' => !empty($post['order_item_session']) ? $post['order_item_contact_id_2'] : null,
                                             'order_item_ref_id' => !empty($post['order_ref_id']) ? intval($post['order_ref_id']) : null,
                                             'order_item_ref_price_id' => $order_ref_price_id,
+                                            // 'order_item_ref_price_sort' => $post['order_item_ref_price_sort'],
                                             'order_item_flag_checkin' => 0,
                                         );                      
         
@@ -877,14 +878,14 @@ class Front_office extends MY_Controller{
                             
                             if($next){
                                 $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
-                                $sdate = $post['order_start_date']." 00:00:00";
-                                $edate = $post['order_end_date']." 23:59:59";
-                                // $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
-                                // $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
+                                // $sdate = $post['order_start_date']." 00:00:00";
+                                // $edate = $post['order_end_date']." 23:59:59";
+                                $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
+                                $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
                                 // $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
                                 $check_room_available = $this->Front_model->sp_room_check($room_id,$sdate,$edate);
-                                var_dump($check_room_available[0]['room_is_available'],$room_id,$sdate,$edate);die;                                
-                                if(intval($check_room_available[0]['room_is_available']) == 1){
+                                // var_dump($check_room_available['room_is_available'],$room_id,$sdate,$edate);die;                                
+                                if(intval($check_room_available['room_is_available']) == 1){
                                     $get_product = $this->Produk_model->get_produk_quick($post['order_product_id']);
 
                                     $next = false;
@@ -1031,12 +1032,12 @@ class Front_office extends MY_Controller{
                                         }
                                         //End Set Paid
 
-                                        $params_price = array(
-                                            'price_ref_id' => $post['order_ref_id'],
-                                            'price_sort' => $post['order_ref_price_id']
-                                        );
-                                        $get_price = $this->Ref_model->get_ref_price_custom($params_price);
-                                        $order_ref_price_id = $get_price['price_id'];
+                                        // $params_price = array(
+                                        //     'price_ref_id' => $post['order_ref_id'],
+                                        //     'price_sort' => $post['order_ref_price_id']
+                                        // );
+                                        // $get_price = $this->Ref_model->get_ref_price_custom($params_price);
+                                        // $order_ref_price_id = $get_price['price_id'];
                                         
                                         //Save Item
                                         $params_items = array(
@@ -1060,7 +1061,7 @@ class Front_office extends MY_Controller{
                                             'order_item_order_session' => $order_session,
                                             // 'order_item_session' => !empty($post['order_item_session']) ? $post['order_item_contact_id_2'] : null,
                                             'order_item_ref_id' => !empty($post['order_ref_id']) ? intval($post['order_ref_id']) : null,
-                                            'order_item_ref_price_id' => $order_ref_price_id,
+                                            // 'order_item_ref_price_id' => $order_ref_price_id,
                                             'order_item_ref_price_sort' => !empty($post['order_item_ref_price_sort']) ? intval($post['order_item_ref_price_sort']) : null,                                            
                                             'order_item_flag_checkin' => 0,
                                         );                      
@@ -1233,14 +1234,14 @@ class Front_office extends MY_Controller{
                             
                             if($next){
                                 $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
-                                $sdate = $post['order_start_date']." 00:00:00";
-                                $edate = $post['order_end_date']." 23:59:59";
-                                // $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
-                                // $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
+                                // $sdate = $post['order_start_date']." 00:00:00";
+                                // $edate = $post['order_end_date']." 23:59:59";
+                                $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
+                                $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
                                 // $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
                                 $check_room_available = $this->Front_model->sp_room_check($room_id,$sdate,$edate);
-                                var_dump($check_room_available[0]['room_is_available'],$room_id,$sdate,$edate);die;
-                                if(intval($check_room_available[0]['room_is_available']) == 1){
+                                // var_dump($check_room_available['room_is_available'],$room_id,$sdate,$edate);die;
+                                if(intval($check_room_available['room_is_available']) == 1){
                                     $get_product = $this->Produk_model->get_produk_quick($post['order_product_id']);
 
                                     $next = false;
@@ -1458,8 +1459,8 @@ class Front_office extends MY_Controller{
                                         if($post['order_ref_price_id'] == "1"){ // Old 0
                                             // $params_items['order_item_start_hour'] = '14:00:00';
                                             $params_items['order_item_type_2'] = 'Bulanan';
-                                            $set_start_hour = '14:00:00';
-                                            $set_end_hour = '12:00:00';                                        
+                                            $set_start_hour = '00:00:00';
+                                            $set_end_hour = '23:59:00';                                        
                                         }else {
                                             $params_items['order_item_type_2'] = 'Transit';                                        
                                             // $params_items['order_item_start_hour'] = $post['order_start_hour'];
@@ -2003,15 +2004,18 @@ class Front_office extends MY_Controller{
                     $file_name = !empty($this->input->post('file_name')) ? $this->input->post('file_name') : null;                        
 
                     if(intval($file_id) > 0){
-                        $get_data=$this->Front_model->get_paid($file_id);
-                        $set_data=$this->Front_model->delete_paid($file_id);                
+                        // $get_data=$this->Front_model->get_paid($file_id);
+                        // $set_data=$this->Front_model->delete_paid($file_id);            
+                        $set_data = true;    
                         if($set_data){    
-                            $file = FCPATH . $this->folder_upload . $get_data['paid_url'];
-                            if (file_exists($file)) {
-                                unlink($file);
-                            }
+                            // $file = FCPATH . $get_data['paid_url'];
+                            // if (file_exists($file)) {
+                            //     unlink($file);
+                            // }
+                            // $return->status=1;
+                            // $return->message='Berhasil menghapus '. $get_data['paid_name'];
                             $return->status=1;
-                            $return->message='Berhasil menghapus '. $get_data['paid_name'];
+                            $return->message='Fitur tidak tersedia';
                         }else{
                             $return->message='Gagal menghapus '. $get_data['paid_name'];
                         } 

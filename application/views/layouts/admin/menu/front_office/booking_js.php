@@ -241,18 +241,18 @@
                         // dsp += '    <button class="btn btn-mini btn-default"><span class="fas fa-cog"></span></button>';
                         dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" data-toggle="dropdown" aria-expanded="true"><span class="fas fa-cog"></span><span class="caret"></span> Aksi</button>';
                         dsp += '    <ul class="dropdown-menu">';
-                        dsp += '        <li>';
-                        dsp += '            <a class="btn_edit_order" style="cursor:pointer;"';
-                        dsp += '                data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
-                        dsp += '                <span class="fas fa-eye"></span> Lihat';
-                        dsp += '            </a>';
-                        dsp += '        </li>';
-                        dsp += '        <li class="divider"></li>';
-                        dsp += '        <li>';
-                        dsp += '            <a class="btn_print_order" style="cursor:pointer;" data-order="'+ data +'" data-order-session="'+row.order_session+'">';
-                        dsp += '                <span class="fas fa-print"></span> Print';
-                        dsp += '            </a>';
-                        dsp += '        </li>';
+                        // dsp += '        <li>';
+                        // dsp += '            <a class="btn_edit_order" style="cursor:pointer;"';
+                        // dsp += '                data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
+                        // dsp += '                <span class="fas fa-eye"></span> Lihat';
+                        // dsp += '            </a>';
+                        // dsp += '        </li>';
+                        // dsp += '        <li class="divider"></li>';
+                        // dsp += '        <li>';
+                        // dsp += '            <a class="btn_print_order" style="cursor:pointer;" data-order="'+ data +'" data-order-session="'+row.order_session+'">';
+                        // dsp += '                <span class="fas fa-print"></span> Print';
+                        // dsp += '            </a>';
+                        // dsp += '        </li>';
                         if(parseInt(row.order_flag) < 4) {
                             if(parseInt(row.order_item_flag_checkin) === 0){
                                     dsp += '<li>'; 
@@ -308,20 +308,21 @@
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        // if(data == 0){
-                        //     dsp += 'Promo';
-                        // }else if(data == 1){
-                        //     dsp += 'Bulanan';
-                        // }else if(data == 2){
-                        //     dsp += 'Harian';
-                        // }else if(data == 3){
-                        //     dsp += 'Midnight';
-                        // }else if(data == 4){
-                        //     dsp += '4 Jam';
-                        // }else if(data == 5){
-                        //     dsp += '2 Jam';
-                        // }
-                        dsp += data;
+                        dsp += data+'<br>';
+                        if(row.order_item_ref_price_sort == 0){
+                            dsp += 'Promo';
+                        }else if(row.order_item_ref_price_sort == 1){
+                            // dsp += 'Bulanan';
+                        }else if(row.order_item_ref_price_sort == 2){
+                            dsp += 'Harian';
+                        }else if(row.order_item_ref_price_sort == 3){
+                            dsp += 'Midnight';
+                        }else if(row.order_item_ref_price_sort == 4){
+                            dsp += '4 Jam';
+                        }else if(row.order_item_ref_price_sort == 5){
+                            dsp += '2 Jam';
+                        }
+                        // dsp += data;
                         return dsp;
                     }
                 },{
@@ -1982,8 +1983,8 @@
                                         let m = d.message;
                                         let r = d.result;
                                         if(parseInt(s) == 1){
-                                            var ffid = $("#id_document").val();
-                                            loadAttachment(ffid);
+                                            // var ffid = $("#id_document").val();
+                                            loadAttachment(params.file_id);
                                             // attachmentPreview(r);
                                             notif(s,m);
                                         }else{

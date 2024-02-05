@@ -90,9 +90,22 @@
                      <td><?php echo $v['order_number'];?></td>                     
                      <td data-branch-id="<?php echo $v['branch_id'];?>"><?php echo $v['branch_name'];?></td>  
                      <td><?php echo $v['order_contact_name'];?></td>  
-                     <td><?php echo $v['order_item_type_2'];?></td>                                     
+                     <td>
+                        <?php echo $v['order_item_type_2'];?>
+                        <?php 
+                        if($v['order_item_ref_price_sort'] == 0){
+                            #echo 'Bulanan';
+                        }else if($v['order_item_ref_price_sort'] == 1){
+                            echo '<br>Harian';
+                        }else if($v['order_item_ref_price_sort'] == 2){
+                            echo '<br>4 Jam';
+                        }else if($v['order_item_ref_price_sort'] == 4){
+                            echo '<br>2 Jam';
+                        }
+                     ?>                    
+                    </td>                                     
                      <td data-ref-id="<?php echo $v['ref_id'];?>"><?php echo $v['ref_name'];?></td>                                                          
-                     <td class="text-left"><?php echo date("d-M-Y", strtotime($v['order_item_start_date'])).' sd '.date("d-M-Y", strtotime($v['order_item_end_date']));?></td>
+                     <td class="text-left"><?php echo date("d-M-Y, H:i", strtotime($v['order_item_start_date'])).' sd '.date("d-M-Y, H:i", strtotime($v['order_item_end_date']));?></td>
                      <td><?php 
                         if($v['order_item_flag_checkin'] == 0){
                             echo 'Waiting';

@@ -376,7 +376,7 @@ class Front_model extends CI_Model{
         $query=$this->db->query($prepare);
         mysqli_next_result($this->db->conn_id);
         // $query->free_result();
-        $result = $query->result_array();
+        $result = $query->row_array();
         return $result;
     }        
 }
