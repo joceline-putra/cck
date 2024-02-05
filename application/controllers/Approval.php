@@ -643,6 +643,7 @@ class Approval extends MY_Controller{
                         if($set_data){    
                             if($get_data['file_type'] == 1){
                                 $file = FCPATH . $this->folder_upload . $get_data['file_url'];
+                                // var_dump($file);die;
                                 if (file_exists($file)) {
                                     unlink($file);
                                 }
