@@ -236,51 +236,56 @@
                         bgcolor = '#ff9019';
                         }
 
+                        dsp += '<button class="btn_action_order btn btn-mini btn-primary" data-order-id="'+data+'"';
+                            dsp += 'data-order-flag="'+row.order_flag+'"';
+                            dsp += 'data-order-item-flag-checkin="'+row.order_item_flag_checkin+'" data-order-item-product-id="'+row.order_item_product_id+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'" data-product-name="'+row.product_name+'">';
+                        dsp += '<span class="fas fa-cog"></span>Aksi';
+                        dsp += '</button>';                         
                         /* Button Action Concept 2 */
-                        dsp += '&nbsp;<div class="btn-group">';
-                        // dsp += '    <button class="btn btn-mini btn-default"><span class="fas fa-cog"></span></button>';
-                        dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" data-toggle="dropdown" aria-expanded="true"><span class="fas fa-cog"></span><span class="caret"></span> Aksi</button>';
-                        dsp += '    <ul class="dropdown-menu">';
-                        // dsp += '        <li>';
-                        // dsp += '            <a class="btn_edit_order" style="cursor:pointer;"';
-                        // dsp += '                data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
-                        // dsp += '                <span class="fas fa-eye"></span> Lihat';
-                        // dsp += '            </a>';
-                        // dsp += '        </li>';
-                        // dsp += '        <li class="divider"></li>';
-                        // dsp += '        <li>';
-                        // dsp += '            <a class="btn_print_order" style="cursor:pointer;" data-order="'+ data +'" data-order-session="'+row.order_session+'">';
-                        // dsp += '                <span class="fas fa-print"></span> Print';
-                        // dsp += '            </a>';
-                        // dsp += '        </li>';
-                        if(parseInt(row.order_flag) < 4) {
-                            if(parseInt(row.order_item_flag_checkin) === 0){
-                                    dsp += '<li>'; 
-                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
-                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="1" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'">';
-                                    dsp += '        <span class="fas fa-lock"></span> CheckIn';
-                                    dsp += '    </a>';
-                                    dsp += '</li>';
-                            }
-                            if(parseInt(row.order_item_flag_checkin) === 1){
-                                    dsp += '<li>';
-                                    dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
-                                    dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="2" data-order-session="'+row.order_session+'" data-product-name="'+row.product_name+'">';
-                                    dsp += '        <span class="fas fa-ban"></span> Checkout';
-                                    dsp += '    </a>';
-                                    dsp += '</li>';
-                            }
-                        }
-                        if(parseInt(row.order_flag) == 0) {                        
-                                dsp += '<li>';
-                                dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
-                                dsp += '        data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="4" data-order-session="'+row.order_session+'">';
-                                dsp += '        <span class="fas fa-trash"></span> Batal';
-                                dsp += '    </a>';
-                                dsp += '</li>';
-                        }
-                        dsp += '    </ul>';
-                        dsp += '</div>';
+                        // dsp += '&nbsp;<div class="btn-group">';
+                        // // dsp += '    <button class="btn btn-mini btn-default"><span class="fas fa-cog"></span></button>';
+                        // dsp += '    <button class="btn btn-mini btn-default dropdown-toggle btn-demo-space" data-toggle="dropdown" aria-expanded="true"><span class="fas fa-cog"></span><span class="caret"></span> Aksi</button>';
+                        // dsp += '    <ul class="dropdown-menu">';
+                        // // dsp += '        <li>';
+                        // // dsp += '            <a class="btn_edit_order" style="cursor:pointer;"';
+                        // // dsp += '                data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="'+row.order_flag+'" data-order-session="'+row.order_session+'">';
+                        // // dsp += '                <span class="fas fa-eye"></span> Lihat';
+                        // // dsp += '            </a>';
+                        // // dsp += '        </li>';
+                        // // dsp += '        <li class="divider"></li>';
+                        // // dsp += '        <li>';
+                        // // dsp += '            <a class="btn_print_order" style="cursor:pointer;" data-order="'+ data +'" data-order-session="'+row.order_session+'">';
+                        // // dsp += '                <span class="fas fa-print"></span> Print';
+                        // // dsp += '            </a>';
+                        // // dsp += '        </li>';
+                        // if(parseInt(row.order_flag) < 4) {
+                        //     if(parseInt(row.order_item_flag_checkin) === 0){
+                        //             dsp += '<li>'; 
+                        //             dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
+                        //             dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="1" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'">';
+                        //             dsp += '        <span class="fas fa-lock"></span> CheckIn';
+                        //             dsp += '    </a>';
+                        //             dsp += '</li>';
+                        //     }
+                        //     if(parseInt(row.order_item_flag_checkin) === 1){
+                        //             dsp += '<li>';
+                        //             dsp += '    <a class="btn_update_flag_order_item" style="cursor:pointer;"';
+                        //             dsp += '        data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-flag="2" data-order-session="'+row.order_session+'" data-product-name="'+row.product_name+'">';
+                        //             dsp += '        <span class="fas fa-ban"></span> Checkout';
+                        //             dsp += '    </a>';
+                        //             dsp += '</li>';
+                        //     }
+                        // }
+                        // if(parseInt(row.order_flag) == 0) {                        
+                        //         dsp += '<li>';
+                        //         dsp += '    <a class="btn_update_flag_order" style="cursor:pointer;"';
+                        //         dsp += '        data-order-id="'+data+'" data-order-number="'+row.order_number+'" data-order-flag="4" data-order-session="'+row.order_session+'">';
+                        //         dsp += '        <span class="fas fa-trash"></span> Batal';
+                        //         dsp += '    </a>';
+                        //         dsp += '</li>';
+                        // }
+                        // dsp += '    </ul>';
+                        // dsp += '</div>';
                         return dsp;
                     }
                 },
@@ -791,7 +796,9 @@
 
             if(do_checkin){
                 var obranch       = $(this).attr('data-order-branch-id');   
-                var oref          = $(this).attr('data-order-ref-id');             
+                var oref          = $(this).attr('data-order-ref-id');    
+                var opr           = $(this).attr('data-order-item-product-id');      
+                var oprn          = $(this).attr('data-product-name');                              
                 // 'Apakah anda ingin '+msg+' <b>'+onu+'</b> ?'
                 let title   = 'Konfirmasi Check-IN';
                 $.confirm({
@@ -836,9 +843,11 @@
                                 dsp += '    <div class="form-group">';
                                 dsp += '    <label class="form-label">Pilih Kamar</label>';
                                 dsp += '        <select id="jc_select" name="jc_select" class="form-control">';
-                                dsp += '            <option value="1">Pilih Kamar</option>';
+                                // dsp += '            <option value="1">Pilih Kamar</option>';
                                 r.forEach(async (v, i) => {
+                                    if(v['product_id'] == opr){
                                                     dsp += '<option value="'+v['product_id']+'">'+v['product_name']+' - ['+ v['branch_name'] +']</option>';
+                                    }
                                 });
                                 dsp += '        </select>';
                                 dsp += '    </div>';
@@ -1099,7 +1108,7 @@
             e.preventDefault();
             e.stopPropagation();
             console.log($(this));
-            var id = $(this).attr('data-order');
+            var id = $(this).attr('data-order-id');
             var session = $(this).attr('data-order-session');
             if(parseInt(id) > 0){
                 var x = screen.width / 2 - 700 / 2;
@@ -2609,6 +2618,74 @@
                 }
             });
         }
+        $(document).on("click",".btn_action_order", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            let this_form = $(this);
+            let title   = 'Action';
+            $.confirm({
+                title: title,
+                // icon: 'fas fa-check',
+                columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',      
+                // autoClose: 'button_2|10000',
+                // closeIcon: true, closeIconClass: 'fas fa-times', 
+                animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                content: function(){
+                },
+                onContentReady: function(e){
+                    let self    = this;
+                    let content = '';
+                    let dsp     = '';
+            
+                    var id = $(this).attr('data-id');
+
+                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                    dsp += '<ul class="ul-user-navigation">';
+
+                    // console.log(this_form.attr('data-order-flag'));
+
+                    if(parseInt(this_form.attr('data-order-flag')) < 4) {
+                        if(parseInt(this_form.attr('data-order-item-flag-checkin')) === 0){
+                            dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'"';
+                            dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="1" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                            dsp += '<i class="fas fa-lock"></i><span style="position: relative;">&nbsp;CheckIn</span></a></li>';
+                        }
+                        if(parseInt(this_form.attr('data-order-item-flag-checkin')) === 1){
+                            dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'"';
+                            dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="2" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                            dsp += '<i class="fas fa-ban"></i><span style="position: relative;">&nbsp;Checkout</span></a></li>';
+                        }                        
+                    }
+                    if(parseInt(this_form.attr('data-order-flag')) == 0) {
+                        dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="4" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                        dsp += '<i class="fas fa-trash"></i><span style="position: relative;">&nbsp;Batal</span></a></li>';
+                    }
+                    dsp += '<li><a href="#" class="btn_print_order" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="'+this_form.attr('data-order-flag')+'" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'"><i class="fa fa-print"></i><span style="position: relative;">&nbsp;Print</span></a></li>';
+                        // dsp += '<li><a href="#" class="btn-user-theme"><i class="fas fa-fill-drip"></i><span style="position: relative;">&nbsp;Warna Interface</span></a></li>';
+                        // dsp += '<li><a href="#"><i class="fa fa-power-off"></i><span style="position: relative;">&nbsp;Keluar</span></a></li>';
+                    dsp += '</ul>';
+                    dsp += '</div>';
+                    content = dsp;
+                    self.setContentAppend(content);
+                    // self.buttons.button_1.disable();
+                    // self.buttons.button_2.disable();
+            
+                    // this.$content.find('form').on('submit', function (e) {
+                    //      e.preventDefault();
+                    //      self.$$formSubmit.trigger('click'); // reference the button and click it
+                    // });
+                },
+                buttons: {button_2: {
+                        text: '<i class="fas fa-times white"></i> Tutup',
+                        btnClass: 'btn-default',
+                        keys: ['Escape'],
+                        action: function(){
+                            //Close
+                        }
+                    }
+                }
+            });
+        });        
         function paidOpenTab(params){
             console.log(params);
             window.open(params.paid_src,'Print','width=700,height=485,left=200,top=100').print();                
