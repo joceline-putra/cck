@@ -368,4 +368,15 @@
             $return['message'] = $this->upload->display_errors();
         }
     }    
+    function day_calculate($date_1,$date_2){
+        $d1 = strtotime($date_1);
+        $d2 = strtotime($date_2);
+        return intval(($d2 - $d1) / (24 * 3600));
+    }
+    function hour_calculate($present_datetime,$past_datetime){
+        $starttimestamp = strtotime($present_datetime);
+        $endtimestamp = strtotime($past_datetime);
+        $difference = round(($endtimestamp - $starttimestamp)/3600);
+        return intval($difference);
+    }  
 ?>

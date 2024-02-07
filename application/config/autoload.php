@@ -60,7 +60,7 @@ $autoload['packages'] = array();
 */
 $autoload['libraries'] = array(
     'database', 'pagination', 'session', 'cart', 
-    'form_validation', 'upload', 'excel'
+    'form_validation', 'upload'
 ); //excel, escpos
 
 /*

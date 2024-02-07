@@ -54,6 +54,8 @@ class Front_office extends MY_Controller{
 
         $this->booking_identity = 222;
         $this->resto_identity = 222;   
+
+        $this->set_minimal_hour_to_checkin = 2; // 2 hour
         /*
             Booking = orders
             Resto = trans
@@ -1695,7 +1697,7 @@ class Front_office extends MY_Controller{
                         } 
                     }
                     break;
-                case "update_flag_item":
+                case "update_flag_item": //Old Booking
                     $this->form_validation->set_rules('order_id', 'order_id', 'required');
                     $this->form_validation->set_rules('order_item_id', 'order_item_id', 'required');
                     $this->form_validation->set_rules('order_item_flag_checkin', 'order_item_flag_checkin', 'required');
@@ -1759,7 +1761,7 @@ class Front_office extends MY_Controller{
                         } 
                     }
                     break;
-                case "update_flag_item_lily":
+                case "update_flag_item_lily": //Cece & Lily
                     $this->form_validation->set_rules('order_id', 'order_id', 'required');
                     $this->form_validation->set_rules('order_item_id', 'order_item_id', 'required');
                     $this->form_validation->set_rules('order_item_flag_checkin', 'order_item_flag_checkin', 'required');
@@ -1767,6 +1769,7 @@ class Front_office extends MY_Controller{
                     if($this->form_validation->run() == FALSE){
                         $return->message = validation_errors();
                     }else{
+                        $next = true;
                         $order_item_id = !empty($post['order_item_id']) ? $post['order_item_id'] : 0;
                         if(intval($order_item_id) > 0){
                             
@@ -1779,118 +1782,158 @@ class Front_office extends MY_Controller{
                             );
                             
                             $get_data = $this->Front_model->get_booking_item_custom($where);
-
                             if($post['order_item_flag_checkin']== 0){
                                 $set_msg = 'waiting';
                             }else if($post['order_item_flag_checkin']== 1){
+                                $now_date = date("Y-m-d H:i:s");
+                                // $now_date       = '2024-03-07 13:00:00';
+                                $start_date     = $get_data['order_item_start_date'];
+                                $end_date       = $get_data['order_item_end_date'];
+
+                                $hour_diff = hour_calculate($start_date,$now_date);
+                                $day_diff = day_calculate($start_date,$now_date);
+
+                                if($hour_diff < 0){ //Tgl Checkin Belum Mendekati Tgl Pesan
+                                    $hour_diff = abs($hour_diff); //Pembulatan jam yg minus
+                                    if(($hour_diff > 0) && ($hour_diff < $this->set_minimal_hour_to_checkin+1)){ //Kurang dari minimal set_jam
+                                        $set_msg = 'Boleh checkin';
+                                    }else{
+                                        if($hour_diff == $this->set_minimal_hour_to_checkin){
+                                            $set_msg = 'Boleh checkin';
+                                        }else{
+                                            if($hour_diff > 24){
+                                                $set_msg = "Gagal, checkin ".abs($day_diff)." hari lagi ";
+                                                $next=false;
+                                            }else{
+                                                $set_msg = "Gagal, checkin ".$hour_diff." jam lagi ";
+                                                $next=false;                                                
+                                            }
+                                        }
+                                    }
+                                }else{ //Tgl Checkin melewati tanggal pesan
+                                    
+                                    $hour_diff = hour_calculate($end_date,$now_date);
+                                    $day_diff = day_calculate($end_date,$now_date);
+                                    // var_dump($hour_diff,$day_diff);die;
+                                    if($hour_diff < 1){ //Boleh Checkin ?? minimal 1 jam setelah batas checkout
+                                        $set_msg = 'Boleh checkin '.$hour_diff;
+                                    }
+                                    // else{
+                                    //     $set_msg = "Tidak boleh checkin, sudah lewat dari tanggal checkout";
+                                    //     $next = false;
+                                    // }
+                                }
+                                // var_dump($now_date,$end_date,$set_msg);die;
                                 $get_product_name = $this->Produk_model->get_produk_quick($post['product_id']);                                
                                 $set_msg = 'checkin '.$get_product_name['product_name'];
+                                
                                 $params['order_item_product_id'] = $post['product_id'];
+                                $params['order_item_checkin_date'] = date("YmdHis");
                             }else if($post['order_item_flag_checkin']== 2){
                                 $set_msg = 'checkout '.$post['product_name'];
                                 $params['order_item_note'] = $post['file_note'];
+                                $params['order_item_checkout_date'] = date("YmdHis");                                
                             }else if($post['order_item_flag_checkin']== 4){
                                 $set_msg = 'batal';
                             }else{
                                 $set_msg = 'mendapatkan data';
                             }
 
-                            // if($post['order_flag'] == 4){
-                            //     $params['order_url'] = null;
-                            // }
-
-
-                            if($get_data){
-                                $set_update=$this->Front_model->update_booking_item_custom($where,$params);
-                                if($set_update){
-                                    if($post['order_item_flag_checkin'] == 2){ //Checkout
-                                        
-                                        if(!empty($_FILES['file_key'])){
-                                            if(intval($_FILES['file_key']['size']) > 0){
-                                                //Save Data First
-                                                $file_session = $this->random_session(20);
-                                                $params = array(
-                                                    'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : 'orders',
-                                                    'file_from_id' => !empty($post['order_id']) ? $post['order_id'] : null,
-                                                    'file_session' => $file_session,
-                                                    'file_date_created' => date("YmdHis"),
-                                                    'file_user_id' => $session_user_id,
-                                                    'file_type' => 1                            
-                                                );
-                                                $save_data = $this->File_model->add_file($params);
-
-                                                // Call Helper for upload
-                                                $upload_helper = upload_file_key($this->folder_upload, $this->input->post('file_key'));
-                                                if ($upload_helper['status'] == 1) {
-                                                    $params_image = array(
-                                                        'file_name' => $upload_helper['result']['client_name'],
-                                                        'file_format' => str_replace(".","",$upload_helper['result']['file_ext']),
-                                                        'file_url' => $upload_helper['file'],
-                                                        'file_size' => $upload_helper['result']['file_size']
+                            if($next){
+                                if($get_data){
+                                    $set_update=$this->Front_model->update_booking_item_custom($where,$params);
+                                    if($set_update){
+                                        if($post['order_item_flag_checkin'] == 2){ //Checkout
+                                            
+                                            if(!empty($_FILES['file_key'])){
+                                                if(intval($_FILES['file_key']['size']) > 0){
+                                                    //Save Data First
+                                                    $file_session = $this->random_session(20);
+                                                    $params = array(
+                                                        'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : 'orders',
+                                                        'file_from_id' => !empty($post['order_id']) ? $post['order_id'] : null,
+                                                        'file_session' => $file_session,
+                                                        'file_date_created' => date("YmdHis"),
+                                                        'file_user_id' => $session_user_id,
+                                                        'file_type' => 1                            
                                                     );
-                                                    $stat = $this->File_model->update_file($save_data, $params_image);
-                                                    
-                                                    $return->message    = $upload_helper['message'];
-                                                    $return->status     = $upload_helper['status'];
-                                                    $return->raw_file   = $upload_helper['file'];
-                                                    $return->return     = $upload_helper;                            
-                                                }else{
-                                                    $return->message = 'Error: '.$upload_helper['message'];
-                                                }    
+                                                    $save_data = $this->File_model->add_file($params);
+
+                                                    // Call Helper for upload
+                                                    $upload_helper = upload_file_key($this->folder_upload, $this->input->post('file_key'));
+                                                    if ($upload_helper['status'] == 1) {
+                                                        $params_image = array(
+                                                            'file_name' => $upload_helper['result']['client_name'],
+                                                            'file_format' => str_replace(".","",$upload_helper['result']['file_ext']),
+                                                            'file_url' => $upload_helper['file'],
+                                                            'file_size' => $upload_helper['result']['file_size']
+                                                        );
+                                                        $stat = $this->File_model->update_file($save_data, $params_image);
+                                                        
+                                                        $return->message    = $upload_helper['message'];
+                                                        $return->status     = $upload_helper['status'];
+                                                        $return->raw_file   = $upload_helper['file'];
+                                                        $return->return     = $upload_helper;                            
+                                                    }else{
+                                                        $return->message = 'Error: '.$upload_helper['message'];
+                                                    }    
+                                                }
                                             }
-                                        }
 
-                                        if(!empty($_FILES['file_deposit'])){
-                                            if(intval($_FILES['file_deposit']['size']) > 0){
-                                                //Save Data First
-                                                $file_session = $this->random_session(20);
-                                                $params = array(
-                                                    'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : 'orders',
-                                                    'file_from_id' => !empty($post['order_id']) ? $post['order_id'] : null,
-                                                    'file_session' => $file_session,
-                                                    'file_date_created' => date("YmdHis"),
-                                                    'file_user_id' => $session_user_id,
-                                                    'file_type' => 1                            
-                                                );
-                                                $save_data = $this->File_model->add_file($params);
-
-                                                // Call Helper for upload
-                                                $upload_helper = upload_file_deposit($this->folder_upload, $this->input->post('file_deposit'));
-                                                if ($upload_helper['status'] == 1) {
-                                                    $params_image = array(
-                                                        'file_name' => $upload_helper['result']['client_name'],
-                                                        'file_format' => str_replace(".","",$upload_helper['result']['file_ext']),
-                                                        'file_url' => $upload_helper['file'],
-                                                        'file_size' => $upload_helper['result']['file_size']
+                                            if(!empty($_FILES['file_deposit'])){
+                                                if(intval($_FILES['file_deposit']['size']) > 0){
+                                                    //Save Data First
+                                                    $file_session = $this->random_session(20);
+                                                    $params = array(
+                                                        'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : 'orders',
+                                                        'file_from_id' => !empty($post['order_id']) ? $post['order_id'] : null,
+                                                        'file_session' => $file_session,
+                                                        'file_date_created' => date("YmdHis"),
+                                                        'file_user_id' => $session_user_id,
+                                                        'file_type' => 1                            
                                                     );
-                                                    $stat = $this->File_model->update_file($save_data, $params_image);
-                                                    
-                                                    $return->message    = $upload_helper['message'];
-                                                    $return->status     = $upload_helper['status'];
-                                                    $return->raw_file   = $upload_helper['file'];
-                                                    $return->return     = $upload_helper;                            
-                                                }else{
-                                                    $return->message = 'Error: '.$upload_helper['message'];
-                                                }    
-                                            }
-                                        }                                        
-                                    }
-                                    if($post['order_item_flag_checkin'] == 4){
-                                        /*
-                                        $file = FCPATH.$this->folder_upload.$get_data['order_image'];
-                                        if (file_exists($file)) {
-                                            unlink($file);
+                                                    $save_data = $this->File_model->add_file($params);
+
+                                                    // Call Helper for upload
+                                                    $upload_helper = upload_file_deposit($this->folder_upload, $this->input->post('file_deposit'));
+                                                    if ($upload_helper['status'] == 1) {
+                                                        $params_image = array(
+                                                            'file_name' => $upload_helper['result']['client_name'],
+                                                            'file_format' => str_replace(".","",$upload_helper['result']['file_ext']),
+                                                            'file_url' => $upload_helper['file'],
+                                                            'file_size' => $upload_helper['result']['file_size']
+                                                        );
+                                                        $stat = $this->File_model->update_file($save_data, $params_image);
+                                                        
+                                                        $return->message    = $upload_helper['message'];
+                                                        $return->status     = $upload_helper['status'];
+                                                        $return->raw_file   = $upload_helper['file'];
+                                                        $return->return     = $upload_helper;                            
+                                                    }else{
+                                                        $return->message = 'Error: '.$upload_helper['message'];
+                                                    }    
+                                                }
+                                            }                                        
                                         }
-                                        */
+                                        if($post['order_item_flag_checkin'] == 4){
+                                            /*
+                                            $file = FCPATH.$this->folder_upload.$get_data['order_image'];
+                                            if (file_exists($file)) {
+                                                unlink($file);
+                                            }
+                                            */
+                                        }
+                                        $return->status  = 1;
+                                        $return->message = 'Berhasil '.$set_msg;
+                                    }else{
+                                        $return->message='Gagal '.$set_msg;
                                     }
-                                    $return->status  = 1;
-                                    $return->message = 'Berhasil '.$set_msg;
                                 }else{
-                                    $return->message='Gagal '.$set_msg;
-                                }
+                                    $return->message='Gagal mendapatkan data';
+                                }   
                             }else{
-                                $return->message='Gagal mendapatkan data';
-                            }   
+                                $return->message = 'Next false';
+                            }
                         }else{
                             $return->message = 'Tidak ada data';
                         } 
