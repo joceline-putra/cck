@@ -1589,6 +1589,13 @@ CREATE TRIGGER `tr_activities_before_insert` BEFORE INSERT ON `activities` FOR E
             SET NEW.activity_text_3 = NEW.activity_text_1;
             SET NEW.activity_text_1 = NULL;                
         END IF;
+
+        -- Update order_item_expired_day = yg Booking bulanan dan sudah checkin
+        IF NEW.activity_action = '1' THEN
+          UPDATE orders_items 
+          SET order_item_expired_day = DATEDIFF(order_item_end_date,NOW())
+          WHERE order_item_flag_checkin = 1 AND order_item_ref_price_sort = 1;
+        END IF;
     END$$
 DELIMITER ;
 

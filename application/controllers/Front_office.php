@@ -143,7 +143,8 @@ class Front_office extends MY_Controller{
                 case "load":
                     $columns = array(
                         '0' => 'order_date',
-                        '1' => 'order_number'
+                        '1' => 'order_number',
+                        '9' => 'order_item_expired_day'
                     );
 
                     $limit     = !empty($post['length']) ? $post['length'] : 10;

@@ -209,7 +209,8 @@
                 {"targets":6, "title":"Total", "searchable":true, "orderable":true},
                 {"targets":7, "title":"Pembayaran", "searchable":true, "orderable":true},                    
                 {"targets":8, "title":"Status", "searchable":false, "orderable":true},    
-                {"targets":9, "title":"Attachment", "searchable":false, "orderable":true},                                
+                {"targets":9, "title":"Sisa Hari", "searchable":false, "orderable":true},                    
+                {"targets":10, "title":"Attachment", "searchable":false, "orderable":true},                                
             ],
             "order": [[0, 'ASC']],
             "columns": [
@@ -390,6 +391,19 @@
                         } else if(parseInt(row.order_item_flag_checkin) == 4){
                             dsp += '<label class="label" style="background-color:#f35958;color:white;">Batal</label>';
                         }                       
+                        return dsp;
+                    }
+                },{
+                    'data': 'order_item_expired_day',
+                    render: function(data,meta,row){
+                        var dsp = '';
+                        if(parseInt(row.order_item_ref_price_sort) == 1){ // Bulanan only
+                            if(parseInt(row.order_item_flag_checkin) == 1){ // Checkin only
+                                dsp += row.order_item_expired_day_2 +' hari lagi';
+                            }
+                        }else{
+                            dsp += '-';
+                        }
                         return dsp;
                     }
                 },{
