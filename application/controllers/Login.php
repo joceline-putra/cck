@@ -875,7 +875,7 @@ class Login extends My_Controller{
                         //     $return_url = $return_url.'/setup';
                         // }
                         if($user_info['user_user_group_id'] == 9){ // Cashier
-                            $return_url = site_url('pos');
+                            $return_url = site_url('booking/lily');
                         }
                         if($user_info['user_user_group_id'] == 1){
                             $this->session->set_flashdata('switch_branch',1);                                

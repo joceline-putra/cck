@@ -383,7 +383,7 @@
                     render: function(data, meta, row) {
                         var dsp = '';
                         if(parseInt(row.order_item_flag_checkin) == 0){
-                            dsp += '<label class="label" style="background-color:#ff9019;color:white;">Waiting</label>';
+                            dsp += '<label class="label" style="background-color:#ff9019;color:white;">Belum Checkin</label>';
                         }else if(parseInt(row.order_item_flag_checkin) == 1){
                             dsp += '<label class="label" style="background-color:#0aa699;color:white;">Check-In</label>';
                         }else if(parseInt(row.order_item_flag_checkin) == 2){
@@ -397,9 +397,14 @@
                     'data': 'order_item_expired_day',
                     render: function(data,meta,row){
                         var dsp = '';
+                        dsp += '';
                         if(parseInt(row.order_item_ref_price_sort) == 1){ // Bulanan only
                             if(parseInt(row.order_item_flag_checkin) == 1){ // Checkin only
+                                if(parseInt(row.order_item_expired_day) > 0){
                                 dsp += row.order_item_expired_day_2 +' hari lagi';
+                                }else{
+                                    dsp += 'lewat hari ' + Math.abs(row.order_item_expired_day_2);   
+                                }
                             }
                         }else{
                             dsp += '-';
