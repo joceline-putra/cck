@@ -97,3 +97,5 @@ application/logs/*
 data_*
 *.txt
 /download/
+/upload/booking/
+/upload/file/
