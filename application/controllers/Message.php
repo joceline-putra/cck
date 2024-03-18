@@ -1456,13 +1456,14 @@ class Message extends CI_Controller{
                     $curl = curl_init();
                     curl_setopt_array($curl, array(
                         CURLOPT_URL => $curl_link,
-                        CURLOPT_HEADER => 0,
+                        // CURLOPT_HEADER => 0,
                         CURLOPT_RETURNTRANSFER => 1,
-                        CURLOPT_SSL_VERIFYHOST => 2,
-                        CURLOPT_SSL_VERIFYPEER => 0,
-                        CURLOPT_TIMEOUT => 30,
-                        CURLOPT_POST =>  1,
-                        CURLOPT_POSTFIELDS => 1,
+                        CURLOPT_SSL_VERIFYHOST => FALSE,
+                        CURLOPT_SSL_VERIFYPEER => FALSE,
+                        // CURLOPT_SSL_VERIFYPEER => 0,
+                        // CURLOPT_TIMEOUT => 30,
+                        // CURLOPT_POST =>  1,
+                        // CURLOPT_POSTFIELDS => 1,
                     ));
                     $response = curl_exec($curl);
                     curl_close($curl);

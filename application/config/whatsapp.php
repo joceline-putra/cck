@@ -3,6 +3,7 @@
 // $vendor = "ruangwa.id";	
 $vendor = "umbrella.co.id";	
 // $vendor = "fonnte.com";	
+// $vendor = "wam.umbrella.co.id";
 
 $whatsapp_server = '';
 $whatsapp_token  = '';
@@ -10,6 +11,7 @@ $whatsapp_key  = '';
 $whatsapp_sender  = '';
 $whatsapp_username  = '';
 $whatsapp_service = array();
+$whatsapp_watermark = '';
 
 switch($vendor){
 	case "ruangwa":
@@ -26,7 +28,7 @@ switch($vendor){
 		);
 		break;
 	case "umbrella.co.id":
-		$whatsapp_server = 'https://wa.umbrella.co.id/';
+		$whatsapp_server = 'https://njs.umbrella.co.id/';
 		$whatsapp_token    = '21'; // Deprecated
 		$whatsapp_key      = '21'; // Deprecated
 		$whatsapp_auth     = '7Ho5mMjZMKELeLiqaZd5MK3NIjw6TM';
@@ -38,6 +40,17 @@ switch($vendor){
 		$whatsapp_auth   = 'wEw4c@Mcrt@Emi@XtFEs';
 		// $whatsapp_sender   = '628989900149';
 		break;		
+	case "wam.umbrella.co.id":
+		$whatsapp_server   = 'https://wam.umbrella.co.id/';				
+		$whatsapp_sender   = '628989900148';      
+		
+		//Client ID instance.client_id
+		$whatsapp_key      = 'eyJ1aWQiOiJzUTB5WWJjcGJPdGM5NTJkVzcyem41RTZ6eEdGT1RhWiIsImNsaWVudF9pZCI6IjYyODk4OTkwMDE0OCJ9';
+	
+		//Token / API Keys user.api
+		$whatsapp_token    = 'ET2zKDSrXGKPOLPAF7UC88v5ITB8IM6kAMS5F07gkCSCxXhDw1';
+		$whatsapp_auth     = 'sQ0yYbcpbOtc952dW72zn5E6zxGFOTaZ'; //user.uid
+		break;				
 	default:
 		$whatsapp_server = '';
 		$whatsapp_token  = '';
@@ -58,5 +71,12 @@ $config = array(
 		'check-status' => 'devices?action=check-status&auth='.$whatsapp_auth.'&token='.$whatsapp_token.'&key='.$whatsapp_key,
 		'request-qrcode' => 'devices?action=request-qrcode&auth='.$whatsapp_auth.'&token='.$whatsapp_token.'&key='.$whatsapp_key,
 		'restart' => 'devices?action=restart&auth='.$whatsapp_auth.'&token='.$whatsapp_token.'&key='.$whatsapp_key		
-	)
+	),
+	'whatsapp_action_v1' => array(
+		'send-message' => 'api/user/v1/send',
+		'create-instance' => 'api/sessions/v1/request', //?id=sQ0yYbcpbOtc952dW72zn5E6zxGFOTaZ&name=628989900148&isLegacy=false
+		'delete-instance' => 'api/sessions/v1/delete',
+		'check-instance' => 'api/user/v1/status',
+	),
+	'whatsapp_watermark' => $whatsapp_watermark
 );
