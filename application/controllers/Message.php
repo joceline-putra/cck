@@ -41,6 +41,7 @@ class Message extends CI_Controller{
         $this->load->model('Order_model');        
         $this->load->model('Branch_model');
         $this->load->model('Recipient_model');
+        $this->load->model('Front_model');        
 
         
         //Get Branch
@@ -877,6 +878,38 @@ class Message extends CI_Controller{
                     }else{
                         $return->message = 'Nomor tidak valid';
                     }                        
+                    break;    
+                case "whatsapp-send-message-invoice-booking":
+                        $trans_id       = !empty($this->input->post('order_id')) ? $this->input->post('order_id') : null; 
+                        $contact_name   = !empty($this->input->post('contact_name')) ? $this->input->post('contact_name') : null;
+                        $contact_phone  = !empty($this->input->post('contact_phone')) ? $this->input->post('contact_phone') : null;                                     
+                        if(intval($contact_phone)){
+                            if($trans_id > 0){
+                                // $contact_phone = $this->contact_number($contact_phone);
+                                // $params = array(
+                                //     'trans_contact_name' => $contact_name,
+                                //     'trans_contact_phone' => $contact_phone
+                                // );
+                                // $set_update = $this->Transaksi_model->update_transaksi($trans_id,$params);
+                                // if($set_update){
+                                    $params = array(
+                                        'order_id' => $trans_id,
+                                        'contact_name' => $contact_name,
+                                        'contact_phone' => $contact_phone,
+                                    );
+                                    // var_dump($params);die;
+                                    $do = $this->whatsapp_template('sales-sell-invoice-booking',1,$params);
+                                    $res = json_decode($do,true);      
+                                    $return->message = $res['message'];
+                                    $return->status = $res['status'];
+                                    $return->result = $res['result'];                               
+                                // }
+                            }else{
+                                $return->message = 'Data tidak ditemukan';
+                            }
+                        }else{
+                            $return->message = 'Nomor tidak valid';
+                        }                        
                     break;    
                 case "request-session-for-broadcast":
                     $return->status = 1;
@@ -2011,6 +2044,90 @@ class Message extends CI_Controller{
                     $set_user_id = !empty($trans['trans_contact_id']) ? $trans['trans_contact_id'] : '';
                     $set_user_name = !empty($trans['trans_contact_name']) ? $trans['trans_contact_name'] : '';
                     $set_user_phone = !empty($trans['trans_contact_phone']) ? $trans['trans_contact_phone'] : '';                    
+                }else{
+                    $next = false;
+                }
+                break;       
+            case "sales-sell-invoice-booking":
+                $a = '';
+                $b = '';
+                $c = '';
+                // var_dump($params);die;
+                if($params['order_id'] > 0){
+                    $get_trans  = $this->Front_model->get_booking($params['order_id']);
+                    // $get_branch = $this->Branch_model->get_branch($trans['order_branch_id']);                    
+                    $god = $this->Front_model->get_booking_item_custom(array('order_item_order_id'=> $params['order_id']),$search = null,$limit = null,$start = null,$order = null,$dir = null);
+                    $text = '';
+                    $text .= "*Booking*"."\r\n";
+                    $text .= $get_trans['order_number']."\r\n";
+                    $text .= dot_set_wrap_0(date("d/m/Y - H:i:s", strtotime($get_trans['order_date'])),' ','BOTH');    
+            
+
+            $date_check = date("d/M/y", strtotime($get_trans['order_item_start_date'])) .' - '. date("d/M/y", strtotime($get_trans['order_item_end_date']));
+            $hour_check = date("H:i", strtotime($get_trans['order_item_start_date'])) .' - '. date("H:i", strtotime($get_trans['order_item_end_date']));            
+            if($get_trans['order_item_ref_price_sort'] == 0){
+                $sort_name = 'PROMO';
+            }else if($get_trans['order_item_ref_price_sort'] == 1){
+                $sort_name = 'Bulanan';
+            }else if($get_trans['order_item_ref_price_sort'] == 2){
+                $sort_name = 'Harian';                
+            }else if($get_trans['order_item_ref_price_sort'] == 3){
+                $sort_name = 'Midnight';                
+            }else if($get_trans['order_item_ref_price_sort'] == 4){
+                $sort_name = '4 Jam';                
+            }else if($get_trans['order_item_ref_price_sort'] == 5){
+                $sort_name = '2 Jam';                
+            }else{
+                $sort_name = '';
+            }
+            $word_wrap_width = 20;
+            // $text.= dot_set_wrap_2('Kontak', $this->stringToSecret($get_trans['order_contact_name']));
+            $text.= dot_set_line('-',$word_wrap_width);
+            $text.= dot_set_wrap_0("Check-In",' ','BOTH');
+            $text.= dot_set_wrap_0($date_check,' ','BOTH');
+            $text.= dot_set_wrap_0($hour_check,' ','BOTH');            
+            $text.= dot_set_line('-',$word_wrap_width);            
+            $text.= dot_set_wrap_2('Kontak', $get_trans['order_contact_name']);
+            $text.= dot_set_wrap_2('Tipe',$sort_name);
+            $text.= dot_set_wrap_2('Kamar','['.$get_trans['ref_name'].']');
+            $text.= dot_set_wrap_2(' ',$get_trans['product_name']);
+            if(!empty($get_trans['order_vehicle_cost'])){
+                $text.= dot_set_wrap_2('Jml Kendrn ',$get_trans['order_vehicle_count']);            
+            }
+            if(!empty($get_trans['order_vehicle_plate_number'])){
+                $text.= dot_set_wrap_2('Plat Kendrn ',$get_trans['order_vehicle_plate_number']);            
+            }            
+            $text .= dot_set_line('-',$word_wrap_width);
+
+            // $text .= "\n";
+            if(!empty($get_trans['order_vehicle_cost']) && $get_trans['order_vehicle_cost'] > 0){
+                $text .= dot_set_wrap_3('Biaya Parkir',':',''.number_format($get_trans['order_vehicle_cost'],0,'',','));    
+            }                        
+            if(!empty($get_trans['order_total']) && $get_trans['order_total'] > 0){
+                $text .= dot_set_wrap_3('Kamar',':',''.number_format($get_trans['order_total'],0,'',','));    
+            }
+            $text .= dot_set_line('-',$word_wrap_width);            
+            if(!empty($get_trans['order_total_paid']) && $get_trans['order_total_paid'] > 0){
+                $text .= dot_set_wrap_3('Dibayar',':',''.number_format($get_trans['order_total_paid'],0,'',','));    
+            }    
+
+            if($get_trans['order_paid'] == 1){
+                $lunas = 'Lunas';                
+            }else{
+                $lunas = 'Belum Lunas';
+            }
+            $text .= dot_set_wrap_3('Status',':',$lunas);
+
+            //Footer
+            $text .= "\n";
+            $text .= dot_set_wrap_0("-- Terima Kasih --",' ','BOTH');    
+            $text .= dot_set_wrap_0("Gratis jika tidak menerima struk",' ','BOTH');                 
+        
+                    $text = $a.$b.$c;
+                    $set_user_id = null;
+                    $set_user_name = $params['contact_name'];
+                    $set_user_phone = $params['contact_phone'];
+                    $trans['trans_branch_id'] = $get_trans['order_branch_id'];                 
                 }else{
                     $next = false;
                 }
