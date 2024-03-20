@@ -10,7 +10,7 @@
         var url_print = "<?= base_url('front_office/prints'); ?>";
         let url_tool = "<?php base_url('search/manage'); ?>";
         var url_image = "<?php site_url('upload/noimage.png'); ?>";
-
+        var url_message         = "<?= base_url('message'); ?>";   
         let image_width = "<?= $image_width;?>";
         let image_height = "<?= $image_height;?>";
 
@@ -202,13 +202,13 @@
                         }
                         // dsp += '<button class="btn_print_order btn btn-mini btn-primary" data-order-id="'+data+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'>';
                         // dsp += '<span class="fas fa-print"></span>Print';
-                        // dsp += '</button>';    
+                        // dsp += '</button>';
 
                         dsp += '<button class="btn_action_order btn btn-mini btn-primary" data-order-id="'+data+'"';
                             dsp += 'data-order-flag="'+row.order_flag+'"';
-                            dsp += 'data-order-item-flag-checkin="'+row.order_item_flag_checkin+'" data-order-item-product-id="'+row.order_item_product_id+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'" data-product-name="'+row.product_name+'">';
+                            dsp += 'data-order-item-flag-checkin="'+row.order_item_flag_checkin+'" data-order-item-product-id="'+row.order_item_product_id+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'" data-product-name="'+row.product_name+'" data-order-total="'+row.order_total+'" data-order-date="'+row.order_date+'" data-order-contact-name="'+row.order_contact_name+'" data-order-contact-phone="'+row.order_contact_phone+'">';
                         dsp += '<span class="fas fa-cog"></span>Action';
-                        dsp += '</button>';                      
+                        dsp += '</button>';
 
 
                         /* Button Action Concept 2 */
@@ -1388,6 +1388,7 @@
             $(".btn_send_whatsapp").attr('data-id',d.order_id)
                 .attr('data-order-number',d.order_number)
                 .attr('data-order-date',d.order_date)
+                .attr('data-order-total',d.order_total)
                 .attr('data-contact-name',d.contact_name)
                 .attr('data-contact-phone',d.contact_phone);            
             
@@ -2003,6 +2004,161 @@
             var id = $(this).attr('data-id');
             console.log("#btn_attachment_delete");
         });  
+        $(document).on("click",".btn_send_whatsapp", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var trans_id = $(this).attr('data-order-id');
+            if (parseInt(trans_id) > 0) {
+                var params = {
+                    trans_id: trans_id,
+                    trans_number: $(this).attr('data-number'),
+                    trans_date: $(this).attr('data-date'),
+                    trans_total: $(this).attr('data-order-total'),
+                    contact_name: $(this).attr('data-contact-name'),
+                    contact_phone: $(this).attr('data-contact-phone'),
+                    // contact_emmail: $(this).attr('data-contact-email')
+                }
+                formSendReceipt(params);
+            } else {
+                notif(0, 'Data tidak ditemukan');
+            }
+        });
+        function formSendReceipt(params) { //ols is formWhatsApp()
+            console.log(params);
+            var d = {
+                trans_id: params['trans_id'],
+                trans_number: params['trans_number'],
+                trans_date: params['trans_date'],
+                trans_total: params['trans_total'],
+                // contact_id: params['contact_id'],
+                contact_name: params['contact_name'],
+                contact_phone: params['contact_phone'],
+                // contact_email: params['contact_email']
+            }
+            var content = '';
+            var ctitle = 'Tanda Terima';
+            content += 'Apakah anda ingin mengirim '+ctitle+' ?<br><br>';
+            let title = 'Kirim '+ctitle;
+            $.confirm({
+                title: title,
+                columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                closeIcon: true, closeIconClass: 'fas fa-times',
+                animation: 'zoom', closeAnimation: 'bottom', animateFromElement: false, useBootstrap: true,
+                content: function () {
+                    var dsp = '';
+                    dsp += content;
+                    return dsp;
+                },
+                onContentReady: function (e) {
+                    let self = this;
+                    let content = '';
+                    let dsp = '';
+
+                    // dsp += '<div>'+content+'</div>';
+                    dsp += '<form id="jc_form">';
+                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Nomor '+ctitle+'</label>';
+                        dsp += '        <input id="jc_number" name="jc_number" class="form-control" value="' + d['trans_number'] + '" readonly>';
+                        dsp += '    </div>';
+                        dsp += '</div>';                    
+                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side prs-0">';
+                        dsp += '<div class="col-md-6 col-xs-6 col-sm-6 padding-remove-left prs-0">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Tgl Transaksi</label>';
+                        dsp += '        <input id="jc_date" name="jc_date" class="form-control" value="' + d['trans_date'] + '" readonly>';
+                        dsp += '    </div>';
+                        dsp += '</div>';
+                        dsp += '<div class="col-md-6 col-xs-6 col-sm-6 padding-remove-right prs-0">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Total</label>';
+                        dsp += '        <input id="jc_total" name="jc_total" class="form-control" value="' + addCommas(d['trans_total']) + '" readonly>';
+                        dsp += '    </div>';
+                        dsp += '</div>';                        
+                    dsp += '</div>';
+                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side prs-0">';                    
+                        dsp += '<div class="col-md-5 col-xs-5 col-sm-5 padding-remove-left prs-0">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Nama</label>';
+                        dsp += '        <input id="jc_contact_name" name="jc_contact_name" class="form-control" value="' + d['contact_name'] + '">';
+                        dsp += '    </div>';
+                        dsp += '</div>';
+                        dsp += '<div class="col-md-7 col-xs-7 col-sm-7 padding-remove-right prs-0">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Whatsapp</label>';
+                        dsp += '        <input id="jc_contact_number" name="jc_contact_number" class="form-control" value="' + d['contact_phone'] + '">';
+                        dsp += '    </div>';
+                        dsp += '</div>';
+                    dsp += '</div>';
+                    dsp += '<div class="hide col-md-12 col-xs-12 col-sm-12 padding-remove-side prs-0">';
+                    dsp += '    <div class="form-group">';
+                    dsp += '    <label class="form-label">Email</label>';
+                    dsp += '        <input id="jc_contact_email" name="jc_contact_email" class="form-control" value="' + d['contact_email'] + '">';
+                    dsp += '    </div>';
+                    dsp += '</div>';                    
+                    dsp += '</form>';
+                    content = dsp;
+                    self.setContentAppend(content);
+                },
+                buttons: {
+                    button_1: {
+                        text: '<i class="fas fa-paper-plane white"></i> Kirim ',
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: function (e) {
+                            let self = this;
+
+                            let name = self.$content.find('#jc_contact_name').val();
+                            let number = self.$content.find('#jc_contact_number').val();
+
+                            if (!name) {
+                                $.alert('Nama diisi dahulu');
+                                return false;
+                            } else if (!number) {
+                                $.alert('Nomor WhatsApp diisi dahulu');
+                                return false;
+                            } else {
+                                var data = {
+                                    action: 'whatsapp-send-message-invoice-booking',
+                                    order_id: d['trans_id'],
+                                    contact_id: d['contact_id'],
+                                    contact_name: name,
+                                    contact_phone: number,
+                                    contact_email: ''
+                                }
+                                $.ajax({
+                                    type: "POST",
+                                    url: url_message,
+                                    data: data,
+                                    dataType: 'json',
+                                    cache: false,
+                                    beforeSend: function () {},
+                                    success: function (d) {
+                                        let s = d.status;
+                                        let m = d.message;
+                                        let r = d.result;
+                                        if (parseInt(d.status) == 1) {
+                                            notif(1, d.message);
+                                        } else {
+                                            notif(0, d.message);
+                                        }
+                                    },
+                                    error: function (xhr, status, err) {}
+                                });
+                            }
+                        }
+                    },
+                    button_2: {
+                        text: '<i class="fas fa-window-close white"></i> Tidak Jadi',
+                        btnClass: 'btn-danger',
+                        keys: ['Escape'],
+                        action: function () {
+                            //Close
+                        }
+                    }
+                }
+            });
+        }        
 
         //Attachment Info
         //Approval Function
@@ -3097,7 +3253,9 @@
                     dsp += '<li><a href="#" class="btn_print_order" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="'+this_form.attr('data-order-flag')+'" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'"><i class="fa fa-print"></i><span style="position: relative;">&nbsp;Print</span></a></li>';
                         // dsp += '<li><a href="#" class="btn-user-theme"><i class="fas fa-fill-drip"></i><span style="position: relative;">&nbsp;Warna Interface</span></a></li>';
                         // dsp += '<li><a href="#"><i class="fa fa-power-off"></i><span style="position: relative;">&nbsp;Keluar</span></a></li>';
-                    dsp += '</ul>';
+                    dsp += '<li><a href="#" class="btn_send_whatsapp" data-order-id="'+this_form.attr('data-order-id')+'" data-number="'+this_form.attr('data-order-number')+'" data-date="'+this_form.attr('data-order-date')+'" data-order-total="'+this_form.attr('data-order-total')+'" data-contact-name="'+this_form.attr('data-order-contact-name')+'" data-contact-phone="'+this_form.attr('data-order-contact-phone')+'"><i class="fab fa-whatsapp"></i><span style="position: relative;">&nbsp;WhatsApp</span></a></li>';
+                   
+                        dsp += '</ul>';
                     dsp += '</div>';
                     content = dsp;
                     self.setContentAppend(content);

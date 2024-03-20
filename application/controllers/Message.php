@@ -2054,13 +2054,13 @@ class Message extends CI_Controller{
                 $c = '';
                 // var_dump($params);die;
                 if($params['order_id'] > 0){
-                    $get_trans  = $this->Front_model->get_booking($params['order_id']);
+                    $god  = $this->Front_model->get_booking($params['order_id']);
                     // $get_branch = $this->Branch_model->get_branch($trans['order_branch_id']);                    
-                    $god = $this->Front_model->get_booking_item_custom(array('order_item_order_id'=> $params['order_id']),$search = null,$limit = null,$start = null,$order = null,$dir = null);
+                    $get_trans = $this->Front_model->get_booking_item_custom(array('order_item_order_id'=> $params['order_id']),$search = null,$limit = null,$start = null,$order = null,$dir = null);
                     $text = '';
                     $text .= "*Booking*"."\r\n";
                     $text .= $get_trans['order_number']."\r\n";
-                    $text .= dot_set_wrap_0(date("d/m/Y - H:i:s", strtotime($get_trans['order_date'])),' ','BOTH');    
+                    $text .= date("d/m/Y - H:i", strtotime($get_trans['order_date']))."\r\n\r\n";    
             
 
             $date_check = date("d/M/y", strtotime($get_trans['order_item_start_date'])) .' - '. date("d/M/y", strtotime($get_trans['order_item_end_date']));
@@ -2081,34 +2081,42 @@ class Message extends CI_Controller{
                 $sort_name = '';
             }
             $word_wrap_width = 20;
+
+        // $text .= $get_trans['order_number']."\r\n";
+        $text .= "Checkin: ".$date_check." - ".$hour_check."\r\n";        
+        $text .= "Kamar: ".$get_trans['ref_name']." - ".$get_trans['product_name']."\r\n";    
+        $text .= "Tipe: ".$sort_name."\r\n";        
+        $text .= "Kontak: ".$get_trans['order_contact_name']."\r\n\r\n";        
+
             // $text.= dot_set_wrap_2('Kontak', $this->stringToSecret($get_trans['order_contact_name']));
-            $text.= dot_set_line('-',$word_wrap_width);
-            $text.= dot_set_wrap_0("Check-In",' ','BOTH');
-            $text.= dot_set_wrap_0($date_check,' ','BOTH');
-            $text.= dot_set_wrap_0($hour_check,' ','BOTH');            
-            $text.= dot_set_line('-',$word_wrap_width);            
-            $text.= dot_set_wrap_2('Kontak', $get_trans['order_contact_name']);
-            $text.= dot_set_wrap_2('Tipe',$sort_name);
-            $text.= dot_set_wrap_2('Kamar','['.$get_trans['ref_name'].']');
-            $text.= dot_set_wrap_2(' ',$get_trans['product_name']);
-            if(!empty($get_trans['order_vehicle_cost'])){
-                $text.= dot_set_wrap_2('Jml Kendrn ',$get_trans['order_vehicle_count']);            
+            // $text.= dot_set_line('-',$word_wrap_width);
+            // $text.= dot_set_wrap_0("Check-In",' ','BOTH');
+            // $text.= dot_set_wrap_0($date_check,' ','BOTH');
+            // $text.= dot_set_wrap_0($hour_check,' ','BOTH');            
+            // $text.= dot_set_line('-',$word_wrap_width);            
+            // $text.= dot_set_wrap_2('Kontak', $get_trans['order_contact_name']);
+            // $text.= dot_set_wrap_2('Tipe',$sort_name);
+            // $text.= dot_set_wrap_2('Kamar','['.$get_trans['ref_name'].']');
+            // $text.= dot_set_wrap_2(' ',$get_trans['product_name']);
+            if(!empty($get_trans['order_vehicle_cost'])){            
+                $text .= "Jml Kndraan: ".$get_trans['order_vehicle_count']."\r\n";        
             }
             if(!empty($get_trans['order_vehicle_plate_number'])){
-                $text.= dot_set_wrap_2('Plat Kendrn ',$get_trans['order_vehicle_plate_number']);            
+                $text .= "Plat Kndraan: ".$get_trans['order_vehicle_plate_number']."\r\n";                  
             }            
-            $text .= dot_set_line('-',$word_wrap_width);
 
-            // $text .= "\n";
             if(!empty($get_trans['order_vehicle_cost']) && $get_trans['order_vehicle_cost'] > 0){
-                $text .= dot_set_wrap_3('Biaya Parkir',':',''.number_format($get_trans['order_vehicle_cost'],0,'',','));    
+                $text .= "Biaya Parkir: ".number_format($get_trans['order_vehicle_cost'])."\r\n";                                  
+                // $text .= dot_set_wrap_3('Biaya Parkir',':',''.number_format($get_trans['order_vehicle_cost'],0,'',','));    
             }                        
             if(!empty($get_trans['order_total']) && $get_trans['order_total'] > 0){
-                $text .= dot_set_wrap_3('Kamar',':',''.number_format($get_trans['order_total'],0,'',','));    
+                $text .= "Kamar: ".number_format($get_trans['order_total'])."\r\n";                                                  
+                // $text .= dot_set_wrap_3('Kamar',':',''.number_format($get_trans['order_total'],0,'',','));    
             }
-            $text .= dot_set_line('-',$word_wrap_width);            
+            // $text .= dot_set_line('-',$word_wrap_width);            
             if(!empty($get_trans['order_total_paid']) && $get_trans['order_total_paid'] > 0){
-                $text .= dot_set_wrap_3('Dibayar',':',''.number_format($get_trans['order_total_paid'],0,'',','));    
+                $text .= "Dibayar: ".number_format($get_trans['order_total_paid'])."\r\n";                                                                  
+                // $text .= dot_set_wrap_3('Dibayar',':',''.number_format($get_trans['order_total_paid'],0,'',','));    
             }    
 
             if($get_trans['order_paid'] == 1){
@@ -2116,18 +2124,19 @@ class Message extends CI_Controller{
             }else{
                 $lunas = 'Belum Lunas';
             }
-            $text .= dot_set_wrap_3('Status',':',$lunas);
+            // $text .= dot_set_wrap_3('Status',':',$lunas);
+            $text .= $lunas."\r\n";                                                                  
 
-            //Footer
-            $text .= "\n";
-            $text .= dot_set_wrap_0("-- Terima Kasih --",' ','BOTH');    
-            $text .= dot_set_wrap_0("Gratis jika tidak menerima struk",' ','BOTH');                 
+            // //Footer
+            // // $text .= "\n";
+            // // $text .= dot_set_wrap_0("-- Terima Kasih --",' ','BOTH');    
+            // // $text .= dot_set_wrap_0("Gratis jika tidak menerima struk",' ','BOTH');                 
         
-                    $text = $a.$b.$c;
+            //         $text = $a.$b.$c;
                     $set_user_id = null;
                     $set_user_name = $params['contact_name'];
                     $set_user_phone = $params['contact_phone'];
-                    $trans['trans_branch_id'] = $get_trans['order_branch_id'];                 
+                    $trans['trans_branch_id'] = $get_trans['order_item_branch_id'];                 
                 }else{
                     $next = false;
                 }

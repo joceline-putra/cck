@@ -631,7 +631,7 @@
                 </div>
             </div>
             <div class="modal-footer flex-center">
-                <button type="button" class="hide btn_send_whatsapp btn btn-primary" 
+                <button type="button" class="btn_send_whatsapp btn btn-primary" 
                     data-order-id="0" data-order-number="" data-order-date="" data-total="" data-contact-id="" data-contact-name="" data-contact-phone="" style="width:45%;">
 					<span class="fab fa-whatsapp white"></span> Kirim WhatsApp
 				</button>
