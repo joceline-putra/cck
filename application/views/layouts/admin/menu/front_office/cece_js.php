@@ -1326,7 +1326,7 @@ $(document).on("click",".btn_update_flag_order_item",function(e) { //action lily
             $("#btn_print_trans").attr('data-order-number', d.order_number);
             $("#btn_print_trans").attr('data-order-session', d.order_session);
 
-            $(".btn_send_whatsapp").attr('data-id',d.order_id)
+            $(".btn_send_whatsapp").attr('data-id',d.order_id).attr('data-order-id',d.order_id)
                 .attr('data-order-number',d.order_number)
                 .attr('data-order-date',d.order_date)
                 .attr('data-order-total',d.order_total)

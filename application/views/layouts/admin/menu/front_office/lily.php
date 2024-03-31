@@ -636,7 +636,7 @@
 					<span class="fab fa-whatsapp white"></span> Kirim WhatsApp
 				</button>
 				<button type="button" id="btn_print_trans" class="btn_print_order btn btn-success" 
-                    data-order-id="0" data-order-number="0" data-order-session="" style="width:100%;">
+                    data-order-id="0" data-order-number="0" data-order-session="" style="width:45%;">
 					<span class="fas fa-file-invoice white"></span> Cetak Struk
 				</button>                  
             </div>
