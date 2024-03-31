@@ -1549,7 +1549,7 @@ class Login extends My_Controller{
     }
 
     /* Other */
-    function whatsapp_send_group($message_group_session){
+    function whatsapp_send_group2($message_group_session){
         $return          = new \stdClass();
         $return->status  = 0;
         $return->message = '';
@@ -1595,7 +1595,7 @@ class Login extends My_Controller{
                         $curl_link .= '&file='.$v['message_url'];
                     }
 
-                    // var_dump($curl_link);die;
+                    // echo $curl_link;die;
                     $curl = curl_init();
                     curl_setopt_array($curl, array(
                         CURLOPT_URL => $curl_link,
@@ -1623,7 +1623,7 @@ class Login extends My_Controller{
                             'message_flag' => 1
                         );
                         $this->Message_model->update_message_custom($where,$params);
-                        $return->result  = $get_response;
+                        // $return->result  = $get_response;
                         $return->status  = $get_response['status']; // 1 
                         $return->message = $get_response['message']; // Berhasil
                     }
@@ -1636,6 +1636,190 @@ class Login extends My_Controller{
         }
         return json_encode($return);
     }
+    function whatsapp_send($params){ //Main Send Message
+        /* Example
+            $params = array(
+                'header' => 'Judul',	
+                'file' => 'https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg',
+                'content' => 'Isi Pesan',	
+                'recipient' => array(
+                    array('number' => '6281225518118', 'name' => 'Joe'),                                                                                                                                                             
+                ),
+                'footer' => '🖥️ Pesan ini dikirim oleh System'
+            );
+        */       
+        $return = new \stdClass();
+        $return->status = 0;
+        $return->message = 'Failed';
+        $return->result = '';
+
+        $whatsapp_server    = $this->config->item('whatsapp_server');        
+        $whatsapp_action    = $this->config->item('whatsapp_action');  
+        $whatsapp_action_v1    = $this->config->item('whatsapp_action_v1');                 
+        $whatsapp_sender    = $this->config->item('whatsapp_sender');         
+        $whatsapp_vendor    = $this->config->item('whatsapp_vendor');
+        $whatsapp_token     = $this->config->item('whatsapp_token');
+        $whatsapp_key       = $this->config->item('whatsapp_key');
+        $whatsapp_auth      = $this->config->item('whatsapp_auth');
+
+        if(count($params) > 0){
+            $content    = $params['content'];
+            $recipient  = $params['recipient'];
+            $file       = $params['file'];
+        
+            if(count($recipient) > 0){
+                
+                $header = (strlen($params['header']) > 2) ? '*'.$params['header']."*"."\r\n\r\n" : '';
+                $footer = (strlen($params['footer']) > 2) ? "\r\n".$params['footer']."\r\n" : '';  
+                // var_dump($recipient);die;
+                for($i=0; $i<count($recipient); $i++){
+                    if($whatsapp_vendor == 'umbrella.co.id'){
+                        $set_content = rawurlencode($header.$content.$footer);
+
+                        // Detect Message have a Caption
+                        if(!empty($file)){
+                            $caption = "Attachment";
+                            $url_file = '&auth='.$whatsapp_auth.'&recipient='.$recipient[$i]['number'].'&sender='.$whatsapp_sender.'&content='.$set_content.'&file='.$file;
+                            $curl = curl_init();
+                            curl_setopt_array($curl, array(
+                                CURLOPT_URL => $whatsapp_server.'devices?action=send-message'.$url_file,
+                                CURLOPT_RETURNTRANSFER => 1, CURLOPT_SSL_VERIFYHOST => FALSE, CURLOPT_SSL_VERIFYPEER => FALSE
+                            ));              
+                            $response = curl_exec($curl);                                        
+                        }else{ //Dont have a caption
+                            $url = '&auth='.$whatsapp_auth.'&recipient='.$recipient[$i]['number'].'&sender='.$whatsapp_sender.'&content='.$set_content;
+
+                            $curl = curl_init();
+                            curl_setopt_array($curl, array(
+                                CURLOPT_URL => $whatsapp_server.'devices?action=send-message'.$url,
+                                CURLOPT_RETURNTRANSFER => 1, CURLOPT_SSL_VERIFYHOST => FALSE, CURLOPT_SSL_VERIFYPEER => FALSE
+                            ));       
+                            $response = curl_exec($curl);
+                        }
+
+                        /* Result CURL / API */
+                        $get_response = json_decode($response,true);
+                        
+                        //Do Update if have message_id
+                        if(($get_response) && ($get_response['status'] == 1)){
+                            if(!empty($recipient[$i]['message_id'])){
+                                $this->Message_model->update_message($recipient[$i]['message_id'],array('message_flag'=>1,'message_date_sent'=>date("YmdHis")));
+                            }
+                        }
+
+                        $return->result  = $get_response['result']; // Result
+                        $return->status  = $get_response['status']; // 1 / 0
+                        $return->message = $get_response['message']; // Berhasil / Gagal 
+                    }elseif($whatsapp_vendor=='wam.umbrella.co.id'){
+
+                        //Send if have Client ID
+                        if(!empty($recipient[$i]['message_device_number'])){
+                            $client = $recipient[$i]['message_device_client'];
+                            $bearer = array(
+                                'Authorization: Bearer '.$recipient[$i]['message_device_token']
+                            );
+                        }else{ //From whatsapp.php config
+                            $client = $whatsapp_key;
+                            $bearer = array(
+                                'Authorization: Bearer '.$whatsapp_token
+                            );
+                        }
+
+                        $curl = curl_init();
+                        curl_setopt_array($curl, array(
+                            CURLOPT_URL => $whatsapp_server.$whatsapp_action_v1['send-message'],
+                            CURLOPT_RETURNTRANSFER => 1,
+                            // CURLOPT_TIMEOUT => 0,
+                            CURLOPT_SSL_VERIFYPEER => false,
+                            CURLOPT_SSL_VERIFYHOST => false,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_CUSTOMREQUEST => 'POST',
+                            CURLOPT_POSTFIELDS => array(
+                                'mobile' => $this->contact_number($recipient[$i]['number']),
+                                'text' => $header.$content.$footer,
+                                'key' => $client
+                            ),
+                            CURLOPT_HTTPHEADER => $bearer,
+                        ));
+                        $response = curl_exec($curl); 
+                        curl_close($curl);
+                        $get_response = json_decode($response, true);                                               
+                        // var_dump($get_response);die;
+                        if ($get_response) {                       
+                            $return->status = ($get_response['status'] == 1) ? 1 : 0;
+                            $return->message = ($return->status == 1) ? 'Success' : $get_response['message'];
+                            $return->result = [];
+
+                            //Do Update if have message_id
+                            if(!empty($recipient[$i]['message_id'])){
+                                $this->Message_model->update_message($recipient[$i]['message_id'],array('message_flag'=>1,'message_date_sent'=>date("YmdHis")));
+                            }
+                        } else {                            
+                            $return->message = 'Not Connected';
+                        }                         
+                    }
+                }               
+            }else{
+                $return->message='Penerima tidak ada';
+            }
+        }else{
+          $return->message='Params doest exist';
+        }
+        $return->params = $params;
+        return $return;
+    }       
+    function whatsapp_send_group($message_group_session){
+        $return             = new \stdClass();
+        $return->status     = 0;
+        $return->message    = '';
+        $return->result     = '';
+        
+        if(strlen($message_group_session) > 0){
+        
+            $datas = array();
+            $where = array(
+                'message_group_session' => $message_group_session
+            );
+            $get_data=$this->Message_model->get_message_custom_result($where);
+            if(count($get_data) > 0){
+                $recipient = [];
+                foreach($get_data as $v){
+                    $recipient[] = array('message_id' => $v['message_id'], 'number'=> $this->contact_number($v['message_contact_number']),'name' => $v['message_contact_name']);                                 
+                }   
+                if($recipient > 0){
+                    $params = array(
+                        'header' => '',
+                        'file' => '',
+                        'content' => $v['message_text'],
+                        'recipient' => $recipient,
+                        'footer' => ''
+                    );
+                    $send = $this->whatsapp_send($params);
+                    $return->status     = $send->status;
+                    $return->message    = $send->message;  
+                    $return->result     = $send->result;                     
+                } 
+            }else{ 
+                $return->message='Session not found';                
+            }
+        }else{
+            $return->message='Session not found';
+        }
+        return json_encode($return);
+    }   
+    function contact_number($contact_phone){ //Contact 0 / +62 to safe
+        $contact_phone = str_replace("'","",$contact_phone); //Remove ' if excel format    
+        $contact_phone = str_replace('+','',str_replace('-','',$contact_phone)); //Remove + and -
+        $contact_phone = ltrim(rtrim(trim($contact_phone))); //Remove space
+        $contact_phone = str_replace(' ','',$contact_phone);
+        $contact_phone_check = substr($contact_phone,0,1); // First char is 0
+        if($contact_phone_check == 0){
+            $contact_phone = '62'.substr($contact_phone,1,15); //To 62 81213123
+        }else{
+            $contact_phone = $contact_phone; //
+        }
+        return $contact_phone;        
+    }   
     function whatsapp_template($action, $user_id){
         $next = true;
         $get_branch = $this->Branch_model->get_branch(1);

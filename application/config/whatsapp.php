@@ -1,9 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 // $vendor = "ruangwa.id";	
-$vendor = "umbrella.co.id";	
+// $vendor = "umbrella.co.id";	
 // $vendor = "fonnte.com";	
-// $vendor = "wam.umbrella.co.id";
+$vendor = "wam.umbrella.co.id";
 
 $whatsapp_server = '';
 $whatsapp_token  = '';
@@ -11,7 +11,7 @@ $whatsapp_key  = '';
 $whatsapp_sender  = '';
 $whatsapp_username  = '';
 $whatsapp_service = array();
-$whatsapp_watermark = '';
+$whatsapp_watermark = 'Teksmu.com';
 
 switch($vendor){
 	case "ruangwa":
@@ -41,15 +41,15 @@ switch($vendor){
 		// $whatsapp_sender   = '628989900149';
 		break;		
 	case "wam.umbrella.co.id":
-		$whatsapp_server   = 'https://wam.umbrella.co.id/';				
-		$whatsapp_sender   = '628989900148';      
+		$whatsapp_server   = 'https://teksmu.com/';				
+		$whatsapp_sender   = '628989900149';      
 		
 		//Client ID instance.client_id
-		$whatsapp_key      = 'eyJ1aWQiOiJzUTB5WWJjcGJPdGM5NTJkVzcyem41RTZ6eEdGT1RhWiIsImNsaWVudF9pZCI6IjYyODk4OTkwMDE0OCJ9';
+		$whatsapp_key      = 'eyJ1aWQiOiJMeHlHUVBQYkhicm55TFhYOTl3NWVLRk9XZ2h6QzJSTyIsImNsaWVudF9pZCI6IjYyODk4OTkwMDE0OSJ9';
 	
 		//Token / API Keys user.api
-		$whatsapp_token    = 'ET2zKDSrXGKPOLPAF7UC88v5ITB8IM6kAMS5F07gkCSCxXhDw1';
-		$whatsapp_auth     = 'sQ0yYbcpbOtc952dW72zn5E6zxGFOTaZ'; //user.uid
+		$whatsapp_token    = '8kprFJ0mRKGFcIKAqAvk415xOS7xYm2OVChepxFxAP7L6kJYsD';
+		$whatsapp_auth     = 'LxyGQPPbHbrnyLXX99w5eKFOWghzC2RO'; //user.uid
 		break;				
 	default:
 		$whatsapp_server = '';
@@ -73,10 +73,10 @@ $config = array(
 		'restart' => 'devices?action=restart&auth='.$whatsapp_auth.'&token='.$whatsapp_token.'&key='.$whatsapp_key		
 	),
 	'whatsapp_action_v1' => array(
-		'send-message' => 'api/user/v1/send',
-		'create-instance' => 'api/sessions/v1/request', //?id=sQ0yYbcpbOtc952dW72zn5E6zxGFOTaZ&name=628989900148&isLegacy=false
-		'delete-instance' => 'api/sessions/v1/delete',
-		'check-instance' => 'api/user/v1/status',
+		'send-message' => 'api/v1/send',
+		'create-instance' => 'api/v1/request', //?id=sQ0yYbcpbOtc952dW72zn5E6zxGFOTaZ&name=628989900148&isLegacy=false
+		'delete-instance' => 'api/v1/delete',
+		'check-instance' => 'api/v1/status',
 	),
 	'whatsapp_watermark' => $whatsapp_watermark
 );
