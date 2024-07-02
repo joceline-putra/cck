@@ -639,7 +639,7 @@ class Approval extends MY_Controller{
 
                     if(intval($file_id) > 0){
                         $get_data=$this->File_model->get_file($file_id);
-                        // $set_data=$this->File_model->delete_file($file_id);      
+                        $set_data=$this->File_model->delete_file($file_id);      
                         $set_data = true;          
                         if($set_data){    
                             if($get_data['file_type'] == 1){
@@ -647,8 +647,8 @@ class Approval extends MY_Controller{
                                 // var_dump($file);die;
                                 if (file_exists($file)) {
                                     unlink($file);
-                                    echo 1;
                                 }
+                                $this->File_model->delete_file($file_id);
                             }
                             $return->status=1;
                             $return->message='Berhasil menghapus '. $get_data['file_name'];

@@ -305,7 +305,61 @@
         //     $return['message'] = 'File not ready';
         // }
         return $return;
-    }                
+    }
+    function upload_file_base64($path, $file, $compress = null){ // Booking.php CECE Create Base64 or Croppie
+
+        $d1 = explode(";", $file); // data:image/jpeg
+        $d2 = explode(",", $d1[1]); // base64,/9j/4AAQSkZJRgABAQAAAQ
+        
+        $file_st  = strrpos($d1[0], '/') + 1; // 11
+        $file_ext = substr($d1[0], $file_st); // .jpeg
+
+        $file_data = base64_decode($d2[1]); //akshfdESWiuhgkwe
+        $file_size = strlen($file_data);
+        $file_name = date("Ymdhis").uniqid(); // 20240628084856667ebf481038c
+
+        // Make Directory if Not Exists
+        $folder = FCPATH . $path;
+        if(!file_exists($folder)){
+            mkdir($folder, 0775, true);
+        }
+        
+        //File Success Move
+        if(file_put_contents($path . $file_name .'.'.$file_ext, $file_data)){
+
+            //Compress Only if Image
+            if((!empty($compress['compress'])) && ($compress['compress'] == 1)){
+                $allowed_file_ext = array('jpg', 'gif', 'png', 'jpeg');
+                if (in_array($file_ext, $allowed_file_ext)) {
+                    $ci = &get_instance();
+                    $config = [
+                        'image_library' => 'gd2',
+                        'source_image' => $path . $file_name .'.'.$file_ext,
+                        'new_image' => $path . $file_name .'.'.$file_ext,
+                        // 'create_thumb' => FALSE,
+                        'maintain_ratio' => TRUE,
+                        'width' => $compress['width'],
+                        'height' => $compress['height'],
+                        'quality' => '10%'
+                    ];                                    
+                    $ci->load->library('image_lib', $config);
+                    $ci->image_lib->resize();
+                }
+            }
+            //End of Compress
+
+            $return['status'] = 1;
+            $return['result'] = array(
+                'file_directory' => $path, /* upload/product/ */
+                'file_name' => $file_name, /* 1231421*/
+                'file_ext' => $file_ext, /* .png */
+                'file_location' => $path . $file_name . '.'. $file_ext,
+                'file_size' => $file_size / 1024
+            );
+        }
+        return $return;
+    }
+
     //Backup
     function upload_image2($path = "", $file = "", $image_width = 250, $image_height = 250) {
         $ci = &get_instance();

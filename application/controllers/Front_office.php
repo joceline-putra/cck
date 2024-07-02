@@ -11,8 +11,6 @@ class Front_office extends MY_Controller{
 
     function __construct(){
         parent::__construct();
-        /*
-        */
         if(!$this->is_logged_in()){
 
             //Will Return to Last URL Where session is empty
@@ -953,8 +951,8 @@ class Front_office extends MY_Controller{
                                         $set_paid_name = null;
                                         $post_upload = !empty($this->input->post('upload_1')) ? $this->input->post('upload_1') : "";
                                         if(strlen($post_upload) > 10){
-                                            $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
-                                            if($upload_process->status == 1){
+                                            $upload_process = upload_file_base64($this->folder_upload_file,$post_upload);
+                                            if($upload_process['status'] == 1){
                                                 if ($get_booking && $get_booking['order_id']) {
                                                     // $params_image = array(
                                                     //     'product_image' => $upload_process->result['file_location']
@@ -968,14 +966,15 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        'file_name' => $upload_process->result['file_name'] . $upload_process->result['file_ext'],
-                                                        'file_format' => str_replace(".","",$upload_process->result['file_ext']),
-                                                        'file_url' => $upload_process->result['file_location'],
-                                                        'file_size' => $upload_process->result['file_size']
+                                                        'file_name' => 'Bukti Bayar',                                                        
+                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
+                                                        'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
+                                                        'file_url' => $upload_process['result']['file_location'],
+                                                        'file_size' => $upload_process['result']['file_size']
                                                     );                                                    
                                                     $stat = $this->File_model->add_file($params_image);
-                                                    $set_paid_url = $upload_process->result['file_location'];
-                                                    $set_paid_name = $upload_process->result['file_name'] . $upload_process->result['file_ext'];
+                                                    $set_paid_url = $upload_process['result']['file_location'];
+                                                    $set_paid_name = $upload_process['result']['file_name'] . $upload_process['result']['file_ext'];
                                                 }
                                             }else{
                                                 $return->message = 'Fungsi Gambar gagal';
@@ -986,8 +985,8 @@ class Front_office extends MY_Controller{
                                         //Croppie Upload Image [KTP]
                                         $post_upload = !empty($this->input->post('upload_2')) ? $this->input->post('upload_2') : "";
                                         if(strlen($post_upload) > 10){
-                                            $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
-                                            if($upload_process->status == 1){
+                                            $upload_process = upload_file_base64($this->folder_upload_file,$post_upload);                                               
+                                            if($upload_process['status'] == 1){
                                                 if ($get_booking && $get_booking['order_id']) {
                                                     // $params_image = array(
                                                     //     'product_image' => $upload_process->result['file_location']
@@ -1001,10 +1000,11 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        'file_name' => $upload_process->result['file_name'] . $upload_process->result['file_ext'],
-                                                        'file_format' => str_replace(".","",$upload_process->result['file_ext']),
-                                                        'file_url' => $upload_process->result['file_location'],
-                                                        'file_size' => $upload_process->result['file_size']
+                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
+                                                        'file_name' => 'KTP',                                                        
+                                                        'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
+                                                        'file_url' => $upload_process['result']['file_location'],
+                                                        'file_size' => $upload_process['result']['file_size']
                                                     );                                                    
                                                     $stat = $this->File_model->add_file($params_image);
                                                 }
@@ -1312,8 +1312,9 @@ class Front_office extends MY_Controller{
                                         $set_paid_name = null;
                                         $post_upload = !empty($this->input->post('upload_1')) ? $this->input->post('upload_1') : "";
                                         if(strlen($post_upload) > 10){
-                                            $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
-                                            if($upload_process->status == 1){
+                                            // $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
+                                            $upload_process = upload_file_base64($this->folder_upload_file,$post_upload);                                            
+                                            if($upload_process['status'] == 1){
                                                 if ($get_booking && $get_booking['order_id']) {
                                                     // $params_image = array(
                                                     //     'product_image' => $upload_process->result['file_location']
@@ -1327,14 +1328,15 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        'file_name' => $upload_process->result['file_name'] . $upload_process->result['file_ext'],
-                                                        'file_format' => str_replace(".","",$upload_process->result['file_ext']),
-                                                        'file_url' => $upload_process->result['file_location'],
-                                                        'file_size' => $upload_process->result['file_size']
+                                                        'file_name' => 'Bukti Bayar',
+                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
+                                                        'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
+                                                        'file_url' => $upload_process['result']['file_location'],
+                                                        'file_size' => $upload_process['result']['file_size']
                                                     );                                                    
                                                     $stat = $this->File_model->add_file($params_image);
-                                                    $set_paid_url = $upload_process->result['file_location'];
-                                                    $set_paid_name = $upload_process->result['file_name'] . $upload_process->result['file_ext'];
+                                                    $set_paid_url = $upload_process['result']['file_location'];
+                                                    $set_paid_name = $upload_process['result']['file_name'] . $upload_process['result']['file_ext'];
                                                 }
                                             }else{
                                                 $return->message = 'Fungsi Gambar gagal';
@@ -1345,8 +1347,9 @@ class Front_office extends MY_Controller{
                                         //Croppie Upload Image [KTP]
                                         $post_upload = !empty($this->input->post('upload_2')) ? $this->input->post('upload_2') : "";
                                         if(strlen($post_upload) > 10){
-                                            $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
-                                            if($upload_process->status == 1){
+                                            // $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
+                                            $upload_process = upload_file_base64($this->folder_upload_file,$post_upload);                                               
+                                            if($upload_process['status'] == 1){
                                                 if ($get_booking && $get_booking['order_id']) {
                                                     // $params_image = array(
                                                     //     'product_image' => $upload_process->result['file_location']
@@ -1360,10 +1363,11 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        'file_name' => $upload_process->result['file_name'] . $upload_process->result['file_ext'],
-                                                        'file_format' => str_replace(".","",$upload_process->result['file_ext']),
-                                                        'file_url' => $upload_process->result['file_location'],
-                                                        'file_size' => $upload_process->result['file_size']
+                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
+                                                        'file_name' => 'KTP',                                                        
+                                                        'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
+                                                        'file_url' => $upload_process['result']['file_location'],
+                                                        'file_size' => $upload_process['result']['file_size']
                                                     );                                                    
                                                     $stat = $this->File_model->add_file($params_image);
                                                 }
@@ -1376,8 +1380,9 @@ class Front_office extends MY_Controller{
                                         //Croppie Upload Image [Plat]
                                         $post_upload = !empty($this->input->post('upload_3')) ? $this->input->post('upload_3') : "";
                                         if(strlen($post_upload) > 10){
-                                            $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
-                                            if($upload_process->status == 1){
+                                            // $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
+                                            $upload_process = upload_file_base64($this->folder_upload_file,$post_upload);                                                      
+                                            if($upload_process['status'] == 1){
                                                 if ($get_booking && $get_booking['order_id']) {
                                                     // $params_image = array(
                                                     //     'product_image' => $upload_process->result['file_location']
@@ -1391,10 +1396,11 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        'file_name' => $upload_process->result['file_name'] . $upload_process->result['file_ext'],
-                                                        'file_format' => str_replace(".","",$upload_process->result['file_ext']),
-                                                        'file_url' => $upload_process->result['file_location'],
-                                                        'file_size' => $upload_process->result['file_size']
+                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
+                                                        'file_name' => 'Plat Kendaraan',                                                        
+                                                        'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
+                                                        'file_url' => $upload_process['result']['file_location'],
+                                                        'file_size' => $upload_process['result']['file_size']
                                                     );
                                                     $stat = $this->File_model->add_file($params_image);
                                                 }
@@ -1617,15 +1623,22 @@ class Front_office extends MY_Controller{
 
                         if(strlen($order_id) > 0){
                             $get_data=$this->Front_model->get_booking($order_id);
-                            // $set_data=$this->Front_model->delete_booking($order_id);
-                            $set_data = $this->Front_model->update_order_custom(array('order_id'=>$order_id),array('order_flag'=>4));                
+
+                            $set_data = $this->Front_model->delete_booking($order_id);
+                            // $set_data = $this->Front_model->delete_booking_custom(array('order_id'=>$order_id),array('order_flag'=>4));       
+                            $set_data = $this->Front_model->delete_booking_item_custom(['order_item_order_id'=> $order_id]);         
+                            $set_data = $this->Front_model->delete_paid_custom(['paid_order_id'=>$order_id]);
+
                             if($set_data){
-                                /*
-                                $file = FCPATH.$this->folder_upload.$get_data['order_image'];
-                                if (file_exists($file)) {
-                                    unlink($file);
-                                }
-                                */
+                                $get_file = $this->File_model->get_all_file(['file_from_table'=>'orders','file_from_id'=>$order_id],null,null,null,'file_id','asc');                                
+                                foreach($get_file as $v){
+                                    if (!empty($v['file_url'])) {
+                                        if (file_exists(FCPATH . $v['file_url'])) {
+                                            unlink(FCPATH . $v['file_url']);
+                                        }
+                                    }
+                                    $this->File_model->delete_file($v['file_id']);
+                                }                                
                                 $return->status=1;
                                 $return->message='Berhasil menghapus '.$order_name;
                             }else{
@@ -1762,7 +1775,7 @@ class Front_office extends MY_Controller{
                         } 
                     }
                     break;
-                case "update_flag_item_lily": //Cece & Lily
+                case "update_flag_item_lily": //Cece & Lily deposit
                     $this->form_validation->set_rules('order_id', 'order_id', 'required');
                     $this->form_validation->set_rules('order_item_id', 'order_item_id', 'required');
                     $this->form_validation->set_rules('order_item_flag_checkin', 'order_item_flag_checkin', 'required');
@@ -3196,7 +3209,7 @@ class Front_office extends MY_Controller{
             $contact_phone = $contact_phone; //
         }
         return $contact_phone;        
-    }     
+    }
     function request_number_for_order_paid(){
         $session = $this->session->userdata();
         $session_branch_id = $session['user_data']['branch']['id'];
@@ -3224,7 +3237,7 @@ class Front_office extends MY_Controller{
         }  
         $auto_number = 'PAY' . '-' . $tahun2 . $bulan . '-' . $nomor;
         return $auto_number;
-    }       
+    }
     function file_unit_size($bytes){
         if ($bytes >= 1073741824)
         {
@@ -3252,7 +3265,7 @@ class Front_office extends MY_Controller{
         }
 
         return $bytes;
-    }    
+    }
     function hour_diff($d,$p){ //Tgl Terkecil, Tgl Terbesar
         $date1 = new DateTime($d);
         $date2 = new DateTime($p);
@@ -3270,13 +3283,13 @@ class Front_office extends MY_Controller{
             $in = '-';
         }
         return intval($in.$hours);
-    }    
+    }
     function day_diff($d1, $d2){ //Tgl Terbesar, Tgl Terkecil 
         // var_dump($d1,$d2);die;
         $d1 = strtotime($d1);
         $d2 = strtotime($d2);
         return intVal(($d2 - $d1) / (24 *3600));
-    }      
+    }
     function sync_product($branch_id){
         $return          = new \stdClass();
         $return->status  = 0;
@@ -3322,7 +3335,7 @@ class Front_office extends MY_Controller{
             $return->message = "Oops! Error creating json file...";
         }
         echo json_encode($return);
-    }      
+    }
     function test(){
         echo json_encode($this->Front_model->get_all_paid(null,null,null,null,'paid_id','asc'));
 
@@ -3343,7 +3356,7 @@ class Front_office extends MY_Controller{
     }
     function test2(){
         var_dump($this->day_diff("2023-01-02 12:00:00","2023-01-02 13:00:00"));die;
-    }   
+    }
     function format_byte($bytes) {
         if ($bytes > 0) {
             $i = floor(log($bytes) / log(1024));
@@ -3476,7 +3489,7 @@ class Front_office extends MY_Controller{
         //Need Activate to Copy File into Print Enqueue
         // copy($file, "//localhost/printer-share-name"); # Do Print
         // unlink($file);
-    }      
+    }
     function stringToSecret($string){
         if (!$string) {
             return NULL;

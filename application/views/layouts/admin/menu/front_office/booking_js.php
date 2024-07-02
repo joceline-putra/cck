@@ -672,7 +672,7 @@
             var next     = true;
             var id       = $(this).attr('data-order-id');
             var session  = $(this).attr('data-order-session');
-            var name     = $(this).attr('data-order-name');
+            var name     = $(this).attr('data-order-number');
 
             $.confirm({
                 title: 'Hapus!',
@@ -2697,8 +2697,10 @@
                         }                        
                     }
                     if(parseInt(this_form.attr('data-order-flag')) == 0) {
-                        dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="4" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
-                        dsp += '<i class="fas fa-trash"></i><span style="position: relative;">&nbsp;Batal</span></a></li>';
+                        dsp += '<li><a href="#" class="btn_delete_order" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="4" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                        dsp += '<i class="fas fa-trash"></i><span style="position: relative;">&nbsp;Hapus</span></a></li>';
+                        // dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="4" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                        // dsp += '<i class="fas fa-trash"></i><span style="position: relative;">&nbsp;Hapus</span></a></li>';                        
                     }
                     dsp += '<li><a href="#" class="btn_print_order" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="'+this_form.attr('data-order-flag')+'" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'"><i class="fa fa-print"></i><span style="position: relative;">&nbsp;Print</span></a></li>';
                     dsp += '<li><a href="#" class="btn_send_whatsapp" data-order-id="'+this_form.attr('data-order-id')+'" data-number="'+this_form.attr('data-order-number')+'" data-date="'+this_form.attr('data-order-date')+'" data-order-total="'+this_form.attr('data-order-total')+'" data-contact-name="'+this_form.attr('data-order-contact-name')+'" data-contact-phone="'+this_form.attr('data-order-contact-phone')+'"><i class="fab fa-whatsapp"></i><span style="position: relative;">&nbsp;WhatsApp</span></a></li>';
