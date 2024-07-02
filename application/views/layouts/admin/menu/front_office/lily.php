@@ -132,13 +132,13 @@
                                 <div class="form-group">
                                     <label class="form-label">Cabang</label>
                                     <div class="radio_group">
-                                        <?php 
-                                        foreach($branch_lily as $i => $v){
-                                            $c = '';
-                                            if($i==0){
-                                                // $c = 'checked';
-                                            }
-                                        ?>
+                                            <?php 
+                                            foreach($branch_lily as $i => $v){
+                                                $c = '';
+                                                if($i==0){
+                                                    // $c = 'checked';
+                                                }
+                                            ?>
                                             <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="order_branch_id" value="<?php echo $v['branch_id']; ?>" data-name="<?php echo $v['branch_name']; ?>" <?php echo $c; ?>>
                                             <label class="radio_group_label radio_bg" for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
                                         <?php 
@@ -224,8 +224,8 @@
                                     </div>
                                 </div>
                             </div>                                                
-                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                <div class="col-md-6 col-xs-6 padding-remove-side">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Jam Check-In</label>
                                         <div class="controls">
@@ -248,7 +248,7 @@
                                         </div>
                                     </div>
                                 </div>  
-                                <div class="col-md-6 col-xs-6 padding-remove-side">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Jam Check-Out</label>
                                         <div class="controls">
@@ -271,7 +271,7 @@
                                         </div>
                                     </div>
                                 </div>                                                      
-                                <div class="col-lg-12 col-md-12 padding-remove-side">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Harga</label>
                                         <input id="order_price" name="order_price" type="text" value="" class="form-control" readonly/>

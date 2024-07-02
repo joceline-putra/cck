@@ -3110,64 +3110,67 @@ $(document).on("click",".btn_update_flag_order_item",function(e) { //action lily
             }
         });
         $(document).on("click","#btn_tab_17", function(e){ 
-            if(document.getElementById("files_2").files.length == 0 ){
-                notif(0,'Foto KTP belum di pilih');
-            }else{
-                var file = document.getElementById("files_2").files[0];
-                var fileType = file["type"];
-                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-                if ($.inArray(fileType, validImageTypes) < 0) {
-                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
-                }else{
-                    var size_kb = file.size / 1024;
-                    if(size_kb < 1280){
+            // if(document.getElementById("files_2").files.length == 0 ){
+            //     notif(0,'Foto KTP belum di pilih');
+            // }else{
+                // var file = document.getElementById("files_2").files[0];
+                // var fileType = file["type"];
+                // var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                // if ($.inArray(fileType, validImageTypes) < 0) {
+                    // notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
+                // }else{
+                    // var size_kb = file.size / 1024;
+                    // if(size_kb < 1280){
                         activeTab("tab18"); 
-                    }else{
-                        notif(0,'Maksimal 1 MB');
-                    }
-                }
-            }
+                    // }else{
+                        // notif(0,'Maksimal 1 MB');
+                    // }
+                // }
+            // }
         });
         $(document).on("click","#btn_tab_18", function(e){ 
-            if(document.getElementById("files_3").files.length == 0 ){
-                notif(0,'Foto Plat belum di pilih');
-            }else if($("#order_vehicle_plate_number").val().length == 0 ){
-                notif(0,'Nomor Plat kendaraan harus disi');
-            }else if($("#order_vehicle_count").val().length == 0){
-                notif(0,'Jumlah kendaraan harus diisi');
-            }else{
-                var file = document.getElementById("files_3").files[0];
-                var fileType = file["type"];
-                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-                if ($.inArray(fileType, validImageTypes) < 0) {
-                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
-                    console.log('if');
-                }else{
-                    var size_kb = file.size / 1024;
-                    if(size_kb < 1280){
+            // if(document.getElementById("files_3").files.length == 0 ){
+            //     notif(0,'Foto Plat belum di pilih');
+            // }
+            // else if($("#order_vehicle_plate_number").val().length == 0 ){
+            //     notif(0,'Nomor Plat kendaraan harus disi');
+            // }
+            // else if($("#order_vehicle_count").val().length == 0){
+            //     notif(0,'Jumlah kendaraan harus diisi');
+            // }else{
+            //     var file = document.getElementById("files_3").files[0];
+            //     var fileType = file["type"];
+            //     var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+            //     if ($.inArray(fileType, validImageTypes) < 0) {
+            //         notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
+            //         console.log('if');
+            //     }else{
+            //         var size_kb = file.size / 1024;
+            //         if(size_kb < 1280){
                         activeTab("tab19"); 
-                    }else{
-                        notif(0,'Maksimal 1 MB');
-                        // console.log('else');
-                    }
-                }
-            }
+            //         }else{
+            //             notif(0,'Maksimal 1 MB');
+            //             // console.log('else');
+            //         }
+            //     }
+            // }
         });
         $(document).on("click","#btn_tab_19", function(e){ 
-            if(document.getElementById("files_1").files.length == 0 ){
-                notif(0,'Bukti Bayar belum di pilih');
-            }else if($("#paid_total").val().length == 0){
-                notif(0,'Jumlah harus diisi');
-            }else{
-                var file = document.getElementById("files_1").files[0];
-                var fileType = file["type"];
-                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-                if ($.inArray(fileType, validImageTypes) < 0) {
-                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
-                }else{
-                    var size_kb = file.size / 1024;
-                    // console.log(size_kb);
-                    if(size_kb < 1280){
+            // if(document.getElementById("files_1").files.length == 0 ){
+                // notif(0,'Bukti Bayar belum di pilih');
+            // }else 
+            // if($("#paid_total").val().length == 0){
+            //     notif(0,'Jumlah harus diisi');
+            // }else{
+                // var file = document.getElementById("files_1").files[0];
+                // var fileType = file["type"];
+                // var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                // if ($.inArray(fileType, validImageTypes) < 0) {
+                //     notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
+                // }else{
+                //     var size_kb = file.size / 1024;
+                //     // console.log(size_kb);
+                //     if(size_kb < 1280){
                         activeTab("tab20"); 
                         // console.log('if');
                         var price_plus_parkir = parseFloat(orderPRICE.rawValue) + parseFloat(vehicleCOST.rawValue);
@@ -3175,11 +3178,11 @@ $(document).on("click",".btn_update_flag_order_item",function(e) { //action lily
                         
                         $("#paid_total").val(paidTOTAL.rawValue);                        
                         loadBeforeBooking();
-                    }else{
-                        notif(0,'Maksimal 1 MB');
-                    }
-                } 
-            }
+                //     }else{
+                //         notif(0,'Maksimal 1 MB');
+                //     }
+                // } 
+            // }
         });
 
         //Child Back Button

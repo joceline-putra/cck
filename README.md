@@ -34,8 +34,6 @@ LILY
     - Besar
     - Sedang   
 
-
-
 Upload File -> files -> function helper upload_file()
 Upload Bukti Bayar -> order_paids -> function helper upload_file()
 
@@ -46,4 +44,11 @@ Upload Bukti Bayar -> files -> core/MY -> $this->file_upload_image()
 Form Cece
 Upload KTP -> files -> core/MY -> $this->file_upload_image()
 Upload Bukti Bayar -> files -> core/MY -> $this->file_upload_image()
-Upload Plat Kend -> files -> core/MY -> $this->file_upload_image()
+Upload FORM  -> files -> core/MY -> $this->file_upload_image()
+
+
+Tgl 2 Juli 2024
+Reminder Cece yang akan habis
+Auto renewal Cece bulanan 
+Checkin sisa kunci
+checkout kunci kamar

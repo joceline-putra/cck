@@ -306,6 +306,63 @@
         // }
         return $return;
     }
+    function upload_file_source($path, $file = "", $compress = null) { // Approval.php for $_FILES['file']
+        // if(!empty($file)){
+            
+            // Make Directory if Not Exists
+                $folder = FCPATH . $path;
+                if(!file_exists($folder)){
+                    mkdir($folder, 0775, true);
+                }
+
+                $file_name     = basename($_FILES['source']['name']);  
+                $file_size     = $_FILES['source']['size'];                      
+                $file_new_name = date('YmdHis') . '_' . uniqid() . '.' . strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+                $file_ext      = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+                if (move_uploaded_file($_FILES['source']['tmp_name'], $path . $file_new_name)) {
+                    
+                    //Compress Only if Image
+                    if((!empty($compress['compress'])) && ($compress['compress'] == 1)){
+                        $allowed_file_ext = array('jpg', 'gif', 'png', 'jpeg');
+                        if (in_array($file_ext, $allowed_file_ext)) {
+                            $ci = &get_instance();
+                            $config = [
+                                'image_library' => 'gd2',
+                                'source_image' => $path . $file_new_name,
+                                'new_image' => $path . $file_new_name,
+                                // 'create_thumb' => FALSE,
+                                'maintain_ratio' => TRUE,
+                                'width' => $compress['width'],
+                                'height' => $compress['height'],
+                                'quality' => '10%'
+                            ];                                    
+                            $ci->load->library('image_lib', $config);
+                            $ci->image_lib->resize();
+                        }
+                    }
+                    //End of Compress
+
+                    $result = array(
+                        'file_directory' => $path,
+                        'file_name' => $file_new_name,
+                        'file_old_name' => $file_name,
+                        'file_ext' => $file_ext,
+                        'file_location' => $path . $file_new_name,
+                        'file_size' => $file_size,
+                    ); 
+                } else {
+                    $errors[] = "Failed to upload $file_name.";
+                }
+                $return['status'] = 1;
+                $return['message'] = 'Success'; 
+                $return['result'] = $result;
+        // }else{
+        //     $return['status'] = 0;
+        //     $return['message'] = 'File not ready';
+        // }
+        return $return;
+    }    
     function upload_file_base64($path, $file, $compress = null){ // Booking.php CECE Create Base64 or Croppie
 
         $d1 = explode(";", $file); // data:image/jpeg

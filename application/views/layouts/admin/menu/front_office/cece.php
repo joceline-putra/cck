@@ -222,9 +222,9 @@
                                         <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
-                            </div>                                                
-                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                <div class="col-md-6 col-xs-6 padding-remove-side">
+                            </div>                                              
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Jam Check-In</label>
                                         <div class="controls">
@@ -247,7 +247,7 @@
                                         </div>
                                     </div>
                                 </div>  
-                                <div class="col-md-6 col-xs-6 padding-remove-side">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Jam Check-Out</label>
                                         <div class="controls">
@@ -270,7 +270,7 @@
                                         </div>
                                     </div>
                                 </div>                                                      
-                                <div class="col-lg-12 col-md-12 padding-remove-side">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Harga</label>
                                         <input id="order_price" name="order_price" type="text" value="" class="form-control" readonly/>
@@ -313,7 +313,7 @@
                         <div class="tab-pane tab-pane-sub" id="tab17" for="ktp">
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="form-group">
-                                    <label class="form-label">Foto KTP (wajib)</label>
+                                    <label class="form-label">Foto KTP</label>
                                     <a class="files_link_2" href="<?= site_url('upload/noimage.png'); ?>">
                                         <img id="files_preview_2" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                     </a>
@@ -334,7 +334,7 @@
                         <div class="tab-pane tab-pane-sub" id="tab18" for="kendaraan">
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="form-group">
-                                    <label class="form-label">Foto Plat Kendaraan (wajib)</label>
+                                    <label class="form-label">Scan Form Sewa</label>
                                     <a class="files_link_3" href="<?= site_url('upload/noimage.png'); ?>">
                                         <img id="files_preview_3" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                     </a>
@@ -345,7 +345,7 @@
                             </div>   
                             <div class="col-md-12 col-xs-12 padding-remove-side">
                                 <div class="form-group">
-                                    <label class="form-label">Nomor Plat Kendaraan (wajib)</label>
+                                    <label class="form-label">Nomor Plat Kendaraan</label>
                                     <div class="controls">
                                         <input name="order_vehicle_plate_number" id="order_vehicle_plate_number" type="text" class="form-control input-sm">
                                     </div>
@@ -353,17 +353,17 @@
                             </div>
                             <div class="col-md-12 col-xs-12 padding-remove-side">
                                 <div class="form-group">
-                                    <label class="form-label">Jumlah Kendaraan yg di bawa (wajib)</label>
+                                    <label class="form-label">Jumlah Kendaraan yg di bawa</label>
                                     <div class="controls">
-                                        <input name="order_vehicle_count" id="order_vehicle_count" type="text" class="form-control input-sm">
+                                        <input name="order_vehicle_count" id="order_vehicle_count" type="text" class="form-control input-sm" value="1">
                                     </div>
                                 </div>
                             </div> 
                             <div class="col-md-12 col-xs-12 padding-remove-side">
                                 <div class="form-group">
-                                    <label class="form-label">Biaya Parkir (wajib)</label>
+                                    <label class="form-label">Biaya Parkir</label>
                                     <div class="controls">
-                                        <input name="order_vehicle_cost" id="order_vehicle_cost" type="text" class="form-control input-sm" value="500000">
+                                        <input name="order_vehicle_cost" id="order_vehicle_cost" type="text" class="form-control input-sm" value="0">
                                     </div>
                                 </div>
                             </div>                                                           
@@ -380,7 +380,7 @@
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                     <div class="form-group">
-                                        <label class="form-label">Bukti Bayar (wajib)</label>
+                                        <label class="form-label">Bukti Bayar</label>
                                         <a class="files_link_1" href="<?= site_url('upload/noimage.png'); ?>">
                                             <img id="files_preview_1" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                         </a>

@@ -241,7 +241,7 @@
                             dsp += 'data-order-flag="'+row.order_flag+'"';
                             dsp += 'data-order-item-flag-checkin="'+row.order_item_flag_checkin+'" data-order-item-product-id="'+row.order_item_product_id+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'" data-product-name="'+row.product_name+'"';
                             dsp += ' data-order-number="'+row.order_number+'" data-order-date="'+row.order_item_date_created+'" data-order-total="'+row.order_total+'" data-order-contact-name="'+row.order_contact_name+'"  data-order-contact-phone="'+row.order_contact_phone+'">';
-                        dsp += '<span class="fas fa-cog"></span>Aksi';
+                        dsp += '<span class="fas fa-cog"></span> Aksi';
                         dsp += '</button>';                         
                         /* Button Action Concept 2 */
                         // dsp += '&nbsp;<div class="btn-group">';
@@ -418,8 +418,8 @@
                     render: function(data, meta, row) {
                         var dsp = '';
                         // if(parseInt(row.order_files_count) > 0){
-                            var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.price_name;
-                            var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
+                            var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.branch_name;
+                            var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-phone="'+row.order_contact_phone+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
                             dsp += '<span '+st+' class="btn-attachment-info-2 label label-inverse" style="cursor:pointer;color:white;"><span class="fas fa-paperclip"></span>&nbsp;'+row.order_files_count+'</span>';
                             if(parseInt(row.order_paid) == 0){
                                 // var sts = 'Belum Lunas';
@@ -430,7 +430,7 @@
                                 // var ic = 'fas fa-thumbs-up';
                                 var lg = 'success';
                             }                            
-                            dsp += '&nbsp;<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="fas fa-receipt"></span>&nbsp;'+row.order_order_paid_count+'</span>';                            
+                            // dsp += '&nbsp;<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="fas fa-receipt"></span>&nbsp;'+row.order_order_paid_count+'</span>';                            
                         // }         
                         return dsp;
                     }
@@ -1267,6 +1267,7 @@
             var ffrom = $(this).attr('data-from');
             var fnum = $(this).attr('data-number');
             var fcnm = $(this).attr('data-contact-name');
+            var fcnp = $(this).attr('data-contact-phone');            
             var fcid = $(this).attr('data-contact-id');
             var fdt = $(this).attr('data-date');		
             var ftt = $(this).attr('data-total');						
@@ -1278,7 +1279,7 @@
             var title   = 'Info Attachment '+fnum;
             $.confirm({
                 title: title,
-                columnClass: 'col-lg-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                columnClass: 'col-lg-7 col-md-offset-2 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
                 closeIcon: true,
                 closeIconClass: 'fas fa-times',    
                 animation:'zoom',
@@ -1310,7 +1311,7 @@
                             dsp += '<tr><td><b>Nomor</b></td><td>: '+fnum+'</td></tr>';
                             dsp += '<tr><td><b>Tanggal</b></td><td>: '+fdt+'</td></tr>';
                             dsp += '<tr><td><b>Kamar</b></td><td>: '+fp+'</td></tr>';                            
-                            dsp += '<tr><td><b>Kontak</b></td><td>: '+fcnm+'</td></tr>';
+                            dsp += '<tr><td><b>Kontak</b></td><td>: '+fcnm+' | '+fcnp+'</td></tr>';
                             dsp += '<tr><td><b>Total</b></td><td>: '+ftt+'</td></tr>';			                  	                  
                             dsp += '</table>';
                             dsp += '<br><b>Attachment Terkait</b>';
@@ -1332,7 +1333,7 @@
                                             siz = v['file']['size_unit'];
                                         }
 
-                                        var attr = 'data-file-type="'+v['file_type']+'" data-file-id="'+v['file_id']+'" data-file-session="'+v['file_session']+'" data-file-name="'+v['file']['name']+'" data-file-format="'+v['file']['format']+'" data-file-src="'+v['file']['src']+'"';                                                                                      
+                                        var attr = 'data-order-id="'+fid+'" data-file-type="'+v['file_type']+'" data-file-id="'+v['file_id']+'" data-file-session="'+v['file_session']+'" data-file-name="'+v['file']['name']+'" data-file-format="'+v['file']['format']+'" data-file-src="'+v['file']['src']+'"';                                                                                      
                                         dsp += '<tr>';
                                         dsp += '<td><a class="btn_attachment_preview" href="#" '+attr+'>'+v['file']['name']+'</a></td>';
                                         dsp += '<td style="text-align:right;">'+siz+'</td>';
@@ -1607,6 +1608,20 @@
                             dsp += '        <input id="jc_input" name="jc_input" type="file" class="form-control">';
                             dsp += '    </div>';
                             dsp += '</div>';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Jenis File</label>';
+                            dsp += '        <select id="jc_select" name="jc_select" class="form-control">';
+                            dsp += '            <option value="0">Pilih</option>';
+                            dsp += '            <option value="Bukti Bayar">Bukti Bayar</option>';
+                            dsp += '            <option value="KTP">KTP</option>';
+                            dsp += '            <option value="Form Sewa">Form</option>';
+                            dsp += '            <option value="Plat Kendaraan">Plat Kendaraan</option>';
+                            dsp += '            <option value="Sisa Kunci">Sisa Kunci</option>';
+                            dsp += '            <option value="Kunci Kamar">Kunci Kamar</option>';                                                                                                                                                                        
+                            dsp += '        </select>';
+                            dsp += '    </div>';
+                            dsp += '</div>';                            
                         dsp += '</form>';
                         content = dsp;
                         self.setContentAppend(content);
@@ -1619,18 +1634,22 @@
                             action: function(e){
                                 let self      = this;
                 
-                                // let input     = self.$content.find('#jc_input').val();
+                                let select     = self.$content.find('#jc_select').val();
                                 let input     = self.$content.find('#jc_input')[0].files[0];                        
-                                // if(!input){
-                                    // $.alert('File belum dipilih');
-                                    // return false;
-                                // } else{
+                                if(!input){
+                                    $.alert('File belum dipilih');
+                                    return false;
+                                } else if(select == 0){
+                                    $.alert('Jenis File belum dipilih');
+                                    return false;
+                                } else{
                                     // $('#upload1')[0].files[0]
                                     let form = new FormData();
                                     form.append('action', 'file_create');
                                     form.append('from_table',approval_table);
                                     form.append('trans_id',id);
                                     form.append('source', input);
+                                    form.append('note', select);                                    
                                     $.ajax({
                                         type: "post",
                                         url: "<?= base_url('approval'); ?>",
@@ -1654,7 +1673,7 @@
                                             notif(0,err);
                                         }
                                     });
-                                // }
+                                }
                             }
                         },
                         button_2: {
@@ -1782,7 +1801,8 @@
                 file_session:$(this).attr('data-file-session'),
                 file_format:$(this).attr('data-file-format'),
                 file_name:$(this).attr('data-file-name'),
-                file_src:$(this).attr('data-file-src')
+                file_src:$(this).attr('data-file-src'),
+                order_id:$(this).attr('data-order-id')
             };
             attachmentPreview(params);
         });
@@ -1881,7 +1901,7 @@
                                         siz = v['file']['size_unit'];
                                     }
 
-                                    var attr = 'data-file-type="'+v['file_type']+'" data-file-id="'+v['file_id']+'" data-file-session="'+v['file_session']+'" data-file-name="'+v['file']['name']+'" data-file-format="'+v['file']['format']+'" data-file-src="'+v['file']['src']+'"';                                                                                      
+                                    var attr = 'data-order-id="'+data_id+'" data-file-type="'+v['file_type']+'" data-file-id="'+v['file_id']+'" data-file-session="'+v['file_session']+'" data-file-name="'+v['file']['name']+'" data-file-format="'+v['file']['format']+'" data-file-src="'+v['file']['src']+'"';                                                                                      
                                     dsp += '<tr>';
                                     dsp += '<td><a class="btn_attachment_preview" href="#" '+attr+'>'+v['file']['name']+'</a></td>';
                                     dsp += '<td style="text-align:right;">'+siz+'</td>';
@@ -1935,6 +1955,8 @@
                     var dsp = '';
                     if(ffr == 'png'){
                         dsp = '<img src="'+ fsr+'" class="img-responsive" style="margin:0 auto;">';
+                    }else if((ffr == 'jpg') || (ffr == 'jpeg')){
+                        dsp = '<img src="'+ fsr+'" class="img-responsive" style="margin:0 auto;">';
                     }else if((ffr == 'xls') || (ffr == 'xlsx')){
                         dsp = '<img src="'+ fsr+'" class="img-responsive" style="margin:0 auto;">';
                     }else if(ffr == 'pdf'){
@@ -1981,6 +2003,7 @@
             });    
         }
         function attachmentRemoveForm(params){
+            console.log(params);
             let title   = 'Konfirmasi';
             let content = 'Data yg sudah dihapus tidak akan bisa dikembalikan lagi.';
             $.confirm({
@@ -2013,7 +2036,8 @@
                                         let r = d.result;
                                         if(parseInt(s) == 1){
                                             // var ffid = $("#id_document").val();
-                                            loadAttachment(params.file_id);
+                                            // loadAttachment(params.file_id);
+                                            loadAttachment(params.order_id);
                                             // attachmentPreview(r);
                                             notif(s,m);
                                         }else{
@@ -2697,8 +2721,12 @@
                         }                        
                     }
                     if(parseInt(this_form.attr('data-order-flag')) == 0) {
-                        dsp += '<li><a href="#" class="btn_delete_order" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="4" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
-                        dsp += '<i class="fas fa-trash"></i><span style="position: relative;">&nbsp;Hapus</span></a></li>';
+                        if(parseInt(this_form.attr('data-order-item-flag-checkin')) === 1){
+
+                        } else {
+                            dsp += '<li><a href="#" class="btn_delete_order" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="4" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                            dsp += '<i class="fas fa-trash"></i><span style="position: relative;">&nbsp;Hapus</span></a></li>';
+                        }
                         // dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="4" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
                         // dsp += '<i class="fas fa-trash"></i><span style="position: relative;">&nbsp;Hapus</span></a></li>';                        
                     }

@@ -132,6 +132,7 @@ class Front_office extends MY_Controller{
 
             $data['session'] = $this->session->userdata();  
             $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+            $session_user_group_id = intval($data['session']['user_data']['user_group_id']);
 
             $post = $this->input->post();
             $get  = $this->input->get();
@@ -877,6 +878,10 @@ class Front_office extends MY_Controller{
                                 }         
                             }
                             
+                            if($session_user_group_id < 3){
+                                $next=true;
+                            }
+
                             if($next){
                                 $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
                                 // $sdate = $post['order_start_date']." 00:00:00";
@@ -966,11 +971,11 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        'file_name' => 'Bukti Bayar',                                                        
-                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
+                                                        'file_name' => 'Bukti Bayar - '.$upload_process['result']['file_name'],                                                        
                                                         'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
                                                         'file_url' => $upload_process['result']['file_location'],
-                                                        'file_size' => $upload_process['result']['file_size']
+                                                        'file_size' => $upload_process['result']['file_size'],
+                                                        'file_note' => 'Bukti Bayar'
                                                     );                                                    
                                                     $stat = $this->File_model->add_file($params_image);
                                                     $set_paid_url = $upload_process['result']['file_location'];
@@ -1000,11 +1005,11 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
-                                                        'file_name' => 'KTP',                                                        
+                                                        'file_name' => 'KTP - '.$upload_process['result']['file_name'],                                                        
                                                         'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
                                                         'file_url' => $upload_process['result']['file_location'],
-                                                        'file_size' => $upload_process['result']['file_size']
+                                                        'file_size' => $upload_process['result']['file_size'],
+                                                        'file_note' => 'KTP'
                                                     );                                                    
                                                     $stat = $this->File_model->add_file($params_image);
                                                 }
@@ -1235,6 +1240,10 @@ class Front_office extends MY_Controller{
                                 }         
                             }
                             
+                            if($session_user_group_id < 3){
+                                $next=true;
+                            }
+
                             if($next){
                                 $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
                                 // $sdate = $post['order_start_date']." 00:00:00";
@@ -1328,11 +1337,11 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        'file_name' => 'Bukti Bayar',
-                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
+                                                        'file_name' => 'Bukti Bayar - '.$upload_process['result']['file_name'],
                                                         'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
                                                         'file_url' => $upload_process['result']['file_location'],
-                                                        'file_size' => $upload_process['result']['file_size']
+                                                        'file_size' => $upload_process['result']['file_size'],
+                                                        'file_note' => 'Bukti Bayar'
                                                     );                                                    
                                                     $stat = $this->File_model->add_file($params_image);
                                                     $set_paid_url = $upload_process['result']['file_location'];
@@ -1363,11 +1372,11 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
-                                                        'file_name' => 'KTP',                                                        
+                                                        'file_name' => 'KTP - '.$upload_process['result']['file_name'],                                                        
                                                         'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
                                                         'file_url' => $upload_process['result']['file_location'],
-                                                        'file_size' => $upload_process['result']['file_size']
+                                                        'file_size' => $upload_process['result']['file_size'],
+                                                        'file_note' => 'KTP'
                                                     );                                                    
                                                     $stat = $this->File_model->add_file($params_image);
                                                 }
@@ -1396,11 +1405,11 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        // 'file_name' => $upload_process['result']['file_name'] . $upload_process['result']['file_ext'],
-                                                        'file_name' => 'Plat Kendaraan',                                                        
+                                                        'file_name' => 'Form Sewa - '.$upload_process['result']['file_name'],                                        
                                                         'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
                                                         'file_url' => $upload_process['result']['file_location'],
-                                                        'file_size' => $upload_process['result']['file_size']
+                                                        'file_size' => $upload_process['result']['file_size'],
+                                                        'file_note' => 'Form Sewa'
                                                     );
                                                     $stat = $this->File_model->add_file($params_image);
                                                 }
@@ -2171,6 +2180,7 @@ class Front_office extends MY_Controller{
                         'price_ref_id' => $post['ref_id'],
                         'price_sort' => $post['ref_price_sort']                       
                     );
+                    
                     // $params = null;
                     $search = null; $limit = null; $start = null; $order  = 'price_name'; $dir = 'ASC';
                     $get_ref = $this->Ref_model->get_ref_price_custom($params);
@@ -2193,7 +2203,8 @@ class Front_office extends MY_Controller{
                     $return->result = $get_ref;
                     $return->result_ref = $get_ref_2;                    
                     $return->rooms = $get_room;
-                    $return->status = 1;                    
+                    $return->status = 1;        
+                    $return->params = $params;            
                     break;    
                 case "load-order-items-for-report":
                     // $columns = array(

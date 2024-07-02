@@ -9,7 +9,7 @@ class Approval extends MY_Controller{
     public $folder_upload = 'upload/file/';
     public $image_width   = 240;
     public $image_height  = 240;    
-    public $file_size_limit = 2097152; //in Byte
+    public $file_size_limit = 1024; //in Byte
     
     function __construct(){
         parent::__construct();
@@ -579,7 +579,7 @@ class Approval extends MY_Controller{
                                         'src' => $file_src,
                                         'format' => $v['file_format'],
                                         'size' => $v['file_size'],
-                                        'size_unit' => $this->file_unit_size($v['file_size']),                                        
+                                        'size_unit' => $this->file_unit_size(intval($v['file_size'] / 1024)),                                                                                
                                         'format_label' => '<label class="label" style="'.$set_color.'">'.$v['file_format'].'</label>'
                                     ),
                                     'table' => array(
@@ -679,17 +679,18 @@ class Approval extends MY_Controller{
                                     'file_session' => $file_session,
                                     'file_date_created' => date("YmdHis"),
                                     'file_user_id' => $session_user_id,
-                                    'file_type' => 1                            
+                                    'file_type' => 1,
+                                    'file_note' => !empty($post['note']) ? $post['note'] : null                            
                                 );
                                 $save_data = $this->File_model->add_file($params);
 
                                 // Call Helper for upload
-                                $upload_helper = upload_file($this->folder_upload, $this->input->post('source'));
+                                $upload_helper = upload_file_source($this->folder_upload, $this->input->post('source'));
                                 if ($upload_helper['status'] == 1) {
                                     $params_image = array(
-                                        'file_name' => $upload_helper['file'],
+                                        'file_name' => $post['note'].' - '.$upload_helper['result']['file_old_name'],
                                         'file_format' => str_replace(".","",$upload_helper['result']['file_ext']),
-                                        'file_url' => $this->folder_upload . $upload_helper['file'],
+                                        'file_url' => $upload_helper['result']['file_location'],
                                         'file_size' => $upload_helper['result']['file_size']
                                     );
                                     /*
@@ -703,13 +704,13 @@ class Approval extends MY_Controller{
                                     
                                     $return->message    = $upload_helper['message'];
                                     $return->status     = $upload_helper['status'];
-                                    $return->raw_file   = $upload_helper['file'];
+                                    // $return->raw_file   = $upload_helper['file'];
                                     $return->return     = $upload_helper;                            
                                 }else{
                                     $return->message = 'Error: '.$upload_helper['message'];
                                 }     
                             }else{                           
-                                $return->message = 'File lebih dari '.($this->file_size_limit / 1048576) .' MB';
+                                $return->message = 'File lebih dari '.($this->file_size_limit / 1024) .' MB';
                             }
                         }else{
                             $return->message = 'File tidak terbaca';
