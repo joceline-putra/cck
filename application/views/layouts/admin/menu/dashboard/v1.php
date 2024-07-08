@@ -135,7 +135,7 @@ if ($session['user_data']['user_id'] == 0) {
                 </div>
             </div>
         </div>      
-        <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="hide col-md-4 col-sm-12 col-xs-12">
             <div class="grid simple">
                 <div class="grid-title no-border">
                     <h5>Grafik Pemasukan & Biaya Operasional</h5>
@@ -155,7 +155,7 @@ if ($session['user_data']['user_id'] == 0) {
                 </div>
             </div>
         </div>  
-        <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="hide col-md-4 col-sm-12 col-xs-12">
             <div class="grid simple">
                 <div class="grid-title no-border">
                     <h5>Grafik Jual Beli</h5>
@@ -175,7 +175,7 @@ if ($session['user_data']['user_id'] == 0) {
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="hide col-md-4 col-sm-12 col-xs-12">
             <div class="grid simple">
                 <div class="grid-title no-border">
                     <h5>Grafik Pergerakan Transaksi</h5>
@@ -196,7 +196,7 @@ if ($session['user_data']['user_id'] == 0) {
             </div>
         </div>    
         <div class="clearfix"></div>
-        <div class="col-md-12 col-sm-12 col-xs-12">        
+        <div class="hide col-md-12 col-sm-12 col-xs-12">        
             <div class="grid simple">
                 <div class="grid-body" style="padding-bottom: 4px;">
                     <div class="col-md-3 col-sm-12 col-xs-12">
@@ -204,22 +204,17 @@ if ($session['user_data']['user_id'] == 0) {
                             <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #DB2E59;">
                                 <h5 class="" style="width:70%;color:white;"><b><i class="fas fa-shopping-cart" style="color:white;"></i> Pembelian Bulan Ini</b></h5>
                                 <div class="tools">
-                                    <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
-                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
                                     <a href="javascript:;" class="reload" style="color:white;"></a>
                                     <a href="javascript:;" class="remove" style="color:white;"></a>
                                 </div>
                             </div>      
-                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #DB2E59;">                   
-                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
-                                <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
-                                        <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #DB2E59;">             
+                                <div class="col-md-12 col-sm-12 padding-remove-side">          
+                                    <!-- <canvas id="chart-four" width="400" height="180"></canvas>-->
                                 </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12">
-
                                     <h4 id="total-buy-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
-                                </div>          
-                                <!-- </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -229,22 +224,17 @@ if ($session['user_data']['user_id'] == 0) {
                                 <h5 class="" style="width:70%;color:white;"><b><i class="fas fa-cash-register" class="" style="color:white;"></i> 
                                         Penjualan Bulan Ini</b></h5>
                                 <div class="tools">
-                                    <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
-                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
                                     <a href="javascript:;" class="reload" style="color:white;"></a>
                                     <a href="javascript:;" class="remove" style="color:white;"></a>
                                 </div>
                             </div>      
-                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #0090d9;">                   
-                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
-                                <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
-                                        <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #0090d9;">               
+                                <div class="col-md-12 col-sm-12 padding-remove-side">          
+                                    <!-- <canvas id="chart-four" width="400" height="180"></canvas>-->
                                 </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12">
-
                                     <h4 id="total-sell-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
                                 </div>          
-                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -253,22 +243,17 @@ if ($session['user_data']['user_id'] == 0) {
                             <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #0aa699;">
                                 <h5 class="" style="width:70%;color:white;"><b><i class="fas fa-arrow-circle-down" style="color:white;"></i> Pemasukan Bulan Ini</b></h5>
                                 <div class="tools">
-                                    <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
-                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
                                     <a href="javascript:;" class="reload" style="color:white;"></a>
                                     <a href="javascript:;" class="remove" style="color:white;"></a>
                                 </div>
                             </div>      
-                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #0aa699;">                   
-                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
-                                <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
-                                        <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #0aa699;">
+                                <div class="col-md-12 col-sm-12 padding-remove-side">          
+                                    <!-- <canvas id="chart-four" width="400" height="180"></canvas>-->
                                 </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12">
-
                                     <h4 id="total-cash-in-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
                                 </div>          
-                                <!-- </div> -->
                             </div>
                         </div>
                     </div> 
@@ -277,22 +262,17 @@ if ($session['user_data']['user_id'] == 0) {
                             <div class="grid-title no-border" style="padding-bottom: 0px;padding-top:10px;background-color: #ef6605;">
                                 <h5 class="" style="width:70%;color:white"><b><i class="fas fa-arrow-circle-up" style="color:white;"></i> Biaya Bulan Ini</b></h5>
                                 <div class="tools">
-                                    <!-- <a href="javascript:;" class="collapse" style="color:white;"></a> -->
-                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
                                     <a href="javascript:;" class="reload" style="color:white;"></a>
                                     <a href="javascript:;" class="remove" style="color:white;"></a>
                                 </div>
                             </div>      
-                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #ef6605;">                   
-                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
-                                <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
-                                        <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                            <div class="grid-body no-border" style="padding:0px 0px 10px 0px;background-color: #ef6605;">      
+                                <div class="col-md-12 col-sm-12 padding-remove-side">          
+                                    <!-- <canvas id="chart-four" width="400" height="180"></canvas>-->
                                 </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12">
-
                                     <h4 id="total-cash-out-month" class="" style="margin:0px;color:white;">Rp. 0</h4>                            
                                 </div>          
-                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -379,7 +359,7 @@ if ($session['user_data']['user_id'] == 0) {
             </div>
             <div class="col-lg-5 col-md-12 col-xs-12 padding-remove-side">
                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-right">
-                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                    <div class="hide col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                         <div class="grid simple">
                             <div class="grid-title no-border">
                                 <h5>Biaya Operasional Terpantau</h5>
@@ -413,7 +393,7 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                    <div class="hide col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                         <div class="grid simple">
                             <div class="grid-title no-border">
                                 <h5>Pantauan Akun Realtime</h5>
@@ -618,6 +598,41 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>  
+                    <div id="top_date_due" class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:inline;">
+                        <div class="grid simple">
+                            <div class="grid-title no-border">
+                                <h5>Bulanan Akan Habis</h5>
+                                <div class="tools">
+                                    <a id="btn_top_cece_date_due" href="#"><i class="fas fa-sync"></i></a>
+                                    <!-- <a href="javascript:;" class="collapse"></a> -->
+                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
+                                    <!-- <a id="btn_top_cece_date_due" href="#" class="reload"></a> -->
+                                    <!-- <a href="javascript:;" class="remove"></a> -->
+                                </div>
+                            </div>      
+                            <div class="grid-body no-border" style="padding:10px;">                   
+                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
+                                <div class="col-md-12 col-sm-12 padding-remove-side">          
+                                <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                                </div>
+                                <!-- </div> -->
+                                <table id="table_top_date_due" class="table no-more-tables">
+                                    <thead>
+                                        <tr>
+                                            <td><b>Room</b></td>
+                                            <td><b>CheckIn</b></td>                                            
+                                            <td style="text-align:right;"><b>Expired</b></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" style="text-align: center;">-- Data tidak tersedia --</td>
+                                        </tr>
+                                    </tbody>
+                                </table>      
+                            </div>
+                        </div>
+                    </div> 
                 </div>      
             </div>    
         </div>  
@@ -625,3 +640,80 @@ if ($session['user_data']['user_id'] == 0) {
     <?php
 }
 ?>   
+<div class="modal fade" id="modal_booking_cece" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #f3f5f6;">
+                <h4 style="color:black;text-align:left;"><b id="modal-print-title">Reminder Booking</b></h4>
+                <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                    <i class="fas fa-times"></i>                                 
+                    Tutup
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 padding-remove-side">
+                        <table class="table">      
+                            <tr>
+                                <td>Nomor</td>
+                                <td class="book_number">:</td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal</td>
+                                <td class="book_date">:</td>
+                            </tr>                 
+                            <tr>
+                                <td>Kontak</td>
+                                <td>:<input id="book_contact_name" name="book_contact_name" value="" style="border:none!important;"></td>
+                            </tr>         
+                            <tr>
+                                <td>Telepon</td>
+                                <td>:<input id="book_contact_phone" name="book_contact_phone" value="" style="border:none!important;"></td>
+                            </tr>   
+                            <tr>
+                                <td>Kamar</td>
+                                <td class="book_room">:</td>
+                            </tr>
+                            <tr>
+                                <td>Check-In</td>
+                                <td class="book_checkin_date">:</td>
+                            </tr>
+                            <tr>
+                                <td>Sisa Hari</td>
+                                <td class="book_expired_day">:</td>
+                            </tr>                            
+                            <tr>
+                                <td>Total</td>
+                                <td class="book_total">:</td>
+                            </tr>
+                            <tr>
+                                <td>Total Dibayar</td>
+                                <td class="book_total_paid">:</td>
+                            </tr>
+                        </table>
+                    </div>           
+                </div>
+            </div>
+            <div class="modal-footer flex-center">
+                <button type="button" class="btn_send_whatsapp_reminder btn btn-primary" 
+                    data-order-id="0" 
+                    data-order-number="" 
+                    data-order-date="" 
+                    data-total="" 
+                    data-contact-name="" 
+                    data-contact-phone="" 
+                    style="width:45%;">
+					<span class="fab fa-whatsapp white"></span> Kirim Pengingat
+				</button>
+				<!-- <button type="button" id="btn_print_trans" class="btn_print_order btn btn-success" 
+                    data-order-id="0" data-order-number="0" data-order-session="" style="width:45%;">
+					<span class="fas fa-file-invoice white"></span> Cetak Struk
+				</button>      -->
+				<button type="button" id="btn_modal_close" class="btn_print_order btn btn-default" 
+                    style="width:45%;" data-dismiss="modal">
+					<span class="fas fa-times"></span> Tutup
+				</button>                                  
+            </div>
+        </div>
+    </div>
+</div>

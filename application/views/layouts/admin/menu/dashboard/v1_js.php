@@ -2,9 +2,14 @@
 <script>
     // Start document ready
     $(document).ready(function () {
-        var url_approval = "<?= base_url('approval'); ?>";
+        var url_approval = "<?= base_url('approval'); ?>"; //Not Used
         var url_dashboard = "<?= base_url('dashboard'); ?>";
-        var url_trans = "<?= base_url('transaksi/manage'); ?>";
+        var url_trans = "<?= base_url('transaksi/manage'); ?>"; //Not Used
+        var url_message         = "<?= base_url('message'); ?>";
+
+        // Booking Variable
+        // let bookingDATA;
+        // $("#modal_booking_cece").modal('show');
 
         // Variable
             const Toast = Swal.mixin({
@@ -224,6 +229,194 @@
             });
         // Enf of Approval
 
+        // Booking
+        $(document).on("click","#btn_top_cece_date_due", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            top_cece_date_due();
+        });
+        $(document).on("click",".btn_booking_info", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var id = $(this).attr('data-order-id');
+            var item_id = $(this).attr('data-order-item-id');    
+            var v = JSON.parse(atob($(this).attr('data-order'))); 
+            console.log(v);     
+            $(".book_number").html(v['order_number']);   
+            $(".book_date").html(moment(v['order_date']).format("DD-MMM-YYYY, HH:mm"));      
+            $("input[name='book_contact_name']").val(v['order_contact_name']);
+            $("input[name='book_contact_phone']").val(v['order_contact_phone']);  
+            $(".book_checkin_date").html(moment(v['order_item_start_date']).format("DD-MMM-YYYY, HH:mm")+' to '+moment(v['order_item_end_date']).format("DD-MMM-YYYY, HH:mm"));                                                           
+            $(".book_room").html(v['branch_name']+' - '+v['product_name']+' - '+v['ref_name']);  
+            $(".book_total").html(addCommas(v['order_total']));
+            $(".book_total_paid").html(addCommas(v['order_total_paid']));
+            $(".book_expired_day").html(v['order_item_expired_day']+' hari lagi');
+
+            $(".btn_send_whatsapp_reminder")
+                .attr('data-order-id',v['order_id'])
+                .attr('data-order-number',v['order_number'])
+                .attr('data-order-date',v['order_date'])
+                .attr('data-total',v['order_total'])
+                .attr('data-contact-name',v['order_contact_name'])
+                .attr('data-contact-phone',v['order_contact_phone'])                                
+                .attr('data-remaining',v['order_item_expired_day']) 
+                .attr('data-checkin',moment(v['order_item_start_date']).format("DD-MMM-YYYY, HH:mm")+' to '+moment(v['order_item_end_date']).format("DD-MMM-YYYY, HH:mm"))                 
+            ;
+            $("#modal_booking_cece").modal('show');                            
+        });
+        $(document).on("click",".btn_send_whatsapp_reminder", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var trans_id = $(this).attr('data-order-id');
+            if (parseInt(trans_id) > 0) {
+                var params = {
+                    trans_id: trans_id,
+                    trans_number: $(this).attr('data-order-number'),
+                    trans_date: $(this).attr('data-order-date'),
+                    trans_total: $(this).attr('data-total'),
+                    contact_name: $(this).attr('data-contact-name'),
+                    contact_phone: $(this).attr('data-contact-phone'),
+                    remaining_day:$(this).attr('data-remaining'),
+                    checkin:$(this).attr('data-checkin')                    
+                    // contact_emmail: $(this).attr('data-contact-email')
+                }
+                formSendReceipt(params);
+            } else {
+                notif(0, 'Data tidak ditemukan');
+            }
+        });
+        function formSendReceipt(params) { //ols is formWhatsApp()
+            console.log(params);
+            var d = {
+                trans_id: params['trans_id'],
+                trans_number: params['trans_number'],
+                trans_date: params['trans_date'],
+                trans_total: params['trans_total'],
+                // contact_id: params['contact_id'],
+                contact_name: params['contact_name'],
+                contact_phone: params['contact_phone'],
+                // contact_email: params['contact_email'],
+                remaining_day:params['remaining_day'],
+                checkin:params['checkin']
+            }
+            var content = '';
+            var ctitle = 'Reminder Perpanjangan';
+            content += 'Apakah anda ingin mengirim '+ctitle+' ?<br><br>';
+            let title = 'Kirim '+ctitle;
+            $.confirm({
+                title: title,
+                columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                closeIcon: true, closeIconClass: 'fas fa-times',
+                animation: 'zoom', closeAnimation: 'bottom', animateFromElement: false, useBootstrap: true,
+                content: function () {
+                    var dsp = '';
+                    dsp += content;
+                    return dsp;
+                },
+                onContentReady: function (e) {
+                    let self = this;
+                    let content = '';
+                    let dsp = '';
+
+                    // dsp += '<div>'+content+'</div>';
+                    dsp += '<form id="jc_form">';
+                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Tgl CheckIn Sebelumnya</label>';
+                        dsp += '        <input id="jc_number" name="jc_number" class="form-control" value="' + d['checkin'] + '" readonly>';
+                        dsp += '    </div>';
+                        dsp += '</div>';                    
+                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side prs-0">';
+                        dsp += '<div class="col-md-6 col-xs-6 col-sm-6 padding-remove-left prs-0">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Sisa Hari</label>';
+                        dsp += '        <input id="jc_date" name="jc_date" class="form-control" value="' + d['remaining_day'] + ' hari lagi" readonly>';
+                        dsp += '    </div>';
+                        dsp += '</div>';
+                        dsp += '<div class="col-md-6 col-xs-6 col-sm-6 padding-remove-right prs-0">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Total</label>';
+                        dsp += '        <input id="jc_total" name="jc_total" class="form-control" value="' + addCommas(d['trans_total']) + '" readonly>';
+                        dsp += '    </div>';
+                        dsp += '</div>';                        
+                    dsp += '</div>';
+                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side prs-0">';                    
+                        dsp += '<div class="col-md-5 col-xs-5 col-sm-5 padding-remove-left prs-0">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Nama</label>';
+                        dsp += '        <input id="jc_contact_name" name="jc_contact_name" class="form-control" value="' + d['contact_name'] + '">';
+                        dsp += '    </div>';
+                        dsp += '</div>';
+                        dsp += '<div class="col-md-7 col-xs-7 col-sm-7 padding-remove-right prs-0">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Whatsapp</label>';
+                        dsp += '        <input id="jc_contact_number" name="jc_contact_number" class="form-control" value="' + d['contact_phone'] + '">';
+                        dsp += '    </div>';
+                        dsp += '</div>';
+                    dsp += '</div>';                  
+                    dsp += '</form>';
+                    content = dsp;
+                    self.setContentAppend(content);
+                },
+                buttons: {
+                    button_1: {
+                        text: '<i class="fas fa-paper-plane white"></i> Kirim ',
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: function (e) {
+                            let self = this;
+
+                            let name = self.$content.find('#jc_contact_name').val();
+                            let number = self.$content.find('#jc_contact_number').val();
+
+                            if (!name) {
+                                $.alert('Nama diisi dahulu');
+                                return false;
+                            } else if (!number) {
+                                $.alert('Nomor WhatsApp diisi dahulu');
+                                return false;
+                            } else {
+                                var data = {
+                                    action: 'whatsapp-send-message-reminder-rebooking',
+                                    order_id: d['trans_id'],
+                                    // contact_id: d['contact_id'],
+                                    contact_name: name,
+                                    contact_phone: number
+                                }
+                                $.ajax({
+                                    type: "POST",
+                                    url: url_message,
+                                    data: data,
+                                    dataType: 'json',
+                                    cache: false,
+                                    beforeSend: function () {},
+                                    success: function (d) {
+                                        let s = d.status;
+                                        let m = d.message;
+                                        let r = d.result;
+                                        if (parseInt(d.status) == 1) {
+                                            notif(1, d.message);
+                                        } else {
+                                            notif(0, d.message);
+                                        }
+                                    },
+                                    error: function (xhr, status, err) {}
+                                });
+                            }
+                        }
+                    },
+                    button_2: {
+                        text: '<i class="fas fa-window-close white"></i> Tidak Jadi',
+                        btnClass: 'btn-danger',
+                        keys: ['Escape'],
+                        action: function () {
+                            //Close
+                        }
+                    }
+                }
+            });
+        }  
+        // End of Booking
         /* Chart One chart_trans_last_order() */
             var id_chart_one = document.getElementById("chart-one").getContext("2d");
             gradient = id_chart_one.createLinearGradient(0, 0, 0, 200);
@@ -1451,7 +1644,7 @@
             }
         });
     }
-    function top_cece_date_due() { console.log('top_contact() 1');
+    function top_cece_date_due() { console.log('top_cece_date_due() 1');
         var start = $("#start").val();
         var end = $("#end").val();
         var data = {
@@ -1472,24 +1665,37 @@
                 if (parseInt(d.status) === 1) {
                     var datas = d.result;
                     //Prepare List Contact
-                    // $("#table-top-contact tbody").html('');
-                    // if (parseInt(datas.length) > 0) {
-                    //     $("#top_contact").show(300);
-                    //     var dsp = '';
-                    //     $.each(datas, function (i, val) {
-                    //         dsp += '<tr>';
-                    //         dsp += '<td class="v-align-middle btn-contact-info" data-id="' + val['contact_id'] + '" data-type="trans" data-trans-type=""><span><a href="#" style="cursor:pointer;color:#156397;">' + val['name'] + '</a></span></td>';
-                    //         dsp += '<td class="text-right"><span>Rp. ' + addCommas(val['total']) + '</span></td>';
-                    //         // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
-                    //         dsp += '</tr>';
-                    //     });
-                    // } else {
-                    //     $("#top_contact").hide(300);                        
-                    //     dsp += '<tr>';
-                    //     dsp += '<td class="text-center" colspan="2">Tidak ada data</td>';
-                    //     dsp += '</tr>';
-                    // }
-                    // $("#table-top-contact tbody").html(dsp);
+                    $("#table_top_date_due tbody").html('');
+                    if (parseInt(datas.length) > 0) {
+                        // $("#top_contact").show(300);
+                        var dsp = '';
+                        $.each(datas, function (i, val) {
+                            var lbl = '[' + val['branch_name'] + '] '+ val['product_name'];
+                            var exp = val['order_item_expired_day_2'] + ' hari lagi';
+                            // var dd = {
+                            //     'data-id':val['order_item_id'],
+                            //     'data-value':JSON.stringify(val)
+                            // };
+                            // console.log(dd);
+                            var vvv = btoa(JSON.stringify(val));
+                            // var vvv = JSON.stringify(val);
+                            dsp += '<tr>';
+                            dsp += '<td class="v-align-middle"><span>'+
+                               '<a class="btn_booking_info" data-order-id="' + val['order_id'] + '" data-order-item-id="'+ val['order_item_id']+'" data-order="'+vvv+'" href="#" style="cursor:pointer;color:#156397;">' + 
+                                lbl + 
+                                '</a></span></td>';
+                                dsp += '<td class="text-left"><span>' + moment(val['order_item_start_date']).format("DD-MMM-YY") + ' sd ' + moment(val['order_item_end_date']).format("DD-MMM-YY") + '</span></td>';
+                                dsp += '<td class="text-right"><span>' + exp + '</span></td>';
+                            // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
+                            dsp += '</tr>';
+                        });
+                    } else {
+                        $("#top_date_due").hide(300);                        
+                        dsp += '<tr>';
+                        dsp += '<td class="text-center" colspan="3">Tidak ada data</td>';
+                        dsp += '</tr>';
+                    }
+                    $("#table_top_date_due tbody").html(dsp);
                 } else {
                     notifError(d.message);
                 }

@@ -11,7 +11,7 @@ $whatsapp_key  = '';
 $whatsapp_sender  = '';
 $whatsapp_username  = '';
 $whatsapp_service = array();
-$whatsapp_watermark = 'Teksmu.com';
+$whatsapp_watermark = '';
 
 switch($vendor){
 	case "ruangwa":
