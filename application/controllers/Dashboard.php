@@ -645,7 +645,7 @@ class Dashboard extends MY_Controller{
                 LEFT JOIN `references` ON order_item_ref_id = ref_id
                 LEFT JOIN products ON order_item_product_id = product_id
                 WHERE order_item_flag_checkin = 1
-                AND DATEDIFF(order_item_end_date,NOW()) > 0
+                AND DATEDIFF(order_item_end_date,NOW()) > -14
                 ORDER BY order_item_expired_day ASC LIMIT 10
             ");            
             $return->status=1;

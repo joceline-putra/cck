@@ -1671,7 +1671,12 @@
                         var dsp = '';
                         $.each(datas, function (i, val) {
                             var lbl = '[' + val['branch_name'] + '] '+ val['product_name'];
-                            var exp = val['order_item_expired_day_2'] + ' hari lagi';
+
+                            if(val['order_item_expired_day_2'] < 0){
+                                var exp = val['order_item_expired_day_2'] + ' lewat';
+                            }else{
+                                var exp = val['order_item_expired_day_2'] + ' hari lagi';
+                            }
                             // var dd = {
                             //     'data-id':val['order_item_id'],
                             //     'data-value':JSON.stringify(val)
