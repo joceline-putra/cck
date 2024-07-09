@@ -2220,7 +2220,8 @@ class Front_office extends MY_Controller{
                     $trans_type = !empty($this->input->post('tipe')) ? $this->input->post('tipe') : 0;
                     $contact_id = !empty($this->input->post('kontak')) ? $this->input->post('kontak') : 0;
                     $product_id = !empty($this->input->post('product')) ? $this->input->post('product') : 0;
-                    $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : 0;                    
+                    $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : 0;           
+                    $ouser = !empty($this->input->post('user')) ? $this->input->post('user') : 0;                                        
                     $product    = !empty($this->input->post('product')) ? $this->input->post('product') : 0;   
                     $date_start = date('Y-m-d H:i:s', strtotime($this->input->post('date_start').' 00:00:00'));
                     $date_end   = date('Y-m-d H:i:s', strtotime($this->input->post('date_end').' 23:59:59'));
@@ -2233,6 +2234,9 @@ class Front_office extends MY_Controller{
                     if(intval($branch) > 0){
                         $params['order_branch_id'] = $branch;
                     }
+                    if(intval($ouser) > 0){
+                        $params['order_user_id'] = $ouser;
+                    }                    
                     // if(intval($product_id) > 0){
                     //     $params['order_item_product_id'] = $product_id;
                     // }

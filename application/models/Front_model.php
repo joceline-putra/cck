@@ -41,6 +41,7 @@ class Front_model extends CI_Model{
         // $this->db->join('references_prices','price_id=order_item_ref_price_id','left');
         $this->db->join('products','product_id=order_item_product_id','left');  
         $this->db->join("branchs","order_branch_id=branch_id","left");                
+        $this->db->join('users','order_user_id=user_id','left');        
     }
     
     function set_join_paid(){
@@ -61,7 +62,8 @@ class Front_model extends CI_Model{
         // $this->db->select("references_prices.price_id, references_prices.price_name");
         $this->db->select("products.product_id, products.product_name, product_flag");  
         $this->db->select("order_item_expired_day, DATEDIFF(order_item_end_date,NOW()) AS order_item_expired_day_2");
-        $this->db->select("branch_id, branch_name, branch_code");              
+        $this->db->select("branch_id, branch_name, branch_code");         
+        $this->db->select("user_id, user_username");                      
     }
     
     function set_select_paid(){

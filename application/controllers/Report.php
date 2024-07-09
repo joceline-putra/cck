@@ -1499,6 +1499,7 @@ class Report extends MY_Controller{
             $product = $this->input->get('product');
             $order = $this->input->get('order');
             $dir = $this->input->get('dir');
+            $ouser = $this->input->get('user');            
 
             $data['branch'] = $this->Branch_model->get_branch(1);
             if($data['branch']['branch_logo'] == null){
@@ -1537,6 +1538,12 @@ class Report extends MY_Controller{
                 $params_datatable['order_branch_id'] = intval($branch);
                 $get_branch = $this->Branch_model->get_branch(intval($branch));
                 $data['branchs'] = $get_branch;
+            }
+
+            if(intval($ouser) > 0){
+                $params_datatable['order_user_id'] = intval($ouser);
+                $get_user = $this->User_model->get_user(intval($ouser));
+                $data['user'] = $get_user;
             }
 
             $mdatas = array();

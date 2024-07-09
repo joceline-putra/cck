@@ -86,14 +86,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <label class="form-label">Cabang</label>
                                             <select id="filter_branch" name="filter_branch" class="form-control">
                                                 <option value="0">-- Semua --</option>
                                             </select>
                                         </div>
-                                    </div>                                    
+                                    </div>               
+                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                        <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                            <label class="form-label">User Input</label>
+                                            <select id="filter_user" name="filter_user" class="form-control">
+                                                <option value="0">-- Semua --</option>
+                                            </select>
+                                        </div>
+                                    </div>                         
                                     <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                             <label class="form-label">Sorting</label>

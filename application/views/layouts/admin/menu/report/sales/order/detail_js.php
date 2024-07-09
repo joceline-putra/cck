@@ -43,6 +43,7 @@
                     // d.length = $("#table-data").attr('data-limit-end'); 
                     d.length = $("#filter_length").find(':selected').val();
                     d.branch = $("#filter_branch").find(':selected').val();
+                    d.user = $("#filter_user").find(':selected').val();                    
                     d.product = $("#filter_produk").find(':selected').val();
                     d.order[0]['column'] = $("#filter_order").find(':selected').val();
                     d.order[0]['dir'] = $("#filter_dir").find(':selected').val();
@@ -265,7 +266,60 @@
                 }
             }
         });
-        $(document).on("change", "#filter_branch, #filter_produk, #filter_order, #filter_dir", function (e) {
+        $('#filter_user').select2({
+            //dropdownParent:$("#modal-id"), //If Select2 Inside Modal
+            placeholder: 'Search',
+            minimumInputLength: 0,
+            allowClear: true,
+            ajax: {
+                type: "get",
+                url: "<?= base_url('search/manage'); ?>",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        source: 'users-switch'
+                    }
+                    return query;
+                },
+                processResults: function (datas, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: datas,
+                        pagination: {
+                            more: (params.page * 10) < datas.count_filtered
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            templateResult: function (datas) { //When Select on Click
+                if (!datas.id) {
+                    return datas.text;
+                }
+                if ($.isNumeric(datas.id) == true) {
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            },
+            templateSelection: function (datas) { //When Option on Click
+                if (!datas.id) {
+                    return datas.text;
+                }
+                //Custom Data Attribute
+                // $(datas.element).attr('data-alamat', datas.alamat);
+                // $(datas.element).attr('data-telepon', datas.telepon);
+                // $(datas.element).attr('data-email', datas.email);
+                if ($.isNumeric(datas.id) == true) {
+                    return datas.text;
+                }
+            }
+        });       
+        $(document).on("change", "#filter_branch, #filter_produk, #filter_user, #filter_order, #filter_dir", function (e) {
             index.ajax.reload();
         });
 
@@ -285,6 +339,7 @@
             var contact = $("#filter_kontak").find(':selected').val();
             var contact = 0;
             var branch = $("#filter_branch").find(':selected').val();
+            var users = $("#filter_user").find(':selected').val();            
 
             var order = $("#filter_order").find(':selected').val();
             if (order == 0) {
@@ -304,7 +359,7 @@
                     + request + '/'
                     + $("#start").val() + '/'
                     + $("#end").val() + '/'
-                    + "contact?"+ contact +"&act=" + action +"&branch=" + branch + "&format=" + format + "&order=" + order + "&dir=" + dir;
+                    + "contact?"+ contact +"&act=" + action +"&branch=" + branch + "&format=" + format + "&order=" + order + "&dir=" + dir + "&user="+users;
             window.open(print_url, '_blank');
             // var request = $('.btn-print-all').data('request');
             // var print_url = url_print +'/'+ request + '/'+ $("#start").val() +'/'+ $("#end").val();

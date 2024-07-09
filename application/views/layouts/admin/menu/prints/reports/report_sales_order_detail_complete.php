@@ -48,7 +48,10 @@
             }         
             if(!empty($branchs)){
                 echo 'Cabang : ' . $branchs['branch_name'];                
-            }                
+            }          
+            if(!empty($user)){
+                echo 'User Input : ' . $user['user_username'];                
+            }                     
         ?>
         </div>
     </div>
@@ -75,7 +78,8 @@
                         <td style="text-align:left;"><b>Attachment</b></td>    
                         <td style="text-align:left;"><b>Jml Kendaraan</b></td>
                         <td style="text-align:left;"><b>Biaya Kendaraan</b></td>    
-                        <td style="text-align:left;"><b>Sisa Hari</b></td>                                                                                                                     
+                        <td style="text-align:left;"><b>Sisa Hari</b></td>   
+                        <td style="text-align:left;"><b>User</b></td>                                                                                                                                             
                     </tr>
                 </thead>
             <tbody>
@@ -131,7 +135,8 @@
                         ;?></td>  
                     <td style="text-align:right;"><?php echo number_format($v['order_vehicle_count']);?></td>     
                     <td style="text-align:right;"><?php echo number_format($v['order_vehicle_cost']);?></td>          
-                    <td><?php echo ($v['order_item_expired_day'] > 0) ? $v['order_item_expired_day'] : '-';?></td>                                           
+                    <td style="text-align:right;"><?php echo ($v['order_item_expired_day'] > 0) ? $v['order_item_expired_day'] : '-';?></td>     
+                    <td><?php echo $v['user_username'];?></td>                                                               
                  </tr>    
                 <?php 
                 $total_trans = $total_trans + $v['order_item_price'];                  
