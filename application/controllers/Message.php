@@ -1482,6 +1482,45 @@ class Message extends CI_Controller{
                         } else {                            
                             $return->message = 'Not Connected';
                         }                         
+                    }elseif($whatsapp_vendor=='fonnte.com'){
+
+                        $curl = curl_init();
+                        curl_setopt_array($curl, array(
+                            CURLOPT_URL => $whatsapp_server,
+                            CURLOPT_RETURNTRANSFER => true,
+                            CURLOPT_ENCODING => '',
+                            CURLOPT_MAXREDIRS => 10,
+                            CURLOPT_TIMEOUT => 0,
+                            CURLOPT_FOLLOWLOCATION => true,
+                            CURLOPT_SSL_VERIFYPEER => false,
+                            CURLOPT_SSL_VERIFYHOST => false,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_CUSTOMREQUEST => 'POST',
+                            CURLOPT_POSTFIELDS => array(
+                                'target' => $this->contact_number($recipient[$i]['number']),
+                                'message' => $header.$content.$footer,
+                                'country_code' => '62'
+                            ), 
+                            CURLOPT_HTTPHEADER => array(
+                                'Authorization: '.$whatsapp_token
+                            ),
+                        ));                       
+                        $response = curl_exec($curl); 
+                        curl_close($curl);
+                        $get_response = json_decode($response, true);                                               
+                        // var_dump($whatsapp_server);die;
+                        if ($get_response) {                       
+                            $return->status = ($get_response['status'] == 1) ? 1 : 0;
+                            $return->message = ($return->status == 1) ? 'Success' : $get_response['message'];
+                            $return->result = [];
+
+                            //Do Update if have message_id
+                            if(!empty($recipient[$i]['message_id'])){
+                                $this->Message_model->update_message($recipient[$i]['message_id'],array('message_flag'=>1,'message_date_sent'=>date("YmdHis")));
+                            }
+                        } else {                            
+                            $return->message = 'Not Connected';
+                        }                         
                     }
                 }               
             }else{
@@ -1656,7 +1695,7 @@ class Message extends CI_Controller{
         $return->status     = 0;
         $return->message    = '';
         $return->result     = '';
-        
+        // var_dump($message_group_session);die;
         if(strlen($message_group_session) > 0){
         
             $datas = array();

@@ -2,8 +2,8 @@
 
 // $vendor = "ruangwa.id";	
 // $vendor = "umbrella.co.id";	
-// $vendor = "fonnte.com";	
-$vendor = "wam.umbrella.co.id";
+$vendor = "fonnte.com";	
+// $vendor = "wam.umbrella.co.id";
 
 $whatsapp_server = '';
 $whatsapp_token  = '';
@@ -35,10 +35,10 @@ switch($vendor){
 		$whatsapp_sender   = '628989900149';
 		break;
 	case "fonnte.com":
-		$whatsapp_server = 'https://api.fonnte.com/';
-		$whatsapp_token = 'send';		
-		$whatsapp_auth   = 'wEw4c@Mcrt@Emi@XtFEs';
-		// $whatsapp_sender   = '628989900149';
+		$whatsapp_server = 'https://api.fonnte.com/send';
+		$whatsapp_token = 'kWG9kt7kNAgUoe_ANzGg';		
+		$whatsapp_auth   = 'ir4ompavH@-AJGYnNq36E@Ko5#sC1Ngj';
+		// $whatsapp_sender   = '628989900149'; 
 		break;		
 	case "wam.umbrella.co.id":
 		$whatsapp_server   = 'https://teksmu.com/';				
