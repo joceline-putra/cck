@@ -147,21 +147,21 @@
                                             </div>
                                             <div class="col-md-5 col-xs-12 col-sm-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Bayar Dari *</label>
+                                                    <label class="form-label">Cara Bayar*</label>
                                                     <select id="account_kredit" name="account_kredit" class="form-control" disabled readonly>
-                                                        <option value="0">-- Pilih / Cari Akun yg di ambil --</option>
+                                                        <option value="0">-- Pilih --</option>
                                                     </select>
                                                 </div>
                                             </div>        
-                                            <div class="clearfix"></div>           
-                                            <div class="col-md-5 col-xs-12 col-sm-12">
+                                            <!-- <div class="clearfix"></div>            -->
+                                            <!-- <div class="col-md-5 col-xs-12 col-sm-12">
                                                 <div class="form-group">
                                                     <label class="form-label">Penerima *</label>
                                                     <select id="kontak" name="kontak" class="form-control" disabled readonly>
                                                         <option value="0">-- Pilih / Cari --</option>
                                                     </select>
                                                 </div>
-                                            </div>     
+                                            </div>      -->
                                             <div class="col-md-2 col-xs-6 form-group">
                                                 <label class="form-label">Tanggal Transaksi</label>
                                                 <div class="col-md-12 col-sm-12 padding-remove-side prs-0">
@@ -209,9 +209,9 @@
                                                         </div>                          
                                                         <div class="col-md-5 col-xs-12 col-sm-12 padding-remove-side prs-0">
                                                             <div class="form-group">
-                                                                <label class="form-label">Akun Pembayaran / Debit *</label>
+                                                                <label class="form-label">Jenis Biaya *</label>
                                                                 <select id="account_debit_account" name="account_debit_account" class="form-control" disabled readonly>
-                                                                    <option value="0">-- Pilih / Cari Akun yg di Biayakan --</option>
+                                                                    <option value="0">-- Pilih --</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -244,7 +244,7 @@
                                                             <table id="table-item" class="table table-bordered" data-limit-start="0" data-limit-end="10">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Akun Pembayaran Debit</th>
+                                                                        <th>Jenis Biaya</th>
                                                                         <th style="text-align:left;">Keterangan</th>
                                                                         <th style="text-align:right;">Jumlah</th>
                                                                         <th>#</th>
@@ -301,7 +301,7 @@
                                                          style="margin-top: 10px;margin-bottom:10px;">
                                                         <div class="form-group">
                                                             <div class="pull-left">                            
-                                                                <button id="btn-journal" class="btn btn-default btn-small" type="button">
+                                                                <button id="btn-journal" class="hide btn btn-default btn-small" type="button">
                                                                     <i class="fas fa-clipboard-check"></i>
                                                                     Jurnal Entri
                                                                 </button>                                                            
@@ -391,7 +391,7 @@
                                                 </div>
                                             </div>
                                         </div>   
-                                        <div class="col-md-3 col-xs-12 col-sm-12 padding-remove-right prs-5">
+                                        <!-- <div class="col-md-3 col-xs-12 col-sm-12 padding-remove-right prs-5">
                                             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                 <div class="form-group">
                                                     <label class="form-label">Penerima *</label>
@@ -400,8 +400,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>                                  
-                                        <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 form-group padding-remove-right prs-5">
+                                        </div>                                   -->
+                                        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 form-group padding-remove-right prs-5">
                                             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">                                            
                                                 <label class="form-label">Cari</label>
                                                 <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
@@ -427,7 +427,6 @@
                                                     <tr>
                                                         <th>Tanggal</th>
                                                         <th>Nomor</th>
-                                                        <th>Penerima</th>
                                                         <th>Bayar Menggunakan</th>
                                                         <th>Keterangan</th>
                                                         <th>Total</th>

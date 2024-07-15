@@ -13,13 +13,13 @@
 
                 //Root Only has MENU
                 if(($v['menu_id'] == 21) and ($session['user_data']['user_group_id'] == 1)){
-                    echo '
-                        <li class="" data-name="'.$v['menu_link'].'">
-                            <a href="'.base_url($v['menu_link']).'">
-                                <span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
-                            </a>
-                        </li>                
-                    ';
+                    // echo '
+                    //     <li class="" data-name="'.$v['menu_link'].'">
+                    //         <a href="'.base_url($v['menu_link']).'">
+                    //             <span class="'.$menu_icon.'"></span> '.$v['menu_name'].'
+                    //         </a>
+                    //     </li>                
+                    // ';
                 }else{
                     if($v['user_menu_flag'] == 1){
                         echo '
@@ -44,9 +44,9 @@
         }
     endforeach;
     ?>
-	<li class="" data-name="user/group">
+	<!-- <li class="" data-name="user/group">
 		<a href="<?php echo base_url('user/group');?>">
 			<span class="fas fa-filter"></span> Group User
 		</a>
-	</li>		    
+	</li>		     -->
 </ul>
