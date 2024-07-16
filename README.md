@@ -52,3 +52,15 @@ Reminder Cece yang akan habis
 Auto renewal Cece bulanan 
 Checkin sisa kunci
 checkout kunci kamar
+
+
+//Jika ada penambahan Cabang Baru
+UPDATE accounts SET account_flag=4 WHERE account_group_sub='16' AND account_code NOT IN(
+'6-60219',
+'6-60217',
+'6-60218',
+'6-60101',
+'6-60102',
+'6-60103',
+'6-60104',
+'6-60202');
