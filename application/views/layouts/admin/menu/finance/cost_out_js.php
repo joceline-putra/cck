@@ -117,8 +117,6 @@
                         return dsp;
                     },
                 }, {
-                    'data': 'contact_name'
-                }, {
                     'data': 'account_name',
                     render:function(data,meta,row){
                         var dsp = '';
@@ -496,12 +494,12 @@
             //   }
             // }
 
-            if (next == true) {
-                if ($("select[id='kontak']").find(':selected').val() == 0) {
-                    notif(0, 'Penerima harus dipilih');
-                    next = false;
-                }
-            }
+            // if (next == true) {
+            //     if ($("select[id='kontak']").find(':selected').val() == 0) {
+            //         notif(0, 'Penerima harus dipilih');
+            //         next = false;
+            //     }
+            // }
 
             // if (next == true) {
             //   if ($("select[id='cara_pembayaran']").find(':selected').val() == 0) {
@@ -541,7 +539,8 @@
                     tipe: identity,
                     tgl: $("input[id='tgl']").val(),
                     nomor: $("input[id='nomor']").val(),
-                    kontak: $("select[id='kontak']").find(':selected').val(),
+                    // kontak: $("select[id='kontak']").find(':selected').val(),
+                    kontak: 2,
                     // debit: $("select[id='account_debit']").find(':selected').val(),
                     akun: $("select[id='account_kredit']").find(':selected').val(),
                     // jumlah: $("input[id='jumlah']").val(),
@@ -621,11 +620,11 @@
                         $("#form-trans input[name='tgl']").datepicker("update", set_date);
                         $("#form-trans input[name='nomor']").val(d.result.journal_number);
                         $("textarea[id='keterangan']").val(d.result.journal_note);
-                        $("select[name='kontak']").append('' +
-                                '<option value="' + d.result.contact_id + '" data-alamat="' + d.result.contact_address + '" data-telepon="' + d.result.phone_1 + '" data-email="' + d.result.email_1 + '">' +
-                                d.result.contact_name +
-                                '</option>');
-                        $("select[name='kontak']").val(d.result.contact_id).trigger('change');
+                        // $("select[name='kontak']").append('' +
+                        //         '<option value="' + d.result.contact_id + '" data-alamat="' + d.result.contact_address + '" data-telepon="' + d.result.phone_1 + '" data-email="' + d.result.email_1 + '">' +
+                        //         d.result.contact_name +
+                        //         '</option>');
+                        // $("select[name='kontak']").val(d.result.contact_id).trigger('change');
                         $("select[name='account_kredit']").append('' +
                                 '<option value="' + d.result.account_id + '" data-kode="' + d.result.account_code + '" data-nama="' + d.result.account_name + '">' +
                                 d.result.account_code + ' - ' + d.result.account_name + '</option>');
@@ -664,12 +663,12 @@
                 next = false;
             }
 
-            if (next == true) {
-                if ($("select[id='kontak']").find(':selected').val() == 0) {
-                    notif(0, 'Penerima harus diisi');
-                    next = false;
-                }
-            }
+            // if (next == true) {
+            //     if ($("select[id='kontak']").find(':selected').val() == 0) {
+            //         notif(0, 'Penerima harus diisi');
+            //         next = false;
+            //     }
+            // }
 
             // if(next == true){
             //   var total_debit = removeCommas($("#total_debit").val());
