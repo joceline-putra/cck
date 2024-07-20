@@ -2283,6 +2283,18 @@ class Front_office extends MY_Controller{
                     $return->recordsFiltered = $total;
                     $return->params = $params;
                     break;  
+                case "create_rebooking_cece":
+                    $this->form_validation->set_rules('order_id', 'Type', 'required');
+                    $this->form_validation->set_rules('order_item_id', 'Jenis Kamar', 'greater_than[0]');
+                    $this->form_validation->set_rules('upload_1', 'Foto Bukti Transfer', 'required');   
+                    $this->form_validation->set_rules('paid_total', 'Jumlah Pembayaran', 'required');    
+                    $this->form_validation->set_message('required', '{field} wajib diisi');
+                    $this->form_validation->set_message('greater_than', '{field} wajib dipilih');                    
+                    if ($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{                    
+                    
+                    }
                 default:
                     $return->message='No Action';
                     break; 
