@@ -58,7 +58,7 @@ class Message extends CI_Controller{
         $data['session']    = $this->session->userdata();  
         $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
         
-        if ($this->input->post()) {    
+        if ($this->input->post()) {
             $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
 
             $upload_directory       = $this->folder_upload;     
@@ -1739,6 +1739,7 @@ class Message extends CI_Controller{
             'message_flag' => 0
         );
         $get_data=$this->Message_model->get_all_message($where,null,15,0,'message_id','asc');      
+        // var_dump($get_data);die;
         if(count($get_data) > 0){
             foreach($get_data as $v){
                 $recipient[] = array(
@@ -2407,6 +2408,28 @@ class Message extends CI_Controller{
                 $return->message='Gagal menambahkan pesan';
             }
         }
+    }
+    function whatsapp_prepare_rebooking(){
+        $params = array(
+            'order_item_type' => 222,
+            'order_item_expired_day' => 3,
+            'order_item_flag_checkin' => 1
+        );
+        $search = null; $limit=null; $start=null;$order=null;$dir=null;
+        $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
+        if($get_count > 0){
+            $get_data = $this->Front_model->get_all_booking_item($params, $search, $limit, $start, $order, $dir);
+            foreach($get_data as $v){
+                $contact_params = array(
+                    'order_id' => $v['order_id'],
+                    'contact_name' => $v['order_contact_name'],
+                    'contact_phone' => $v['order_contact_phone'],
+                );
+                $this->whatsapp_template('sales-sell-invoice-rebooking',0,$contact_params);
+            }
+        }else{
+
+        }  
     }
 
     //Sending Gateway Email
