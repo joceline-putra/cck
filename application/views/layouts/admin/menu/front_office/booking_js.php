@@ -42,6 +42,12 @@
             boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
             url: url_image,
         });
+var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
+    enableExif: true,
+    viewport: {width: image_width, height: image_height},
+    boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
+    url: url_image,
+});
         $('.files_link').magnificPopup({
             type: 'image',
             mainClass: 'mfp-with-zoom', // this class is for CSS animation below
@@ -157,6 +163,17 @@
             e.stopImmediatePropagation();
             order_table.ajax.reload();
         });
+$("#rorder_start_date, #rorder_end_date").datepicker({
+    // defaultDate: new Date(),
+    format: 'dd-M-yyyy',
+    autoclose: true,
+    enableOnReadOnly: true,
+    language: "id",
+    todayHighlight: true,
+    weekStart: 1,
+    // timezone:"+0700"
+}).on('change', function(e){
+});
 
         //Autonumeric
         const autoNumericOption = {
@@ -404,7 +421,7 @@
                                 if(parseInt(row.order_item_expired_day) > 0){
                                 dsp += row.order_item_expired_day_2 +' hari lagi';
                                 }else{
-                                    dsp += 'lewat hari ' + Math.abs(row.order_item_expired_day_2);   
+                                    dsp += '<i style="color:red;">lewat ' + Math.abs(row.order_item_expired_day_2)+' hari</i>';   
                                 }
                             }
                         }else{
@@ -2718,6 +2735,10 @@
                             dsp += '<li><a href="#" class="btn_update_flag_order_item" data-order-id="'+this_form.attr('data-order-id')+'"';
                             dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="2" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
                             dsp += '<i class="fas fa-ban"></i><span style="position: relative;">&nbsp;Checkout</span></a></li>';
+
+                            dsp += '<li><a href="#" class="btn_rebooking" data-order-id="'+this_form.attr('data-order-id')+'"';
+                            dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="2" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                            dsp += '<i class="fas fa-refresh"></i><span style="position: relative;">&nbsp;Perpanjang</span></a></li>';                            
                         }                        
                     }
                     if(parseInt(this_form.attr('data-order-flag')) == 0) {
@@ -2757,7 +2778,206 @@
                     }
                 }
             });
-        });        
+        });  
+let orderRPRICE = new AutoNumeric('#rpaid_total', autoNumericOption);  
+$(document).on("click",".btn_rebooking", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log($(this));
+    var oid = $(this).attr('data-order-id');
+    var oiid = $(this).attr('data-order-item-id');
+    var oipid = $(this).attr('data-order-item-product-id');   
+    var opn = $(this).attr('data-product-name');            
+    console.log(oid+', '+oiid+', '+oipid+', '+opn);
+    let form = new FormData();
+    form.append('action', 'read');
+    form.append('order_id', oid);
+    $.ajax({
+        type: "post",
+        url: url,
+        data: form, 
+        dataType: 'json', cache: 'false', 
+        contentType: false, processData: false,
+        beforeSend:function(x){
+        },
+        success:function(d){
+            let s = d.status;
+            let m = d.message;
+            let r = d.result;
+            let ri = d.result_item;
+            if(parseInt(s) == 1){
+                notif(s,m);
+                $("#rorder_id").val(oid);
+                $("#rorder_product_id").val(ri['branch_name']+' - '+ri['ref_name']+' - '+ri['product_name']);
+                $("#rorder_contact_name").val(ri['order_contact_name']);
+                $("#rorder_contact_phone").val(ri['order_contact_phone']);
+                $("#rpaid_total").val(ri['order_total']);                                
+                $("#modal_rebooking").modal('show');
+            }else{
+                notif(s,m);
+            }
+        },
+        error:function(xhr,status,err){
+            notif(0,err);
+        }
+    });
+});
+$("#modal_rebooking").modal('show');
+
+$(document).on("click","#btn_save_rebook", function(e) {
+    e.preventDefault(); e.stopPropagation();
+    let next = true;
+    // if(next){
+    //     if (!$("input[name='order_branch_id']:checked").val()) {
+    //         next = false;
+    //         notif(0,'Cabang wajib pilih');
+    //     }
+    // }
+    // if(next){
+    //     if (!$("input[name='order_ref_price_id']:checked").val()) {
+    //         next = false;
+    //         notif(0,'Tipe Pesanan wajib pilih');
+    //     }
+    // }
+    // if(next){
+    //     if (!$("input[name='order_ref_id']:checked").val()) {
+    //         next = false;
+    //         notif(0,'Jenis Kamar wajib pilih');
+    //     }
+    // }  
+    // if(next){
+    //     if (!$("input[name='order_product_id']:checked").val()) {
+    //         next = false;
+    //         notif(0,'Nomor Kamar wajib pilih');
+    //     }
+    // }              
+    
+    // if(next){
+    //     if ($("input[name='order_contact_name']").val().length == 0) {
+    //         next = false;
+    //         notif(0,'Nama Pemesan wajib diisi');
+    //     }
+    // }             
+    // if(next){
+    //     if (orderPRICE.rawValue < 1) {
+    //         next = false;
+    //         notif(0,'Harga tidak boleh kosong');
+    //     }
+    // }
+
+    /* Prepare ajax for UPDATE */
+    /* If Form Validation Complete checked */
+    if(next){
+        var form = new FormData($("#form_rebooking")[0]);
+        form.append('action', 'create_rebooking_cece');
+        form.append('order_id', $("#rorder_id").val());
+        form.append('order_contact_name', $("#rorder_contact_name").val());
+        form.append('order_contact_phone', $("#rorder_contact_phone").val());                
+        // form.append('order_type', identity);                
+        // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
+        form.set('order_start_date', $("#rorder_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
+        form.set('order_end_date', $("#rorder_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
+        form.set('paid_total', orderRPRICE.rawValue);
+        form.set('files_10', 0); //Bukti Bayar
+        // form.set('files_2', 0); //Foto KTP
+        // form.set('files_3', 0); //Plat Kendaraan                  
+        form.append('upload_10', $("#files_preview_10").attr('data-save-img'));
+        // form.append('upload_2', $("#files_preview_2").attr('data-save-img'));
+        // form.append('upload_3', $("#files_preview_3").attr('data-save-img'));   
+        // form.append('order_item_ref_price_sort',$("input[name=order_ref_price_id]:checked").val());   
+        // form.set('order_vehicle_cost',vehicleCOST.rawValue);             
+        // form.append('day_booking',dayBooking);
+        $.ajax({
+            type: "post",
+            url: url,
+            data: form, 
+            dataType: 'json', cache: 'false', 
+            contentType: false, processData: false,
+            beforeSend:function(x){
+                // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                $('#btn_save_rebook').html('<i class="fas fa-spinner"></i> Please wait...');
+                $('#btn_save_rebook').prop('disabled', true);                         
+            },
+            success:function(d){
+                let s = d.status;
+                let m = d.message;
+                let r = d.result;
+                if(parseInt(s) == 1){
+                    // notif(s,m);
+                    // order_table.ajax.reload();
+                    // formBookingReset();
+                    // // console.log(r.order_id);
+                    // // activeTab("tab2");
+                    // var p = {
+                    //     order_id:r.order_id,
+                    //     order_number:r.order_number,
+                    //     order_date:r.order_date,
+                    //     order_session:r.order_session,
+                    //     contact_name:r.contact_name,
+                    //     contact_phone:r.contact_phone,
+                    //     order_item:r.order_item                                                                                                                                                                                                                                  
+                    // }
+                    // transSuccess(p);                            
+                }else{
+                    // notif(s,m);
+                }
+                $('#btn_save_rebook').html('<i class="fas fa-arrow-right"></i> Proses');
+                $('#btn_save_rebook').prop('disabled', false);                               
+            },
+            error:function(xhr,status,err){
+                notif(0,err);
+            }
+        });
+    }   
+});     
+//Image Croppie
+$(document).on('change', '#files_10', function(e) {
+    if($("#files_10").val() == ''){
+        $("#files_preview_10").attr('src', url_image);
+        $("#files_link_10").attr('href', url_image);            
+        $("#files_preview_10").attr('data-save-img', '');
+        return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        $("#modal_rebooking").modal('hide');
+        upload_crop_img_10.croppie('bind', {
+            url: e.target.result
+        }).then(function (blob) {
+            // aa = btoa(blob);s
+            setTimeout(function(){
+                $("#modal_croppie_10").modal("show");
+            },3000);
+            setTimeout(function(){$('#modal_croppie_canvas_10').croppie('bind');}, 300);
+            setTimeout(function(){
+                    $("#modal_rebooking").modal('show');
+                },6000);             
+        });
+    };
+    reader.readAsDataURL(this.files[0]);
+});
+$(document).on('click', '#modal_croppie_cancel_10', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    $("#files_10").val('');
+    $("#files_preview_10").attr('data-save-img', '');
+    $("#files_preview_10").attr('src', url_image);
+    $("#files_link_10").attr('href', url_image);
+});
+$(document).on('click', '#modal_croppie_save_10', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    upload_crop_img_10.croppie('result', {
+        type: 'canvas',
+        size: 'viewport',
+    }).then(function (resp) {
+        $("#files_preview_10").attr('src', resp);
+        $("#files_link_10").attr('href', resp);
+        $("#files_preview_10").attr('data-save-img', resp);
+        $("#modal_croppie_10").modal("hide");
+    });
+});         
         function paidOpenTab(params){
             console.log(params);
             window.open(params.paid_src,'Print','width=700,height=485,left=200,top=100').print();                

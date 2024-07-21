@@ -215,6 +215,19 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal_croppie_10" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="modal_croppie_canvas_10"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal_croppie_cancel_10" type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button id="modal_croppie_save_10" type="button" class="btn btn-primary">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modal_order" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
        <div class="modal-content">
@@ -575,6 +588,128 @@
                 </div>
                 <div class="modal-footer flex-center">
                     <button id="btn_save_order" class="btn btn-primary" type="button" style="width:45%;">
+                        <i class="fas fa-save"></i> 
+                        Simpan
+                    </button>
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="width:45%;">
+                        <i class="fas fa-times"></i>
+                        Tutup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_rebooking" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+       <div class="modal-content">
+            <form id="form_order" name="form_order" method="" action="">
+                <div class="modal-header">
+                    <h4 style="text-align:left;">Form Perpanjangan</h4>
+                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal"
+                        style="position:relative;top:-38px;float:right;">
+                        <i class="fas fa-times"></i>
+                        Tutup
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side"> 
+                                        <form id="form_rebooking" name="form_order" method="" action="">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">            
+                                                <div class="col-md-12 col-xs-12 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label">ORDER ID</label>
+                                                        <div class="controls">
+                                                            <input name="rorder_id" id="rorder_id" type="text" class="form-control input-sm">
+                                                        </div>
+                                                    </div>
+                                                </div>  
+                                                <div class="col-md-12 col-xs-12 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Kamar</label>
+                                                        <div class="controls">
+                                                            <input name="rorder_product_id" id="rorder_product_id" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>                                 
+                                                <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
+                                                    <label class="form-label">Tanggal Mulai Perpanjang</label>
+                                                    <div class="col-md-12 col-sm-12 padding-remove-side">
+                                                        <div class="input-append success date col-md-12 col-lg-12 no-padding">
+                                                            <input name="rorder_start_date" id="rorder_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $booking_start_date;?>" data-original="<?php echo $booking_start_date;?>">
+                                                            <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
+                                                    <label class="form-label">Tanggal Akhir Perpanjang</label>
+                                                    <div class="col-md-12 col-sm-12 padding-remove-side">
+                                                        <div class="input-append success date col-md-12 col-lg-12 no-padding">
+                                                            <input name="rorder_end_date" id="rorder_end_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $booking_end_date;?>" data-original="<?php echo $booking_end_date;?>">
+                                                            <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>                                                                                                                                                                                                                                     
+                                            </div> 
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="col-lg-6 col-md-6 col-xs-12 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Nama</label>
+                                                        <input id="rorder_contact_name" name="rorder_contact_name" type="text" value="" class="form-control"/>
+                                                    </div>
+                                                </div>                                                         
+                                                <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label">WhatsApp</label>
+                                                        <input id="rorder_contact_phone" name="rorder_contact_phone" type="text" value="" class="form-control"/>
+                                                    </div>
+                                                </div>                                                       
+                                            </div>
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Bukti Bayar</label>
+                                                        <a class="files_link_10" href="<?= site_url('upload/noimage.png'); ?>">
+                                                            <img id="files_preview_10" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
+                                                        </a>
+                                                        <div class="custom-file">
+                                                            <input class="form-control" id="files_10" name="files_10" type="file" tabindex="1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-xs-12 col-sm-12">                                                
+                                                    <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Metode</label>
+                                                            <select id="rpaid_payment_method" name="rpaid_payment_method"class="form-control">
+                                                            <option value="0" selected>Pilih</option>
+                                                            <option value="CASH">Cash</option>
+                                                            <option value="TRANSFER">Transfer</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Jumlah (Rp)</label>
+                                                            <input id="rpaid_total" name="rpaid_total" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                         
+                                            <div class="clearfix"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="modal-footer flex-center">
+                    <button id="btn_save_rebook" class="btn btn-primary" type="button" style="width:45%;">
                         <i class="fas fa-save"></i> 
                         Simpan
                     </button>
