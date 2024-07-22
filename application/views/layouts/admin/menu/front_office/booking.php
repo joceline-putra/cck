@@ -620,14 +620,30 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side"> 
                                         <form id="form_rebooking" name="form_order" method="" action="">
                                             <div class="col-md-12 col-sm-12 col-xs-12">            
-                                                <div class="col-md-12 col-xs-12 padding-remove-side">
+                                                <div class="col-md-6 col-xs-6 padding-remove-side">
                                                     <div class="form-group">
-                                                        <label class="form-label">ORDER ID</label>
+                                                        <label class="form-label hide">ORDER ID</label>
                                                         <div class="controls">
-                                                            <input name="rorder_id" id="rorder_id" type="text" class="form-control input-sm">
+                                                            <input name="rorder_id" id="rorder_id" type="text" class="form-control input-sm hide">
                                                         </div>
                                                     </div>
                                                 </div>  
+                                                <div class="col-md-6 col-xs-6 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label hide">ORDER ITEM  ID</label>
+                                                        <div class="controls">
+                                                            <input name="rorder_item_id" id="rorder_item_id" type="text" class="form-control input-sm hide">
+                                                        </div>
+                                                    </div>
+                                                </div>                                                  
+                                                <div class="col-md-12 col-xs-12 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Tanggal Sebelumnya</label>
+                                                        <div class="controls">
+                                                            <input name="rorder_previous_date" id="rorder_previous_date" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>        
                                                 <div class="col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
                                                         <label class="form-label">Kamar</label>
@@ -635,7 +651,7 @@
                                                             <input name="rorder_product_id" id="rorder_product_id" type="text" class="form-control input-sm" readonly>
                                                         </div>
                                                     </div>
-                                                </div>                                 
+                                                </div>
                                                 <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
                                                     <label class="form-label">Tanggal Mulai Perpanjang</label>
                                                     <div class="col-md-12 col-sm-12 padding-remove-side">
@@ -673,7 +689,7 @@
                                                 <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">
                                                     <div class="form-group">
                                                         <label class="form-label">Bukti Bayar</label>
-                                                        <a class="files_link_10" href="<?= site_url('upload/noimage.png'); ?>">
+                                                        <a class="files_link_10" href="#">
                                                             <img id="files_preview_10" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                                         </a>
                                                         <div class="custom-file">
@@ -713,7 +729,7 @@
                         <i class="fas fa-save"></i> 
                         Simpan
                     </button>
-                    <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="width:45%;">
+                    <button id="btn_cancel_rebook" class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="width:45%;">
                         <i class="fas fa-times"></i>
                         Tutup
                     </button>

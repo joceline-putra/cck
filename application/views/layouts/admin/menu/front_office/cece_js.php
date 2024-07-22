@@ -840,260 +840,260 @@
             });
         }); 
 
-//CRUD ITEM
-$(document).on("click",".btn_update_flag_order_item",function(e) { //action lily
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-    var do_checkin        = false;
-    var oid         = $(this).attr('data-order-id');
-    var otd         = $(this).attr('data-order-item-id');            
-    var oss         = $(this).attr('data-order-session');
-    var onu         = $(this).attr('data-order-number');
-    var oflag       = $(this).attr('data-order-flag');
-    var opr         = $(this).attr('data-product-name');
+        //CRUD ITEM
+        $(document).on("click",".btn_update_flag_order_item",function(e) { //action lily
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            var do_checkin        = false;
+            var oid         = $(this).attr('data-order-id');
+            var otd         = $(this).attr('data-order-item-id');            
+            var oss         = $(this).attr('data-order-session');
+            var onu         = $(this).attr('data-order-number');
+            var oflag       = $(this).attr('data-order-flag');
+            var opr         = $(this).attr('data-product-name');
 
-    if(parseInt(oflag) == 0){
-        var set_flag = 0;
-        var msg = 'waiting';
-    }else if(parseInt(oflag) == 1){
-        var set_flag = 1;
-        var msg = 'checkin';
-        do_checkin = true;
-    }else if(parseInt(oflag) == 2){
-        var set_flag = 1;
-        var msg = 'checkout';
-    }else{
-        var set_flag = 4;
-        var msg = 'membatalkan';
-    }
-
-    if(do_checkin){
-        var obranch       = $(this).attr('data-order-branch-id');   
-        var oref          = $(this).attr('data-order-ref-id');    
-        var opr           = $(this).attr('data-order-item-product-id');      
-        var oprn          = $(this).attr('data-product-name');                                             
-        // 'Apakah anda ingin '+msg+' <b>'+onu+'</b> ?'
-        let title   = 'Konfirmasi Check-IN';
-        $.confirm({
-            title: title,
-            // icon: 'fas fa-check',
-            columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
-            animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
-            content: function(){
-                let self = this;
-                let form = new FormData();
-                form.append('action','room_get');
-                form.append('branch_id',obranch);                        
-                form.append('ref_id',oref);                        
-        
-                return $.ajax({
-                    url: url,
-                    data: form,
-                    dataType: 'json',
-                    type: 'post',
-                    cache: 'false', contentType: false, processData: false,
-                }).done(function (d) {
-                    let s = d.status;
-                    let m = d.message;
-                    let r = d.result;
-                }).fail(function(){
-                    self.setContent('Something went wrong, Please try again.');
-                });
-            },
-            onContentReady: function(){
-                let self = this;
-                let content = '';
-                let dsp     = '';
-        
-                let d = self.ajaxResponse.data;
-                let s = d.status;
-                let m = d.message;
-                let r = d.result;
-        
-                if(parseInt(s)==1){
-                    dsp += '<form id="jc_form">';
-                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                        dsp += '    <div class="form-group">';
-                        dsp += '    <label class="form-label">Kamar</label>';
-                        dsp += '        <select id="jc_select" name="jc_select" class="form-control">';
-                        // dsp += '            <option value="1">Pilih Kamar</option>';
-                        r.forEach(async (v, i) => {
-                            // console.log(v['product_id']+', '+opr);
-                                        if(v['product_id'] == opr){
-                                            dsp += '<option value="'+v['product_id']+'" selected>'+v['product_name']+' - ['+ v['branch_name'] +']</option>';
-                                        }
-                        });
-                        dsp += '        </select>';
-                        dsp += '    </div>';
-                        dsp += '</div>';
-                    dsp += '</form>';
-                    content = dsp;
-                    self.setContentAppend(content);
-                    // self.buttons.button_1.disable();
-                    // self.buttons.button_2.disable();
-        
-                    // this.$content.find('form').on('submit', function (e) {
-                    //      e.preventDefault();
-                    //      self.$$formSubmit.trigger('click'); // reference the button and click it
-                    // });
-                }else{
-                    self.setContentAppend('<div>Content ready!</div>');
-                }
-            },
-            buttons: {
-                button_1: {
-                    text:'<i class="fas fa-check white"></i> Check IN',
-                    btnClass: 'btn-primary',
-                    keys: ['enter'],
-                    action: function(){
-                        let self      = this;
-        
-                        let select    = self.$content.find('#jc_select').val();
-                        
-                        if(select == 0){
-                            $.alert('Kamar mohon dipilih dahulu');
-                            return false;
-                        } else{
-                            var form = new FormData();
-                            form.append('action', 'update_flag_item_lily');
-                            form.append('order_id', oid);
-                            form.append('order_item_id', otd);                            
-                            form.append('order_session', oss);
-                            form.append('order_number', onu);
-                            form.append('order_item_flag_checkin', oflag);
-                            form.append('product_id', select);
-
-                            $.ajax({
-                                type: "POST",
-                                url : url,
-                                data: form,
-                                dataType:'json',
-                                cache: false,
-                                contentType: false,
-                                processData: false,
-                                success:function(d){
-                                    if(parseInt(d.status)==1){ 
-                                        notif(d.status,d.message); 
-                                        order_table.ajax.reload(null,false);
-                                    }else{ 
-                                        notif(d.status,d.message); 
-                                    }
-                                }
-                            });
-                        }            
-                    }
-                },
-                button_2: {
-                    text: '<i class="fas fa-times white"></i> Batal',
-                    btnClass: 'btn-danger',
-                    keys: ['Escape'],
-                    action: function(){
-                        //Close
-                    }
-                }
+            if(parseInt(oflag) == 0){
+                var set_flag = 0;
+                var msg = 'waiting';
+            }else if(parseInt(oflag) == 1){
+                var set_flag = 1;
+                var msg = 'checkin';
+                do_checkin = true;
+            }else if(parseInt(oflag) == 2){
+                var set_flag = 1;
+                var msg = 'checkout';
+            }else{
+                var set_flag = 4;
+                var msg = 'membatalkan';
             }
-        });            
-    }else{
-        if(oflag == 2){
-            var cnt = 'Checkout kamar <b>'+opr+ '</b> ?';
-        }else{
-            var cnt ='Apakah anda ingin '+msg+' <b>'+onu+'</b> ?' 
-        }
-        $.confirm({
-            title: cnt,
-            content: function(){
-            },
-            onContentReady: function(e){
-                let self    = this;
-                let content = '';
-                let dsp     = '';
 
-                // dsp += '<div>'+cnt+'</div>';
-                dsp += '<form id="jc_form">';
-                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                    dsp += '    <div class="form-group">';
-                    dsp += '    <label class="form-label">Foto Kunci</label>';
-                    dsp += '        <input id="file_key" name="file_key" type="file" class="form-control">';
-                    dsp += '    </div>';
-                    dsp += '</div>';
-                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                    dsp += '    <div class="form-group">';
-                    dsp += '    <label class="form-label">Foto Pengembalian Deposit</label>';
-                    dsp += '        <input id="file_deposit" name="file_deposit" type="file" class="form-control">';
-                    dsp += '    </div>';
-                    dsp += '</div>';
-                    dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                    dsp += '    <div class="form-group">';
-                    dsp += '    <label class="form-label">Catatan</label>';
-                    dsp += '        <textarea id="file_note" name="file_note" class="form-control" rows="4"></textarea>';
-                    dsp += '    </div>';
-                    dsp += '</div>';
-                dsp += '</form>';
-                content = dsp;
-                self.setContentAppend(content);
-            },                    
-            buttons: {
-                confirm:{ 
-                    btnClass: 'btn-primary',
-                    text: 'Ya, Checkout',
-                    action: function (e) {
-                        let self      = this;
+            if(do_checkin){
+                var obranch       = $(this).attr('data-order-branch-id');   
+                var oref          = $(this).attr('data-order-ref-id');    
+                var opr           = $(this).attr('data-order-item-product-id');      
+                var oprn          = $(this).attr('data-product-name');                                             
+                // 'Apakah anda ingin '+msg+' <b>'+onu+'</b> ?'
+                let title   = 'Konfirmasi Check-IN';
+                $.confirm({
+                    title: title,
+                    // icon: 'fas fa-check',
+                    columnClass: 'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',
+                    animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                    content: function(){
+                        let self = this;
+                        let form = new FormData();
+                        form.append('action','room_get');
+                        form.append('branch_id',obranch);                        
+                        form.append('ref_id',oref);                        
+                
+                        return $.ajax({
+                            url: url,
+                            data: form,
+                            dataType: 'json',
+                            type: 'post',
+                            cache: 'false', contentType: false, processData: false,
+                        }).done(function (d) {
+                            let s = d.status;
+                            let m = d.message;
+                            let r = d.result;
+                        }).fail(function(){
+                            self.setContent('Something went wrong, Please try again.');
+                        });
+                    },
+                    onContentReady: function(){
+                        let self = this;
+                        let content = '';
+                        let dsp     = '';
+                
+                        let d = self.ajaxResponse.data;
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                
+                        if(parseInt(s)==1){
+                            dsp += '<form id="jc_form">';
+                                dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                                dsp += '    <div class="form-group">';
+                                dsp += '    <label class="form-label">Kamar</label>';
+                                dsp += '        <select id="jc_select" name="jc_select" class="form-control">';
+                                // dsp += '            <option value="1">Pilih Kamar</option>';
+                                r.forEach(async (v, i) => {
+                                    // console.log(v['product_id']+', '+opr);
+                                                if(v['product_id'] == opr){
+                                                    dsp += '<option value="'+v['product_id']+'" selected>'+v['product_name']+' - ['+ v['branch_name'] +']</option>';
+                                                }
+                                });
+                                dsp += '        </select>';
+                                dsp += '    </div>';
+                                dsp += '</div>';
+                            dsp += '</form>';
+                            content = dsp;
+                            self.setContentAppend(content);
+                            // self.buttons.button_1.disable();
+                            // self.buttons.button_2.disable();
+                
+                            // this.$content.find('form').on('submit', function (e) {
+                            //      e.preventDefault();
+                            //      self.$$formSubmit.trigger('click'); // reference the button and click it
+                            // });
+                        }else{
+                            self.setContentAppend('<div>Content ready!</div>');
+                        }
+                    },
+                    buttons: {
+                        button_1: {
+                            text:'<i class="fas fa-check white"></i> Check IN',
+                            btnClass: 'btn-primary',
+                            keys: ['enter'],
+                            action: function(){
+                                let self      = this;
+                
+                                let select    = self.$content.find('#jc_select').val();
+                                
+                                if(select == 0){
+                                    $.alert('Kamar mohon dipilih dahulu');
+                                    return false;
+                                } else{
+                                    var form = new FormData();
+                                    form.append('action', 'update_flag_item_lily');
+                                    form.append('order_id', oid);
+                                    form.append('order_item_id', otd);                            
+                                    form.append('order_session', oss);
+                                    form.append('order_number', onu);
+                                    form.append('order_item_flag_checkin', oflag);
+                                    form.append('product_id', select);
 
-                        let file_key     = self.$content.find('#file_key')[0].files[0];
-                        let file_deposit = self.$content.find('#file_deposit')[0].files[0];                                
-                        let file_note = self.$content.find('#file_note').val();                                                                
-
-                        if(!file_key){
-                            $.alert('Foto kunci dipilih dahulu');
-                            return false;
-                        } else if(!file_deposit){
-                            $.alert('Foto pengembalian deposit dipilih dahulu');
-                            return false; 
-                        } else{
-                            var form = new FormData();
-                            form.append('action', 'update_flag_item_lily');
-                            form.append('order_id', oid);
-                            form.append('order_item_id', otd);                            
-                            form.append('order_session', oss);
-                            form.append('order_number', onu);
-                            form.append('order_item_flag_checkin', oflag);
-                            form.append('product_name',opr);
-                            form.append('file_key',file_key);
-                            form.append('file_deposit',file_deposit);                                    
-                            form.append('file_note',file_note);                                                                        
-
-                            $.ajax({
-                                type: "POST",
-                                url : url,
-                                data: form,
-                                dataType:'json',
-                                cache: false,
-                                contentType: false,
-                                processData: false,
-                                success:function(d){
-                                    if(parseInt(d.status)==1){ 
-                                        notif(d.status,d.message); 
-                                        order_table.ajax.reload(null,false);
-                                    }else{ 
-                                        notif(d.status,d.message); 
-                                    }
-                                }
-                            });
+                                    $.ajax({
+                                        type: "POST",
+                                        url : url,
+                                        data: form,
+                                        dataType:'json',
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        success:function(d){
+                                            if(parseInt(d.status)==1){ 
+                                                notif(d.status,d.message); 
+                                                order_table.ajax.reload(null,false);
+                                            }else{ 
+                                                notif(d.status,d.message); 
+                                            }
+                                        }
+                                    });
+                                }            
+                            }
+                        },
+                        button_2: {
+                            text: '<i class="fas fa-times white"></i> Batal',
+                            btnClass: 'btn-danger',
+                            keys: ['Escape'],
+                            action: function(){
+                                //Close
+                            }
                         }
                     }
-                },
-                cancel:{
-                    btnClass: 'btn-danger',
-                    text: 'Tutup', 
-                    action: function () {
-                        // $.alert('Canceled!');
-                    }
+                });            
+            }else{
+                if(oflag == 2){
+                    var cnt = 'Checkout kamar <b>'+opr+ '</b> ?';
+                }else{
+                    var cnt ='Apakah anda ingin '+msg+' <b>'+onu+'</b> ?' 
                 }
+                $.confirm({
+                    title: cnt,
+                    content: function(){
+                    },
+                    onContentReady: function(e){
+                        let self    = this;
+                        let content = '';
+                        let dsp     = '';
+
+                        // dsp += '<div>'+cnt+'</div>';
+                        dsp += '<form id="jc_form">';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Foto Kunci</label>';
+                            dsp += '        <input id="file_key" name="file_key" type="file" class="form-control">';
+                            dsp += '    </div>';
+                            dsp += '</div>';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Foto Pengembalian Deposit</label>';
+                            dsp += '        <input id="file_deposit" name="file_deposit" type="file" class="form-control">';
+                            dsp += '    </div>';
+                            dsp += '</div>';
+                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '    <div class="form-group">';
+                            dsp += '    <label class="form-label">Catatan</label>';
+                            dsp += '        <textarea id="file_note" name="file_note" class="form-control" rows="4"></textarea>';
+                            dsp += '    </div>';
+                            dsp += '</div>';
+                        dsp += '</form>';
+                        content = dsp;
+                        self.setContentAppend(content);
+                    },                    
+                    buttons: {
+                        confirm:{ 
+                            btnClass: 'btn-primary',
+                            text: 'Ya, Checkout',
+                            action: function (e) {
+                                let self      = this;
+
+                                let file_key     = self.$content.find('#file_key')[0].files[0];
+                                let file_deposit = self.$content.find('#file_deposit')[0].files[0];                                
+                                let file_note = self.$content.find('#file_note').val();                                                                
+
+                                if(!file_key){
+                                    $.alert('Foto kunci dipilih dahulu');
+                                    return false;
+                                } else if(!file_deposit){
+                                    $.alert('Foto pengembalian deposit dipilih dahulu');
+                                    return false; 
+                                } else{
+                                    var form = new FormData();
+                                    form.append('action', 'update_flag_item_lily');
+                                    form.append('order_id', oid);
+                                    form.append('order_item_id', otd);                            
+                                    form.append('order_session', oss);
+                                    form.append('order_number', onu);
+                                    form.append('order_item_flag_checkin', oflag);
+                                    form.append('product_name',opr);
+                                    form.append('file_key',file_key);
+                                    form.append('file_deposit',file_deposit);                                    
+                                    form.append('file_note',file_note);                                                                        
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url : url,
+                                        data: form,
+                                        dataType:'json',
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        success:function(d){
+                                            if(parseInt(d.status)==1){ 
+                                                notif(d.status,d.message); 
+                                                order_table.ajax.reload(null,false);
+                                            }else{ 
+                                                notif(d.status,d.message); 
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        cancel:{
+                            btnClass: 'btn-danger',
+                            text: 'Tutup', 
+                            action: function () {
+                                // $.alert('Canceled!');
+                            }
+                        }
+                    }
+                });
             }
         });
-    }
-});
 
         // Radio Checked
         $(document).on("change","input[type=radio][name=order_branch_id]", function(e) {

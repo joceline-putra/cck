@@ -260,6 +260,16 @@ class Front_model extends CI_Model{
         $this->set_join_item();
         return $this->db->get_where('orders_items',$where)->result_array();
     }
+    function get_booking_previous_custom($where){
+        $this->db->select("*");
+        $this->db->join('orders','order_id=order_item_order_id','left');
+        $this->db->join('references','ref_id=order_item_ref_id','left');
+        // $this->db->join('references_prices','price_id=order_item_ref_price_id','left');
+        // $this->db->join('products','product_id=order_item_product_id','left');  
+        // $this->db->join("branchs","order_branch_id=branch_id","left");                
+        // $this->db->join('users','order_user_id=user_id','left');        
+        return $this->db->get_where('orders_items',$where)->row_array();
+    }
 
     /* function to update booking items */
     function update_booking_item($id,$params){

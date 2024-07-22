@@ -225,6 +225,37 @@ class MY_Controller extends CI_Controller{
         $auto_number = $init['type_doc'] . '-' . $tahun2 . $bulan . '-' . $nomor;
         return $auto_number;
     }
+    public function request_number_for_booking($tipe,$session_branch_id){
+        $session = $this->session->userdata();
+        // $session_branch_id = $session['user_data']['branch']['id'];
+
+        $tgl = date('d-m-Y');
+        $tahun = substr($tgl, 6, 4);
+        $bulan = substr($tgl, 3, 2);
+        $hari = substr($tgl, 0, 2);
+        $tahun2 = substr($tgl, 8, 2);
+
+        $query = $this->db->query("SELECT MAX(RIGHT(order_number,5)) AS last_number
+            FROM orders
+            WHERE YEAR(order_date_created)=$tahun
+            AND MONTH(order_date_created)=$bulan
+            AND order_branch_id=$session_branch_id
+            AND order_type=$tipe");
+        $nomor = "";
+        if ($query->num_rows() > 0){
+            foreach ($query->result() as $v){
+                $temp = ((int) $v->last_number) + 1;
+                $nomor = sprintf("%05s", $temp);
+            }
+        }else{
+            $nomor = "00001";
+        }
+
+        $get_init = $this->db->query("SELECT type_doc FROM `types` WHERE type_for=1 AND type_type=$tipe");
+        $init = $get_init->row_array();        
+        $auto_number = $init['type_doc'] . '-' . $tahun2 . $bulan . '-' . $nomor;
+        return $auto_number;
+    }    
     public function request_number_for_journal($tipe){
 
         $session = $this->session->userdata();
