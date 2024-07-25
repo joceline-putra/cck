@@ -1747,7 +1747,7 @@ class Message extends CI_Controller{
                     'name' => $v['message_contact_name'],
                     'message_id' => $v['message_id'], 
                     'message_device_number' => $v['device_number'],
-                    'message_device_client' => $v['device_client'],    
+                    'message_device_client' => null,    
                     'message_device_token' => $v['device_token']                     
                 );
             }
@@ -2410,9 +2410,14 @@ class Message extends CI_Controller{
         }
     }
     function whatsapp_prepare_rebooking(){
+        $return          = new \stdClass();
+        $return->status  = 0;
+        $return->message = '';
+        $return->result  = '';
+
         $params = array(
             'order_item_type' => 222,
-            'order_item_expired_day' => 3,
+            'order_item_expired_day' => 1,
             'order_item_flag_checkin' => 1
         );
         $search = null; $limit=null; $start=null;$order=null;$dir=null;
@@ -2425,11 +2430,16 @@ class Message extends CI_Controller{
                     'contact_name' => $v['order_contact_name'],
                     'contact_phone' => $v['order_contact_phone'],
                 );
+                // 'contact_phone' => '6281225518118'
                 $this->whatsapp_template('sales-sell-invoice-rebooking',0,$contact_params);
             }
+            $return->status = 1;
+            $return->params = $contact_params;
+            $return->message = 'Found '.count($get_data).' datas';
         }else{
-
+            $return->message = 'No Rebooking Reminder Data';
         }  
+        echo json_encode($return);           
     }
 
     //Sending Gateway Email
