@@ -217,42 +217,48 @@
                                     <input id="keterangan" name="keterangan" type="text" value="" class="form-control" readonly='true'/>
                                 </div>
                             </div>  -->       
-                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                            <!-- <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                 <div class="form-group">
                                     <label>Promo</label>
                                     <input id="order_ref_price_id_0" name="order_ref_price_id_0" type="text" value="" class="form-control"/>
                                 </div>
-                            </div>               
-                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                            </div>                -->
+                            <div class="col-lg-4 col-md-4 col-xs-4 padding-remove-side">
                                 <div class="form-group">
                                     <label>Bulanan</label>
                                     <input id="order_ref_price_id_1" name="order_ref_price_id_1" type="text" value="" class="form-control"/>
                                 </div>
                             </div>               
-                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                            <div class="col-lg-4 col-md-4 col-xs-4 padding-remove-side">
                                 <div class="form-group">
                                     <label>Harian</label>
                                     <input id="order_ref_price_id_2" name="order_ref_price_id_2" type="text" value="" class="form-control"/>
                                 </div>
                             </div>                                                             
-                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                            <div class="col-lg-4 col-md-4 col-xs-4 padding-remove-side">
                                 <div class="form-group">
                                     <label>Midnight</label>
                                     <input id="order_ref_price_id_3" name="order_ref_price_id_3" type="text" value="" class="form-control"/>
                                 </div>
                             </div>                                                            
-                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                            <div class="col-lg-4 col-md-4 col-xs-4 padding-remove-side">
                                 <div class="form-group">
                                     <label>4 Jam</label>
                                     <input id="order_ref_price_id_4" name="order_ref_price_id_4" type="text" value="" class="form-control"/>
                                 </div>
-                            </div>  
-                            <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xs-4 padding-remove-side">
+                                <div class="form-group">
+                                    <label>3 Jam</label>
+                                    <input id="order_ref_price_id_6" name="order_ref_price_id_6" type="text" value="" class="form-control"/>
+                                </div>
+                            </div>                               
+                            <div class="col-lg-4 col-md-4 col-xs-4 padding-remove-side">
                                 <div class="form-group">
                                     <label>2 Jam</label>
                                     <input id="order_ref_price_id_5" name="order_ref_price_id_5" type="text" value="" class="form-control"/>
                                 </div>
-                            </div>                                                                                                                                                                                                   
+                            </div>                                                                                                                                                                                                                              
                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                 <div class="form-group">
                                     <label>Status</label>

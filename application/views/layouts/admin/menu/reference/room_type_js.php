@@ -26,12 +26,13 @@
             decimalPlaces: 0,
             watchExternalChanges: true
         };
-        let price0 = new AutoNumeric('#order_ref_price_id_0', autoNumericOption);
+        // let price0 = new AutoNumeric('#order_ref_price_id_0', autoNumericOption);
         let price1 = new AutoNumeric('#order_ref_price_id_1', autoNumericOption);
         let price2 = new AutoNumeric('#order_ref_price_id_2', autoNumericOption);
         let price3 = new AutoNumeric('#order_ref_price_id_3', autoNumericOption);                        
         let price4 = new AutoNumeric('#order_ref_price_id_4', autoNumericOption);  
-        let price5 = new AutoNumeric('#order_ref_price_id_5', autoNumericOption);                                        
+        let price5 = new AutoNumeric('#order_ref_price_id_5', autoNumericOption);
+        let price6 = new AutoNumeric('#order_ref_price_id_6', autoNumericOption);                                                
 
         var index = $("#table-data").DataTable({
             // "processing": true,
@@ -60,8 +61,8 @@
                 {"targets": 3, "title": "Harian", "searchable": true, "orderable": true},
                 {"targets": 4, "title": "Midnight", "searchable": true, "orderable": true},                
                 {"targets": 5, "title": "4 Jam", "searchable": true, "orderable": true},
-                {"targets": 6, "title": "2 Jam", "searchable": true, "orderable": true},        
-                {"targets": 7, "title": "Promo", "searchable": true, "orderable": true},                                                                                        
+                {"targets": 6, "title": "3 Jam", "searchable": true, "orderable": true},                                                                                                        
+                {"targets": 7, "title": "2 Jam", "searchable": true, "orderable": true},        
                 {"targets": 8, "title": "Action", "searchable": false, "orderable": false}
             ],
             "order": [
@@ -80,9 +81,9 @@
                 }, {
                     'data': 'ref_price_4',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
                 }, {                    
-                    'data': 'ref_price_5',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
+                    'data': 'ref_price_6',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
                 }, {
-                    'data': 'ref_price_0',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
+                    'data': 'ref_price_5',className: 'text-right', render: function(data,meta,row){ return numberWithCommas(data); }
                 }, {                                        
                     'data': 'ref_id',
                     className: 'text-left',
@@ -181,12 +182,13 @@
                     nama: $("input[id='nama']").val(),
                     keterangan: $("input[id='keterangan']").val(),
                     status: $("select[id='status']").find(':selected').val(),
-                    order_ref_price_id_0: price0.rawValue,
+                    // order_ref_price_id_0: price0.rawValue,
                     order_ref_price_id_1: price1.rawValue,
                     order_ref_price_id_2: price2.rawValue,
                     order_ref_price_id_3: price3.rawValue,
                     order_ref_price_id_4: price4.rawValue,   
-                    order_ref_price_id_5: price5.rawValue,                 
+                    order_ref_price_id_5: price5.rawValue,
+                    order_ref_price_id_6: price6.rawValue,                 
                     ref_branch_id: $("input[name='ref_branch_id']:checked").val()                                                                                           
                 }
                 var prepare_data = JSON.stringify(prepare);
@@ -264,7 +266,8 @@
                         $("#order_ref_price_id_2").val(d.result.ref_price_2);
                         $("#order_ref_price_id_3").val(d.result.ref_price_3);
                         $("#order_ref_price_id_4").val(d.result.ref_price_4);
-                        $("#order_ref_price_id_5").val(d.result.ref_price_5);                         
+                        $("#order_ref_price_id_5").val(d.result.ref_price_5);     
+                        $("#order_ref_price_id_6").val(d.result.ref_price_6);                                                 
 
                         $("#modal_ref").modal('show');
                         $("#btn-save").hide();
@@ -314,12 +317,13 @@
                     nama: $("input[id='nama']").val(),
                     keterangan: $("input[id='keterangan']").val(),
                     status: $("select[id='status']").find(':selected').val(),
-                    order_ref_price_id_0: price0.rawValue,
+                    // order_ref_price_id_0: price0.rawValue,
                     order_ref_price_id_1: price1.rawValue,
                     order_ref_price_id_2: price2.rawValue,
                     order_ref_price_id_3: price3.rawValue,
                     order_ref_price_id_4: price4.rawValue,   
                     order_ref_price_id_5: price5.rawValue,
+                    order_ref_price_id_6: price6.rawValue,
                     ref_branch_id: $("input[name='ref_branch_id']:checked").val()                 
                 }
                 var prepare_data = JSON.stringify(prepare);

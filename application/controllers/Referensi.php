@@ -13,6 +13,7 @@ class Referensi extends MY_Controller{
         7 = Room / Meja
         8 = Due Date / Pay Termin
         9 = Label -> trans_label, order_label
+        10 = Jenis Kamar
     */
     function __construct(){
         parent::__construct();
@@ -324,7 +325,8 @@ class Referensi extends MY_Controller{
                     'ref_price_2' => !empty($data['order_ref_price_id_2']) ? $data['order_ref_price_id_2'] : 0,                        
                     'ref_price_3' => !empty($data['order_ref_price_id_3']) ? $data['order_ref_price_id_3'] : 0,                        
                     'ref_price_4' => !empty($data['order_ref_price_id_4']) ? $data['order_ref_price_id_4'] : 0,                        
-                    'ref_price_5' => !empty($data['order_ref_price_id_5']) ? $data['order_ref_price_id_5'] : 0                                
+                    'ref_price_5' => !empty($data['order_ref_price_id_5']) ? $data['order_ref_price_id_5'] : 0,
+                    'ref_price_6' => !empty($data['order_ref_price_id_6']) ? $data['order_ref_price_id_6'] : 0                                                    
                 );
                 $params_update = array(
                     'ref_branch_id' => $data['ref_branch_id'],
@@ -337,17 +339,18 @@ class Referensi extends MY_Controller{
                     'ref_price_2' => !empty($data['order_ref_price_id_2']) ? $data['order_ref_price_id_2'] : 0,                        
                     'ref_price_3' => !empty($data['order_ref_price_id_3']) ? $data['order_ref_price_id_3'] : 0,                        
                     'ref_price_4' => !empty($data['order_ref_price_id_4']) ? $data['order_ref_price_id_4'] : 0,                        
-                    'ref_price_5' => !empty($data['order_ref_price_id_5']) ? $data['order_ref_price_id_5'] : 0                                
+                    'ref_price_5' => !empty($data['order_ref_price_id_5']) ? $data['order_ref_price_id_5'] : 0,
+                    'ref_price_6' => !empty($data['order_ref_price_id_6']) ? $data['order_ref_price_id_6'] : 0                                   
                 );                        
                 $columns = array(
                     '0' => 'branch_name',
                     '1' => 'ref_name',
-                    '2' => 'ref_price_0',
-                    '3' => 'ref_price_1',
-                    '4' => 'ref_price_2',
-                    '5' => 'ref_price_3',
-                    '6' => 'ref_price_4',
-                    '6' => 'ref_price_5'                                                                                
+                    '2' => 'ref_price_1',
+                    '3' => 'ref_price_2',
+                    '4' => 'ref_price_3',
+                    '5' => 'ref_price_4',
+                    '6' => 'ref_price_6',                                                                                 
+                    '7' => 'ref_price_5'
                 );
                 $table = 'reference';
             }
