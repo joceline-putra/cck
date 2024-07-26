@@ -538,11 +538,19 @@ class Referensi extends MY_Controller{
                     if($set_update==true){
                         
                         if($identity == 10){ //Room Type update price
-                            $do0 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 0],['price_value' => $data['order_ref_price_id_0']]);
-                            $do1 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 1],['price_value' => $data['order_ref_price_id_1']]);                            
-                            $do2 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 2],['price_value' => $data['order_ref_price_id_2']]);
-                            $do3 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 3],['price_value' => $data['order_ref_price_id_3']]);
-                            $do4 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 4],['price_value' => $data['order_ref_price_id_4']]);                                                                                    
+                            $r0 = !empty($data['order_ref_price_id_0'] ) ? $data['order_ref_price_id_0'] : null;
+                            $r1 = !empty($data['order_ref_price_id_1'] ) ? $data['order_ref_price_id_1'] : null;
+                            $r2 = !empty($data['order_ref_price_id_2'] ) ? $data['order_ref_price_id_2'] : null;
+                            $r3 = !empty($data['order_ref_price_id_3'] ) ? $data['order_ref_price_id_3'] : null;
+                            $r4 = !empty($data['order_ref_price_id_4'] ) ? $data['order_ref_price_id_4'] : null;
+                            $r5 = !empty($data['order_ref_price_id_5'] ) ? $data['order_ref_price_id_5'] : null;
+                            $r6 = !empty($data['order_ref_price_id_6'] ) ? $data['order_ref_price_id_6'] : null;
+
+                            $do0 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 0],['price_value' => $r0]);
+                            $do1 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 1],['price_value' => $r1]);                       
+                            $do2 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 2],['price_value' => $r2]);
+                            $do3 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 3],['price_value' => $r3]);
+                            $do4 = $this->Ref_model->update_ref_price_custom(['price_ref_id' => $id, 'price_sort' => 4],['price_value' => $r4]);                                                                                  
                         }
 
                         //Aktivitas

@@ -75,7 +75,7 @@ class Message extends CI_Controller{
                     $columns = array(
                         '0' => 'message_id',
                         '1' => 'message_contact_number',
-                        '2' => 'message_contact_email',
+                        '2' => 'message_contact_name',
                         '3' => 'message_session',
                         '4' => 'message_group_session',                                                                        
                     );
@@ -93,7 +93,7 @@ class Message extends CI_Controller{
 
                     $params = array();
                     if($session_user_id){
-                        $params['message_branch_id'] = $session_branch_id;
+                        // $params['message_branch_id'] = $session_branch_id;
                     }                    
                     /* If Form Mode Transaction CRUD not Master CRUD
                     !empty($this->input->post('date_start')) ? $params['message_date >'] = date('Y-m-d H:i:s', strtotime($this->input->post('date_start').' 23:59:59')) : $params;
@@ -748,12 +748,12 @@ class Message extends CI_Controller{
                                 $message_id = $set_data;
 
                                 //Sent WhatsApp Process
-                                // $do = $this->whatsapp_send_id($message_id);
-                                // $res = json_decode($do,true);
-
-                                // $return->status  = $res['status'];
-                                // $return->message = $res['message'];
-                                // $return->result = $res['result'];                            
+                                $do = $this->whatsapp_send_id($message_id);
+                                $res = json_decode($do,true);
+                                
+                                $return->status  = $res['status'];
+                                $return->message = $res['message'];
+                                $return->result = $res['result'];                            
                                 
                                 // //Update Flag is Sent
                                 // if($return->status==1){
@@ -767,6 +767,7 @@ class Message extends CI_Controller{
                                     $return->status = 1;
                                     $return->message = 'Pesan akan segera dikirim';
                                 }
+                                // echo json_encode($return);die;
                             }
                         }else{
                             $return->message = 'Data tidak ditemukan';
@@ -1688,7 +1689,7 @@ class Message extends CI_Controller{
         }else{
             $return->message='ID Not ready';
         }
-        echo json_encode($return);
+        return json_encode($return);
     }        
     function whatsapp_send_group($message_group_session){
         $return             = new \stdClass();
@@ -2439,7 +2440,7 @@ class Message extends CI_Controller{
         }else{
             $return->message = 'No Rebooking Reminder Data';
         }  
-        echo json_encode($return);           
+        echo json_encode($return);
     }
 
     //Sending Gateway Email

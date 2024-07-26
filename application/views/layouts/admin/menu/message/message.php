@@ -30,7 +30,7 @@
 </style>
 <div class="row">
     <div class="col-md-12">
-        <?php include '_navigation.php'; ?>
+        <?php #include '_navigation.php'; ?>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
                 <div class="grid simple">
@@ -49,15 +49,7 @@
                             </div>
                             <div class="col-md-9 col-xs-12 col-sm-12 padding-remove-right">
                                 <div class="pull-right">
-                                    <!--
-                                    <button id="btn-whatsapp-info" class="btn btn-primary btn-small" type="button"
-                                            style="display: inline;">
-                                        <i class="fab fa-whatsapp"></i>
-                                        Cek Info WhatsApp
-                                    </button>
-                                    -->
-                                    
-                                    <button id="btn-excel-email" class="btn btn-default btn-small" type="button" style="display:inline;">
+                                    <!-- <button id="btn-excel-email" class="btn btn-default btn-small" type="button" style="display:inline;">
                                         <i class="fas fa-envelope"></i>
                                         Broadcast Email via Excel
                                     </button>
@@ -69,37 +61,35 @@
                                             style="display: inline;">
                                         <i class="fas fa-plus"></i>
                                         Buat <?php echo $title; ?> Baru
-                                    </button>
+                                    </button> -->
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">                    
-                            <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 form-group padding-remove-left">
+                            <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group padding-remove-left">
                                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 form-group padding-remove-side">
                                     <label class="form-label">Cari</label>
                                     <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
                                 </div>
                             </div>  
-                            <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 form-group padding-remove-left">
+                            <!-- <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 form-group padding-remove-left">
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                     <label class="form-label">Kontak</label>
                                     <select id="filter_contact" name="filter_contact" class="form-control">
                                         <option value="0">-- Semua --</option>
                                     </select>
                                 </div>
-                            </div>   
-                            <div class="col-lg-2 col-md-2 col-xs-6 col-sm-12 form-group padding-remove-left">
+                            </div>    -->
+                            <!-- <div class="col-lg-2 col-md-2 col-xs-6 col-sm-12 form-group padding-remove-left">
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                     <label class="form-label">Media Pengiriman</label>
                                     <select id="filter_platform" name="filter_platform" class="form-control">
                                         <option value="0">Semua</option>
                                         <option value="1">WhatsApp</option>
-                                        <!-- <option value="2">Telegram</option> -->
-                                        <!-- <option value="3">SMS</option> -->
                                         <option value="4">Email</option>   
                                     </select>
                                 </div>
-                            </div>  
+                            </div>   -->
                             <div class="col-lg-2 col-md-2 col-xs-6 col-sm-12 form-group padding-remove-left">
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                     <label class="form-label">Status <?php echo $title; ?></label>
@@ -158,7 +148,7 @@
                                         <div class="grid simple">
                                             <div class="grid-body">   
                                                 <h5><b>Device Pengiriman</b></h5> 
-                                                <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                                <!-- <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
                                                         <label class="form-label">Gambar*</label>
                                                         <img id="img-preview1" class="img-responsive" 
@@ -170,7 +160,7 @@
                                                             <label class="custom-file-label">Maksimal 10MB</label>
                                                         </div>                                                                                                       
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
                                                         <label class="form-label">Media Pengiriman</label>
@@ -325,12 +315,12 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-3 col-xs-12">
-                            <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                            <!-- <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                 <div class="form-group">
                                     <label class="form-label">Gambar</label>
                                     <img id="img-preview2" class="img-responsive" data-is-new="0" style="width:100%" src=""/>                                               
                                 </div>
-                            </div>  
+                            </div>   -->
                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                 <div class="form-group">
                                     <label class="form-label">Tanggal Dibuat</label>
@@ -408,12 +398,12 @@
                                             <input id="message_contact_number" name="message_contact_number" type="text" value="" class="form-control"/>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
+                                    <!-- <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                         <div class="form-group">
                                             <label class="form-label">Email Penerima</label>
                                             <input id="message_contact_email" name="message_contact_email" type="text" value="" class="form-control"/>
                                         </div>
-                                    </div>                                    
+                                    </div>                                     -->
                                     <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                         <div class="form-group">
                                             <label class="form-label">Nama Penerima</label>
@@ -434,10 +424,10 @@
                     </div>
                 </div>
                 <div class="modal-footer flex-center">
-                    <button id="btn-email-send-message" class="btn btn-success btn-small" type="button" data-id="0">
+                    <!-- <button id="btn-email-send-message" class="btn btn-success btn-small" type="button" data-id="0">
                         <i class="fas fa-paper-plane"></i>                                 
                         Kirim Ulang via Email
-                    </button>    
+                    </button>     -->
                     <button id="btn-whatsapp-send-message" class="btn btn-primary btn-small" type="button" data-id="0">
                         <i class="fab fa-whatsapp"></i>                                 
                         Kirim Ulang via WhatsApp

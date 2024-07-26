@@ -166,6 +166,8 @@
 
                                         <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4" data-name="4 Jam">
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_4">4 Jam</label>
+                                        <input id="order_ref_price_id_6" type="radio" name="order_ref_price_id" value="6" data-name="3 Jam">
+                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_6">3 Jam</label>                                           
                                         <input id="order_ref_price_id_5" type="radio" name="order_ref_price_id" value="5" data-name="2 Jam">
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_5">2 Jam</label>                                            
                                     </div>                                    
@@ -225,51 +227,97 @@
                                 </div>
                             </div>                                                
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 padding-remove-side">
-                                    <div class="form-group">
-                                        <label class="form-label">Jam Check-In</label>
-                                        <div class="controls">
-                                            <select name="order_start_hour" id="order_start_hour" class="form-control" style="width:100%">
-                                                <?php
-                                                $clock = array(
-                                                    "01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00",
-                                                    "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00",
-                                                    "21:00","22:00","23:00"                                                                        
-                                                );
-                                                foreach($clock as $val){
-                                                    $checked = '';
-                                                    if($val == "14:00"){
-                                                        $checked = "selected";
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 padding-remove-side">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 padding-remove-side">
+                                        <div class="form-group">
+                                            <label class="form-label">Jam Check-In</label>
+                                            <div class="controls">
+                                                <select name="order_start_hour" id="order_start_hour" class="form-control" style="width:100%">
+                                                    <?php
+                                                    $clock = array(
+                                                        "01","02","03","04","05","06","07","08","09","10",
+                                                        "11","12","13","14","15","16","17","18","19","20",
+                                                        "21","22","23"                                                                        
+                                                    );
+                                                    foreach($clock as $val){
+                                                        $checked = '';
+                                                        if($val == "14"){
+                                                            $checked = "selected";
+                                                        }
+                                                        echo '<option value="'.$val.'" '.$checked.'>'.$val.'</option>';
                                                     }
-                                                    echo '<option value="'.$val.'" '.$checked.'>'.$val.'</option>';
-                                                }
-                                                ?>
-                                            </select>
+                                                    ?>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 padding-remove-side">
+                                        <div class="form-group">
+                                            <label class="form-label">Menit Check-In</label>
+                                            <div class="controls">
+                                                <select name="order_start_hour_minute" id="order_start_hour_minute" class="form-control" style="width:100%">
+                                                    <?php
+                                                    $clock = array(
+                                                        "00","10","15","20","25","30","35","40","45","50","55"
+                                                    );
+                                                    foreach($clock as $val){
+                                                        $checked = '';
+                                                        if($val == "00"){
+                                                            $checked = "selected";
+                                                        }
+                                                        echo '<option value="'.$val.'" '.$checked.'>'.$val.'</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>                                    
                                 </div>  
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 padding-remove-side">
-                                    <div class="form-group">
-                                        <label class="form-label">Jam Check-Out</label>
-                                        <div class="controls">
-                                            <select name="order_end_hour" id="order_end_hour" class="form-control" style="width:100%">
-                                                <?php
-                                                $clock = array(
-                                                    "01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00",
-                                                    "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00",
-                                                    "21:00","22:00","23:00"                                                                        
-                                                );
-                                                foreach($clock as $val){
-                                                    $checked = '';
-                                                    if($val == "12:00"){
-                                                        $checked = "selected";
-                                                    }                                                                        
-                                                    echo '<option value="'.$val.'" '.$checked.'>'.$val.'</option>';
-                                                }
-                                                ?>
-                                            </select>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 padding-remove-side">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 padding-remove-side">                                    
+                                        <div class="form-group">
+                                            <label class="form-label">Jam Check-Out</label>
+                                            <div class="controls">
+                                                <select name="order_end_hour" id="order_end_hour" class="form-control" style="width:100%">
+                                                    <?php
+                                                   $clock = array(
+                                                       "01","02","03","04","05","06","07","08","09","10",
+                                                       "11","12","13","14","15","16","17","18","19","20",
+                                                       "21","22","23"                                                                        
+                                                   );
+                                                    foreach($clock as $val){
+                                                        $checked = '';
+                                                        if($val == "12"){
+                                                            $checked = "selected";
+                                                        }                                                                        
+                                                        echo '<option value="'.$val.'" '.$checked.'>'.$val.'</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 padding-remove-side">
+                                        <div class="form-group">
+                                            <label class="form-label">Menit Check-Out</label>
+                                            <div class="controls">
+                                                <select name="order_end_hour_minute" id="order_end_hour_minute" class="form-control" style="width:100%">
+                                                    <?php
+                                                    $clock = array(
+                                                        "00","10","15","20","25","30","35","40","45","50","55"
+                                                    );
+                                                    foreach($clock as $val){
+                                                        $checked = '';
+                                                        if($val == "00"){
+                                                            $checked = "selected";
+                                                        }
+                                                        echo '<option value="'.$val.'" '.$checked.'>'.$val.'</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>                                          
                                 </div>                                                      
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                                     <div class="form-group">

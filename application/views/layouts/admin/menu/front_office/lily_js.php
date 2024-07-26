@@ -670,19 +670,21 @@
                         // $("#files_preview").attr('src',d.result.Booking_image);
                         // $(".files_link").attr('href',d.result.Booking_image);
                         $(".order_branch_id[value=branch_"+d.result_item.order_item_branch_id+"]").prop("checked", true).change();
-                        // $(".order_type_2[value="+d.result_item.price_name+"]").prop("checked", true).change();                        
+                        // $(".order_type_2[value="+d.result_item.price_name+"]").prop("checked", true).change();
                         $(".order_ref[value="+d.result_item.ref_id+"]").prop("checked", true).change();  
 
                         $("#order_start_date").datepicker("update", moment(d.result_item.order_item_start_date).format("DD-MM-YYYY"));
                         $("#order_end_date").datepicker("update", moment(d.result_item.order_item_end_date).format("DD-MM-YYYY")); 
                         
-                        $("#order_start_hour").val(moment(d.result_item.order_item_start_date).format("HH:mm")).trigger("change");
-                        $("#order_end_hour").val(moment(d.result_item.order_item_end_date).format("HH:mm")).trigger("change");
+                        $("#order_start_hour").val(moment(d.result_item.order_item_start_date).format("HH")).trigger("change");
+                        $("#order_end_hour").val(moment(d.result_item.order_item_end_date).format("HH")).trigger("change");
+                        $("#order_start_hour_minute").val(moment(d.result_item.order_item_start_date).format("mm")).trigger("change");
+                        $("#order_end_hour_minute").val(moment(d.result_item.order_item_end_date).format("mm")).trigger("change");
 
                         $("#order_price").val(d.result_item.order_item_price);
                         $("#order_contact_code").val(d.result_item.order_contact_code);
                         $("#order_contact_name").val(d.result_item.order_contact_name);
-                        $("#order_contact_phone").val(d.result_item.order_contact_phone);                                                                                                                                   
+                        $("#order_contact_phone").val(d.result_item.order_contact_phone);
 
 
                         orderID = d.result.order_id;
@@ -1187,6 +1189,8 @@
                                 set_price = rr.ref_price_4;
                             }else if(ref_check == 5){
                                 set_price = rr.ref_price_5;
+                            }else if(ref_check == 6){
+                                set_price = rr.ref_price_6;
                             }else{
                                 set_price = 0;
                             }
@@ -1449,8 +1453,10 @@
 
             $("#form_booking input[type='file']").val('');
 
-            $("#order_start_hour").val("14:00").trigger('change');
-            $("#order_end_hour").val("12:00").trigger('change');
+            $("#order_start_hour").val("14").trigger('change');
+            $("#order_end_hour").val("12").trigger('change');
+            $("#order_start_hour_minute").val("00").trigger('change');
+            $("#order_end_hour_minute").val("00").trigger('change');            
 
             orderID = 0;
             orderPRICE = 0;
@@ -2011,8 +2017,8 @@
             if (parseInt(trans_id) > 0) {
                 var params = {
                     trans_id: trans_id,
-                    trans_number: $(this).attr('data-number'),
-                    trans_date: $(this).attr('data-date'),
+                    trans_number: $(this).attr('data-order-number'),
+                    trans_date: $(this).attr('data-order-date'),
                     trans_total: $(this).attr('data-order-total'),
                     contact_name: $(this).attr('data-contact-name'),
                     contact_phone: $(this).attr('data-contact-phone'),
@@ -3202,7 +3208,7 @@
             dsp += `<tr><td>Jenis Kamar</td><td>:</td><td>${$("input[name='order_ref_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Kamar</td><td>:</td><td>${$("input[name='order_product_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-mm-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-mm-yyyy')}</td></tr>`; 
-            dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}</td></tr>`;                                                            
+            dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()}:${$("#order_start_hour_minute").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}:${$("#order_end_hour").find(":selected").val()}</td></tr>`;                                                            
             dsp += `<tr><td>Harga</td><td>:</td><td>${$("#order_price").val()}</td></tr>`;
             dsp += `<tr><td>Dibayar</td><td>:</td><td>${$("#paid_total").val()} - ${$("#paid_payment_method").find(":selected").val()}</td></tr>`;
             dsp += `<tr><td>Pemesan</td><td>:</td><td>${$("#order_contact_name").val()} - ${$("#order_contact_phone").val()}</td></tr>`;            

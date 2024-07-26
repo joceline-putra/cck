@@ -137,7 +137,7 @@ class Front_office extends MY_Controller{
             $post = $this->input->post();
             $get  = $this->input->get();
             $action = !empty($this->input->post('action')) ? $this->input->post('action') : false;
-            
+            // die;
             switch($action){
                 case "load":
                     $columns = array(
@@ -559,8 +559,12 @@ class Front_office extends MY_Controller{
 
                                 /* Continue Save if not exist */
                                 if(!$check_exists){
+                                    
+                                    $get_set_branch = $this->Produk_model->get_produk_quick($post['order_product_id']);
+                                    $get_product_branch = $get_set_branch['product_branch_id'];
+
                                     $order_session = $this->random_session(20);
-                                    $order_number  = $this->request_number_for_booking($post['order_type'],$post['order_product_id']);
+                                    $order_number  = $this->request_number_for_booking($post['order_type'],$get_product_branch);
                                     $params = array(
                                         'order_branch_id' => !empty($post['order_branch_id']) ? intval($post['order_branch_id']) : null,
                                         'order_type' => !empty($post['order_type']) ? intval($post['order_type']) : null,
@@ -887,8 +891,11 @@ class Front_office extends MY_Controller{
                                 $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
                                 // $sdate = $post['order_start_date']." 00:00:00";
                                 // $edate = $post['order_end_date']." 23:59:59";
-                                $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
-                                $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
+                                $start_minute = !empty($post['order_start_hour_minute']) ? $post['order_start_hour_minute'] : "00";
+                                $end_minute = !empty($post['order_end_hour_minute']) ? $post['order_end_hour_minute'] : "00";
+
+                                $sdate = $post['order_start_date']." ".$post['order_start_hour'].":".$start_minute.":00";
+                                $edate = $post['order_end_date']." ".$post['order_end_hour'].":".$end_minute.":00";                                
                                 // $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
                                 $check_room_available = $this->Front_model->sp_room_check($room_id,$sdate,$edate);
                                 // var_dump($check_room_available['room_is_available'],$room_id,$sdate,$edate);die;                                
@@ -912,8 +919,12 @@ class Front_office extends MY_Controller{
 
                                 /* Continue Save if not exist */
                                 if(!$check_exists){
+
+                                    $get_set_branch = $this->Produk_model->get_produk_quick($post['order_product_id']);
+                                    $get_product_branch = $get_set_branch['product_branch_id'];
+
                                     $order_session = $this->random_session(20);
-                                    $order_number  = $this->request_number_for_booking($post['order_type'],$post['order_product_id']);
+                                    $order_number  = $this->request_number_for_booking($post['order_type'],$get_product_branch);
                                     $params = array(
                                         'order_branch_id' => !empty($post['order_branch_id']) ? intval($post['order_branch_id']) : null,
                                         'order_type' => !empty($post['order_type']) ? intval($post['order_type']) : null,
@@ -1086,12 +1097,18 @@ class Front_office extends MY_Controller{
 
                                             if($post['order_ref_price_id'] == "1"){ // Old 1
                                                 // Harian
-                                                $set_start_hour = '14:00:00';
-                                                $set_end_hour = '12:00:00';                                                
+                                                // $set_start_hour = '14:00:00';
+                                                // $set_end_hour = '12:00:00';
+
+                                                // $start_minute
+                                                // $end_minute 
+
+                                                $set_start_hour = $post['order_start_hour'].':'.$start_minute.":00";
+                                                $set_end_hour = $post['order_end_hour'].':'.$end_minute .":00";                                                                                          
                                             }else{
                                                 // Midnight, 4 Jam, 2 Jam
-                                                $set_start_hour = $post['order_start_hour'].':00';
-                                                $set_end_hour = $post['order_end_hour'].':00';                                       
+                                                $set_start_hour = $post['order_start_hour'].':'.$start_minute.":00";
+                                                $set_end_hour = $post['order_end_hour'].':'.$end_minute.":00";                                       
                                             }                                                                                 
                                         }
 
@@ -1107,6 +1124,7 @@ class Front_office extends MY_Controller{
                                             'order_id' => $create,
                                             'order_number' => $get_booking['order_number'],
                                             'order_session' => $get_booking['order_session'],
+                                            'order_total' => $get_booking['order_total'],
                                             'order_date' => $get_booking['order_date'],
                                             'contact_name' => $get_booking['order_contact_name'],
                                             'contact_phone' => $get_booking['order_contact_phone'],
@@ -1274,8 +1292,11 @@ class Front_office extends MY_Controller{
 
                                 /* Continue Save if not exist */
                                 if(!$check_exists){
+                                    $get_set_branch = $this->Produk_model->get_produk_quick($post['order_product_id']);
+                                    $get_product_branch = $get_set_branch['product_branch_id'];
+
                                     $order_session = $this->random_session(20);
-                                    $order_number  = $this->request_number_for_booking($post['order_type'],$post['order_product_id']);
+                                    $order_number  = $this->request_number_for_booking($post['order_type'],$get_product_branch);
                                     $params = array(
                                         'order_branch_id' => !empty($post['order_branch_id']) ? intval($post['order_branch_id']) : null,
                                         'order_type' => !empty($post['order_type']) ? intval($post['order_type']) : null,
@@ -1507,6 +1528,7 @@ class Front_office extends MY_Controller{
                                             'order_id' => $create,
                                             'order_number' => $get_booking['order_number'],
                                             'order_session' => $get_booking['order_session'],
+                                            'order_total' => $get_booking['order_total'],
                                             'order_date' => $get_booking['order_date'],
                                             'contact_name' => $get_booking['order_contact_name'],
                                             'contact_phone' => $get_booking['order_contact_phone'],
@@ -2509,6 +2531,7 @@ class Front_office extends MY_Controller{
                                     'order_number' => $get_booking['order_number'],
                                     'order_session' => $get_booking['order_session'],
                                     'order_date' => $get_booking['order_date'],
+                                    'order_total' => $get_booking['order_total'],
                                     'contact_name' => $get_booking['order_contact_name'],
                                     'contact_phone' => $get_booking['order_contact_phone'],
                                     'order_item' => $this->Front_model->get_booking_item_custom(['order_item_order_id' => $create])
