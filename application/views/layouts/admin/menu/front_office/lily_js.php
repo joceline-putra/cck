@@ -1087,9 +1087,8 @@
 
         // Radio Checked
         $(document).on("change","input[type=radio][name=order_branch_id]", function(e) {
-            
+            console.log('1. order_branch_id checked');
             $("#order_price").val(0);
-            
             e.preventDefault();
             e.stopPropagation();
             if(orderID == 0){
@@ -1118,7 +1117,9 @@
                             
                                 var dsp = '';
                                 r.forEach(async (v, i) => {
-                                    dsp += '<input id="ref_'+v['ref_id']+'" name="order_ref_id" value="'+v['ref_id']+'" type="radio" data-name="'+v['ref_name']+'"><label class="radio_group_label radio_bg" for="ref_'+v['ref_id']+'">'+v['ref_name']+'</label>';
+                                    dsp += '<div class="col-md-3 col-sm-6 col-xs-6">';
+                                    dsp += '<input id="ref_'+v['ref_id']+'" name="order_ref_id" value="'+v['ref_id']+'" type="radio" data-name="'+v['ref_name']+'"><label style="width:100%;height:124px;word-wrap: normal;" class="radio_group_label radio_bg" for="ref_'+v['ref_id']+'">'+v['ref_name']+'</label>';
+                                    dsp += '</div>';
                                 });
                                 $("#order_ref_id").html(dsp);
                             }else{
@@ -1135,6 +1136,7 @@
             }            
         });
         $(document).on("change", "input[type=radio][name=order_ref_price_id]", function(e) { //Not Used
+            console.log('2. order_ref_price_id checked');
             e.preventDefault();
             e.stopPropagation();
             if(orderID == 0){
@@ -1142,6 +1144,7 @@
             }            
         });         
         $(document).on("change", "input[type=radio][name=order_ref_id]", function(e) {
+            console.log('3. order_ref_id checked');            
             e.preventDefault();
             e.stopPropagation();
             if(orderID == 0){
@@ -1212,9 +1215,11 @@
                                     // }
                                     // console.log(a % 2);
                                     let value = re[a];
+                                    dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
                                     dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
-                                            <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}">${value['product_name']}</label>
+                                            <label style="width:100%;height:124px;word-wrap:normal;" class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}">${value['product_name']}</label>
                                         `;
+                                        dsp += `</div>`;
                                     // if (a % 2 === 1) {
                                     //     dsp += `</div>`;
                                     // }                                        
@@ -3124,7 +3129,8 @@
             }else{
                 notif(0,'Harga belum di konfigurasi');
             }
-        });$(document).on("click", "#btn_tab_16", function(e){ 
+        });
+        $(document).on("click", "#btn_tab_16", function(e){ 
             if($("#order_contact_name").val().length == 0){
                 notif(0,'Nama harus diisi');
                 $("#order_contact_name").focus();

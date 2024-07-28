@@ -132,15 +132,17 @@
                                 <div class="form-group">
                                     <label class="form-label">Cabang</label>
                                     <div class="radio_group">
-                                            <?php 
-                                            foreach($branch_lily as $i => $v){
-                                                $c = '';
-                                                if($i==0){
-                                                    // $c = 'checked';
-                                                }
-                                            ?>
+                                        <?php 
+                                        foreach($branch_lily as $i => $v){
+                                            $c = '';
+                                            if($i==0){
+                                                // $c = 'checked';
+                                            }
+                                        ?>
+                                        <div class="col-md-3 col-sm-6 col-xs-6">
                                             <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="order_branch_id" value="<?php echo $v['branch_id']; ?>" data-name="<?php echo $v['branch_name']; ?>" <?php echo $c; ?>>
-                                            <label class="radio_group_label radio_bg" for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
+                                            <label class="radio_group_label radio_bg" for="branch_<?php echo $v['branch_id']; ?>" style="width:100%;height:124px;word-wrap: normal;"><?php echo $v['branch_name']; ?></label>
+                                        </div>
                                         <?php 
                                         } 
                                         ?>
@@ -157,19 +159,14 @@
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_0">Promo</label>
                                         <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" data-name="Bulanan">
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_1">Bulanan</label> -->
-                                        <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2" data-name="Harian">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_2">Harian</label>  
-                                        <input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3" data-name="Midnight">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_3">Midnight</label>
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2" data-name="Harian"><label class="radio_group_label radio_bg" for="order_ref_price_id_2" style="width:100%;height:124px;word-wrap: normal;">Harian</label></div>
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3" data-name="Midnight"><label class="radio_group_label radio_bg" for="order_ref_price_id_3" style="width:100%;height:124px;word-wrap: normal;">Midnight</label></div>
                                         <!-- </div>
                                     <div class="radio_group"> -->
 
-                                        <input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4" data-name="4 Jam">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_4">4 Jam</label>
-                                        <input id="order_ref_price_id_6" type="radio" name="order_ref_price_id" value="6" data-name="3 Jam">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_6">3 Jam</label>                                           
-                                        <input id="order_ref_price_id_5" type="radio" name="order_ref_price_id" value="5" data-name="2 Jam">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_5">2 Jam</label>                                            
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4" data-name="4 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_4" style="width:100%;height:124px;word-wrap: normal;">4 Jam</label></div>
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_6" type="radio" name="order_ref_price_id" value="6" data-name="3 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_6" style="width:100%;height:124px;word-wrap: normal;">3 Jam</label></div>                                           
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_5" type="radio" name="order_ref_price_id" value="5" data-name="2 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_5" style="width:100%;height:124px;word-wrap: normal;">2 Jam</label></div>                                            
                                     </div>                                    
                                 </div>
                             </div>

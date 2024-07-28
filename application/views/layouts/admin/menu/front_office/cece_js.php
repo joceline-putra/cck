@@ -1128,7 +1128,9 @@
                             
                                 var dsp = '';
                                 r.forEach(async (v, i) => {
-                                    dsp += '<input id="ref_'+v['ref_id']+'" name="order_ref_id" value="'+v['ref_id']+'" type="radio" data-name="'+v['ref_name']+'"><label class="radio_group_label radio_bg" for="ref_'+v['ref_id']+'">'+v['ref_name']+'</label>';
+                                    dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
+                                    dsp += '<input id="ref_'+v['ref_id']+'" name="order_ref_id" value="'+v['ref_id']+'" type="radio" data-name="'+v['ref_name']+'"><label style="width:100%;height:124px;word-wrap:normal;" class="radio_group_label radio_bg" for="ref_'+v['ref_id']+'">'+v['ref_name']+'</label>';
+                                    dsp += `</div>`;
                                 });
                                 $("#order_ref_id").html(dsp);
                             }else{
@@ -1202,9 +1204,11 @@
                                     // }
                                     // console.log(a % 2);
                                     let value = re[a];
+                                    dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
                                     dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
-                                            <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}">${value['product_name']}</label>
+                                            <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}" style="width:100%;height:124px;word-wrap:normal;">${value['product_name']}</label>
                                         `;
+                                        dsp += `</div>`;
                                     // if (a % 2 === 1) {
                                     //     dsp += `</div>`;
                                     // }                                        

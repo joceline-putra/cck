@@ -227,7 +227,7 @@ class Search extends MY_Controller{
                         SELECT user_group_id AS id, user_group_name AS nama,
                             (SELECT CONCAT(IFNULL(`user_group_name`,''))) AS `text`
                         FROM users_groups
-                        WHERE user_group_name LIKE '%".$terms."%' AND user_group_id > 1 AND user_group_flag=1 
+                        WHERE user_group_name LIKE '%".$terms."%' AND user_group_id > 0 AND user_group_flag=1 
                         ORDER BY user_group_name ASC
                     ");
                 }else{
@@ -235,7 +235,7 @@ class Search extends MY_Controller{
                         SELECT user_group_id AS id, user_group_name AS nama,
                             (SELECT CONCAT(IFNULL(`user_group_name`,''))) AS `text`
                         FROM users_groups
-                        WHERE user_group_id > 1 AND user_group_flag=1 ORDER BY user_group_name ASC
+                        WHERE user_group_id > 0 AND user_group_flag=1 ORDER BY user_group_name ASC
                     ");
                 }
                 $result = $query->result();

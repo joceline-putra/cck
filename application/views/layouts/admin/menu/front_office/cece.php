@@ -139,8 +139,10 @@
                                                 // $c = 'checked';
                                             }
                                         ?>
+                                        <div class="col-md-3 col-sm-6 col-xs-6">
                                             <input id="branch_<?php echo $v['branch_id']; ?>" type="radio" name="order_branch_id" value="<?php echo $v['branch_id']; ?>" data-name="<?php echo $v['branch_name']; ?>" <?php echo $c; ?>>
-                                            <label class="radio_group_label radio_bg" for="branch_<?php echo $v['branch_id']; ?>"><?php echo $v['branch_name']; ?></label>
+                                            <label class="radio_group_label radio_bg" for="branch_<?php echo $v['branch_id']; ?>" style="width:100%;height:124px;word-wrap: normal;"><?php echo $v['branch_name']; ?></label>
+                                        </div>
                                         <?php 
                                         } 
                                         ?>
@@ -155,10 +157,14 @@
                                     <div class="radio_group">
                                         <!-- <input id="order_ref_price_id_0" type="radio" name="order_ref_price_id" value="0" data-name="Promo">
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_0">Promo</label> -->
-                                        <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" data-name="Bulanan">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_1">Bulanan</label>
-                                        <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2" data-name="Harian">
-                                        <label class="radio_group_label radio_bg" for="order_ref_price_id_2">Harian</label>  
+                                        <div class="col-md-3 col-sm-6 col-xs-6">
+                                            <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" data-name="Bulanan">
+                                            <label class="radio_group_label radio_bg" for="order_ref_price_id_1" style="width:100%;height:124px;word-wrap: normal;">Bulanan</label>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 col-xs-6">
+                                            <input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2" data-name="Harian">
+                                            <label class="radio_group_label radio_bg" for="order_ref_price_id_2" style="width:100%;height:124px;word-wrap: normal;">Harian</label>
+                                        </div>  
                                         <!-- <input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3" data-name="Midnight">
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_3">Midnight</label> -->
                                         <!-- </div>
