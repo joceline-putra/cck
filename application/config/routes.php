@@ -212,7 +212,7 @@ $route['search']                = "search/index";
 
 /* Cronjob n Other */
 	$route['flow/register']					= "flow/pages/1";
-    $route['cronjob/(:any)']                = "cronjob/index/$1";
+    // $route['cronjob/(:any)']                = "cronjob/index/$1";
 
 /* WEBSITE */
     // Home

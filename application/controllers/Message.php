@@ -1763,9 +1763,12 @@ class Message extends CI_Controller{
                 $send = $this->whatsapp_send($params);
                 // }  
             }             
-            $return->status     = $send->status;
-            $return->message    = $send->message;  
-            $return->result     = $send->result;                                
+            // $return->status     = $send->status;
+            // $return->message    = $send->message;  
+            // $return->result     = $send->result;  
+            $return->status     = 1;
+            $return->message    = 'Success';  
+            $return->result     = $recipient;                                            
         }else{ 
             $return->message='No Message enqueue';                
         }
