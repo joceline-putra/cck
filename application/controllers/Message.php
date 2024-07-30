@@ -1751,8 +1751,8 @@ class Message extends CI_Controller{
                     'message_device_client' => null,    
                     'message_device_token' => $v['device_token']                     
                 );
-            }
-            if($recipient > 0){
+            // }
+            // if($recipient > 0){
                 $params = array(
                     'header' => '',
                     'file' => '',
@@ -1761,10 +1761,11 @@ class Message extends CI_Controller{
                     'footer' => ''
                 );
                 $send = $this->whatsapp_send($params);
-                $return->status     = $send->status;
-                $return->message    = $send->message;  
-                $return->result     = $send->result;                                
-            }               
+                // }  
+            }             
+            $return->status     = $send->status;
+            $return->message    = $send->message;  
+            $return->result     = $send->result;                                
         }else{ 
             $return->message='No Message enqueue';                
         }
@@ -2431,7 +2432,6 @@ class Message extends CI_Controller{
                     'contact_name' => $v['order_contact_name'],
                     'contact_phone' => $v['order_contact_phone'],
                 );
-                // 'contact_phone' => '6281225518118'
                 $this->whatsapp_template('sales-sell-invoice-rebooking',0,$contact_params);
             }
             $return->status = 1;
