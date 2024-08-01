@@ -1739,11 +1739,11 @@ class Message extends CI_Controller{
             'message_platform' => 1,
             'message_flag' => 0
         );
-        $get_data=$this->Message_model->get_all_message($where,null,15,0,'message_id','asc');      
+        $get_data=$this->Message_model->get_all_message($where,null,50,0,'message_id','asc');      
         // var_dump($get_data);die;
         if(count($get_data) > 0){
             foreach($get_data as $v){
-                $recipient[] = array(
+                $recipient2[] = array(
                     'number'=> $this->contact_number($v['message_contact_number']),
                     'name' => $v['message_contact_name'],
                     'message_id' => $v['message_id'], 
@@ -1757,18 +1757,24 @@ class Message extends CI_Controller{
                     'header' => '',
                     'file' => '',
                     'content' => $v['message_text'],
-                    'recipient' => $recipient,
+                    'recipient' => array(
+                        array(
+                            'number'=> $this->contact_number($v['message_contact_number']),
+                            'name' => $v['message_contact_name'],
+                            'message_id' => $v['message_id'], 
+                            'message_device_number' => $v['device_number'],
+                            'message_device_client' => null,    
+                            'message_device_token' => $v['device_token']                     
+                        )
+                    ),
                     'footer' => ''
                 );
                 $send = $this->whatsapp_send($params);
                 // }  
             }             
-            // $return->status     = $send->status;
-            // $return->message    = $send->message;  
-            // $return->result     = $send->result;  
             $return->status     = 1;
             $return->message    = 'Success';  
-            $return->result     = $recipient;                                            
+            $return->result     = $recipient2;                                            
         }else{ 
             $return->message='No Message enqueue';                
         }

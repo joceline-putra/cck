@@ -163,17 +163,17 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
             e.stopImmediatePropagation();
             order_table.ajax.reload();
         });
-$("#rorder_start_date, #rorder_end_date").datepicker({
-    // defaultDate: new Date(),
-    format: 'dd-M-yyyy',
-    autoclose: true,
-    enableOnReadOnly: true,
-    language: "id",
-    todayHighlight: true,
-    weekStart: 1,
-    // timezone:"+0700"
-}).on('change', function(e){
-});
+        $("#rorder_start_date, #rorder_end_date").datepicker({
+            // defaultDate: new Date(),
+            format: 'dd-M-yyyy',
+            autoclose: true,
+            enableOnReadOnly: true,
+            language: "id",
+            todayHighlight: true,
+            weekStart: 1,
+            // timezone:"+0700"
+        }).on('change', function(e){
+        });
 
         //Autonumeric
         const autoNumericOption = {
@@ -2740,6 +2740,8 @@ $("#rorder_start_date, #rorder_end_date").datepicker({
                             dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="2" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
                             dsp += '<i class="fas fa-ban"></i><span style="position: relative;">&nbsp;Checkout</span></a></li>';
 
+                            dsp += '<li><a href="#" class="btn_change_contact" data-order-id="'+this_form.attr('data-order-id')+'" data-number="'+this_form.attr('data-order-number')+'" data-date="'+this_form.attr('data-order-date')+'" data-order-total="'+this_form.attr('data-order-total')+'" data-contact-name="'+this_form.attr('data-order-contact-name')+'" data-contact-phone="'+this_form.attr('data-order-contact-phone')+'"><i class="fas fa-address-card"></i><span style="position: relative;">&nbsp;Ganti Kontak</span></a></li>';
+                   
                             dsp += '<li><a href="#" class="btn_rebooking" data-order-id="'+this_form.attr('data-order-id')+'"';
                             dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="2" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
                             dsp += '<i class="fas fa-hand-holding"></i><span style="position: relative;">&nbsp;Perpanjang</span></a></li>';                            
@@ -2757,7 +2759,7 @@ $("#rorder_start_date, #rorder_end_date").datepicker({
                     }
                     dsp += '<li><a href="#" class="btn_print_order" data-order-id="'+this_form.attr('data-order-id')+'" data-order-flag="'+this_form.attr('data-order-flag')+'" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'"><i class="fa fa-print"></i><span style="position: relative;">&nbsp;Print</span></a></li>';
                     dsp += '<li><a href="#" class="btn_send_whatsapp" data-order-id="'+this_form.attr('data-order-id')+'" data-number="'+this_form.attr('data-order-number')+'" data-date="'+this_form.attr('data-order-date')+'" data-order-total="'+this_form.attr('data-order-total')+'" data-contact-name="'+this_form.attr('data-order-contact-name')+'" data-contact-phone="'+this_form.attr('data-order-contact-phone')+'"><i class="fab fa-whatsapp"></i><span style="position: relative;">&nbsp;WhatsApp</span></a></li>';
-                   
+                    
                     // dsp += '<li><a href="#" class="btn-user-theme"><i class="fas fa-fill-drip"></i><span style="position: relative;">&nbsp;Warna Interface</span></a></li>';
                         // dsp += '<li><a href="#"><i class="fa fa-power-off"></i><span style="position: relative;">&nbsp;Keluar</span></a></li>';
                     dsp += '</ul>';
@@ -2783,240 +2785,338 @@ $("#rorder_start_date, #rorder_end_date").datepicker({
                 }
             });
         });  
-let orderRPRICE = new AutoNumeric('#rpaid_total', autoNumericOption);  
-$(document).on("click",".btn_rebooking", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var oid = $(this).attr('data-order-id');
-    var oiid = $(this).attr('data-order-item-id');
-    var oipid = $(this).attr('data-order-item-product-id');   
-    var opn = $(this).attr('data-product-name');            
-    console.log(oid+', '+oiid+', '+oipid+', '+opn);
-    let form = new FormData();
-    form.append('action', 'read');
-    form.append('order_id', oid);
-    $.ajax({
-        type: "post",
-        url: url,
-        data: form, 
-        dataType: 'json', cache: 'false', 
-        contentType: false, processData: false,
-        beforeSend:function(x){
-        },
-        success:function(d){
-            let s = d.status;
-            let m = d.message;
-            let r = d.result;
-            let ri = d.result_item;
-            let rd = d.rebooking_date_cece;
-            if(parseInt(s) == 1){
-                $(".jconfirm").hide();
-                notif(s,m);
-                $("#rorder_id").val(oid);
-                $("#rorder_item_id").val(oiid);                
-                $("#rorder_product_id").val(ri['branch_name']+' - '+ri['ref_name']+' - '+ri['product_name']);
-                $("#rorder_contact_name").val(ri['order_contact_name']);
-                $("#rorder_contact_phone").val(ri['order_contact_phone']);
-                $("#rpaid_total").val(ri['order_total']);      
-                
-                $("#rorder_previous_date").val(moment(rd['previous_start']).format("DD-MMM-YYYY")+' sd '+moment(rd['previous_end']).format("DD-MMM-YYYY"));
-                $("#rorder_start_date").datepicker("update", moment(rd['rebooking_start']).format("DD-MM-YYYY"));
-                $("#rorder_end_date").datepicker("update", moment(rd['rebooking_end']).format("DD-MM-YYYY"));                
 
-                $("#modal_rebooking").modal('show');
-            }else{
-                notif(s,m);
-            }
-        },
-        error:function(xhr,status,err){
-            notif(0,err);
-        }
-    });
-});
-// $("#modal_rebooking").modal('show');
+        let orderRPRICE = new AutoNumeric('#rpaid_total', autoNumericOption);  
+        $(document).on("click",".btn_rebooking", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var oid = $(this).attr('data-order-id');
+            var oiid = $(this).attr('data-order-item-id');
+            var oipid = $(this).attr('data-order-item-product-id');   
+            var opn = $(this).attr('data-product-name');            
+            console.log(oid+', '+oiid+', '+oipid+', '+opn);
+            let form = new FormData();
+            form.append('action', 'read');
+            form.append('order_id', oid);
+            $.ajax({
+                type: "post",
+                url: url,
+                data: form, 
+                dataType: 'json', cache: 'false', 
+                contentType: false, processData: false,
+                beforeSend:function(x){
+                },
+                success:function(d){
+                    let s = d.status;
+                    let m = d.message;
+                    let r = d.result;
+                    let ri = d.result_item;
+                    let rd = d.rebooking_date_cece;
+                    if(parseInt(s) == 1){
+                        $(".jconfirm").hide();
+                        notif(s,m);
+                        $("#rorder_id").val(oid);
+                        $("#rorder_item_id").val(oiid);                
+                        $("#rorder_product_id").val(ri['branch_name']+' - '+ri['ref_name']+' - '+ri['product_name']);
+                        $("#rorder_contact_name").val(ri['order_contact_name']);
+                        $("#rorder_contact_phone").val(ri['order_contact_phone']);
+                        $("#rpaid_total").val(ri['order_total']);      
+                        
+                        $("#rorder_previous_date").val(moment(rd['previous_start']).format("DD-MMM-YYYY")+' sd '+moment(rd['previous_end']).format("DD-MMM-YYYY"));
+                        $("#rorder_start_date").datepicker("update", moment(rd['rebooking_start']).format("DD-MM-YYYY"));
+                        $("#rorder_end_date").datepicker("update", moment(rd['rebooking_end']).format("DD-MM-YYYY"));                
 
-$(document).on("click","#btn_save_rebook", function(e) {
-    e.preventDefault(); e.stopPropagation();
-    let next = true;
-    // if(next){
-    //     if (!$("input[name='order_branch_id']:checked").val()) {
-    //         next = false;
-    //         notif(0,'Cabang wajib pilih');
-    //     }
-    // }
-
-    // if(next){
-    //     if (!$("input[name='order_ref_id']:checked").val()) {
-    //         next = false;
-    //         notif(0,'Jenis Kamar wajib pilih');
-    //     }
-    // }  
-    // if(next){
-    //     if (!$("input[name='order_product_id']:checked").val()) {
-    //         next = false;
-    //         notif(0,'Nomor Kamar wajib pilih');
-    //     }
-    // }              
-    
-    if(next){
-        if ($("input[name='rorder_id']").val().length == 0) {
-            next = false;
-            notif(0,'Silahkan refresh halaman');
-        }
-    }          
-    if(next){
-        if ($("input[name='rorder_contact_name']").val().length == 0) {
-            next = false;
-            notif(0,'Nama wajib diisi');
-        }
-    }                 
-    if(next){
-        if ($("input[name='rorder_contact_phone']").val().length == 0) {
-            next = false;
-            notif(0,'WhatsApp wajib diisi');
-        }
-    }          
-    if(next){
-        if ($("#rpaid_payment_method").find(":selected").val() == 0) {
-            next = false;
-            notif(0,'Metode wajib pilih');
-        }
-    }               
-    if(next){
-        if (orderRPRICE.rawValue < 1) {
-            next = false;
-            notif(0,'Jumlah (Rp) tidak boleh kosong');
-        }
-    }
-
-    /* Prepare ajax for UPDATE */
-    /* If Form Validation Complete checked */
-    if(next){
-        var form = new FormData($("#form_rebooking")[0]);
-        form.append('action', 'create_rebooking_cece');
-        form.append('order_id', $("#rorder_id").val());
-        form.append('order_item_id', $("#rorder_item_id").val());        
-        form.append('order_contact_name', $("#rorder_contact_name").val());
-        form.append('order_contact_phone', $("#rorder_contact_phone").val());                
-        // form.append('order_type', identity);                
-        // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
-        form.set('order_start_date', $("#rorder_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
-        form.set('order_end_date', $("#rorder_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
-        form.set('paid_total', orderRPRICE.rawValue);
-        form.set('files_1', 0); //Bukti Bayar
-        // form.set('files_2', 0); //Foto KTP
-        // form.set('files_3', 0); //Plat Kendaraan                  
-        form.append('upload_1', $("#files_preview_10").attr('data-save-img'));
-        form.append('paid_payment_method', $("#rpaid_payment_method").find(":selected").val());
-        // form.append('upload_2', $("#files_preview_2").attr('data-save-img'));
-        // form.append('upload_3', $("#files_preview_3").attr('data-save-img'));   
-        // form.append('order_item_ref_price_sort',$("input[name=order_ref_price_id]:checked").val());   
-        // form.set('order_vehicle_cost',vehicleCOST.rawValue);
-        // form.append('day_booking',dayBooking);
-        $.ajax({
-            type: "post",
-            url: url,
-            data: form, 
-            dataType: 'json', cache: 'false', 
-            contentType: false, processData: false,
-            beforeSend:function(x){
-                notif(1,'Sedang mengirim');
-                // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
-                // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
-                $('#btn_save_rebook').html('<i class="fas fa-spinner"></i> Please wait...');
-                $('#btn_save_rebook').prop('disabled', true);
-            },
-            success:function(d){
-                let s = d.status;
-                let m = d.message;
-                let r = d.result;
-                if(parseInt(s) == 1){
-                    notif(s,m);
-                    order_table.ajax.reload();
-                    formRebookingReset();
-                    // // console.log(r.order_id);
-                    // // activeTab("tab2");
-                    // var p = {
-                    //     order_id:r.order_id,
-                    //     order_number:r.order_number,
-                    //     order_date:r.order_date,
-                    //     order_session:r.order_session,
-                    //     contact_name:r.contact_name,
-                    //     contact_phone:r.contact_phone,
-                    //     order_item:r.order_item                                                                                                                                                                                                                                  
-                    // }
-                    // transSuccess(p);                            
-                }else{
-                    notif(s,m);
+                        $("#modal_rebooking").modal('show');
+                    }else{
+                        notif(s,m);
+                    }
+                },
+                error:function(xhr,status,err){
+                    notif(0,err);
                 }
-                $('#btn_save_rebook').html('<i class="fas fa-arrow-right"></i> Proses');
-                $('#btn_save_rebook').prop('disabled', false);                               
-            },
-            error:function(xhr,status,err){
-                notif(0,err);
-            }
-        });
-    }   
-});     
-$(document).on("click","#btn_cancel_rebook", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    formRebookingReset();
-});
-
-//Image Croppie
-$(document).on('change', '#files_10', function(e) {
-    if($("#files_10").val() == ''){
-        $("#files_preview_10").attr('src', url_image);
-        // $("#files_link_10").attr('href', url_image);
-        $("#files_link_10").attr('href', '#');                    
-        $("#files_preview_10").attr('data-save-img', '');
-        return;
-    }
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        $("#modal_rebooking").modal('hide');
-        setTimeout(function(){
-            upload_crop_img_10.croppie('bind', {
-                url: e.target.result
-            }).then(function (blob) {
-                // aa = btoa(blob);s
-                // setTimeout(function(){
-                    $("#modal_croppie_10").modal("show");
-                // },3000);
-                setTimeout(function(){$('#modal_croppie_canvas_10').croppie('bind');}, 300);
-                // setTimeout(function(){
-                //         $("#modal_rebooking").modal('show');
-                //     },6000);             
             });
-        },3000);            
-    };
-    reader.readAsDataURL(this.files[0]);
-});
-$(document).on('click', '#modal_croppie_cancel_10', function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    $("#files_10").val('');
-    $("#files_preview_10").attr('data-save-img', '');
-    $("#files_preview_10").attr('src', url_image);
-    $("#files_link_10").attr('href', url_image);
-});
-$(document).on('click', '#modal_croppie_save_10', function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    upload_crop_img_10.croppie('result', {
-        type: 'canvas',
-        size: 'viewport',
-    }).then(function (resp) {
-        $("#files_preview_10").attr('src', resp);
-        $("#files_link_10").attr('href', resp);
-        $("#files_preview_10").attr('data-save-img', resp);
-        $("#modal_croppie_10").modal("hide");
-        setTimeout(function(){
-            $("#modal_rebooking").modal('show'); 
-        },3000);        
-    });
-});         
+        });
+        $(document).on("click",".btn_change_contact", function(e) {
+            $(".jconfirm").hide();
+            e.preventDefault();
+            e.stopPropagation();
+            var oid = $(this).attr('data-order-id');
+            var ocn = $(this).attr('data-contact-name');
+            var ocp = $(this).attr('data-contact-phone');   
+            
+            let title   = 'Ganti Informasi Kontak';
+            $.confirm({
+                title: title,
+                // icon: 'fas fa-check',
+                columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',      
+                // autoClose: 'button_2|10000',
+                // closeIcon: true, closeIconClass: 'fas fa-times', 
+                animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                content: function(){
+                },
+                onContentReady: function(e){
+                    let self    = this;
+                    let content = '';
+                    let dsp     = '';
+            
+                    dsp += '<form id="jc_form">';
+                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Nama</label>';
+                        dsp += '        <input id="jc_input_1" name="jc_input_1" class="form-control" value="'+ocn+'">';
+                        dsp += '    </div>';
+                        dsp += '</div>';
+                        dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                        dsp += '    <div class="form-group">';
+                        dsp += '    <label class="form-label">Nomor WhatsApp</label>';
+                        dsp += '        <input id="jc_input_2" name="jc_input_2" class="form-control" value="'+ocp+'">';
+                        dsp += '    </div>';
+                        dsp += '</div>';                        
+                    dsp += '</form>';
+                    content = dsp;
+                    self.setContentAppend(content);
+                },
+                buttons: {
+                    button_1: {
+                        text:'<i class="fas fa-check white"></i> Process',
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: function(e){
+                            let self      = this;
+            
+                            let i1     = self.$content.find('#jc_input_1').val();
+                            let i2  = self.$content.find('#jc_input_2').val();
+                            
+                            if(!i1){
+                                $.alert('Nama mohon diisi dahulu');
+                                return false;
+                            } else if(!i2){
+                                $.alert('Whatsapp mohon diisi dahulu');
+                                return false;
+                            } else{
+                                let form = new FormData();
+                                form.append('action', 'update_contact_info');
+                                form.append('name', i1);
+                                form.append('phone', i2);
+                                form.append('order_id', oid);
+                                $.ajax({
+                                    type: "post",
+                                    url: url,
+                                    data: form, dataType: 'json',
+                                    cache: 'false', contentType: false, processData: false,
+                                    beforeSend: function() {},
+                                    success: function(d) {
+                                        let s = d.status;
+                                        let m = d.message;
+                                        let r = d.result;
+                                        if(parseInt(s) == 1){
+                                            notif(s, m);
+                                            order_table.ajax.reload(null,false);
+                                            /*type_your_code_here*/
+                                        }else{
+                                            notif(s,m);
+                                        }
+                                    },
+                                    error: function(xhr, status, err) {}
+                                });
+                            }
+                        }
+                    },
+                    button_2: {
+                        text: '<i class="fas fa-times white"></i> Close',
+                        btnClass: 'btn-danger',
+                        keys: ['Escape'],
+                        action: function(){
+                            //Close
+                        }
+                    }
+                }
+            });
+        });
+        
+        $(document).on("click","#btn_save_rebook", function(e) {
+            e.preventDefault(); e.stopPropagation();
+            let next = true;
+            // if(next){
+            //     if (!$("input[name='order_branch_id']:checked").val()) {
+            //         next = false;
+            //         notif(0,'Cabang wajib pilih');
+            //     }
+            // }
+
+            // if(next){
+            //     if (!$("input[name='order_ref_id']:checked").val()) {
+            //         next = false;
+            //         notif(0,'Jenis Kamar wajib pilih');
+            //     }
+            // }  
+            // if(next){
+            //     if (!$("input[name='order_product_id']:checked").val()) {
+            //         next = false;
+            //         notif(0,'Nomor Kamar wajib pilih');
+            //     }
+            // }              
+            
+            if(next){
+                if ($("input[name='rorder_id']").val().length == 0) {
+                    next = false;
+                    notif(0,'Silahkan refresh halaman');
+                }
+            }          
+            if(next){
+                if ($("input[name='rorder_contact_name']").val().length == 0) {
+                    next = false;
+                    notif(0,'Nama wajib diisi');
+                }
+            }                 
+            if(next){
+                if ($("input[name='rorder_contact_phone']").val().length == 0) {
+                    next = false;
+                    notif(0,'WhatsApp wajib diisi');
+                }
+            }          
+            if(next){
+                if ($("#rpaid_payment_method").find(":selected").val() == 0) {
+                    next = false;
+                    notif(0,'Metode wajib pilih');
+                }
+            }               
+            if(next){
+                if (orderRPRICE.rawValue < 1) {
+                    next = false;
+                    notif(0,'Jumlah (Rp) tidak boleh kosong');
+                }
+            }
+
+            /* Prepare ajax for UPDATE */
+            /* If Form Validation Complete checked */
+            if(next){
+                var form = new FormData($("#form_rebooking")[0]);
+                form.append('action', 'create_rebooking_cece');
+                form.append('order_id', $("#rorder_id").val());
+                form.append('order_item_id', $("#rorder_item_id").val());        
+                form.append('order_contact_name', $("#rorder_contact_name").val());
+                form.append('order_contact_phone', $("#rorder_contact_phone").val());                
+                // form.append('order_type', identity);                
+                // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
+                form.set('order_start_date', $("#rorder_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
+                form.set('order_end_date', $("#rorder_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
+                form.set('paid_total', orderRPRICE.rawValue);
+                form.set('files_1', 0); //Bukti Bayar
+                // form.set('files_2', 0); //Foto KTP
+                // form.set('files_3', 0); //Plat Kendaraan                  
+                form.append('upload_1', $("#files_preview_10").attr('data-save-img'));
+                form.append('paid_payment_method', $("#rpaid_payment_method").find(":selected").val());
+                // form.append('upload_2', $("#files_preview_2").attr('data-save-img'));
+                // form.append('upload_3', $("#files_preview_3").attr('data-save-img'));   
+                // form.append('order_item_ref_price_sort',$("input[name=order_ref_price_id]:checked").val());   
+                // form.set('order_vehicle_cost',vehicleCOST.rawValue);
+                // form.append('day_booking',dayBooking);
+                $.ajax({
+                    type: "post",
+                    url: url,
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,
+                    beforeSend:function(x){
+                        notif(1,'Sedang mengirim');
+                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                        $('#btn_save_rebook').html('<i class="fas fa-spinner"></i> Please wait...');
+                        $('#btn_save_rebook').prop('disabled', true);
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        if(parseInt(s) == 1){
+                            notif(s,m);
+                            order_table.ajax.reload();
+                            formRebookingReset();
+                            // // console.log(r.order_id);
+                            // // activeTab("tab2");
+                            // var p = {
+                            //     order_id:r.order_id,
+                            //     order_number:r.order_number,
+                            //     order_date:r.order_date,
+                            //     order_session:r.order_session,
+                            //     contact_name:r.contact_name,
+                            //     contact_phone:r.contact_phone,
+                            //     order_item:r.order_item                                                                                                                                                                                                                                  
+                            // }
+                            // transSuccess(p);                            
+                        }else{
+                            notif(s,m);
+                        }
+                        $('#btn_save_rebook').html('<i class="fas fa-arrow-right"></i> Proses');
+                        $('#btn_save_rebook').prop('disabled', false);                               
+                    },
+                    error:function(xhr,status,err){
+                        notif(0,err);
+                    }
+                });
+            }   
+        });     
+        $(document).on("click","#btn_cancel_rebook", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            formRebookingReset();
+        });
+
+        //Image Croppie
+        $(document).on('change', '#files_10', function(e) {
+            if($("#files_10").val() == ''){
+                $("#files_preview_10").attr('src', url_image);
+                // $("#files_link_10").attr('href', url_image);
+                $("#files_link_10").attr('href', '#');                    
+                $("#files_preview_10").attr('data-save-img', '');
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $("#modal_rebooking").modal('hide');
+                setTimeout(function(){
+                    upload_crop_img_10.croppie('bind', {
+                        url: e.target.result
+                    }).then(function (blob) {
+                        // aa = btoa(blob);s
+                        // setTimeout(function(){
+                            $("#modal_croppie_10").modal("show");
+                        // },3000);
+                        setTimeout(function(){$('#modal_croppie_canvas_10').croppie('bind');}, 300);
+                        // setTimeout(function(){
+                        //         $("#modal_rebooking").modal('show');
+                        //     },6000);             
+                    });
+                },3000);            
+            };
+            reader.readAsDataURL(this.files[0]);
+        });
+        $(document).on('click', '#modal_croppie_cancel_10', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            $("#files_10").val('');
+            $("#files_preview_10").attr('data-save-img', '');
+            $("#files_preview_10").attr('src', url_image);
+            $("#files_link_10").attr('href', url_image);
+        });
+        $(document).on('click', '#modal_croppie_save_10', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            upload_crop_img_10.croppie('result', {
+                type: 'canvas',
+                size: 'viewport',
+            }).then(function (resp) {
+                $("#files_preview_10").attr('src', resp);
+                $("#files_link_10").attr('href', resp);
+                $("#files_preview_10").attr('data-save-img', resp);
+                $("#modal_croppie_10").modal("hide");
+                setTimeout(function(){
+                    $("#modal_rebooking").modal('show'); 
+                },3000);        
+            });
+        });
+
         function paidOpenTab(params){
             console.log(params);
             window.open(params.paid_src,'Print','width=700,height=485,left=200,top=100').print();                

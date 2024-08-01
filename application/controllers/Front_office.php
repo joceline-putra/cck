@@ -2235,8 +2235,8 @@ class Front_office extends MY_Controller{
 
                     $params_rooms = array(
                         'product_type' => 2,
-                        'product_branch_id' => intval($post['branch_id']),
-                        'product_ref_id' => intval($post['ref_id']),                        
+                        'product_branch_id' => intval($post['branch_id']), //5
+                        'product_ref_id' => intval($post['ref_id']),    //520                     
                         // 'product_category_id' => 2,                        
                         'product_flag' => 1,                        
                     );                    
@@ -2542,6 +2542,42 @@ class Front_office extends MY_Controller{
                         $return->next = $next;
                     }
                     break;
+                case "update_contact_info":
+                    $this->form_validation->set_rules('order_id', 'Booking ID', 'required');
+                    $this->form_validation->set_rules('name', 'Nama Tamu', 'required');
+                    $this->form_validation->set_rules('phone', 'Nomor WhatsApp', 'required');                    
+                    $this->form_validation->set_message('required', '{field} wajib diisi');
+                    if($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{
+                        $order_id = !empty($post['order_id']) ? $post['order_id'] : 0;
+                        if(intval($order_id) > 1){
+                                $where = [
+                                    'order_id' => $order_id
+                                ];
+                                $get_data = $this->Front_model->get_booking_custom($where);
+
+                                $name = !empty($this->input->post('name')) ? $this->input->post('name') : null;
+                                $phone = !empty($this->input->post('phone')) ? $this->contact_number($this->input->post('phone')) : null;                                
+                                
+                                $params = [
+                                    'order_contact_name' => $name, 
+                                    'order_contact_phone' => $this->contact_number($phone),
+                                    'order_note' => $get_data['order_contact_name'].', '.$get_data['order_contact_phone']
+                                ];
+                                $set_update=$this->Front_model->update_booking_custom($where,$params);
+                                if($set_update){
+                                    $return->status  = 1;
+                                    $return->message = 'Berhasil merubah '.$name.', '.$phone;
+                                }else{
+                                    $return->message='Gagal merubah kontak';
+                                } 
+                        }else{
+                            $return->message = 'Tidak ada data';
+                        } 
+                    }
+                    break;
+                                    
                 default:
                     $return->message='No Action';
                     break; 

@@ -143,7 +143,7 @@
                                                         <select id="filter_flag_checkin" name="filter_flag_checkin" class="form-control">
                                                             <option value="All">Semua</option>
                                                             <option value="0">Waiting</option>
-                                                            <option value="1">Checkin</option>
+                                                            <option value="1" selected>Checkin</option>
                                                             <option value="2">Checkout</option>
                                                             <option value="4">Batal</option>                                                                                                                        
                                                         </select>
