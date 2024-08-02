@@ -222,32 +222,36 @@
                 }
             }
 
-            if (next == true) {
-                if ($("select[id='group']").find(':selected').val() == 0) {
-                    notif(0, 'Group Akun wajib dipilih');
-                    next = false;
-                }
-            }
+            // if (next == true) {
+            //     if ($("select[id='group']").find(':selected').val() == 0) {
+            //         notif(0, 'Group Akun wajib dipilih');
+            //         next = false;
+            //     }
+            // }
 
-            if (next == true) {
-                if ($("select[id='group_sub']").find(':selected').val() == 0) {
-                    notif(0, 'Group Sub Akun wajib dipilih');
-                    next = false;
-                }
-            }
+            // if (next == true) {
+            //     if ($("select[id='group_sub']").find(':selected').val() == 0) {
+            //         notif(0, 'Group Sub Akun wajib dipilih');
+            //         next = false;
+            //     }
+            // }
 
             if (next == true) {
                 var prepare = {
                     tipe: identity,
                     nama: $("input[id='nama']").val(),
                     kode: $("input[id='kode']").val(),
-                    group: $("select[id='group']").find(':selected').val(),
-                    group_sub: $("select[id='group_sub']").find(':selected').val(),
+                    // group: $("select[id='group']").find(':selected').val(),
+                    // group_sub: $("select[id='group_sub']").find(':selected').val(),
+                    group: 5,
+                    group_sub: 16,                    
+                    group_sub_name: "Beban",
                     group_sub_name: $("select[id='group_sub']").find(':selected').text(),
                     // status: $("select[id='status']").find(':selected').val(),
                     status:$("input[name=status]:checked").val(),
                     // account_locked: $("select[id='account_locked']").find(':selected').val(),
-                    account_locked:$("input[name=account_locked]:checked").val(),
+                    // account_locked:$("input[name=account_locked]:checked").val(),
+                    account_locked:0,                    
                 }
                 var prepare_data = JSON.stringify(prepare);
                 var data = {
@@ -375,13 +379,18 @@
                     id: id_master,
                     kode: $("input[id='kode']").val(),
                     nama: $("input[id='nama']").val(),
-                    group: $("select[id='group']").find(':selected').val(),
-                    group_sub: $("select[id='group_sub']").find(':selected').val(),
-                    group_sub_name: $("select[id='group_sub']").find(':selected').text(),
+                    // group: $("select[id='group']").find(':selected').val(),
+                    // group_sub: $("select[id='group_sub']").find(':selected').val(),
+                    // group_sub_name: $("select[id='group_sub']").find(':selected').text(),
+                    group: 5,
+                    group_sub: 16,                    
+                    group_sub_name: "Beban",
+                    group_sub_name: $("select[id='group_sub']").find(':selected').text(),                    
                     // status: $("select[id='status']").find(':selected').val(),
                     status:$("input[name=status]:checked").val(),
                     // account_locked: $("select[id='account_locked']").find(':selected').val(),
-                    account_locked:$("input[name=account_locked]:checked").val(),
+                    // account_locked:$("input[name=account_locked]:checked").val(),
+                    account_locked:0,                                      
                 }
                 var prepare_data = JSON.stringify(prepare);
                 var data = {

@@ -129,7 +129,7 @@
                                     </div>
                                     <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-right">
                                         <div class="pull-right">
-                                            <button id="btn-export" onClick="" class="btn btn-default btn-small" type="button"
+                                            <!-- <button id="btn-export" onClick="" class="btn btn-default btn-small" type="button"
                                                     style="display: none;">
                                                 <i class="fas fa-file-excel"></i>
                                                 Ekspor Excel
@@ -137,8 +137,8 @@
                                             <button id="btn-print-all" onClick="" class="btn btn-default btn-small" type="button"
                                                     style="display: inline;">
                                                 <i class="fas fa-print"></i>
-                                                Print <?php echo $title; ?>
-                                            </button>                                                         
+                                                Print <?php #echo $title; ?>
+                                            </button>                                                          -->
                                             <button id="btn-new" onClick="" class="btn btn-success btn-small" type="button"
                                                     style="display: inline;">
                                                 <i class="fas fa-plus"></i>
@@ -149,23 +149,23 @@
                                 </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
                                     <div class="col-md-6 col-sm-12 col-xs-12 padding-remove-side prs-0">
-                                        <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right prs-5">
+                                        <div class="hide col-lg-4 col-md-4 col-xs-12 col-sm-12 form-group padding-remove-right prs-5">
                                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                 <label class="form-label">Group</label>
-                                                <select id="filter_account_group" name="filter_account_group" class="form-control">
+                                                <select id="filter_account_group" name="filter_account_group" class="form-control" readonly disabled>
                                                     <option value="0">-- Semua --</option>
                                                     <option value="1">Asset</option>
                                                     <option value="2">Liabilitas</option>
                                                     <option value="3">Ekuitas</option>
                                                     <option value="4">Pendapatan</option>
-                                                    <option value="5">Biaya</option>                             
+                                                    <option value="5" selected>Biaya</option>                             
                                                 </select>
                                             </div>
                                         </div> 
-                                        <div class="col-lg-5 col-md-5 col-xs-8 col-sm-8 form-group padding-remove-right prs-5">
+                                        <div class="hide col-lg-5 col-md-5 col-xs-8 col-sm-8 form-group padding-remove-right prs-5">
                                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                 <label class="form-label">Group Sub</label>
-                                                <select id="filter_account_group_sub" name="filter_account_group_sub" class="form-control">
+                                                <select id="filter_account_group_sub" name="filter_account_group_sub" class="form-control" readonly disabled>
                                                     <option value="0">-- Semua --</option>
                                                     <option value="1">Akun Piutang</option>
                                                     <option value="2">Aktiva Lancar Lainnya</option>
@@ -180,17 +180,17 @@
                                                     <option value="13">Pendapatan</option>
                                                     <option value="14">Pendapatan Lainnya</option>
                                                     <option value="15">Harga Pokok Penjualan</option>
-                                                    <option value="16">Beban</option>  
+                                                    <option value="16" selected>Beban</option>  
                                                     <option value="17">Beban Lainnya</option>                        
                                                 </select>
                                             </div>
                                         </div>      
-                                        <div class="col-lg-3 col-md-3 col-xs-4 col-sm-4 form-group padding-remove-right prs-5">
+                                        <div class="hide col-lg-3 col-md-3 col-xs-4 col-sm-4 form-group padding-remove-right prs-5">
                                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                 <label class="form-label">Status</label>
-                                                <select id="filter_account_flag" name="filter_account_flag" class="form-control">
+                                                <select id="filter_account_flag" name="filter_account_flag" class="form-control" readonly disabled>
                                                     <option value="ALL">-- Semua --</option>
-                                                    <option value="1">Aktif</option>
+                                                    <option value="1" selected>Aktif</option>
                                                     <option value="0">Nonaktif</option>
                                                     <option value="4">Terhapus</option>                       
                                                 </select>
@@ -252,7 +252,7 @@
                                 <input id="id_document" name="id_document" type="hidden" value="" placeholder="id" readonly>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">   
-                                <div class="col-lg-5 col-md-5 col-xs-4 padding-remove-left">
+                                <div class="hide col-lg-5 col-md-5 col-xs-4 padding-remove-left">
                                     <div class="form-group">                        
                                         <label class="form-label">Group Akun *</label>
                                         <select id="group" name="group" class="form-control" disabled readonly>
@@ -261,11 +261,11 @@
                                             <option value="2">Liabilitas</option>
                                             <option value="3">Ekuitas</option>
                                             <option value="4">Pendapatan</option>
-                                            <option value="5">Biaya</option>          
+                                            <option value="5" selected>Biaya</option>          
                                         </select>
                                     </div>
                                 </div> 
-                                <div class="col-lg-7 col-md-7 col-xs-8 padding-remove-side">
+                                <div class="hide col-lg-7 col-md-7 col-xs-8 padding-remove-side">
                                     <div class="form-group">                        
                                         <label class="form-label">Group Sub Akun *</label>
                                         <select id="group_sub" name="group_sub" class="form-control" disabled readonly>
@@ -283,7 +283,7 @@
                                             <option value="13">Pendapatan</option>
                                             <option value="14">Pendapatan Lainnya</option>
                                             <option value="15">Harga Pokok Penjualan</option>
-                                            <option value="16">Beban</option>  
+                                            <option value="16" selected>Beban</option>  
                                             <option value="17">Beban Lainnya</option>        
                                         </select>
                                     </div>
@@ -327,7 +327,7 @@
                                         </div>                                        
                                     </div>         
                                 </div>
-                                <div class="col-lg-6 col-md-12 col-xs-6 padding-remove-right prs-0">
+                                <div class="hide col-lg-6 col-md-12 col-xs-6 padding-remove-right prs-0">
                                     <div class="form-group">
                                         <label class="form-label">Pantau Di Beranda</label>
                                         <!-- <select id="account_locked" name="account_locked" class="form-control" disabled readonly> -->
