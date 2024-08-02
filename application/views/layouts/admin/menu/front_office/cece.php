@@ -215,7 +215,10 @@
                                 <label class="form-label">Tanggal Mulai</label>
                                 <div class="col-md-12 col-sm-12 padding-remove-side">
                                     <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                        <input name="order_start_date" id="order_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $booking_start_date;?>" data-original="<?php echo $booking_start_date;?>">
+                                        <!-- <input name="order_start_date" id="order_start_date" type="text" class="form-control input-sm" readonly="true" 
+                                        value="<?php #echo $booking_start_date;?>" data-original="<?php #echo $booking_start_date;?>"> -->
+                                        <input name="order_start_date" id="order_start_date" type="text" class="form-control input-sm" readonly="true" 
+                                        value="<?php echo $booking_start_date;?>" data-original="<?php echo $booking_start_date;?>">                                        
                                         <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
@@ -224,7 +227,10 @@
                                 <label class="form-label">Tanggal Akhir</label>
                                 <div class="col-md-12 col-sm-12 padding-remove-side">
                                     <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                        <input name="order_end_date" id="order_end_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $booking_end_date;?>" data-original="<?php echo $booking_end_date;?>">
+                                        <!-- <input name="order_end_date" id="order_end_date" type="text" class="form-control input-sm" readonly="true" 
+                                        value="<?php #echo $booking_end_date;?>" data-original="<?php #echo $booking_end_date;?>"> -->
+                                        <input name="order_end_date" id="order_end_date" type="text" class="form-control input-sm" readonly="true" 
+                                        value="<?php echo $booking_end_date;?>" data-original="<?php echo $booking_end_date;?>">                                        
                                         <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>

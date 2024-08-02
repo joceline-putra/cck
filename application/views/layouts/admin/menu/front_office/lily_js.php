@@ -67,7 +67,7 @@
             format: 'dd-M-yyyy',
             autoclose: true,
             enableOnReadOnly: true,
-            language: "id",
+            // language: "id",
             todayHighlight: true,
             weekStart: 1,
             minDate: 0,
