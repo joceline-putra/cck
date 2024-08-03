@@ -1836,6 +1836,7 @@ class Front_office extends MY_Controller{
                         $return->message = validation_errors();
                     }else{
                         $next = true;
+                        $set_msg = '';
                         $order_item_id = !empty($post['order_item_id']) ? $post['order_item_id'] : 0;
                         if(intval($order_item_id) > 0){
                             
@@ -1891,7 +1892,7 @@ class Front_office extends MY_Controller{
                                 }
                                 // var_dump($now_date,$end_date,$set_msg);die;
                                 $get_product_name = $this->Produk_model->get_produk_quick($post['product_id']);                                
-                                $set_msg = 'checkin '.$get_product_name['product_name'];
+                                $set_msg = 'checkin '.$get_product_name['product_name'].', '.$set_msg;
                                 
                                 $params['order_item_product_id'] = $post['product_id'];
                                 $params['order_item_checkin_date'] = date("YmdHis");
@@ -1998,7 +1999,7 @@ class Front_office extends MY_Controller{
                                     $return->message='Gagal mendapatkan data';
                                 }   
                             }else{
-                                $return->message = 'Next false';
+                                $return->message = 'False, '.$set_msg;
                             }
                         }else{
                             $return->message = 'Tidak ada data';
