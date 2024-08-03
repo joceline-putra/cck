@@ -84,7 +84,7 @@
             format: 'dd-M-yyyy',
             autoclose: true,
             enableOnReadOnly: true,
-            language: "id",
+            // language: "id",
             todayHighlight: true,
             weekStart: 1,
             // timezone:"+0700"
