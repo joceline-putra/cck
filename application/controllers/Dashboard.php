@@ -644,7 +644,7 @@ class Dashboard extends MY_Controller{
                 LEFT JOIN branchs ON order_item_branch_id = branch_id
                 LEFT JOIN `references` ON order_item_ref_id = ref_id
                 LEFT JOIN products ON order_item_product_id = product_id
-                WHERE order_item_flag_checkin = 1
+                WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Bulanan'
                 AND DATEDIFF(order_item_end_date,NOW()) > -14
                 ORDER BY order_item_expired_day ASC LIMIT 10
             ");            
