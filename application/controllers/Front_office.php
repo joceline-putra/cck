@@ -32,7 +32,7 @@ class Front_office extends MY_Controller{
         $this->load->model('Produk_model');
         $this->load->model('File_model');                
 
-        $this->print_to         = 1; //0 = Local, 1 = Bluetooth
+        $this->print_to         = 0; //0 = Local, 1 = Bluetooth
         $this->whatsapp_config  = 1;
         $this->module_approval   = 0; //Approval
         $this->module_attachment   = 1; //Attachment         
