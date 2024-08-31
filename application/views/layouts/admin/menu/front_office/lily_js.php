@@ -23,6 +23,8 @@
 
         let dayBooking = 1;
         var aa = '';
+        let mHOUR = 0;
+
         //Croppie
         var upload_crop_img_1 = $('#modal_croppie_canvas_1').croppie({
             enableExif: true,
@@ -1139,10 +1141,13 @@
             console.log('2. order_ref_price_id checked');
             e.preventDefault();
             e.stopPropagation();
+            var oo = $(this).attr('data-val');
+            mHOUR = oo;
+            console.log('mHOUR = ' + mHOUR);
             if(orderID == 0){
                 loadRefPrice();
-            }            
-        });         
+            }
+        });
         $(document).on("change", "input[type=radio][name=order_ref_id]", function(e) {
             console.log('3. order_ref_id checked');            
             e.preventDefault();
@@ -1150,7 +1155,15 @@
             if(orderID == 0){
                 loadRefPrice();
             }            
-        });                
+        });
+        $(document).on("change","#order_start_hour", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var thisHOUR = $(this).find(":selected").val();
+            let setHOURCHECKOUT = parseInt(thisHOUR) + parseInt(mHOUR);
+            // $("#order_end_hour").val(setHOURCHECKOUT).trigger('change');
+        });
+             
         function loadRefPrice(){ //Load ref_price and room
             console.log('loadRefPrice()');
             var ref_check = $("input[name=order_ref_price_id]:checked").val();
@@ -1277,7 +1290,7 @@
             afterUrl += 'package=ru.a402d.rawbtprinter;end;';
             document.location = beforeUrl + encodeURI(url) + afterUrl;
             return false;
-        }        
+        }
         function printReceipt(params){
             var x = screen.width / 2 - 700 / 2;
             var y = screen.height / 2 - 450 / 2;

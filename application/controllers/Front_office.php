@@ -365,7 +365,8 @@ class Front_office extends MY_Controller{
                         '2' => 'order_date',
                         '3' => 'order_number',
                         '4' => 'order_item_ref_id',
-                        '5' => 'product_name'
+                        '5' => 'product_name',
+                        '6' => 'order_contact_name'
                     );
 
                     $limit     = !empty($post['length']) ? $post['length'] : 10;
