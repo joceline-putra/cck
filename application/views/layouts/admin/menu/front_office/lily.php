@@ -534,7 +534,7 @@
                                                         </select>
                                                     </div>
                                                 </div>    
-                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                <!-- <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Pembayaran</label>
                                                         <select id="filter_paid_flag" name="filter_paid_flag" class="form-control">
@@ -543,7 +543,17 @@
                                                             <option value="0">Belum Lunas</option>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div> -->
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Pembayaran</label>
+                                                        <select id="filter_paid_payment_method" name="paid_payment_method" class="form-control">
+                                                            <option value="All">Semua</option>
+                                                            <option value="CASH">CASH</option>
+                                                            <option value="TRANSFER">TRANSFER/QRIS</option>
+                                                        </select>
+                                                    </div>
+                                                </div>                                                  
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Tampil</label>

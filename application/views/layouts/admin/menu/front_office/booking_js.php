@@ -207,7 +207,8 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                     d.filter_item_type_2 = $("#filter_item_type_2").find(":selected").val();
                     d.filter_ref = $("#filter_ref").find(':selected').val();     
                     d.filter_flag_checkin = $("#filter_flag_checkin").find(":selected").val();
-                    d.filter_paid = $("#filter_paid_flag").find(':selected').val();                                                            
+                    d.filter_paid = $("#filter_paid_flag").find(':selected').val();  
+                    d.filter_payment_method = $("#filter_paid_payment_method").find(':selected').val();                                                                                                                                                             
                     d.filter_flag = $("#filter_flag").find(':selected').val();
                     d.length = $("#filter_length").find(':selected').val();
                 },
@@ -464,7 +465,8 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
         $("#filter_branch").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref_price").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref").on('change', function(e){ order_table.ajax.reload(); });                
-        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });         
+        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });   
+        $("#filter_paid_payment_method").on('change', function(e){ order_table.ajax.reload(); });              
         $("#filter_item_type_2").on('change', function(e){ order_table.ajax.reload(); });    
         $("#filter_flag_checkin").on('change', function(e){ order_table.ajax.reload(); });    
                   

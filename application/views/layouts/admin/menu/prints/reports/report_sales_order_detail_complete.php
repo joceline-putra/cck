@@ -62,7 +62,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr style="background-color:#eaeaea;">
-                        <td class="text-right"><b>No</b></td>
+                        <td class="text-right"><b>Noss</b></td>
                         <td><b>Tanggal</b></td>
                         <td><b>Nomor</b></td>
                         <td><b>Cabang</b></td>                        
@@ -86,8 +86,16 @@
                 <?php 
                 $num=1;
                 $total_trans=0;
-                $total_paid=0;                
+                $total_paid=0;    
+                
+                $total_transfer = 0; $total_cash = 0;
                 foreach($content as $v):
+
+                    if($v['paid_payment_method'] == "CASH"){ 
+                        $total_cash = $total_cash + $v['order_total_paid'];
+                    } else if($v['paid_payment_method'] == "TRANSFER"){ 
+                        $total_transfer = $total_transfer + $v['order_total_paid'];
+                    }                                        
                 ?>
                 <tr data-order-id="<?php echo $v['order_id'];?>">
                      <td class="text-right"><?php echo $num++; ?></td>
@@ -125,7 +133,14 @@
                      <td data-product-id="<?php echo $v['product_id'];?>"><?php echo $v['product_name'];?></td>                             
                      <!-- <td style="text-align:right;"><?php #echo number_format($v['order_item_price']);?></td>      -->
                      <td style="text-align:right;"><?php echo number_format($v['order_total_paid']);?></td>                                                           
-                     <td><?php if($v['order_paid'] == 1){ echo 'Lunas'; };?></td>    
+                     <td>
+                        <?php 
+                        // if($v['order_paid'] == 1){ 
+                        //     echo 'Lunas';
+                        // }
+                        echo $v['paid_payment_method'];
+                        ?>
+                     </td>    
                      <td><?php 
                         if($v['order_files_count'] > 0){
                             echo '<span class="fas fa-files"></span>'.$v['order_files_count'];
@@ -145,9 +160,16 @@
                 ?>      
                 <tr>
                     <td colspan="10"><b>Total</b></td>
-                    <!-- <td style="text-align: right;"><b><?php #echo number_format($total_trans);?></b></td> -->
                     <td style="text-align: right;"><b><?php echo number_format($total_paid);?></b></td>                                                            
                 </tr>
+                <!-- <tr>
+                    <td colspan="10"><b>Total CASH</b></td>
+                    <td style="text-align: right;"><b><?php echo number_format($total_cash);?></b></td>                                                            
+                </tr>                
+                <tr>
+                    <td colspan="10"><b>Total TRANSFER/QRIS</b></td>
+                    <td style="text-align: right;"><b><?php echo number_format($total_transfer);?></b></td>                                                            
+                </tr>-->
             </tbody>
         </table> 
         </div>
@@ -157,7 +179,7 @@
         <!--<div id="print-footer" class="col-md-12 col-sm-12 col-xs-12">
           <div>Dicetak :  <?php #echo ucfirst($session['user_data']['user_name']);?> | <?php #echo date("d-m-Y H:i:s");?></div>
       </div> -->     
-    <!-- </div>                       -->
+    <!-- </div>-->
   </div>    
 
 </div>

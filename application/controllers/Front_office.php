@@ -164,10 +164,9 @@ class Front_office extends MY_Controller{
                         'order_item_type' => intval($post['tipe'])
                     );
                     
-                    /* If Form Mode Transaction CRUD not Master CRUD
-                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
+                    /* If Form Mode Transaction CRUD not Master CRUD */
+                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 00:00:00')) : $params;
                     !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
-                    */
 
                     //Default Params for Master CRUD Form
                     // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
@@ -192,13 +191,16 @@ class Front_office extends MY_Controller{
                     }      
                     if($post['filter_flag_checkin'] !== "All") {
                         $params['order_item_flag_checkin'] = $post['filter_flag_checkin'];
-                    }                                                      
+                    }            
+                    if($post['filter_payment_method'] !== "All") {
+                        $params['paid_payment_method'] = $post['filter_payment_method'];
+                    }                                                               
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
-                    if(is_numeric($post['filter_paid'])) {
-                        $params['order_paid'] = intval($post['filter_paid']);
-                    }                                        
+                    // if(is_numeric($post['filter_paid'])) {
+                    //     $params['order_paid'] = intval($post['filter_paid']);
+                    // }                                        
 
                     $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
                     if($get_count > 0){
@@ -239,10 +241,8 @@ class Front_office extends MY_Controller{
                         'order_item_type' => intval($post['tipe'])
                     );
                     
-                    /* If Form Mode Transaction CRUD not Master CRUD
-                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
+                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 00:00:00')) : $params;
                     !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
-                    */
 
                     //Default Params for Master CRUD Form
                     // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
@@ -262,12 +262,15 @@ class Front_office extends MY_Controller{
                     if($post['filter_ref'] !== "All") {
                         $params['order_item_ref_id'] = intval($post['filter_ref']);
                     }                    
+                    if($post['filter_payment_method'] !== "All") {
+                        $params['paid_payment_method'] = $post['filter_payment_method'];
+                    }                          
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
-                    if(is_numeric($post['filter_paid'])) {
-                        $params['order_paid'] = intval($post['filter_paid']);
-                    }                                        
+                    // if(is_numeric($post['filter_paid'])) {
+                    //     $params['order_paid'] = intval($post['filter_paid']);
+                    // }                                        
 
                     $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
                     if($get_count > 0){
@@ -313,10 +316,10 @@ class Front_office extends MY_Controller{
                         'order_item_flag_checkin <' => 3
                     );
                     
-                    /* If Form Mode Transaction CRUD not Master CRUD
-                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
+                    /* If Form Mode Transaction CRUD not Master CRUD */
+                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 00:00:00')) : $params;
                     !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
-                    */
+                    
 
                     //Default Params for Master CRUD Form
                     // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
@@ -336,12 +339,15 @@ class Front_office extends MY_Controller{
                     if($post['filter_ref'] !== "All") {
                         $params['order_item_ref_id'] = intval($post['filter_ref']);
                     }                    
+                    if($post['filter_payment_method'] !== "All") {
+                        $params['paid_payment_method'] = $post['filter_payment_method'];
+                    }                                        
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
-                    if(is_numeric($post['filter_paid'])) {
-                        $params['order_paid'] = intval($post['filter_paid']);
-                    }                                        
+                    // if(is_numeric($post['filter_paid'])) {
+                    //     $params['order_paid'] = intval($post['filter_paid']);
+                    // }                                        
 
                     $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
                     if($get_count > 0){
@@ -410,13 +416,16 @@ class Front_office extends MY_Controller{
                     }
                     if($post['filter_ref'] !== "All") {
                         $params['order_item_ref_id'] = intval($post['filter_ref']);
-                    }                    
+                    }                 
+                    if($post['filter_payment_method'] !== "All") {
+                        $params['paid_payment_method'] = $post['filter_payment_method'];
+                    }                          
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
-                    if(is_numeric($post['filter_paid'])) {
-                        $params['order_paid'] = intval($post['filter_paid']);
-                    }                                        
+                    // if(is_numeric($post['filter_paid'])) {
+                    //     $params['order_paid'] = intval($post['filter_paid']);
+                    // }                                        
 
                     $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
                     if($get_count > 0){
