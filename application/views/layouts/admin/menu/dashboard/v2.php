@@ -42,9 +42,9 @@ if ($session['user_data']['user_id'] == 0) {
         <!--
         <div class="col-md-12 col-sm-12 col-xs-12">       
                 <div class="grid simple">
-                <div class="grid-body">    
-                        Div With Empty Element
-                </div>
+                    <div class="grid-body">    
+                            Div With Empty Element
+                    </div>
                 </div>
         </div>-->  
         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">

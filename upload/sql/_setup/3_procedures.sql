@@ -92,10 +92,10 @@ CREATE PROCEDURE `sp_chart_buy_sell`(IN vBRANCH BIGINT(255))
             DECLARE mNAME VARCHAR(255);
             DECLARE mFINISHED INTEGER;
             DECLARE mACTION_CURSOR CURSOR FOR
-                SELECT DATE_FORMAT(trans_date,'%Y-%m'), DATE_FORMAT(trans_date,'%b %Y') 
-                FROM trans 
-                WHERE trans_date > DATE_SUB(NOW(), INTERVAL 5 MONTH)
-                GROUP BY MONTH(trans_date) ORDER BY trans_date ASC;
+                SELECT DATE_FORMAT(order_date,'%Y-%m'), DATE_FORMAT(order_date,'%b %Y') 
+                FROM orders 
+                WHERE order_date > DATE_SUB(NOW(), INTERVAL 5 MONTH)
+                GROUP BY MONTH(order_date) ORDER BY order_date ASC;
             DECLARE CONTINUE HANDLER FOR NOT FOUND SET mFINISHED=1;
             OPEN mACTION_CURSOR;
 
@@ -130,7 +130,7 @@ CREATE PROCEDURE `sp_chart_buy_sell`(IN vBRANCH BIGINT(255))
                 SELECT DATE_FORMAT(trans_date,'%Y-%m') AS years_month, 
                 IFNULL(SUM(trans_total),0) AS total
                 FROM trans 
-                WHERE trans_type=1
+                WHERE trans_type=1 AND CASE WHEN vBRANCH > 0 THEN trans_branch_id=vBRANCH ELSE trans_branch_id > 0 END
                 GROUP BY EXTRACT(YEAR_MONTH FROM `trans_date`)
             ) AS trans ON temp_label=trans.years_month
             SET temp_total_buy=trans.total
@@ -139,15 +139,25 @@ CREATE PROCEDURE `sp_chart_buy_sell`(IN vBRANCH BIGINT(255))
 
         /* Trans Type 2 = Penjualan */
         BLOCK_C:BEGIN
+            -- UPDATE temp JOIN (
+            --     SELECT DATE_FORMAT(trans_date,'%Y-%m') AS years_month, 
+            --     IFNULL(SUM(trans_total),0) AS total
+            --     FROM trans 
+            --     WHERE trans_type=2
+            --     GROUP BY EXTRACT(YEAR_MONTH FROM `trans_date`)
+            -- ) AS trans ON temp_label=trans.years_month
+            -- SET temp_total_sell=trans.total
+            -- WHERE temp.temp_label=trans.years_month;
+
             UPDATE temp JOIN (
-                SELECT DATE_FORMAT(trans_date,'%Y-%m') AS years_month, 
-                IFNULL(SUM(trans_total),0) AS total
-                FROM trans 
-                WHERE trans_type=2
-                GROUP BY EXTRACT(YEAR_MONTH FROM `trans_date`)
-            ) AS trans ON temp_label=trans.years_month
-            SET temp_total_sell=trans.total
-            WHERE temp.temp_label=trans.years_month;
+                SELECT DATE_FORMAT(order_date,'%Y-%m') AS years_month, 
+                IFNULL(SUM(order_total),0) AS total
+                FROM orders 
+                WHERE order_type=222 AND order_paid = 1 AND CASE WHEN vBRANCH > 0 THEN order_branch_id=vBRANCH ELSE order_branch_id>0 END
+                GROUP BY EXTRACT(YEAR_MONTH FROM `order_date`)
+            ) AS orders ON temp_label=orders.years_month
+            SET temp_total_sell=orders.total
+            WHERE temp.temp_label=orders.years_month;            
 
         END BLOCK_C;
         
@@ -157,7 +167,7 @@ CREATE PROCEDURE `sp_chart_buy_sell`(IN vBRANCH BIGINT(255))
                 SELECT DATE_FORMAT(journal_item_date,'%Y-%m') AS years_month, 
                 IFNULL(SUM(journal_item_debit),0) AS total
                 FROM journals_items 
-                WHERE journal_item_type IN (2,3)
+                WHERE journal_item_type IN (2,3) AND CASE WHEN vBRANCH > 0 THEN journal_item_branch_id=vBRANCH ELSE journal_item_branch_id>0 END 
                 GROUP BY EXTRACT(YEAR_MONTH FROM `journal_item_date`)
             ) AS journals ON temp_label=journals.years_month
             SET temp_total_income=journals.total
@@ -170,7 +180,7 @@ CREATE PROCEDURE `sp_chart_buy_sell`(IN vBRANCH BIGINT(255))
                 SELECT DATE_FORMAT(journal_item_date,'%Y-%m') AS years_month, 
                 IFNULL(SUM(journal_item_debit),0) AS total
                 FROM journals_items 
-                WHERE journal_item_type IN (4)
+                WHERE journal_item_type IN (4) AND CASE WHEN vBRANCH > 0 THEN journal_item_branch_id=vBRANCH ELSE journal_item_branch_id>0 END 
                 GROUP BY EXTRACT(YEAR_MONTH FROM `journal_item_date`)
             ) AS journals ON temp_label=journals.years_month
             SET temp_total_expense=journals.total

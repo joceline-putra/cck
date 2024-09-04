@@ -262,7 +262,8 @@ class Dashboard extends MY_Controller{
                 LIMIT 6
             ");
             */
-            $query = $this->db->query("CALL sp_chart_buy_sell($session_branch_id)");
+            $branch = $this->input->post('branch');
+            $query = $this->db->query("CALL sp_chart_buy_sell($branch)");
             $result = $query->result_array();
             mysqli_next_result($this->db->conn_id); 
             $query->free_result();
@@ -648,6 +649,17 @@ class Dashboard extends MY_Controller{
                 AND DATEDIFF(order_item_end_date,NOW()) > -14
                 ORDER BY order_item_expired_day ASC LIMIT 10
             ");            
+            $return->status=1;
+            $return->message='Loaded';
+            $return->result= $query->result_array();
+        }else if($request=="load-room"){
+            $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : null;
+            $query = $this->db->query("
+                SELECT product_id, product_branch_id, product_category_id, product_ref_id, product_name, ref_id, ref_name, branch_id, branch_name
+                FROM products
+                LEFT JOIN `references` ON product_ref_id=ref_id
+                LEFT JOIN branchs ON product_branch_id=branch_id
+                WHERE product_type=2 AND product_branch_id=$branch");            
             $return->status=1;
             $return->message='Loaded';
             $return->result= $query->result_array();

@@ -150,6 +150,16 @@
                                                         </div>                          
                                                     </div>
                                                     <div class="col-lg-4 col-md-4 col-xs-12 padding-remove-left">
+                                                        <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-left">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Cabang dari</label>
+                                                                <select id="branch_code" name="branch_code" class="form-control" disabled readonly>
+                                                                    <option value="0">Pilih</option>
+                                                                    <option value="1">Cece</option>
+                                                                    <option value="2">Lily</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>                                                        
                                                         <div class="col-md-12 col-xs-12 padding-remove-side">                     
                                                             <div class="col-lg-12 col-md-12 col-xs-12 padding-remove-side">
                                                                 <div class="form-group">

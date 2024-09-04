@@ -175,18 +175,51 @@ if ($session['user_data']['user_id'] == 0) {
                 </div>
             </div>
         </div>
-        <div class="hide col-md-4 col-sm-12 col-xs-12">
+        <div class="hide col-md-12 col-sm-12 col-xs-12" style="display:inline;">
             <div class="grid simple">
                 <div class="grid-title no-border">
-                    <h5>Grafik Pergerakan Transaksi</h5>
+                    <h5>Status Kamar</h5>
                     <div class="tools">
-                        <a href="javascript:;" class="collapse"></a>
-                        <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
-                        <a href="javascript:;" class="reload"></a>
-                        <a href="javascript:;" class="remove"></a>
+                        <a id="btn_room_status" href="#"><i class="fas fa-sync"></i></a>
                     </div>
                 </div>      
-                <div class="grid-body no-border" style="padding:10px;">                   
+                <div class="grid-body no-border" style="padding:10px;">              
+                    <div class="col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:100px;">
+                        <div class="form-group">
+                            <label class="form-label">Cabang</label>
+                            <div class="controls">
+                                <select name="branch" id="branch" style="width:100%">
+                                </select>
+                            </div>
+                        </div>
+                    </div>                              
+                    <div id="div_room_status" class="col-md-12 col-sm-12 padding-remove-side">          
+                    </div>    
+                </div>
+            </div>
+        </div>         
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="grid simple">
+                <div class="grid-title no-border">
+                    <h5>Grafik Penjualan Kamar</h5>
+                    <div class="tools">
+                        <!-- <a href="javascript:;" class="collapse"></a> -->
+                        <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
+                        <!-- <a href="javascript:;" class="reload"></a>
+                        <a href="javascript:;" class="remove"></a> -->
+                    </div>
+                </div>      
+                <div class="grid-body no-border" style="padding:10px;">   
+                    <div class="col-md-12 col-xs-12 padding-remove-side" style="margin-bottom:100px;">
+                        <div class="form-group">
+                            <label class="form-label">Cabang</label>
+                            <div class="controls">
+                                <select name="chart-three-branch" id="chart-three-branch" style="width:100%">
+                                    <option value="0">Semua Cabang</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>                
                     <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
                     <div class="col-md-12 col-sm-12 padding-remove-side" style="">          
                         <canvas id="chart-three" width="400" height="200"></canvas>                               
@@ -195,6 +228,41 @@ if ($session['user_data']['user_id'] == 0) {
                 </div>
             </div>
         </div>    
+        <div id="top_date_due" class="col-md-6 col-sm-12 col-xs-12 padding-remove-side" style="display:inline;">
+            <div class="grid simple">
+                <div class="grid-title no-border">
+                    <h5>Bulanan Akan Habis</h5>
+                    <div class="tools">
+                        <a id="btn_top_cece_date_due" href="#"><i class="fas fa-sync"></i></a>
+                        <!-- <a href="javascript:;" class="collapse"></a> -->
+                        <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
+                        <!-- <a id="btn_top_cece_date_due" href="#" class="reload"></a> -->
+                        <!-- <a href="javascript:;" class="remove"></a> -->
+                    </div>
+                </div>      
+                <div class="grid-body no-border" style="padding:10px;">                   
+                    <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
+                    <div class="col-md-12 col-sm-12 padding-remove-side">          
+                    <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                    </div>
+                    <!-- </div> -->
+                    <table id="table_top_date_due" class="table no-more-tables">
+                        <thead>
+                            <tr>
+                                <td><b>Room</b></td>
+                                <td><b>CheckIn</b></td>                                            
+                                <td style="text-align:right;"><b>Expired</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="3" style="text-align: center;">-- Data tidak tersedia --</td>
+                            </tr>
+                        </tbody>
+                    </table>      
+                </div>
+            </div>
+        </div>         
         <div class="clearfix"></div>
         <div class="hide col-md-12 col-sm-12 col-xs-12">        
             <div class="grid simple">
@@ -287,7 +355,7 @@ if ($session['user_data']['user_id'] == 0) {
                             <i class="fas fa-chalkboard-teacher"></i> Aktivitas
                         </a>
                     </li>
-                    <li class="">
+                    <li class="hide">
                         <a href="#tab2" onclick="" role="tab" data-toggle="tab" aria-expanded="false">
                             <i class="fas fa-chart-bar"></i> Statistik
                         </a>
@@ -598,41 +666,6 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>  
-                    <div id="top_date_due" class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:inline;">
-                        <div class="grid simple">
-                            <div class="grid-title no-border">
-                                <h5>Bulanan Akan Habis</h5>
-                                <div class="tools">
-                                    <a id="btn_top_cece_date_due" href="#"><i class="fas fa-sync"></i></a>
-                                    <!-- <a href="javascript:;" class="collapse"></a> -->
-                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
-                                    <!-- <a id="btn_top_cece_date_due" href="#" class="reload"></a> -->
-                                    <!-- <a href="javascript:;" class="remove"></a> -->
-                                </div>
-                            </div>      
-                            <div class="grid-body no-border" style="padding:10px;">                   
-                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
-                                <div class="col-md-12 col-sm-12 padding-remove-side">          
-                                <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
-                                </div>
-                                <!-- </div> -->
-                                <table id="table_top_date_due" class="table no-more-tables">
-                                    <thead>
-                                        <tr>
-                                            <td><b>Room</b></td>
-                                            <td><b>CheckIn</b></td>                                            
-                                            <td style="text-align:right;"><b>Expired</b></td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="3" style="text-align: center;">-- Data tidak tersedia --</td>
-                                        </tr>
-                                    </tbody>
-                                </table>      
-                            </div>
-                        </div>
-                    </div> 
                 </div>      
             </div>    
         </div>  
