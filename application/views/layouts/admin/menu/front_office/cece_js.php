@@ -148,7 +148,8 @@
                     d.filter_branch = $("#filter_branch").find(':selected').val();
                     d.filter_ref_price = $("#filter_ref_price").find(':selected').val();
                     d.filter_ref = $("#filter_ref").find(':selected').val();     
-                    d.filter_paid = $("#filter_paid_flag").find(':selected').val();                                                            
+                    d.filter_paid = $("#filter_paid_flag").find(':selected').val(); 
+                    d.filter_payment_method = $("#filter_paid_payment_method").find(':selected').val();                                                                                
                     d.filter_flag = $("#filter_flag").find(':selected').val();
                     d.length = $("#filter_length").find(':selected').val();
                 },
@@ -411,7 +412,8 @@
         $("#filter_branch").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref_price").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref").on('change', function(e){ order_table.ajax.reload(); });                
-        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });                
+        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });   
+        $("#filter_paid_payment_method").on('change', function(e){ order_table.ajax.reload(); });                        
         $("#filter_search").on('input', function(e){ var ln = $(this).val().length; if(parseInt(ln) > 3){ order_table.ajax.reload(); }else if(parseInt(ln) < 1){ order_table.ajax.reload();} });
 
 

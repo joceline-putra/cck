@@ -479,12 +479,12 @@
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
                                             <div class="clearfix"></div>
 
-                                            <div class="hide col-md-12 col-xs-12">
+                                            <div class="col-md-12 col-xs-12">
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <label class="form-label">Periode Awal</label>
                                                     <div class="col-md-12 col-sm-12 padding-remove-side">
                                                         <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                            <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $first_date;?>">
+                                                            <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
                                                             <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                                         </div>
                                                     </div>
@@ -545,7 +545,7 @@
                                                         </select>
                                                     </div>
                                                 </div>    
-                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                <!-- <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Pembayaran</label>
                                                         <select id="filter_paid_flag" name="filter_paid_flag" class="form-control">
@@ -554,7 +554,17 @@
                                                             <option value="0">Belum Lunas</option>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div> -->
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Pembayaran</label>
+                                                        <select id="filter_paid_payment_method" name="paid_payment_method" class="form-control">
+                                                            <option value="All">Semua</option>
+                                                            <option value="CASH">CASH</option>
+                                                            <option value="TRANSFER">TRANSFER/QRIS</option>
+                                                        </select>
+                                                    </div>
+                                                </div>                                                
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Tampil</label>

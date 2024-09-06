@@ -10,7 +10,147 @@
         // Booking Variable
         // let bookingDATA;
         // $("#modal_booking_cece").modal('show');
-
+        $('#chart-three-branch').select2({
+            //dropdownParent:$("#modal-id"), //If Select2 Inside Modal, $(".jconfirm-box-container") if jConfirm
+            //placeholder: '<i class="fas fa-search"></i> Search',
+            //width:'100%',
+            tags:true,
+            minimumInputLength: 0,
+            placeholder: {
+                id: '0',
+                text: 'Semua Cabang'
+            },
+            allowClear: true,
+            minimumResultsForSearch: Infinity,
+            ajax: {
+                type: "get",
+                url: "<?= base_url('search/manage');?>",
+                dataType: 'json',
+                delay: 250,
+                 beforeSend:function(x){
+                    // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                    // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                },
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        // tipe: 1,
+                        source: 'branchs'
+                    };
+                    return query;
+                },
+                processResults: function (data){
+                    var datas = [];
+                    $.each(data, function(key, val){
+                        datas.push({
+                            'id' : val.id,
+                            'text' : val.nama
+                        });
+                    });
+                    return {
+                        results: datas
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function(markup){ 
+                return markup; 
+            },
+            templateResult: function(datas){ //When Select on Click
+                //if (!datas.id) { return datas.text; }
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            },
+            templateSelection: function(datas) { //When Option on Click
+                //if (!datas.id) { return datas.text; }
+                //Custom Data Attribute
+                //$(datas.element).attr('data-column', datas.column);        
+                //return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            }
+        }); 
+        $('#branch').select2({
+            //dropdownParent:$("#modal-id"), //If Select2 Inside Modal, $(".jconfirm-box-container") if jConfirm
+            //placeholder: '<i class="fas fa-search"></i> Search',
+            //width:'100%',
+            tags:true,
+            minimumInputLength: 0,
+            placeholder: {
+                id: '0',
+                text: 'Semua Cabang'
+            },
+            allowClear: true,
+            minimumResultsForSearch: Infinity,
+            ajax: {
+                type: "get",
+                url: "<?= base_url('search/manage');?>",
+                dataType: 'json',
+                delay: 250,
+                 beforeSend:function(x){
+                    // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                    // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                },
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        // tipe: 1,
+                        source: 'branchs'
+                    };
+                    return query;
+                },
+                processResults: function (data){
+                    var datas = [];
+                    $.each(data, function(key, val){
+                        datas.push({
+                            'id' : val.id,
+                            'text' : val.nama
+                        });
+                    });
+                    return {
+                        results: datas
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function(markup){ 
+                return markup; 
+            },
+            templateResult: function(datas){ //When Select on Click
+                //if (!datas.id) { return datas.text; }
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            },
+            templateSelection: function(datas) { //When Option on Click
+                //if (!datas.id) { return datas.text; }
+                //Custom Data Attribute
+                //$(datas.element).attr('data-column', datas.column);        
+                //return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            }
+        });         
+        $(document).on("change","#chart-three-branch",function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var var_custom = $(this).find(':selected').val();
+            chart_recap_all(var_custom);
+        });
+        $(document).on("change","#branch",function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var var_custom = $(this).find(':selected').val();
+            load_room(var_custom);
+        });        
+        
         // Variable
             const Toast = Swal.mixin({
                 toast: true,
@@ -515,6 +655,7 @@
                                 ticks: {
                                     callback: function (value, index, values) {
                                         var ret = value;
+                                        console.log(ret);
                                         return parseInt(ret).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                                     }
                                 }
@@ -640,39 +781,41 @@
                 data: {
                     labels: ['-', '-', '-', '-', '-', '-'],
                     datasets: [
+                        // {
+                        //     label: 'Beli',
+                        //     data: [30, 10, 20, 45, 25, 15],
+                        //     backgroundColor: 'transparent',
+                        //     borderWidth: 2,
+                        //     pointBorderColor: '#DB2E59',
+                        //     pointBackgroundColor: '#DB2E59',
+                        //     borderColor: '#DB2E59'
+                        // }, 
                         {
-                            label: 'Beli',
-                            data: [30, 10, 20, 45, 25, 15],
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            pointBorderColor: '#DB2E59',
-                            pointBackgroundColor: '#DB2E59',
-                            borderColor: '#DB2E59'
-                        }, {
-                            label: 'Jual',
+                            label: 'Penjualan Kamar',
                             data: [40, 30, 75, 100, 65, 50],
                             backgroundColor: 'transparent',
                             borderWidth: 2,
                             pointBorderColor: '#0090d9',
                             pointBackgroundColor: '#0090d9',
                             borderColor: '#0090d9'
-                        }, {
-                            label: 'Pemasukan',
-                            data: [90, 60, 35, 100, 60, 40],
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            pointBorderColor: '#36a6a3',
-                            pointBackgroundColor: '#36a6a3',
-                            borderColor: '#36a6a3'
-                        }, {
-                            label: 'Biaya',
-                            data: [50, 40, 20, 80, 50, 20],
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            pointBorderColor: '#ef6605',
-                            pointBackgroundColor: '#ef6605',
-                            borderColor: '#ef6605'
-                        }
+                        }, 
+                        // {
+                        //     label: 'Pemasukan',
+                        //     data: [90, 60, 35, 100, 60, 40],
+                        //     backgroundColor: 'transparent',
+                        //     borderWidth: 2,
+                        //     pointBorderColor: '#36a6a3',
+                        //     pointBackgroundColor: '#36a6a3',
+                        //     borderColor: '#36a6a3'
+                        // }, {
+                        //     label: 'Biaya',
+                        //     data: [50, 40, 20, 80, 50, 20],
+                        //     backgroundColor: 'transparent',
+                        //     borderWidth: 2,
+                        //     pointBorderColor: '#ef6605',
+                        //     pointBackgroundColor: '#ef6605',
+                        //     borderColor: '#ef6605'
+                        // }
                     ]
                 },
                 options: {
@@ -731,8 +874,8 @@
                                     beginAtZero: true,
                                     callback: function (value, index, values) {
                                         var dsp = '';
-                                        dsp += value.toLocaleString();
-                                        // dsp += numberToLabel(value);
+                                        // dsp += value.toLocaleString();
+                                        dsp += numberToLabel(value);
                                         return dsp;
                                     }
                                 },
@@ -742,7 +885,21 @@
                                 }
                             }
                         ]
-                    }
+                    },
+                    tooltips: 
+                    {
+                        callbacks: 
+                        {
+                            label: function(tooltipItem, data) 
+                            {
+                            const title = data.labels[tooltipItem.index];
+                            const dataset = data.datasets[tooltipItem.datasetIndex];
+                            const value = dataset.data[tooltipItem.index]; 
+                            // return title + ': ' + Number(value).toFixed(2) + "%";   
+                                return intlFormat(value.toFixed(2));
+                            }
+                        },
+                    }                    
                 }
             };
             window.chart_three = new Chart(id_chart_three, config_chart_three);
@@ -1132,9 +1289,10 @@
                 }
             });
         }
-        function chart_recap_all(){
+        function chart_recap_all(branch_id){
             var data = {
                 action: 'chart-trans-last',
+                branch:branch_id
             };
             $.ajax({
                 url: '<?= base_url('dashboard/manage') ?>',
@@ -1154,32 +1312,73 @@
 
                         for (var i = 0; i < res.length; i++) {
                             labels.push(res[i].chart_name);
-                            result_buy.push(parseInt(res[i].chart_buy));
+                            // result_buy.push(parseInt(res[i].chart_buy));
                             result_sell.push(parseInt(res[i].chart_sell));
-                            result_income.push(parseInt(res[i].chart_income));
-                            result_expense.push(parseInt(res[i].chart_expense));
+                            // result_income.push(parseInt(res[i].chart_income));
+                            // result_expense.push(parseInt(res[i].chart_expense));
                         }
 
                         config_chart_three.data.labels = labels;
-                        config_chart_three.data.datasets[0].data = result_buy;
-                        config_chart_three.data.datasets[1].data = result_sell;
-                        config_chart_three.data.datasets[2].data = result_income;
-                        config_chart_three.data.datasets[3].data = result_expense;
+                        // config_chart_three.data.datasets[0].data = result_buy;
+                        config_chart_three.data.datasets[0].data = result_sell;
+                        // config_chart_three.data.datasets[2].data = result_income;
+                        // config_chart_three.data.datasets[3].data = result_expense;
                         chart_three.update();
 
-                        config_chart_two.data.labels = labels;
-                        config_chart_two.data.datasets[0].data = result_buy;
-                        config_chart_two.data.datasets[1].data = result_sell;                 
-                        chart_two.update();    
+                        // config_chart_two.data.labels = labels;
+                        // config_chart_two.data.datasets[0].data = result_buy;
+                        // config_chart_two.data.datasets[1].data = result_sell;                 
+                        // chart_two.update();    
                         
-                        config_chart_one.data.labels = labels;
-                        config_chart_one.data.datasets[0].data = result_income;
-                        config_chart_one.data.datasets[1].data = result_expense;                 
-                        chart_one.update();                            
+                        // config_chart_one.data.labels = labels;
+                        // config_chart_one.data.datasets[0].data = result_income;
+                        // config_chart_one.data.datasets[1].data = result_expense;                 
+                        // chart_one.update();                            
                     }
                 }
             });            
         }
+        function load_room(branch_id){
+            var data = {
+                action: 'load-room',
+                branch:branch_id
+            };
+            $.ajax({
+                url: '<?= base_url('dashboard/manage') ?>',
+                data: data,
+                type: 'post',
+                dataType: 'json',
+                cache: 'false',
+                success: function (d) {
+                    if (parseInt(d.status) === 1) {          
+                        let r = d.result;
+                        let total_records = r.length;
+                        if(parseInt(total_records) > 0){
+                            $("#div_room_status").html('');
+                        
+                            var dsp = '';
+                            r.forEach(async (v, i) => {
+                        
+                                dsp += `
+                                    <div class="col-md-3 col-xs-12">
+                                        <b>${v['product_name']}</b>
+                                    </div>
+                                `;
+                                    // dsp += '<td>'+v['col_3']+'</td>';
+                                    // dsp += '<td>';
+                                    //     dsp += '<button type="button" class="btn-action btn btn-primary" data-id="'+v['col_4']+'">';
+                                    //     dsp += 'Action';
+                                    //     dsp += '</button>';
+                                    // dsp += '</td>';
+                                // dsp += '</tr>';
+                        
+                            });
+                            $("#div_room_status").html(dsp);
+                        }             
+                    }
+                }
+            });            
+        }        
         //Enable 
         /* CARD */
         // total_transaction_month();
@@ -1193,7 +1392,7 @@
         // chart_account_realtime();
         // chart_account_realtime();
         // chart_account_expense();
-        // chart_recap_all(); //Need Disable chart_trans_last_order(), chart_trans_buy_sell(), chart_trans_three()
+        chart_recap_all(0); //Need Disable chart_trans_last_order(), chart_trans_buy_sell(), chart_trans_three()
 
         //Disabled
         // total_transaction_day(1);

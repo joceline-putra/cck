@@ -648,6 +648,7 @@
                 form.append('telepon_1', $('#telepon_1').val());
                 form.append('email_1', $('#email_1').val());
                 form.append('alamat', $('#alamat').val());
+                form.append('kode', $('#branch_code').find(':selected').val());
                 form.append('status', $('#status').find(':selected').val());
                 // form.append('specialist', $('#specialist').find(':selected').val());
                 form.append('specialist', 1);                
@@ -719,6 +720,7 @@
                         $("#form-master input[name='email_1']").val(d.result.branch_email_1);
                         $("#form-master textarea[name='alamat']").val(d.result.branch_address);
                         $("#form-master select[name='status']").val(d.result.branch_flag).trigger('change');
+                        $("#form-master select[name='branch_code']").val(d.result.branch_code).trigger('change');                        
 
                         // if (parseInt(d.result.branch_logo) == 0) {
                         //     $('#img-preview1').attr('src', url_image);
@@ -973,6 +975,7 @@
                 form.append('action', 'update');
                 form.append('id', $('#id_document').val());
                 // form.append('upload1', $('#upload1')[0].files[0]);
+                form.append('kode', $('#branch_code').find(':selected').val());                
                 form.append('tipe', identity);
                 form.append('nama', $('#nama').val());
                 form.append('telepon_1', $('#telepon_1').val());
@@ -1237,6 +1240,7 @@
 
         //Attr Select yang perlu di setel
         var atributSelect = [
+            "branch_code",
             "status",
             "specialist",
             "user",

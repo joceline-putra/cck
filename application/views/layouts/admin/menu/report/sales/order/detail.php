@@ -71,7 +71,7 @@
                                         <div class="col-md-12 col-sm-12 padding-remove-side">
                                             <div class="input-append success date col-md-12 col-lg-12 no-padding">
                                                 <input name="start" id="start" type="text" class="form-control input-sm" readonly="true"
-                                                       value="<?php echo $first_date; ?>">
+                                                       value="<?php echo $end_date; ?>">
                                                 <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                             </div>
                                         </div>

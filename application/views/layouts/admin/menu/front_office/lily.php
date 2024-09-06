@@ -159,14 +159,14 @@
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_0">Promo</label>
                                         <input id="order_ref_price_id_1" type="radio" name="order_ref_price_id" value="1" data-name="Bulanan">
                                         <label class="radio_group_label radio_bg" for="order_ref_price_id_1">Bulanan</label> -->
-                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2" data-name="Harian"><label class="radio_group_label radio_bg" for="order_ref_price_id_2" style="width:100%;height:124px;word-wrap: normal;">Harian</label></div>
-                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3" data-name="Midnight"><label class="radio_group_label radio_bg" for="order_ref_price_id_3" style="width:100%;height:124px;word-wrap: normal;">Midnight</label></div>
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_2" type="radio" name="order_ref_price_id" value="2" data-val="24" data-name="Harian"><label class="radio_group_label radio_bg" for="order_ref_price_id_2" style="width:100%;height:124px;word-wrap: normal;">Harian</label></div>
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_3" type="radio" name="order_ref_price_id" value="3" data-val="12" data-name="Midnight"><label class="radio_group_label radio_bg" for="order_ref_price_id_3" style="width:100%;height:124px;word-wrap: normal;">Midnight</label></div>
                                         <!-- </div>
                                     <div class="radio_group"> -->
 
-                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4" data-name="4 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_4" style="width:100%;height:124px;word-wrap: normal;">4 Jam</label></div>
-                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_6" type="radio" name="order_ref_price_id" value="6" data-name="3 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_6" style="width:100%;height:124px;word-wrap: normal;">3 Jam</label></div>                                           
-                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_5" type="radio" name="order_ref_price_id" value="5" data-name="2 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_5" style="width:100%;height:124px;word-wrap: normal;">2 Jam</label></div>                                            
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4" data-val="4" data-name="4 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_4" style="width:100%;height:124px;word-wrap: normal;">4 Jam</label></div>
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_6" type="radio" name="order_ref_price_id" value="6" data-val="3" data-name="3 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_6" style="width:100%;height:124px;word-wrap: normal;">3 Jam</label></div>                                           
+                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_5" type="radio" name="order_ref_price_id" value="5" data-val="2" data-name="2 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_5" style="width:100%;height:124px;word-wrap: normal;">2 Jam</label></div>                                            
                                     </div>                                    
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
                                                 <select name="order_start_hour" id="order_start_hour" class="form-control" style="width:100%">
                                                     <?php
                                                     $clock = array(
-                                                        "01","02","03","04","05","06","07","08","09","10",
+                                                        "00","01","02","03","04","05","06","07","08","09","10",
                                                         "11","12","13","14","15","16","17","18","19","20",
                                                         "21","22","23"                                                                        
                                                     );
@@ -278,7 +278,7 @@
                                                 <select name="order_end_hour" id="order_end_hour" class="form-control" style="width:100%">
                                                     <?php
                                                    $clock = array(
-                                                       "01","02","03","04","05","06","07","08","09","10",
+                                                       "00","01","02","03","04","05","06","07","08","09","10",
                                                        "11","12","13","14","15","16","17","18","19","20",
                                                        "21","22","23"                                                                        
                                                    );
@@ -468,12 +468,12 @@
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
                                             <div class="clearfix"></div>
 
-                                            <div class="hide col-md-12 col-xs-12">
+                                            <div class="col-md-12 col-xs-12">
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <label class="form-label">Periode Awal</label>
                                                     <div class="col-md-12 col-sm-12 padding-remove-side">
                                                         <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                            <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $first_date;?>">
+                                                            <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
                                                             <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                                         </div>
                                                     </div>
@@ -534,7 +534,7 @@
                                                         </select>
                                                     </div>
                                                 </div>    
-                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                <!-- <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Pembayaran</label>
                                                         <select id="filter_paid_flag" name="filter_paid_flag" class="form-control">
@@ -543,7 +543,17 @@
                                                             <option value="0">Belum Lunas</option>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div> -->
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Pembayaran</label>
+                                                        <select id="filter_paid_payment_method" name="paid_payment_method" class="form-control">
+                                                            <option value="All">Semua</option>
+                                                            <option value="CASH">CASH</option>
+                                                            <option value="TRANSFER">TRANSFER/QRIS</option>
+                                                        </select>
+                                                    </div>
+                                                </div>                                                  
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Tampil</label>
