@@ -761,7 +761,7 @@ class Login extends My_Controller{
             if($cek > 0){
                 $user_info = $this->Login_model->get_login_info($username);
                 if(intval($user_info['user_activation']) == 1){
-                    if(intval($user_info['branch_flag']) == 1){
+                    if($user_info['branch_flag']){
                         $update_user_last_login = $this->User_model->update_user($user_info['user_id'],array('user_date_last_login'=>date("YmdHis")));
                         $user_group = $this->Login_model->get_group_info($user_info['user_user_group_id']); 
                         
@@ -889,8 +889,8 @@ class Login extends My_Controller{
                             'return_url' => $return_url
                         );
                     }else{
-                        $user_has_branch = $user_info['user_branch_id'];
-                        if($user_has_branch == null){
+                        // $user_has_branch = $user_info['user_branch_id'];
+                        // if($user_has_branch == null){
                             $return->status = 2;
                             $return->message = 'Perusahaan belum di konfigurasi';   
                             $return->result = array(
@@ -904,9 +904,9 @@ class Login extends My_Controller{
 
                             $this->session->set_flashdata('message',$return->message);
                             $this->session->set_flashdata('status',1);
-                        }else{
-                            $return->message='Perusahaan/Cabang tidak dapat diakses';
-                        }
+                        // }else{
+                        //     $return->message='Perusahaan/Cabang tidak dapat diakses';
+                        // }
                     }
                 }else{
                     $return->message='User anda belum diaktifkan, Silahkan cek email';
