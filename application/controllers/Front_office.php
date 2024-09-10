@@ -879,24 +879,26 @@ class Front_office extends MY_Controller{
                             var_dump($message);die;
                             */
 
-                            $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");
+                            // $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");
+                            $check_date_is_past =$this->time_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");                            
                             if(intval($check_date_is_past) < 0){
                                 $next = false;
-                                $message = 'Tanggal Mulai tidak boleh mundur';
+                                $message = 'Waktu Mulai tidak boleh mundur';
                             }
 
                             if($next){
-                                $check_date_is_past2 =$this->day_diff($post['order_start_date']." 00:00:00", $post['order_end_date']." 00:00:00");
+                                // $check_date_is_past2 =$this->day_diff($post['order_start_date']." 00:00:00", $post['order_end_date']." 00:00:00");
+                                $check_date_is_past2 =$this->time_diff($post['order_start_date']." 00:00:00", $post['order_end_date']." 00:00:00");                                
                                 if(intval($check_date_is_past2) < 0){
                                     $next = false;
-                                    $message = 'Tanggal Akhir sudah lewat';
+                                    $message = 'Waktu Akhir sudah lewat';
                                 }         
                             }
                             
                             if($session_user_group_id < 3){
                                 $next=true;
                             }
-
+                            // var_dump($next);die;
                             if($next){
                                 $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
                                 // $sdate = $post['order_start_date']." 00:00:00";
@@ -1255,24 +1257,27 @@ class Front_office extends MY_Controller{
                                 var_dump($message);die;
                             */
 
-                            $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");
+                            // $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");
+                            $check_date_is_past =$this->time_diff(date("Y-m-d H:i:s"),$post['order_start_date']." ".$post['order_start_hour'].":00");                           
                             if(intval($check_date_is_past) < 0){
                                 $next = false;
-                                $message = 'Tanggal Mulai tidak boleh mundur';
+                                $message = 'Waktu Mulai tidak boleh mundur';
                             }
-
+                            // var_dump(intval($check_date_is_past),$next);
                             if($next){
                                 $check_date_is_past2 =$this->day_diff($post['order_start_date']." 00:00:00", $post['order_end_date']." 00:00:00");
+                                $check_date_is_past2 =$this->time_diff($post['order_start_date']." 00:00:00", $post['order_end_date']." 00:00:00");                                
                                 if(intval($check_date_is_past2) < 0){
                                     $next = false;
-                                    $message = 'Tanggal Akhir sudah lewat';
+                                    $message = 'Waktu Akhir sudah lewat';
                                 }         
                             }
                             
                             if($session_user_group_id < 3){
                                 $next=true;
                             }
-
+                            // var_dump(date("Y-m-d H:i:s"),$post['order_start_date']." ".$post['order_start_hour'].":00");
+                            // var_dump($next);die;
                             if($next){
                                 $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
                                 // $sdate = $post['order_start_date']." 00:00:00";
@@ -3587,6 +3592,25 @@ class Front_office extends MY_Controller{
 
         return $bytes;
     }
+    function time_diff($datetime1, $datetime2) {
+        // Create DateTime objects from the provided datetime strings
+        $date1 = new DateTime($datetime1);
+        $date2 = new DateTime($datetime2);
+
+        // Calculate the difference between the two DateTime objects
+        $interval = $date1->diff($date2);
+
+        // Determine if the first date is in the past relative to the second date
+        $isPast = $date1 > $date2;
+
+        // Format the difference as a string
+        // $difference = $interval->format('%y years, %m months, %d days, %h hours, %i minutes, %s seconds');
+        $difference = $interval->format("%i");
+
+        // Add a minus sign if the first date is in the past
+        return $isPast ? '-' . $difference : $difference;
+        // return $interval->format('%y years, %m months, %d days, %h hours, %i minutes, %s seconds');
+    }    
     function hour_diff($d,$p){ //Tgl Terkecil, Tgl Terbesar
         $date1 = new DateTime($d);
         $date2 = new DateTime($p);
