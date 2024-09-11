@@ -836,47 +836,47 @@ class Front_office extends MY_Controller{
 
                             //Check Ref Price ID
                             /*
-                            $start_date = $post['order_start_date'];
-                            $end_date   = $post['order_end_date'];                            
-                            if($post['order_ref_price_id'] == 0){ //Bulanan
+                                $start_date = $post['order_start_date'];
+                                $end_date   = $post['order_end_date'];                            
+                                if($post['order_ref_price_id'] == 0){ //Bulanan
 
-                            }else if($post['order_ref_price_id'] == 1){ //harian
-                                
-                            }else if($post['order_ref_price_id'] == 2){ //midnight
-                                $start_date  = $start_date.$post['order_start_hour'].':00';
-                                $end_date    = $end_date.$post['order_end_hour'].':00';                                
-                                $check_date  = $this->hour_diff($start_date,$end_date);
-                                if(intval($check_date) < 0){
-                                    $message = 'Jam tidak boleh mundur';
-                                    $next = false;
-                                }else if(intval($check_date) > 4){
-                                    $message = 'Tidak boleh lebih dari 4 jam';
-                                    $next = false;
-                                }                                
-                            }else if($post['order_ref_price_id'] == 3){ //4jam
-                                $start_date  = $start_date.$post['order_start_hour'].':00';
-                                $end_date    = $end_date.$post['order_end_hour'].':00';                                
-                                $check_date  = $this->hour_diff($start_date,$end_date);
-                                if(intval($check_date) < 0){
-                                    $message = 'Jam tidak boleh mundur';
-                                    $next = false;
-                                }else if(intval($check_date) > 4){
-                                    $message = 'Tidak boleh lebih dari 4 jam';
-                                    $next = false;
+                                }else if($post['order_ref_price_id'] == 1){ //harian
+                                    
+                                }else if($post['order_ref_price_id'] == 2){ //midnight
+                                    $start_date  = $start_date.$post['order_start_hour'].':00';
+                                    $end_date    = $end_date.$post['order_end_hour'].':00';                                
+                                    $check_date  = $this->hour_diff($start_date,$end_date);
+                                    if(intval($check_date) < 0){
+                                        $message = 'Jam tidak boleh mundur';
+                                        $next = false;
+                                    }else if(intval($check_date) > 4){
+                                        $message = 'Tidak boleh lebih dari 4 jam';
+                                        $next = false;
+                                    }                                
+                                }else if($post['order_ref_price_id'] == 3){ //4jam
+                                    $start_date  = $start_date.$post['order_start_hour'].':00';
+                                    $end_date    = $end_date.$post['order_end_hour'].':00';                                
+                                    $check_date  = $this->hour_diff($start_date,$end_date);
+                                    if(intval($check_date) < 0){
+                                        $message = 'Jam tidak boleh mundur';
+                                        $next = false;
+                                    }else if(intval($check_date) > 4){
+                                        $message = 'Tidak boleh lebih dari 4 jam';
+                                        $next = false;
+                                    }
+                                }else if($post['order_ref_price_id'] == 4){ //2jam
+                                    $start_date  = $start_date.$post['order_start_hour'].':00';
+                                    $end_date    = $end_date.$post['order_end_hour'].':00';                                
+                                    $check_date  = $this->hour_diff($start_date,$end_date);
+                                    if(intval($check_date) < 0){
+                                        $message = 'Jam tidak boleh mundur';
+                                        $next = false;
+                                    }else if(intval($check_date) > 2){
+                                        $message = 'Tidak boleh lebih dari 2 jam';
+                                        $next = false;
+                                    }
                                 }
-                            }else if($post['order_ref_price_id'] == 4){ //2jam
-                                $start_date  = $start_date.$post['order_start_hour'].':00';
-                                $end_date    = $end_date.$post['order_end_hour'].':00';                                
-                                $check_date  = $this->hour_diff($start_date,$end_date);
-                                if(intval($check_date) < 0){
-                                    $message = 'Jam tidak boleh mundur';
-                                    $next = false;
-                                }else if(intval($check_date) > 2){
-                                    $message = 'Tidak boleh lebih dari 2 jam';
-                                    $next = false;
-                                }
-                            }
-                            var_dump($message);die;
+                                var_dump($message);die;
                             */
 
                             // $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");
@@ -884,6 +884,7 @@ class Front_office extends MY_Controller{
                             if(intval($check_date_is_past) < 0){
                                 $next = false;
                                 $message = 'Waktu Mulai tidak boleh mundur';
+                                $return->msg = date("Y-m-d H:i:s").' < '.$post['order_start_date']." ".$post['order_start_hour'].":00";
                             }
 
                             if($next){
@@ -3605,7 +3606,7 @@ class Front_office extends MY_Controller{
 
         // Format the difference as a string
         // $difference = $interval->format('%y years, %m months, %d days, %h hours, %i minutes, %s seconds');
-        $difference = $interval->format("%i");
+        $difference = $interval->format("%h");
 
         // Add a minus sign if the first date is in the past
         return $isPast ? '-' . $difference : $difference;
@@ -3680,27 +3681,6 @@ class Front_office extends MY_Controller{
             $return->message = "Oops! Error creating json file...";
         }
         echo json_encode($return);
-    }
-    function test(){
-        echo json_encode($this->Front_model->get_all_paid(null,null,null,null,'paid_id','asc'));
-
-        $params = array(
-            'paid_id' => !empty($post['paid_id']) ? intval($post['paid_id']) : null,
-            'paid_order_id' => !empty($post['paid_order_id']) ? intval($post['paid_order_id']) : null,
-            'paid_number' => !empty($post['paid_number']) ? $post['paid_session'] : null,
-            'paid_date' => !empty($post['paid_date']) ? $post['paid_session'] : null,
-            'paid_payment_type' => !empty($post['paid_payment_type']) ? $post['paid_session'] : null,
-            'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_session'] : null,
-            'paid_total' => !empty($post['paid_total']) ? intval($post['paid_total']) : '0.00',
-            'paid_date_created' => date("YmdHis"),
-            'paid_url' => !empty($post['paid_url']) ? $post['paid_session'] : null,
-            'paid_user_id' => $session_user_id,
-            'paid_size' => !empty($post['paid_size']) ? intval($post['paid_size']) : null,
-            'paid_session' => !empty($post['paid_session']) ? $post['paid_session'] : null,
-        );        
-    }
-    function test2(){
-        var_dump($this->day_diff("2023-01-02 12:00:00","2023-01-02 13:00:00"));die;
     }
     function format_byte($bytes) {
         if ($bytes > 0) {
@@ -3844,5 +3824,37 @@ class Front_office extends MY_Controller{
         $hiddenCount = $length - ($visibleCount * 2);
         return substr($string, 0, $visibleCount) . str_repeat('*', $hiddenCount) . substr($string, ($visibleCount * -1), $visibleCount);
     } 
+    function test(){
+        echo json_encode($this->Front_model->get_all_paid(null,null,null,null,'paid_id','asc'));
+
+        $params = array(
+            'paid_id' => !empty($post['paid_id']) ? intval($post['paid_id']) : null,
+            'paid_order_id' => !empty($post['paid_order_id']) ? intval($post['paid_order_id']) : null,
+            'paid_number' => !empty($post['paid_number']) ? $post['paid_session'] : null,
+            'paid_date' => !empty($post['paid_date']) ? $post['paid_session'] : null,
+            'paid_payment_type' => !empty($post['paid_payment_type']) ? $post['paid_session'] : null,
+            'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_session'] : null,
+            'paid_total' => !empty($post['paid_total']) ? intval($post['paid_total']) : '0.00',
+            'paid_date_created' => date("YmdHis"),
+            'paid_url' => !empty($post['paid_url']) ? $post['paid_session'] : null,
+            'paid_user_id' => $session_user_id,
+            'paid_size' => !empty($post['paid_size']) ? intval($post['paid_size']) : null,
+            'paid_session' => !empty($post['paid_session']) ? $post['paid_session'] : null,
+        );        
+    }
+    function test2(){
+        // echo date("Y-m-d H:i:s");
+        // $td = '2024-09-10 14:26:00';
+        $td = date("Y-m-d H:i:s");
+        $od = '2024-09-10 14:30:00';
+        $check_date_is_past = $this->time_diff($td, $od);
+        if(intval($check_date_is_past) < 0){
+            echo 'lampau';
+        }else{
+            echo 'boleh';
+        }
+        var_dump("Selisih Hari: ".$this->day_diff($td,$od));        
+        var_dump('Sekarang: '.$td,'Booking: '.$od,'Selisih: '.$check_date_is_past.' jam');   
+    }
 }
 ?>
