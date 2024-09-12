@@ -6,7 +6,7 @@
         var url_dashboard = "<?= base_url('dashboard'); ?>";
         var url_trans = "<?= base_url('transaksi/manage'); ?>"; //Not Used
         var url_message         = "<?= base_url('message'); ?>";
-
+        
         // Booking Variable
         // let bookingDATA;
         // $("#modal_booking_cece").modal('show');
@@ -1359,9 +1359,32 @@
                             var dsp = '';
                             r.forEach(async (v, i) => {
                         
+                                var sat = 'data-order-id="'+v['order_item_order_id']+'" data-order-item-id="'+v['order_item_id']+'"' 
+                                           + 'data-product-id="'+v['product_id']+'"'
+                                           + 'data-product-name="'+v['product_name']+'"'
+                                           + 'data-ref-name="'+v['ref_name']+'"'                                                                                      
+                                ;
+
+                                if(parseInt(v['order_item_id']) > 0){
+                                    var scolor = 'background-color: #651215;cursor:pointer;';
+                                    var sgues = checkStringLength(v['order_contact_name']);
+                                }else{
+                                    var scolor = 'background-color: #12651c;';
+                                    var sgues = 'Ready';                                    
+                                }                                
                                 dsp += `
-                                    <div class="col-md-3 col-xs-12">
-                                        <b>${v['product_name']}</b>
+                                    <div class="col-md-2 col-xs-6 div_room_status_child">
+                                        <div class="col-md-12 col-xs-12 btn_room_status" style="${scolor}" ${sat}>                                    
+                                            <div class="col-md-12 col-xs-12">
+                                                <p>
+                                                    <b>${v['product_name']}</b><br>
+                                                    <b>${checkStringLength(v['ref_name'])}</b>
+                                                </p>       
+                                            </div>
+                                            <div class="col-md-12 col-xs-12">
+                                                <p><b>${sgues}</b></p>
+                                            </div>
+                                        </div>
                                     </div>
                                 `;
                                     // dsp += '<td>'+v['col_3']+'</td>';
@@ -1379,7 +1402,54 @@
                 }
             });            
         }        
+        $(document).on("click",".btn_room_status", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var id = $(this).attr('data-order-id');
+            if(parseInt(id) > 0){
+                let form = new FormData();
+                form.append('action', 'read');
+                form.append('order_id', id);            
+                $.ajax({
+                    type: "post",
+                    url: '<?= base_url('front_office/booking') ?>',
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,
+                    beforeSend:function(x){
+                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        let ri = d.result_item;                    
+                        if(parseInt(s) == 1){
+                            notif(s,m);
+                            $("#modal_booking_read").modal('show');
+                            $(".rbook_number").html(':'+r.order_number);
+                            $(".rbook_date").html(':'+formatDateTime(r.order_date));   
+                            $("#rbook_contact_name").val(ri.order_contact_name);
+                            $("#rbook_contact_phone").val(ri.order_contact_phone);     
+                            $(".rbook_room").html(': '+ri.product_name + ' / '+ri.ref_name + ' / '+ ri.branch_name);     
+                            $(".rbook_total").html(': '+numberWithCommas(r.order_total));                                                                                                                        
+                            $(".rbook_checkin_date").html(': '+formatDateTime(ri.order_item_start_date)+' '+formatDateTime(ri.order_item_end_date));
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        notif(0,err);
+                    }
+                });
+            }else{
+                console.log('Booking ID not found');
+            }
+        });
+        
         //Enable 
+        // load_room(3);
         /* CARD */
         // total_transaction_month();
         // total_cash_in_month('2,3');
@@ -1787,6 +1857,33 @@
                 return intlFormat(num / 1000) + 'k';
             return intlFormat(num);
         }
+        function checkStringLength(str) {
+            // Check if the length of the string is greater than 10 characters
+            if (str.length > 13) {
+                // Return only the first 5 characters
+                return str.substring(0, 12)+'...';
+            } else {
+                // Return the full string
+                return str;
+            }
+        }
+        function formatDateTime(input) {
+            // Split the input into date and time parts
+            const [datePart, timePart] = input.split(' ');
+
+            // Split the date part into year, month, and day
+            const [year, month, day] = datePart.split('-');
+
+            // Convert the month number to month name
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const monthName = monthNames[parseInt(month) - 1];
+
+            // Format the time to 'HH:MM' format
+            const time = timePart.substring(0, 5);
+
+            // Return the formatted date and time
+            return `${parseInt(day)} ${monthName} ${year}, ${time}`;
+        }        
     });
     // End1 of document ready
 

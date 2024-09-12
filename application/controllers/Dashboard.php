@@ -655,10 +655,21 @@ class Dashboard extends MY_Controller{
         }else if($request=="load-room"){
             $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : null;
             $query = $this->db->query("
-                SELECT product_id, product_branch_id, product_category_id, product_ref_id, product_name, ref_id, ref_name, branch_id, branch_name
+                SELECT product_id, product_branch_id, product_category_id, product_ref_id, product_name, ref_id, ref_name, branch_id, branch_name,
+                c.order_item_id, c.order_item_order_id, c.order_item_product_id, c.order_item_start_date, c.order_item_end_date, 
+                c.order_item_flag_checkin, c.order_item_checkin_date, c.order_item_checkout_date,
+                c.order_id, c.order_session, c.order_contact_name, c.order_contact_phone 
                 FROM products
                 LEFT JOIN `references` ON product_ref_id=ref_id
                 LEFT JOIN branchs ON product_branch_id=branch_id
+                LEFT OUTER JOIN (
+                    SELECT order_item_id, order_item_order_id, order_item_product_id, order_item_start_date, order_item_end_date, 
+                    order_item_flag_checkin, order_item_checkin_date, order_item_checkout_date, order_id, order_session, order_contact_name, order_contact_phone 
+                    FROM orders_items 
+                    LEFT JOIN orders ON order_item_order_id=order_id
+                    WHERE order_item_flag_checkin = 1
+                    GROUP BY order_item_product_id ORDER BY order_item_id DESC
+                ) AS c ON product_id=c.order_item_product_id
                 WHERE product_type=2 AND product_branch_id=$branch");            
             $return->status=1;
             $return->message='Loaded';
