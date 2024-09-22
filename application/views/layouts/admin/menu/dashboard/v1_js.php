@@ -137,7 +137,72 @@
                     return datas.text;
                 }
             }
-        });         
+        }); 
+        $('#ref').select2({
+            //dropdownParent:$("#modal-id"), //If Select2 Inside Modal, $(".jconfirm-box-container") if jConfirm
+            //placeholder: '<i class="fas fa-search"></i> Search',
+            //width:'100%',
+            tags:true,
+            minimumInputLength: 0,
+            placeholder: {
+                id: '0',
+                text: 'Semua Jenis Kamar'
+            },
+            allowClear: true,
+            minimumResultsForSearch: Infinity,
+            ajax: {
+                type: "get",
+                url: "<?= base_url('search/manage');?>",
+                dataType: 'json',
+                delay: 250,
+                 beforeSend:function(x){
+                    // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                    // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                },
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        tipe: 10,
+                        branch: $("#branch").find(':selected').val(),
+                        source: 'references'
+                    };
+                    return query;
+                },
+                processResults: function (data){
+                    var datas = [];
+                    $.each(data, function(key, val){
+                        datas.push({
+                            'id' : val.id,
+                            'text' : val.nama
+                        });
+                    });
+                    return {
+                        results: datas
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function(markup){ 
+                return markup; 
+            },
+            templateResult: function(datas){ //When Select on Click
+                //if (!datas.id) { return datas.text; }
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            },
+            templateSelection: function(datas) { //When Option on Click
+                //if (!datas.id) { return datas.text; }
+                //Custom Data Attribute
+                //$(datas.element).attr('data-column', datas.column);        
+                //return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            }
+        });                 
         $(document).on("change","#chart-three-branch",function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -147,9 +212,21 @@
         $(document).on("change","#branch",function(e) {
             e.preventDefault();
             e.stopPropagation();
-            var var_custom = $(this).find(':selected').val();
-            load_room(var_custom);
-        });        
+            var branch = $(this).find(':selected').val();
+            // var ref = $("#ref").find(':selected').val();
+            var ref = 0;
+            $("#ref").val(0).trigger('change');
+            load_room(branch,ref);
+            // console.log('Branch:'+branch);
+        });
+        $(document).on("change","#ref",function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var branch = $("#branch").find(':selected').val();
+            var ref = $(this).find(':selected').val();
+            load_room(branch,ref);
+            // console.log('Ref:'+ref);
+        });                
         
         // Variable
             const Toast = Swal.mixin({
@@ -1338,10 +1415,11 @@
                 }
             });            
         }
-        function load_room(branch_id){
+        function load_room(branch_id,ref){
             var data = {
                 action: 'load-room',
-                branch:branch_id
+                branch:branch_id,
+                ref:ref
             };
             $.ajax({
                 url: '<?= base_url('dashboard/manage') ?>',
@@ -1815,7 +1893,7 @@
                                     '</div>' +
                                     '<div class="info-wrapper small-width">' +
                                     '<div class="info text-black">' +
-                                    '<p>' +
+                                    '<p style="text-align:left;">' +
                                     '<a href="#"><b>' + val.user + '&nbsp;</b></a>&nbsp;' +
                                     teks +
                                     // '<span>'+teks +'</span>'+
@@ -1823,7 +1901,7 @@
                                     '<span class="label" style="background-color:#7484e6;color:white;"></span>' +
                                     '<a href="#"><span class="label label-primary"></span></a>' +
                                     '</p>' +
-                                    '<p class="muted small-text">' + val.date_time + '</p>' +
+                                    '<p style="text-align:left;" class="muted small-text">' + val.date_time + '</p>' +
                                     '</div>' +
                                     '<div class="clearfix"></div>' +
                                     '</div>' +
