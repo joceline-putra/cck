@@ -131,6 +131,7 @@
                     d.search = {value:$("#filter_search").val()};
                     d.date_start = $("#filter_start_date").val();
                     d.date_end = $("#filter_end_date").val();
+                    d.filter_flag_checkin = $("#filter_flag_checkin").find(":selected").val();                    
                     d.filter_branch = $("#filter_branch").find(':selected').val();
                     d.filter_ref_price = $("#filter_ref_price").find(':selected').val();
                     d.filter_ref = $("#filter_ref").find(':selected').val();     
@@ -394,6 +395,7 @@
             $('select[name="table_order_length"]').val(value).trigger('change');
             order_table.ajax.reload();
         });
+        $("#filter_flag_checkin").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_branch").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref_price").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref").on('change', function(e){ order_table.ajax.reload(); });

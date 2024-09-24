@@ -165,8 +165,8 @@ class Front_office extends MY_Controller{
                     );
                     
                     /* If Form Mode Transaction CRUD not Master CRUD */
-                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 00:00:00')) : $params;
-                    !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
+                    !empty($post['date_start']) ? $params['order_item_start_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 00:00:00')) : $params;
+                    !empty($post['date_end']) ? $params['order_item_start_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
 
                     //Default Params for Master CRUD Form
                     // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
@@ -313,13 +313,12 @@ class Front_office extends MY_Controller{
                     $params = array(
                         'order_item_type' => intval($post['tipe']),
                         'branch_code' => 1,
-                        'order_item_flag_checkin <' => 3
                     );
+                    // 'order_item_flag_checkin <' => 3
                     
                     /* If Form Mode Transaction CRUD not Master CRUD */
-                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 00:00:00')) : $params;
-                    !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
-                    
+                    !empty($post['date_start']) ? $params['order_item_start_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 00:00:00')) : $params;
+                    !empty($post['date_end']) ? $params['order_item_start_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
 
                     //Default Params for Master CRUD Form
                     // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
@@ -341,7 +340,10 @@ class Front_office extends MY_Controller{
                     }                    
                     if($post['filter_payment_method'] !== "All") {
                         $params['paid_payment_method'] = $post['filter_payment_method'];
-                    }                                        
+                    }
+                    if($post['filter_flag_checkin'] !== "All") {
+                        $params['order_item_flag_checkin'] = $post['filter_flag_checkin'];
+                    }                                                            
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
@@ -390,14 +392,13 @@ class Front_office extends MY_Controller{
 
                     $params = array(
                         'order_item_type' => intval($post['tipe']),
-                        'branch_code' => 2,
-                        'order_item_flag_checkin <' => 3
+                        'branch_code' => 2
                     );
+                    // 'order_item_flag_checkin <' => 3
                     
-                    /* If Form Mode Transaction CRUD not Master CRUD
-                    !empty($post['date_start']) ? $params['order_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 23:59:59')) : $params;
-                    !empty($post['date_end']) ? $params['order_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params;
-                    */
+                    /* If Form Mode Transaction CRUD not Master CRUD */
+                    !empty($post['date_start']) ? $params['order_item_start_date >'] = date('Y-m-d H:i:s', strtotime($post['date_start'].' 00:00:00')) : $params;
+                    !empty($post['date_end']) ? $params['order_item_start_date <'] = date('Y-m-d H:i:s', strtotime($post['date_end'].' 23:59:59')) : $params; 
 
                     //Default Params for Master CRUD Form
                     // $params['order_id']   = !empty($post['order_id']) ? $post['order_id'] : $params;
@@ -419,7 +420,10 @@ class Front_office extends MY_Controller{
                     }                 
                     if($post['filter_payment_method'] !== "All") {
                         $params['paid_payment_method'] = $post['filter_payment_method'];
-                    }                          
+                    }           
+                    if($post['filter_flag_checkin'] !== "All") {
+                        $params['order_item_flag_checkin'] = $post['filter_flag_checkin'];
+                    }                                   
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            

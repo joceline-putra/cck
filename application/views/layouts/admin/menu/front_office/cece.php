@@ -479,7 +479,7 @@
                                         <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
                                             <div class="clearfix"></div>
 
-                                            <div class="col-md-12 col-xs-12">
+                                            <div class="col-md-12 col-xs-12">                                               
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <label class="form-label">Periode Awal</label>
                                                     <div class="col-md-12 col-sm-12 padding-remove-side">
@@ -505,6 +505,18 @@
                                                     </div>
                                                 </div>          
                                                 <div class="clearfix"></div>
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">Status</label>
+                                                        <select id="filter_flag_checkin" name="filter_flag_checkin" class="form-control">
+                                                            <option value="All">Semua</option>
+                                                            <option value="0">Waiting</option>
+                                                            <option value="1" selected>Checkin</option>
+                                                            <option value="2">Checkout</option>
+                                                            <!-- <option value="4">Batal</option>                                                                                                                         -->
+                                                        </select>
+                                                    </div>
+                                                </div>                                                  
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Cabang</label>

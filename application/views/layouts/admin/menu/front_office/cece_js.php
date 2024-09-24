@@ -151,6 +151,7 @@
                     d.filter_paid = $("#filter_paid_flag").find(':selected').val(); 
                     d.filter_payment_method = $("#filter_paid_payment_method").find(':selected').val();                                                                                
                     d.filter_flag = $("#filter_flag").find(':selected').val();
+                    d.filter_flag_checkin = $("#filter_flag_checkin").find(':selected').val();                    
                     d.length = $("#filter_length").find(':selected').val();
                 },
                 dataSrc: function(data) {
@@ -409,6 +410,7 @@
             $('select[name="table_order_length"]').val(value).trigger('change');
             order_table.ajax.reload();
         });
+        $("#filter_flag_checkin").on('change', function(e){ order_table.ajax.reload(); });        
         $("#filter_branch").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref_price").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref").on('change', function(e){ order_table.ajax.reload(); });                
