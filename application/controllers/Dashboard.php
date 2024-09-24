@@ -660,7 +660,7 @@ class Dashboard extends MY_Controller{
                 $where_ref = "AND ref_id=$ref";
             }
             $pre = "
-                SELECT product_id, product_branch_id, product_category_id, product_ref_id, product_name, ref_id, ref_name, branch_id, branch_name,
+                SELECT product_id, product_branch_id, product_category_id, product_ref_id, product_name, product_flag, ref_id, ref_name, branch_id, branch_name,
                 c.order_item_id, c.order_item_order_id, c.order_item_product_id, c.order_item_start_date, c.order_item_end_date, 
                 c.order_item_flag_checkin, c.order_item_checkin_date, c.order_item_checkout_date,
                 c.order_id, c.order_session, c.order_contact_name, c.order_contact_phone 

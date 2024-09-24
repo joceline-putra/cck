@@ -1436,35 +1436,37 @@
                         
                             var dsp = '';
                             r.forEach(async (v, i) => {
-                        
-                                var sat = 'data-order-id="'+v['order_item_order_id']+'" data-order-item-id="'+v['order_item_id']+'"' 
-                                           + 'data-product-id="'+v['product_id']+'"'
-                                           + 'data-product-name="'+v['product_name']+'"'
-                                           + 'data-ref-name="'+v['ref_name']+'"'                                                                                      
-                                ;
+                                console.log(v['product_flag']);
+                                if(parseInt(v['product_flag']) == 1){
+                                    var sat = 'data-order-id="'+v['order_item_order_id']+'" data-order-item-id="'+v['order_item_id']+'"' 
+                                            + 'data-product-id="'+v['product_id']+'"'
+                                            + 'data-product-name="'+v['product_name']+'"'
+                                            + 'data-ref-name="'+v['ref_name']+'"'                                                                                      
+                                    ;
 
-                                if(parseInt(v['order_item_id']) > 0){
-                                    var scolor = 'background-color: #651215;cursor:pointer;';
-                                    var sgues = checkStringLength(v['order_contact_name']);
-                                }else{
-                                    var scolor = 'background-color: #12651c;';
-                                    var sgues = 'Ready';                                    
-                                }                                
-                                dsp += `
-                                    <div class="col-md-2 col-xs-6 div_room_status_child">
-                                        <div class="col-md-12 col-xs-12 btn_room_status" style="${scolor}" ${sat}>                                    
-                                            <div class="col-md-12 col-xs-12">
-                                                <p>
-                                                    <b>${v['product_name']}</b><br>
-                                                    <b>${checkStringLength(v['ref_name'])}</b>
-                                                </p>       
-                                            </div>
-                                            <div class="col-md-12 col-xs-12">
-                                                <p><b>${sgues}</b></p>
+                                    if(parseInt(v['order_item_id']) > 0){
+                                        var scolor = 'background-color: #651215;cursor:pointer;';
+                                        var sgues = checkStringLength(v['order_contact_name']);
+                                    }else{
+                                        var scolor = 'background-color: #12651c;';
+                                        var sgues = 'Ready';                                    
+                                    }                                
+                                    dsp += `
+                                        <div class="col-md-2 col-xs-6 div_room_status_child">
+                                            <div class="col-md-12 col-xs-12 btn_room_status" style="${scolor}" ${sat}>                                    
+                                                <div class="col-md-12 col-xs-12">
+                                                    <p>
+                                                        <b>${v['product_name']}</b><br>
+                                                        <b>${checkStringLength(v['ref_name'])}</b>
+                                                    </p>       
+                                                </div>
+                                                <div class="col-md-12 col-xs-12">
+                                                    <p><b>${sgues}</b></p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                `;
+                                    `;
+                                }
                                     // dsp += '<td>'+v['col_3']+'</td>';
                                     // dsp += '<td>';
                                     //     dsp += '<button type="button" class="btn-action btn btn-primary" data-id="'+v['col_4']+'">';
