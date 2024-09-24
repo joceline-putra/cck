@@ -1860,7 +1860,7 @@ $switch_do = !empty($this->session->flashdata('switch_branch')) ?  intval($this-
 								dsp += '<li><a href="#" class="btn-user-switch"><i class="fas fa-toggle-off"></i><span style="position: relative;">&nbsp;Switch User</span></a></li>';
 							}
 							if(parseInt(is_allowed) == 1){
-								dsp += '<li><a href="#" class="btn-branch-switch"><i class="fas fa-building"></i><span style="position: relative;">&nbsp;Switch Cabang</span></a></li>';
+								// dsp += '<li><a href="#" class="btn-branch-switch"><i class="fas fa-building"></i><span style="position: relative;">&nbsp;Switch Cabang</span></a></li>';
 							} 							
 							dsp += '<li><a href="#" class="btn-user-password"><i class="fas fa-key"></i><span style="position: relative;">&nbsp;Ganti Password</span></a></li>';
 							dsp += '<li><a href="#" class="btn-user-theme"><i class="fas fa-fill-drip"></i><span style="position: relative;">&nbsp;Warna Interface</span></a></li>';

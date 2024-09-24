@@ -187,11 +187,11 @@ $sidebar_logo = !empty($session['user_data']['branch']['branch_logo_sidebar']) ?
                                 </li>
                             <?php } ?>
                             <?php if (intval($session['user_data']['user_group_id']) == 1) { ?>                            
-                            <li>
+                            <!-- <li>
                                 <a href="#" class="" id="btn-branch-switch">
                                     <i class="fas fa-building"></i><span style="position: relative;">&nbsp;Switch Cabang</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <?php } ?>     
                             <li class="divider"></li>                                                         
                             <li>

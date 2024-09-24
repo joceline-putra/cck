@@ -854,7 +854,7 @@ class Login extends My_Controller{
 
                         $this->session->set_userdata('logged_in',true);            
                         $this->session->set_userdata('user_data',$session_array);
-                        if($user_info['user_id'] == 1){
+                        if($user_info['user_user_group_id'] == 1){
                             $this->session->set_userdata('root',true);                                    
                         }else{
                             $this->session->set_userdata('root',false);                                                            
