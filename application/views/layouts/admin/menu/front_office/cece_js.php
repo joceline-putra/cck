@@ -1319,13 +1319,13 @@
 
             //Set Text
             $(".modal-print-trans-number").html(': ' + d.order_number);
-            $(".modal-print-trans-date").html(': ' + moment(d.order_date).format("DD-M-YYYY, HH:mm"));
+            $(".modal-print-trans-date").html(': ' + moment(d.order_date).format("DD-MMM-YYYY, HH:mm"));
             
             $("#modal-print-contact-name").val(' ' + d.contact_name);
             $("#modal-print-contact-phone").val(' ' + d.contact_phone);
 
             $(".modal_print_branch_name").html(': ' + d.order_item.branch_name);            
-            $(".modal_print_start_date").html(': ' + moment(d.order_item.order_item_start_date).format("DD-M-YYYY, HH:mm"));   
+            $(".modal_print_start_date").html(': ' + moment(d.order_item.order_item_start_date).format("DD-MMM-YYYY, HH:mm"));   
             $(".modal_print_product_name").html(': ' + d.order_item.product_name);               
             $(".modal_print_total").html(': ' + addCommas(Math.floor(d.order_item.order_total)));  
             $(".modal_print_total_paid").html(': ' + addCommas(Math.floor(d.order_item.order_total_paid)));                

@@ -30,13 +30,13 @@
                             </li>                
                         ';                    
                         if($v['menu_id'] == 30){ // Akun Perkiraan -> Pemetaan Akun
-                            echo '
-                                <li class="" data-name="configuration/mapping">
-                                    <a href="'.base_url('configuration/account_map').'">
-                                        <span class="fas fa-swatchbook"></span> Pemetaan Akun
-                                    </a>
-                                </li>                
-                            ';
+                            // echo '
+                            //     <li class="" data-name="configuration/mapping">
+                            //         <a href="'.base_url('configuration/account_map').'">
+                            //             <span class="fas fa-swatchbook"></span> Pemetaan Akun
+                            //         </a>
+                            //     </li>                
+                            // ';
                         }
                     }
                 }

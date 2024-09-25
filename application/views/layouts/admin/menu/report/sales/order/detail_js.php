@@ -279,7 +279,7 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        source: 'users-switch'
+                        source: 'users-no-branch'
                     }
                     return query;
                 },

@@ -146,7 +146,7 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                 data: function (params) {
                     let query = {
                         search: params.term,
-                        source: 'users',
+                        source: 'users-no-branch',
                     };
                     return query;
                 },
@@ -311,7 +311,7 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                         }
 
                         dsp += '<button class="btn_action_order btn btn-mini btn-primary" data-order-id="'+data+'"';
-                            dsp += 'data-order-flag="'+row.order_flag+'"';
+                            dsp += 'data-order-flag="'+row.order_flag+'" data-branch-code="'+row.branch_code+'"';
                             dsp += 'data-order-item-flag-checkin="'+row.order_item_flag_checkin+'" data-order-item-product-id="'+row.order_item_product_id+'" data-order-item-id="'+row.order_item_id+'" data-order-number="'+row.order_number+'" data-order-session="'+row.order_session+'" data-order-branch-id="'+row.order_item_branch_id+'" data-order-ref-id="'+row.order_item_ref_id+'" data-product-name="'+row.product_name+'"';
                             dsp += ' data-order-number="'+row.order_number+'" data-order-date="'+row.order_item_date_created+'" data-order-total="'+row.order_total+'" data-order-contact-name="'+row.order_contact_name+'"  data-order-contact-phone="'+row.order_contact_phone+'">';
                         dsp += '<span class="fas fa-cog"></span> Aksi';
@@ -410,10 +410,19 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        dsp += '['+row.ref_name+']';
+
+                        if(row.branch_code == 1){
+                            var cl = '#0096d9';
+                        }else{
+                            var cl = '#8a00d9a1';
+                        }
+
+                        dsp += '<label class="label" style="background-color:'+cl+';color:white;">'+row.branch_name+'</label>';
+                        dsp += '<br>['+row.ref_name+']';
                         if(row.product_id != undefined){
                             dsp += ' - '+ row.product_name;
                         }
+
                         return dsp;
                     }
                 },{
@@ -449,6 +458,8 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                         var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.price_name;
                         var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
                         dsp += '<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="'+ic+'"></span>&nbsp;'+sts+'</span>';
+                        
+                        dsp += '<br>'+row.user_username;
                         return dsp;
                     }
                 },{
@@ -2799,10 +2810,12 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                             dsp += '<i class="fas fa-ban"></i><span style="position: relative;">&nbsp;Checkout</span></a></li>';
 
                             dsp += '<li><a href="#" class="btn_change_contact" data-order-id="'+this_form.attr('data-order-id')+'" data-number="'+this_form.attr('data-order-number')+'" data-date="'+this_form.attr('data-order-date')+'" data-order-total="'+this_form.attr('data-order-total')+'" data-contact-name="'+this_form.attr('data-order-contact-name')+'" data-contact-phone="'+this_form.attr('data-order-contact-phone')+'"><i class="fas fa-address-card"></i><span style="position: relative;">&nbsp;Ganti Kontak</span></a></li>';
-                   
-                            dsp += '<li><a href="#" class="btn_rebooking" data-order-id="'+this_form.attr('data-order-id')+'"';
-                            dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="2" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
-                            dsp += '<i class="fas fa-hand-holding"></i><span style="position: relative;">&nbsp;Perpanjang</span></a></li>';                            
+                            
+                            if(this_form.attr('data-branch-code') == 1){
+                                dsp += '<li><a href="#" class="btn_rebooking" data-order-id="'+this_form.attr('data-order-id')+'"';
+                                dsp += 'data-order-item-product-id="'+this_form.attr('data-order-item-product-id')+'" data-order-flag="2" data-order-item-id="'+this_form.attr('data-order-item-id')+'" data-order-number="'+this_form.attr('data-order-number')+'" data-order-session="'+this_form.attr('data-order-session')+'" data-order-branch-id="'+this_form.attr('data-order-branch-id')+'" data-order-ref-id="'+this_form.attr('data-order-ref-id')+'" data-product-name="'+this_form.attr('data-product-name')+'">';
+                                dsp += '<i class="fas fa-hand-holding"></i><span style="position: relative;">&nbsp;Perpanjang</span></a></li>';                            
+                            }
                         }                        
                     }
                     if(parseInt(this_form.attr('data-order-flag')) == 0) {

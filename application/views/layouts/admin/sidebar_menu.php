@@ -32,18 +32,18 @@ $next = true;
             //Start of Only Joe
             // if($session['user_data']['user_name'] == 'root'){
             ?>
-            <li class="start"> 
+            <!-- <li class="start"> 
                 <a href="#">
                     <i class="fas fa-wallet"></i>
                     <span class="title">Booking</span> <span class="selected"></span>
                 </a>
                 <li class="start open">
                     <ul class="open sub-menu" style="display:block;">
-                        <li><a href="<?php echo site_url('booking/cece')?>">Cece</a></li>
-                        <li><a href="<?php echo site_url('booking/lily')?>">Lily</a></li>
+                        <li><a href="<?php #echo site_url('booking/cece')?>">Cece</a></li>
+                        <li><a href="<?php #echo site_url('booking/lily')?>">Lily</a></li>
                     </ul>
                 </li>
-            </li>
+            </li> -->
             <?php                
             // }
             //End of Only Joe  

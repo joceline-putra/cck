@@ -121,7 +121,7 @@
                 data: function (params) {
                     let query = {
                         search: params.term,
-                        source: 'users',
+                        source: 'users-no-branch',
                     };
                     return query;
                 },
@@ -417,6 +417,8 @@
                         var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.price_name;
                         var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
                         dsp += '<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="'+ic+'"></span>&nbsp;'+sts+'</span>';
+                        
+                        dsp += '<br>'+row.user_username;
                         return dsp;
                     }
                 },{
@@ -1459,7 +1461,7 @@
             $("#modal-print-contact-phone").val(' ' + d.contact_phone);
 
             $(".modal_print_branch_name").html(': ' + d.order_item.branch_name);            
-            $(".modal_print_start_date").html(': ' + moment(d.order_item.order_item_start_date).format("DD-M-YYYY, HH:mm"));   
+            $(".modal_print_start_date").html(': ' + moment(d.order_item.order_item_start_date).format("DD-MMM-YYYY, HH:mm"));   
             $(".modal_print_product_name").html(': ' + d.order_item.product_name);               
             $(".modal_print_total").html(': ' + addCommas(Math.floor(d.order_item.order_total)));  
             $(".modal_print_total_paid").html(': ' + addCommas(Math.floor(d.order_item.order_total_paid)));                
@@ -3288,7 +3290,7 @@
             dsp += `<tr><td>Jenis Kamar</td><td>:</td><td>${$("input[name='order_ref_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Kamar</td><td>:</td><td>${$("input[name='order_product_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-mm-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-mm-yyyy')}</td></tr>`; 
-            dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()}:${$("#order_start_hour_minute").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}:${$("#order_end_hour").find(":selected").val()}</td></tr>`;                                                            
+            dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()}:${$("#order_start_hour_minute").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}:${$("#order_end_hour_minute").find(":selected").val()}</td></tr>`;                                                            
             dsp += `<tr><td>Harga</td><td>:</td><td>${$("#order_price").val()}</td></tr>`;
             dsp += `<tr><td>Dibayar</td><td>:</td><td>${$("#paid_total").val()} - ${$("#paid_payment_method").find(":selected").val()}</td></tr>`;
             dsp += `<tr><td>Pemesan</td><td>:</td><td>${$("#order_contact_name").val()} - ${$("#order_contact_phone").val()}</td></tr>`;            

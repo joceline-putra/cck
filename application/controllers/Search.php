@@ -193,6 +193,33 @@ class Search extends MY_Controller{
                     'text' => '-- Ketik yg ingin di cari --'
                 ));                
             }
+            else if($source=="users-no-branch"){
+                if(!empty($terms)){                
+                    $query = $this->db->query("
+                        SELECT user_id AS id, user_code AS kode, user_username AS nama,
+                            (SELECT CONCAT(IFNULL(`user_username`,''), ' - ', IFNULL(`user_group_name`,'-'))) AS `text`
+                            CONCAT(user_group_name,' - ',user_username) AS user_by_group
+                        FROM users
+                        LEFT JOIN users_groups ON (users.user_user_group_id=users_groups.user_group_id)
+                        WHERE user_flag=1 AND (user_code LIKE '%".$terms."%' OR user_username LIKE '%".$terms."%' OR user_group_name LIKE '%".$terms."%')
+                    ");
+                }else{
+                    $query = $this->db->query("
+                    SELECT user_id AS id, user_code AS kode, user_username AS nama,
+                        (SELECT CONCAT(IFNULL(`user_username`,''), ' - ', IFNULL(`user_group_name`,'-'))) AS `text`
+                        , CONCAT(user_group_name,' - ',user_username) AS user_by_group
+                    FROM users
+                    LEFT JOIN users_groups ON (users.user_user_group_id=users_groups.user_group_id)
+                    WHERE user_flag=1 ORDER BY user_username ASC LIMIT 20
+                    ");              
+                }
+                $result = $query->result();
+                $json = array_push($result,array(
+                    'id' => "0",
+                    'nama' => '-- Ketik yg ingin di cari --',
+                    'text' => '-- Ketik yg ingin di cari --'
+                ));                
+            }            
             else if($source=="users-switch"){
                 if(!empty($terms)){    
                     $query = $this->db->query("
