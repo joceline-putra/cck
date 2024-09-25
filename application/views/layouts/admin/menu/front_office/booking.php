@@ -78,12 +78,20 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group padding-remove-right prs-15">
+                                                <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12 form-group padding-remove-right prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Cari</label>
                                                         <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
                                                     </div>
-                                                </div>          
+                                                </div>     
+                                                <div class="col-lg-3 col-md-3 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                        <label class="form-label">User By</label>
+                                                        <select id="filter_user" name="filter_user" class="form-control">
+                                                            <option value="0">Semua</option>                                                                                                                        -->
+                                                        </select>
+                                                    </div>
+                                                </div>                                                        
                                                 <div class="clearfix"></div>
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">

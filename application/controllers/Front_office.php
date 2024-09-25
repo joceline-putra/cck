@@ -194,7 +194,10 @@ class Front_office extends MY_Controller{
                     }            
                     if($post['filter_payment_method'] !== "All") {
                         $params['paid_payment_method'] = $post['filter_payment_method'];
-                    }                                                               
+                    }                          
+                    if(!empty($post['filter_user']) && (intval($post['filter_user']) > 0)) {
+                        $params['order_item_user_id'] = intval($post['filter_user']);
+                    }                                                             
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
@@ -264,7 +267,8 @@ class Front_office extends MY_Controller{
                     }                    
                     if($post['filter_payment_method'] !== "All") {
                         $params['paid_payment_method'] = $post['filter_payment_method'];
-                    }                          
+                    }     
+                                     
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
@@ -423,7 +427,10 @@ class Front_office extends MY_Controller{
                     }           
                     if($post['filter_flag_checkin'] !== "All") {
                         $params['order_item_flag_checkin'] = $post['filter_flag_checkin'];
-                    }                                   
+                    }      
+                    if(!empty($post['filter_user']) && (intval($post['filter_user']) > 0)) {
+                        $params['order_item_user_id'] = intval($post['filter_user']);
+                    }                                                    
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            

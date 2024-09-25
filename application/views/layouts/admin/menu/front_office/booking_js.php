@@ -130,6 +130,60 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
         });
         */
         // $("select").select2();
+        $('#filter_user').select2({
+            minimumInputLength: 0,
+            placeholder: {
+                id: '0',
+                text: '-- Pilih --'
+            },
+            allowClear: true,
+            ajax: {
+                type: "get",
+                url: "<?= base_url('search/manage');?>",
+                dataType: 'json',
+                delay: 250,
+                cache: true,
+                data: function (params) {
+                    let query = {
+                        search: params.term,
+                        source: 'users',
+                    };
+                    return query;
+                },
+                processResults: function (result, params){
+                    let datas = [];
+                    $.each(result, function(key, val){
+                        datas.push({
+                            'id' : val.id,
+                            'text' : val.text
+                        });
+                    });
+                    return {
+                        results: datas,
+                        pagination: {
+                            more: (params.page * 10) < result.count_filtered
+                        }
+                    };
+                }
+            },
+            templateResult: function(datas){ //When Select on Click
+                //if (!datas.id) { return datas.text; }
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            },
+            templateSelection: function(datas) { //When Option on Click
+                //if (!datas.id) { return datas.text; }
+                //Custom Data Attribute
+                //$(datas.element).attr('data-column', datas.column);        
+                //return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            }
+        }); 
 
         //Date Clock Picker
         $("#order_start_date, #order_end_date").datepicker({
@@ -210,6 +264,7 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                     d.filter_paid = $("#filter_paid_flag").find(':selected').val();  
                     d.filter_payment_method = $("#filter_paid_payment_method").find(':selected').val();                                                                                                                                                             
                     d.filter_flag = $("#filter_flag").find(':selected').val();
+                    d.filter_user = $("#filter_user").find(':selected').val();                     
                     d.length = $("#filter_length").find(':selected').val();
                 },
                 dataSrc: function(data) {
@@ -465,7 +520,8 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
         $("#filter_branch").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref_price").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_ref").on('change', function(e){ order_table.ajax.reload(); });                
-        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });   
+        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });  
+        $("#filter_user").on('change', function(e){ order_table.ajax.reload(); });
         $("#filter_paid_payment_method").on('change', function(e){ order_table.ajax.reload(); });              
         $("#filter_item_type_2").on('change', function(e){ order_table.ajax.reload(); });    
         $("#filter_flag_checkin").on('change', function(e){ order_table.ajax.reload(); });    
