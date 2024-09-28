@@ -82,6 +82,135 @@
             //   checkDashboardActivity();
         }
 
+        $('#branch').select2({
+            //dropdownParent:$("#modal-id"), //If Select2 Inside Modal, $(".jconfirm-box-container") if jConfirm
+            //placeholder: '<i class="fas fa-search"></i> Search',
+            //width:'100%',
+            tags:true,
+            minimumInputLength: 0,
+            placeholder: {
+                id: '0',
+                text: 'Semua Cabang'
+            },
+            allowClear: true,
+            minimumResultsForSearch: Infinity,
+            ajax: {
+                type: "get",
+                url: "<?= base_url('search/manage');?>",
+                dataType: 'json',
+                delay: 250,
+                 beforeSend:function(x){
+                    // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                    // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                },
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        // tipe: 1,
+                        source: 'branchs'
+                    };
+                    return query;
+                },
+                processResults: function (data){
+                    var datas = [];
+                    $.each(data, function(key, val){
+                        datas.push({
+                            'id' : val.id,
+                            'text' : val.nama
+                        });
+                    });
+                    return {
+                        results: datas
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function(markup){ 
+                return markup; 
+            },
+            templateResult: function(datas){ //When Select on Click
+                //if (!datas.id) { return datas.text; }
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            },
+            templateSelection: function(datas) { //When Option on Click
+                //if (!datas.id) { return datas.text; }
+                //Custom Data Attribute
+                //$(datas.element).attr('data-column', datas.column);        
+                //return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            }
+        }); 
+        $('#ref').select2({
+            //dropdownParent:$("#modal-id"), //If Select2 Inside Modal, $(".jconfirm-box-container") if jConfirm
+            //placeholder: '<i class="fas fa-search"></i> Search',
+            //width:'100%',
+            tags:true,
+            minimumInputLength: 0,
+            placeholder: {
+                id: '0',
+                text: 'Semua Jenis Kamar'
+            },
+            allowClear: true,
+            minimumResultsForSearch: Infinity,
+            ajax: {
+                type: "get",
+                url: "<?= base_url('search/manage');?>",
+                dataType: 'json',
+                delay: 250,
+                 beforeSend:function(x){
+                    // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                    // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                },
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        tipe: 10,
+                        branch: $("#branch").find(':selected').val(),
+                        source: 'references'
+                    };
+                    return query;
+                },
+                processResults: function (data){
+                    var datas = [];
+                    $.each(data, function(key, val){
+                        datas.push({
+                            'id' : val.id,
+                            'text' : val.nama
+                        });
+                    });
+                    return {
+                        results: datas
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function(markup){ 
+                return markup; 
+            },
+            templateResult: function(datas){ //When Select on Click
+                //if (!datas.id) { return datas.text; }
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            },
+            templateSelection: function(datas) { //When Option on Click
+                //if (!datas.id) { return datas.text; }
+                //Custom Data Attribute
+                //$(datas.element).attr('data-column', datas.column);        
+                //return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                if($.isNumeric(datas.id) == true){
+                    // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
+                    return datas.text;
+                }
+            }
+        });
         // checkTaskApproval();
         // checkBarangProduksi();
         // chartDokumenBCMasuk();
@@ -100,6 +229,24 @@
             var url = $(this).data('url');
             window.open(url, '_blank');
         });
+        $(document).on("change","#branch",function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var branch = $(this).find(':selected').val();
+            // var ref = $("#ref").find(':selected').val();
+            var ref = 0;
+            $("#ref").val(0).trigger('change');
+            load_room(branch,ref);
+            // console.log('Branch:'+branch);
+        });
+        $(document).on("change","#ref",function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var branch = $("#branch").find(':selected').val();
+            var ref = $(this).find(':selected').val();
+            load_room(branch,ref);
+            // console.log('Ref:'+ref);
+        });   
 
         //Approval
         $(document).on("click", ".btn-approvel-user", function (e) {
@@ -922,9 +1069,120 @@
                 }
             });
         }
+        function load_room(branch_id,ref){
+            var data = {
+                action: 'load-room',
+                branch:branch_id,
+                ref:ref
+            };
+            $.ajax({
+                url: '<?= base_url('dashboard/manage') ?>',
+                data: data,
+                type: 'post',
+                dataType: 'json',
+                cache: 'false',
+                success: function (d) {
+                    if (parseInt(d.status) === 1) {          
+                        let r = d.result;
+                        let total_records = r.length;
+                        if(parseInt(total_records) > 0){
+                            $("#div_room_status").html('');
+                        
+                            var dsp = '';
+                            r.forEach(async (v, i) => {
+                                console.log(v['product_flag']);
+                                if(parseInt(v['product_flag']) == 1){
+                                    var sat = 'data-order-id="'+v['order_item_order_id']+'" data-order-item-id="'+v['order_item_id']+'"' 
+                                            + 'data-product-id="'+v['product_id']+'"'
+                                            + 'data-product-name="'+v['product_name']+'"'
+                                            + 'data-ref-name="'+v['ref_name']+'"'                                                                                      
+                                    ;
 
-        top_product(1);
-        top_product(2);
+                                    if(parseInt(v['order_item_id']) > 0){
+                                        var scolor = 'background-color: #651215;cursor:pointer;';
+                                        var sgues = checkStringLength(v['order_contact_name']);
+                                    }else{
+                                        var scolor = 'background-color: #12651c;';
+                                        var sgues = 'Ready';                                    
+                                    }                                
+                                    dsp += `
+                                        <div class="col-md-2 col-xs-6 div_room_status_child">
+                                            <div class="col-md-12 col-xs-12 btn_room_status" style="${scolor}" ${sat}>                                    
+                                                <div class="col-md-12 col-xs-12">
+                                                    <p>
+                                                        <b>${v['product_name']}</b><br>
+                                                        <b>${checkStringLength(v['ref_name'])}</b>
+                                                    </p>       
+                                                </div>
+                                                <div class="col-md-12 col-xs-12">
+                                                    <p><b>${sgues}</b></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                                    // dsp += '<td>'+v['col_3']+'</td>';
+                                    // dsp += '<td>';
+                                    //     dsp += '<button type="button" class="btn-action btn btn-primary" data-id="'+v['col_4']+'">';
+                                    //     dsp += 'Action';
+                                    //     dsp += '</button>';
+                                    // dsp += '</td>';
+                                // dsp += '</tr>';
+                        
+                            });
+                            $("#div_room_status").html(dsp);
+                        }             
+                    }
+                }
+            });            
+        }
+        $(document).on("click",".btn_room_status", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var id = $(this).attr('data-order-id');
+            if(parseInt(id) > 0){
+                let form = new FormData();
+                form.append('action', 'read');
+                form.append('order_id', id);            
+                $.ajax({
+                    type: "post",
+                    url: '<?= base_url('front_office/booking') ?>',
+                    data: form, 
+                    dataType: 'json', cache: 'false', 
+                    contentType: false, processData: false,
+                    beforeSend:function(x){
+                        // x.setRequestHeader('Authorization',"Bearer " + bearer_token);
+                        // x.setRequestHeader('X-CSRF-TOKEN',csrf_token);
+                    },
+                    success:function(d){
+                        let s = d.status;
+                        let m = d.message;
+                        let r = d.result;
+                        let ri = d.result_item;                    
+                        if(parseInt(s) == 1){
+                            notif(s,m);
+                            $("#modal_booking_read").modal('show');
+                            $(".rbook_number").html(':'+r.order_number);
+                            $(".rbook_date").html(':'+formatDateTime(r.order_date));   
+                            $("#rbook_contact_name").val(ri.order_contact_name);
+                            $("#rbook_contact_phone").val(ri.order_contact_phone);     
+                            $(".rbook_room").html(': '+ri.product_name + ' / '+ri.ref_name + ' / '+ ri.branch_name);     
+                            $(".rbook_total").html(': '+numberWithCommas(r.order_total));                                                                                                                        
+                            $(".rbook_checkin_date").html(': '+formatDateTime(ri.order_item_start_date)+' '+formatDateTime(ri.order_item_end_date));
+                        }else{
+                            notif(s,m);
+                        }
+                    },
+                    error:function(xhr,status,err){
+                        notif(0,err);
+                    }
+                });
+            }else{
+                console.log('Booking ID not found');
+            }
+        });
+        // top_product(1);
+        // top_product(2);
 
         // total_transaction_month(1);
         // total_transaction_month(2);
@@ -1329,6 +1587,33 @@
                 return intlFormat(num / 1000) + 'k';
             return intlFormat(num);
         }
+        function checkStringLength(str) {
+            // Check if the length of the string is greater than 10 characters
+            if (str.length > 13) {
+                // Return only the first 5 characters
+                return str.substring(0, 12)+'...';
+            } else {
+                // Return the full string
+                return str;
+            }
+        }
+        function formatDateTime(input) {
+            // Split the input into date and time parts
+            const [datePart, timePart] = input.split(' ');
+
+            // Split the date part into year, month, and day
+            const [year, month, day] = datePart.split('-');
+
+            // Convert the month number to month name
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const monthName = monthNames[parseInt(month) - 1];
+
+            // Format the time to 'HH:MM' format
+            const time = timePart.substring(0, 5);
+
+            // Return the formatted date and time
+            return `${parseInt(day)} ${monthName} ${year}, ${time}`;
+        }        
     });
     // End1 of document ready
 

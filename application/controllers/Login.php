@@ -875,7 +875,7 @@ class Login extends My_Controller{
                         //     $return_url = $return_url.'/setup';
                         // }
                         if($user_info['user_user_group_id'] == 9){ // Cashier
-                            $return_url = site_url('booking/lily');
+                            // $return_url = site_url('booking/lily');
                         }
                         if($user_info['user_user_group_id'] == 1){
                             $this->session->set_flashdata('switch_branch',1);                                
@@ -1049,13 +1049,16 @@ class Login extends My_Controller{
                         //Cek User Have a Branch
                         $user_has_branch = !empty($user_info['user_branch_id']) ? $user_info['user_branch_id'] : 0;
                         if(intval($user_has_branch) == 0){
-                            $return_url = $return_url.'/welcome';
+                            // $return_url = $return_url.'/welcome';
+                            // $return_url = $url_before;
                         }
 
                         if($user_info['user_user_group_id'] == 9){ // Cashier
-                            $return_url = site_url('pos');
+                            // $return_url = site_url('pos');
+                            // $return_url = $return_url.'/welcome';
+                            // $return_url = $url_before;
                         }
-                        
+                            // var_dump($url_before);die;
                         $return->status=1;
                         $return->message = $login_message;
                         $return->result = array(

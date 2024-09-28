@@ -26,6 +26,14 @@
     h4{
         font-weight: 600;
     }
+    #div_room_status b, p{
+        text-align: center;
+        color:white;
+    }
+    .div_room_status_child > div{
+        /* background-color: #12651c; */
+        margin:0px 4px 4px 0px;
+    }    
 </style> 
 
 <?php
@@ -305,7 +313,39 @@ if ($session['user_data']['user_id'] == 0) {
                     <!-- </div> -->
                 </div>
             </div>
-        </div>   
+        </div>  
+        <div class="col-md-12 col-sm-12 col-xs-12" style="display:inline;">
+            <div class="grid simple">
+                <div class="grid-title no-border">
+                    <h5>Status Kamar</h5>
+                    <div class="tools">
+                        <a id="btn_room_status" href="#"><i class="fas fa-sync"></i></a>
+                    </div>
+                </div>      
+                <div class="grid-body no-border" style="padding:10px;">              
+                    <div class="col-md-3 col-xs-3 padding-remove-left" style="margin-bottom:20px;">
+                        <div class="form-group">
+                            <label class="form-label">Cabang</label>
+                            <div class="controls">
+                                <select name="branch" id="branch" style="width:100%">
+                                </select>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-md-3 col-xs-3 padding-remove-right" style="margin-bottom:20px;">
+                        <div class="form-group">
+                            <label class="form-label">Jenis Kamar</label>
+                            <div class="controls">
+                                <select name="ref" id="ref" style="width:100%">
+                                </select>
+                            </div>
+                        </div>
+                    </div>                                                  
+                    <div id="div_room_status" class="col-md-12 col-sm-12 padding-remove-side">          
+                    </div>    
+                </div>
+            </div>
+        </div>           
         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top:10px;">
             <div class="col-lg-7 col-md-12 col-xs-12 padding-remove-side">
                 <ul class="nav nav-tabs" role="tablist">
@@ -574,7 +614,7 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                    <div class="hide col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                         <div class="grid simple">
                             <div class="grid-title no-border">
                                 <h5>10 Pembelian Produk</h5>
@@ -711,7 +751,7 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div>        
-                    <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                    <div class="hide col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                         <div class="grid simple">
                             <div class="grid-title no-border">
                                 <h5>10 Penjualan Produk</h5>
@@ -753,3 +793,145 @@ if ($session['user_data']['user_id'] == 0) {
     <?php
 }
 ?>   
+<div class="modal fade" id="modal_booking_cece" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #f3f5f6;">
+                <h4 style="color:black;text-align:left;"><b id="modal-print-title">Reminder Booking</b></h4>
+                <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                    <i class="fas fa-times"></i>                                 
+                    Tutup
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 padding-remove-side">
+                        <table class="table">      
+                            <tr>
+                                <td>Nomor</td>
+                                <td class="book_number">:</td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal</td>
+                                <td class="book_date">:</td>
+                            </tr>                 
+                            <tr>
+                                <td>Kontak</td>
+                                <td>:<input id="book_contact_name" name="book_contact_name" value="" style="border:none!important;"></td>
+                            </tr>         
+                            <tr>
+                                <td>Telepon</td>
+                                <td>:<input id="book_contact_phone" name="book_contact_phone" value="" style="border:none!important;"></td>
+                            </tr>   
+                            <tr>
+                                <td>Kamar</td>
+                                <td class="book_room">:</td>
+                            </tr>
+                            <tr>
+                                <td>Check-In</td>
+                                <td class="book_checkin_date">:</td>
+                            </tr>
+                            <tr>
+                                <td>Sisa Hari</td>
+                                <td class="book_expired_day">:</td>
+                            </tr>                            
+                            <tr>
+                                <td>Total</td>
+                                <td class="book_total">:</td>
+                            </tr>
+                            <tr>
+                                <td>Total Dibayar</td>
+                                <td class="book_total_paid">:</td>
+                            </tr>
+                        </table>
+                    </div>           
+                </div>
+            </div>
+            <div class="modal-footer flex-center">
+                <button type="button" class="btn_send_whatsapp_reminder btn btn-primary" 
+                    data-order-id="0" 
+                    data-order-number="" 
+                    data-order-date="" 
+                    data-total="" 
+                    data-contact-name="" 
+                    data-contact-phone="" 
+                    style="width:45%;">
+					<span class="fab fa-whatsapp white"></span> Kirim Pengingat
+				</button>
+				<!-- <button type="button" id="btn_print_trans" class="btn_print_order btn btn-success" 
+                    data-order-id="0" data-order-number="0" data-order-session="" style="width:45%;">
+					<span class="fas fa-file-invoice white"></span> Cetak Struk
+				</button>      -->
+				<button type="button" id="btn_modal_close" class="btn_print_order btn btn-default" 
+                    style="width:45%;" data-dismiss="modal">
+					<span class="fas fa-times"></span> Tutup
+				</button>                                  
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_booking_read" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #f3f5f6;">
+                <h4 style="color:black;text-align:left;"><b id="modal-print-title">Booking Data</b></h4>
+                <button class="btn btn-outline-danger waves-effect" type="button" data-dismiss="modal" style="position:relative;top:-38px;float:right;">
+                    <i class="fas fa-times"></i>                                 
+                    Tutup
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 padding-remove-side">
+                        <table class="table">      
+                            <tr>
+                                <td>Nomor</td>
+                                <td class="rbook_number">:</td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal</td>
+                                <td class="rbook_date">:</td>
+                            </tr>                 
+                            <tr>
+                                <td>Kontak</td>
+                                <td>:<input id="rbook_contact_name" name="rbook_contact_name" value="" style="border:none!important;"></td>
+                            </tr>         
+                            <tr>
+                                <td>Telepon</td>
+                                <td>:<input id="rbook_contact_phone" name="rbook_contact_phone" value="" style="border:none!important;"></td>
+                            </tr>   
+                            <tr>
+                                <td>Kamar</td>
+                                <td class="rbook_room">:</td>
+                            </tr>
+                            <tr>
+                                <td>Check-In</td>
+                                <td class="rbook_checkin_date">:</td>
+                            </tr>                         
+                            <tr>
+                                <td>Total</td>
+                                <td class="rbook_total">:</td>
+                            </tr>
+                        </table>
+                    </div>           
+                </div>
+            </div>
+            <div class="modal-footer flex-center">
+                <!-- <button type="button" class="btn_send_whatsapp_reminder btn btn-primary" 
+                    data-order-id="0" 
+                    data-order-number="" 
+                    data-order-date="" 
+                    data-total="" 
+                    data-contact-name="" 
+                    data-contact-phone="" 
+                    style="width:45%;">
+					<span class="fab fa-whatsapp white"></span> Kirim Pengingat
+				</button> -->
+				<button type="button" id="btn_modal_close" class="btn_print_order btn btn-default" 
+                    style="width:45%;" data-dismiss="modal">
+					<span class="fas fa-times"></span> Tutup
+				</button>                                  
+            </div>
+        </div>
+    </div>
+</div>
