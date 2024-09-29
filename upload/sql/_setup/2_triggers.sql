@@ -1717,7 +1717,16 @@ BEGIN
         UPDATE orders SET order_files_count=mCOUNT WHERE order_id=NEW.file_from_id;
     ELSEIF NEW.file_from_table = 'trans' THEN
         UPDATE trans SET trans_files_count=mCOUNT WHERE trans_id=NEW.file_from_id;
-    ELSEIF NEW.file_from_table = 'orders-checkouts' THEN
+    END IF;   
+END$$
+DELIMITER ;
+
+DELIMITER $$
+DROP TRIGGER IF EXISTS `tr_file_after_update`$$
+CREATE TRIGGER `tr_file_after_update` AFTER UPDATE ON `files` 
+    FOR EACH ROW 
+BEGIN
+    IF NEW.file_from_table = 'orders-checkouts' THEN
         INSERT INTO `activities` (`activity_branch_id`, `activity_user_id`, `activity_action`, `activity_table`, `activity_table_id`, `activity_text_1`, `activity_text_2`, `activity_text_3`, `activity_date_created`, `activity_flag`, `activity_type`)
         VALUES('activity_branch_id', NEW.file_user_id, 10, 'files', NEW.file_id, 'Gambar', NEW.file_note, NEW.file_url, NOW(), 1, 1);
     END IF;   

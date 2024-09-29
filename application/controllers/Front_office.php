@@ -1957,19 +1957,26 @@ class Front_office extends MY_Controller{
                                                     $save_data = $this->File_model->add_file($params);
 
                                                     // Call Helper for upload
-                                                    $upload_helper = upload_file_key($this->folder_upload, $this->input->post('file_key'));
+                                                    //Process for Upload
+                                                    $image_config=array(
+                                                        'compress' => 1,
+                                                        'width'=>$this->image_width,
+                                                        'height'=>$this->image_height
+                                                    );                                                    
+                                                    // $upload_helper = upload_file_key($this->folder_upload, $this->input->post('file_key'));
+                                                    $upload_helper = upload_file_checkout($this->folder_upload, $_FILES['file_key'],$image_config);
                                                     if ($upload_helper['status'] == 1) {
                                                         $params_image = array(
-                                                            'file_name' => $upload_helper['result']['client_name'],
-                                                            'file_format' => str_replace(".","",$upload_helper['result']['file_ext']),
-                                                            'file_url' => $upload_helper['file'],
+                                                            'file_name' => $upload_helper['result']['file_old_name'],
+                                                            'file_format' => $upload_helper['result']['file_ext'],
+                                                            'file_url' => $upload_helper['result']['file_location'],
                                                             'file_size' => $upload_helper['result']['file_size']
                                                         );
                                                         $stat = $this->File_model->update_file($save_data, $params_image);
                                                         
                                                         $return->message    = $upload_helper['message'];
                                                         $return->status     = $upload_helper['status'];
-                                                        $return->raw_file   = $upload_helper['file'];
+                                                        $return->raw_file   = $upload_helper['result']['file_old_name'];
                                                         $return->return     = $upload_helper;                            
                                                     }else{
                                                         $return->message = 'Error: '.$upload_helper['message'];
