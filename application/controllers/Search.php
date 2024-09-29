@@ -24,7 +24,8 @@ class Search extends MY_Controller{
 
         $session = !empty($this->session->userdata()) ? $this->session->userdata() : null;        
         $session_branch_id = !empty($session['user_data']['branch']['id']) ? $session['user_data']['branch']['id'] : null;
-        $session_user_id = !empty($session['user_data']['user_id']) ? $session['user_data']['user_id'] : null;        
+        $session_user_id = !empty($session['user_data']['user_id']) ? $session['user_data']['user_id'] : null;  
+        $session_user_group_id = !empty($session['user_data']['user_group_id']) ? $session['user_data']['user_group_id'] : null;                
 
         $json       = [];
         $terms      = $this->input->get("search");
@@ -662,12 +663,17 @@ class Search extends MY_Controller{
                 ));
             }
             else if($source=="branchs"){
+                $where_and = '';
+                if($session_user_group_id > 1){
+                    $where_and = "AND branch_id=$session_branch_id";
+                }
+
                 if(!empty($terms)){
                     $query = $this->db->query("                                                                                                                                                                    
                         SELECT branch_id AS id, branch_name AS nama, branch_logo,
                             (SELECT CONCAT(IFNULL(`branch_name`,''),' - ',IFNULL(`branch_address`,''),' - ',IFNULL(`branch_phone_1`,''))) AS `text` 
                         FROM branchs
-                        WHERE branch_name LIKE '%".$terms."%' 
+                        WHERE branch_name LIKE '%".$terms."%' $where_and 
                         AND branch_flag=1
                     ");
                 }else{
@@ -675,7 +681,7 @@ class Search extends MY_Controller{
                         SELECT branch_id AS id, branch_name AS nama, branch_logo,
                             (SELECT CONCAT(IFNULL(`branch_name`,''),' - ',IFNULL(`branch_address`,''),' - ',IFNULL(`branch_phone_1`,''))) AS `text` 
                         FROM branchs
-                        WHERE branch_flag=1 ORDER BY branch_name ASC LIMIT 50;
+                        WHERE branch_flag=1 $where_and ORDER BY branch_name ASC LIMIT 50;
                     ");                    
                 }
                 $result = $query->result();

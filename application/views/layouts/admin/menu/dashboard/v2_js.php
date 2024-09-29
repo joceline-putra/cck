@@ -1,10 +1,17 @@
 <input class="hidden" id="iduser" name="iduser" value="<?php echo $session['user_data']['user_id']; ?>">
+<input class="hidden" id="idusergroup" name="idusergroup" value="<?php echo $session['user_data']['user_group_id']; ?>">
+<input class="hidden" id="idbranch" name="idbranch" value="<?php echo $session['user_data']['branch']['id']; ?>">
+<input class="hidden" id="namebranch" name="namebranch" value="<?php echo $session['user_data']['branch']['name']; ?>">
 <script>
     // Start document ready
     $(document).ready(function () {
         var url_approval = "<?= base_url('approval'); ?>";
         var url_dashboard = "<?= base_url('dashboard'); ?>";
         var url_trans = "<?= base_url('transaksi/manage'); ?>";
+
+        let branchID = $("#idbranch").val();
+        let branchNAME = $("#namebranch").val();
+        let userGROUPID = $("#idusergroup").val();        
 
         var randomScalingFactor = function () {
             return Math.round(Math.random() * 100 * (Math.random() > 0.5 ? -1 : 1));
@@ -1544,7 +1551,7 @@
                                     '</div>' +
                                     '<div class="info-wrapper small-width">' +
                                     '<div class="info text-black">' +
-                                    '<p>' +
+                                    '<p style="text-align:left;">' +
                                     '<a href="#"><b>' + val.user + '&nbsp;</b></a>&nbsp;' +
                                     teks +
                                     // '<span>'+teks +'</span>'+
@@ -1552,7 +1559,7 @@
                                     '<span class="label" style="background-color:#7484e6;color:white;"></span>' +
                                     '<a href="#"><span class="label label-primary"></span></a>' +
                                     '</p>' +
-                                    '<p class="muted small-text">' + val.date_time + '</p>' +
+                                    '<p style="text-align:left;" class="muted small-text">' + val.date_time + '</p>' +
                                     '</div>' +
                                     '<div class="clearfix"></div>' +
                                     '</div>' +
@@ -2146,5 +2153,5 @@
         }
         $("#modal-form").modal({backdrop: 'static', keyboard: false});
     }
-    checkApprovalRequest();
+    // checkApprovalRequest();
 </script>

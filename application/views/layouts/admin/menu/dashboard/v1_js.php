@@ -1451,6 +1451,19 @@
                                         var scolor = 'background-color: #12651c;';
                                         var sgues = 'Ready';                                    
                                     }                                
+
+                                    var expired = '&nbsp;';
+                                    expired = '';
+                                    // if(v['branch_code'] == 1){
+                                    //     if(parseInt(v['order_item_expired_day']) > 0){
+                                    //         var expired = v['order_item_expired_day']+' hari lagi';
+                                    //     }
+                                    // }else{
+                                    //     if(parseInt(v['order_item_expired_time']) > 0){
+                                    //         var expired = v['order_item_expired_time']+' jam lagi';
+                                    //     }
+                                    // }
+
                                     dsp += `
                                         <div class="col-md-2 col-xs-6 div_room_status_child">
                                             <div class="col-md-12 col-xs-12 btn_room_status" style="${scolor}" ${sat}>                                    
@@ -1461,7 +1474,7 @@
                                                     </p>       
                                                 </div>
                                                 <div class="col-md-12 col-xs-12">
-                                                    <p><b>${sgues}</b></p>
+                                                    <p><b>${sgues}</b><br>${expired}</p>
                                                 </div>
                                             </div>
                                         </div>

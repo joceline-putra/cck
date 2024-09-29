@@ -235,7 +235,7 @@
                 $return['status'] = 1;
                 $return['message'] = 'Success'; 
                 $return['result'] = $upload;      
-                $return['file'] = $raw_file;     
+                $return['file'] = $path.$raw_file;     
             }else{
                 $return['status'] = 0;
                 $return['message'] = $ci->upload->display_errors();
@@ -244,6 +244,7 @@
         //     $return['status'] = 0;
         //     $return['message'] = 'File not ready';
         // }
+        // var_dump($return);die;
         return $return;
     }  
     function upload_file_deposit($path = "", $file = "") {

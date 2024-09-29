@@ -1064,12 +1064,12 @@
                             dsp += '        <input id="file_key" name="file_key" type="file" class="form-control">';
                             dsp += '    </div>';
                             dsp += '</div>';
-                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
-                            dsp += '    <div class="form-group">';
-                            dsp += '    <label class="form-label">Foto Pengembalian Deposit</label>';
-                            dsp += '        <input id="file_deposit" name="file_deposit" type="file" class="form-control">';
-                            dsp += '    </div>';
-                            dsp += '</div>';
+                            // dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            // dsp += '    <div class="form-group">';
+                            // dsp += '    <label class="form-label">Foto Pengembalian Deposit</label>';
+                            // dsp += '        <input id="file_deposit" name="file_deposit" type="file" class="form-control">';
+                            // dsp += '    </div>';
+                            // dsp += '</div>';
                             dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
                             dsp += '    <div class="form-group">';
                             dsp += '    <label class="form-label">Catatan</label>';
@@ -1088,7 +1088,7 @@
                                 let self      = this;
 
                                 let file_key     = self.$content.find('#file_key')[0].files[0];
-                                let file_deposit = self.$content.find('#file_deposit')[0].files[0];                                
+                                // let file_deposit = self.$content.find('#file_deposit')[0].files[0];                                
                                 let file_note = self.$content.find('#file_note').val();                                                                
 
                                 var ne = true;
@@ -1099,24 +1099,25 @@
                                     if(!file_key){
                                         $.alert('Foto kunci dipilih dahulu');
                                         return false;
-                                    } else if(!file_deposit){
-                                        $.alert('Foto pengembalian deposit dipilih dahulu');
-                                        return false; 
-                                    }                                     
+                                    } 
+                                    // else if(!file_deposit){
+                                    //     $.alert('Foto pengembalian deposit dipilih dahulu');
+                                    //     return false; 
+                                    // }                                     
                                 }
                                 
                                 if(ne){
                                     var form = new FormData();
                                     form.append('action', 'update_flag_item_lily');
                                     form.append('order_id', oid);
-                                    form.append('order_item_id', otd);                            
+                                    form.append('order_item_id', otd);
                                     form.append('order_session', oss);
                                     form.append('order_number', onu);
                                     form.append('order_item_flag_checkin', oflag);
                                     form.append('product_name',opr);
                                     form.append('file_key',file_key);
-                                    form.append('file_deposit',file_deposit);                                    
-                                    form.append('file_note',file_note);                                                                        
+                                    // form.append('file_deposit',file_deposit);
+                                    form.append('file_note',file_note);
 
                                     $.ajax({
                                         type: "POST",

@@ -1943,13 +1943,16 @@ class Front_office extends MY_Controller{
                                                 if(intval($_FILES['file_key']['size']) > 0){
                                                     //Save Data First
                                                     $file_session = $this->random_session(20);
+                                                    $file_note = $get_data['product_name'].' Checkout';
+
                                                     $params = array(
-                                                        'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : 'orders',
+                                                        'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : 'orders-checkouts',
                                                         'file_from_id' => !empty($post['order_id']) ? $post['order_id'] : null,
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        'file_type' => 1                            
+                                                        'file_type' => 1,
+                                                        'file_note' => !empty($post['file_note']) ? $file_note.' '.$post['file_note'] : $file_note,                            
                                                     );
                                                     $save_data = $this->File_model->add_file($params);
 
