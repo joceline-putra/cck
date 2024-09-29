@@ -63,6 +63,7 @@ class Front_model extends CI_Model{
         // $this->db->select("references_prices.price_id, references_prices.price_name");
         $this->db->select("products.product_id, products.product_name, product_flag");  
         $this->db->select("order_item_expired_day, DATEDIFF(order_item_end_date,NOW()) AS order_item_expired_day_2");
+        $this->db->select("order_item_expired_time, TIMESTAMPDIFF(MINUTE, NOW(), order_item_end_date) AS order_item_expired_time_2");        
         $this->db->select("branch_id, branch_name, branch_code");         
         $this->db->select("user_id, user_username");      
         $this->db->select("paid_id, paid_payment_method, paid_order_id, paid_number");                

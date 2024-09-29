@@ -282,7 +282,7 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                 {"targets":6, "title":"Total", "searchable":true, "orderable":true},
                 {"targets":7, "title":"Pembayaran", "searchable":true, "orderable":true},                    
                 {"targets":8, "title":"Status", "searchable":false, "orderable":true},    
-                {"targets":9, "title":"Sisa Hari", "searchable":false, "orderable":true},                    
+                {"targets":9, "title":"Sisa", "searchable":false, "orderable":true},                    
                 {"targets":10, "title":"Attachment", "searchable":false, "orderable":true},                                
             ],
             "order": [[0, 'ASC']],
@@ -492,7 +492,21 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                                 }
                             }
                         }else{
-                            dsp += '-';
+                            if(parseInt(row.order_item_flag_checkin) == 1){ // Checkin only
+                                if(parseInt(row.order_item_expired_time_2) > 0){   
+                                    if(parseInt(row.order_item_expired_time_2) > 60){    
+                                        var td = parseInt(row.order_item_expired_time_2)/60;                                
+                                        dsp += td.toFixed(1) +' jam lagi';
+                                    }else{
+                                        dsp += row.order_item_expired_time_2 +' menit lagi';
+                                    }
+                                }else{
+                                    var td = parseInt(Math.abs(row.order_item_expired_time_2))/60;
+                                    dsp += '<i style="color:red;font-size:12px;">lewat ' + td.toFixed(1)+' jam</i>';                                      
+                                }
+                            }else{
+                                dsp += '-';
+                            }
                         }
                         return dsp;
                     }
