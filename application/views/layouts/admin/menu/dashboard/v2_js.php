@@ -1469,15 +1469,10 @@
                                     teks += '&nbsp; '+val.act_text_5;                                    
                                 }            
                             } else if (val.act_action == 10) {
-                                teks += val.act_action_name + '&nbsp;';
-
-                                // if(val.act_text_1 !== 0){
-                                // 	teks += val.act_text_1+'&nbsp;';
-                                // }
-
+                                teks += '<span style="color:black;">membagikan</span>' + '&nbsp;';
                                 if (val.act_text_1 !== 0) {
                                     teks += '<a href="#">';
-                                    teks += '<span class="label" style="color:black;padding:1px 6px;"><i class="' + val.act_icon + '"></i>&nbsp;' + val.act_text_1 + '</span>';
+                                    teks += '<span class="label" style="color:black!important;padding:1px 6px;"><i class="' + val.act_icon + '"></i>&nbsp;' + val.act_text_1 + '</span>';
                                     teks += '</a>&nbsp';
                                 }
 
@@ -1488,9 +1483,12 @@
                                 }
 
                                 if (val.act_text_3 !== 0) {
+                                //     teks += '<a href="#">';
+                                //     teks += '<span class="label label-danger" style="background-color:#54BAB9;color:white;padding:1px 6px;">' + val.act_text_3 + '</span>';
+                                //     teks += '</a>';
                                     teks += '<a href="#">';
-                                    teks += '<span class="label label-danger" style="background-color:#54BAB9;color:white;padding:1px 6px;">' + val.act_text_3 + '</span>';
-                                    teks += '</a>';
+                                    teks += '<img src="' + val.act_text_3 + '" class="img-responsive">';
+                                    teks += '</a>';                                     
                                 }
                             }
                             // else if(val.text1 == "menerbitkan"){
