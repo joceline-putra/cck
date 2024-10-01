@@ -894,7 +894,7 @@ class Front_office extends MY_Controller{
                             $check_date_is_past =$this->time_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");                            
                             if(intval($check_date_is_past) < 0){
                                 $next = false;
-                                $message = 'Waktu Mulai tidak boleh mundur';
+                                $message = 'Waktu Checkin tidak boleh mundur';
                                 $return->msg = date("Y-m-d H:i:s").' < '.$post['order_start_date']." ".$post['order_start_hour'].":00";
                             }
 
