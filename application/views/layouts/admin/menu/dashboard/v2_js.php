@@ -1111,7 +1111,35 @@
                                     }else{
                                         var scolor = 'background-color: #12651c;';
                                         var sgues = 'Ready';                                    
-                                    }                                
+                                    }              
+                                    
+                                    var ci = '';
+                                    if(parseInt(v.order_item_ref_price_sort) == 1){ // Bulanan only
+                                        if(parseInt(v.order_item_flag_checkin) == 1){ // Checkin only
+                                            if(parseInt(v.order_item_expired_day_2) > 0){
+                                                ci += '<br><label class="label">'+v.order_item_expired_day_2 +' hari lagi</label>';
+                                            }else{
+                                                ci += '<br><label class="label"><i style="color:red;">lewat ' + Math.abs(v.order_item_expired_day_2)+' hari</i></label>';   
+                                            }
+                                        }
+                                    }else{
+                                        if(parseInt(v.order_item_flag_checkin) == 1){ // Checkin only
+                                            if(parseInt(v.order_item_expired_time_2) > 0){   
+                                                if(parseInt(v.order_item_expired_time_2) > 60){    
+                                                    var td = parseInt(v.order_item_expired_time_2)/60;                                
+                                                    ci += '<br><label class="label">'+td.toFixed(1) +' jam lagi</label>';
+                                                }else{
+                                                    ci += '<br><label class="label">'+v.order_item_expired_time_2 +' menit lagi</label>';
+                                                }
+                                            }else{
+                                                var td = parseInt(Math.abs(v.order_item_expired_time_2))/60;
+                                                ci += '<br><label class="label"><i style="color:red;font-size:12px;">lewat ' + td.toFixed(1)+' jam</i></label>';                                      
+                                            }
+                                        }else{
+                                            ci += '-';
+                                        }
+                                    }
+
                                     dsp += `
                                         <div class="col-md-2 col-xs-6 div_room_status_child">
                                             <div class="col-md-12 col-xs-12 btn_room_status" style="${scolor}" ${sat}>                                    
@@ -1122,7 +1150,7 @@
                                                     </p>       
                                                 </div>
                                                 <div class="col-md-12 col-xs-12">
-                                                    <p><b>${sgues}</b></p>
+                                                    <p><b>${sgues}</b><br>${ci}</p>
                                                 </div>
                                             </div>
                                         </div>

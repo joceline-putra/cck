@@ -289,7 +289,34 @@
                             dsp += '<label class="label" style="background-color:#f35958;color:white;">Check-Out</label>';
                         } else if(parseInt(row.order_item_flag_checkin) == 4){
                             dsp += '<label class="label" style="background-color:#f35958;color:white;">Batal</label>';
-                        }                       
+                        }       
+                        
+                        if(parseInt(row.order_item_ref_price_sort) == 1){ // Bulanan only
+                            if(parseInt(row.order_item_flag_checkin) == 1){ // Checkin only
+                                if(parseInt(row.order_item_expired_day_2) > 0){
+                                    dsp += '<br><label class="label">'+row.order_item_expired_day_2 +' hari lagi</label>';
+                                }else{
+                                    dsp += '<br><label class="label"><i style="color:red;">lewat ' + Math.abs(row.order_item_expired_day_2)+' hari</i></label>';   
+                                }
+                            }
+                        }else{
+                            if(parseInt(row.order_item_flag_checkin) == 1){ // Checkin only
+                                if(parseInt(row.order_item_expired_time_2) > 0){   
+                                    if(parseInt(row.order_item_expired_time_2) > 60){    
+                                        var td = parseInt(row.order_item_expired_time_2)/60;                                
+                                        dsp += '<br><label class="label">'+td.toFixed(1) +' jam lagi</label>';
+                                    }else{
+                                        dsp += '<br><label class="label">'+row.order_item_expired_time_2 +' menit lagi</label>';
+                                    }
+                                }else{
+                                    var td = parseInt(Math.abs(row.order_item_expired_time_2))/60;
+                                    dsp += '<br><label class="label"><i style="color:red;font-size:12px;">lewat ' + td.toFixed(1)+' jam</i></label>';                                      
+                                }
+                            }else{
+                                dsp += '-';
+                            }
+                        }
+                                                
                         return dsp;
                     }
                 },{

@@ -35,6 +35,9 @@
         /* background-color: #12651c; */
         margin:0px 4px 4px 0px;
     }
+    .btn_room_status {
+        height:110px;
+    }
 </style> 
 <?php
 if ($session['user_data']['user_id'] == 0) {

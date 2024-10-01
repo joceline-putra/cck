@@ -7,6 +7,11 @@ BEGIN
     SET order_item_expired_day = DATEDIFF(order_item_end_date,NOW())
     WHERE order_item_flag_checkin = 1 AND order_item_ref_price_sort = 1;
 
+    UPDATE orders_items 
+    SET order_item_expired_day = TIMESTAMPDIFF(HOUR, NOW(), order_item_end_date)
+    WHERE order_item_flag_checkin = 1 
+    AND order_item_ref_price_sort > 1;
+
     SET @QUERY := CONCAT('SELECT CONCAT(1) AS `status`, CONCAT("Success") AS `message`');
     PREPARE stmt FROM @QUERY;
     EXECUTE stmt;

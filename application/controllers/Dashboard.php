@@ -664,7 +664,8 @@ class Dashboard extends MY_Controller{
                 c.order_item_id, c.order_item_order_id, c.order_item_product_id, c.order_item_start_date, c.order_item_end_date, 
                 c.order_item_flag_checkin, c.order_item_checkin_date, c.order_item_checkout_date,
                 c.order_id, c.order_session, c.order_contact_name, c.order_contact_phone,
-                c.order_item_expired_day, c.order_item_expired_day_2, c.order_item_expired_time, c.order_item_expired_time_2 
+                c.order_item_expired_day, c.order_item_expired_day_2, c.order_item_expired_time, c.order_item_expired_time_2,
+                c.order_item_ref_price_sort 
                 FROM products
                 LEFT JOIN `references` ON product_ref_id=ref_id
                 LEFT JOIN branchs ON product_branch_id=branch_id
@@ -672,7 +673,7 @@ class Dashboard extends MY_Controller{
                     SELECT order_item_id, order_item_order_id, order_item_product_id, order_item_start_date, order_item_end_date, 
                     order_item_flag_checkin, order_item_checkin_date, order_item_checkout_date, order_id, order_session, order_contact_name, order_contact_phone, 
                     order_item_expired_day, DATEDIFF(order_item_end_date, NOW()) AS order_item_expired_day_2, `order_item_expired_time`, 
-                    TIMESTAMPDIFF(MINUTE, NOW(), order_item_end_date) AS order_item_expired_time_2                    
+                    TIMESTAMPDIFF(MINUTE, NOW(), order_item_end_date) AS order_item_expired_time_2, order_item_ref_price_sort                    
                     FROM orders_items 
                     LEFT JOIN orders ON order_item_order_id=order_id
                     WHERE order_item_flag_checkin = 1

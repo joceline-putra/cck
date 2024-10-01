@@ -34,6 +34,9 @@
         /* background-color: #12651c; */
         margin:0px 4px 4px 0px;
     }    
+    .btn_room_status {
+        height:110px;
+    }
 </style> 
 
 <?php
