@@ -48,7 +48,7 @@ class Ref_model extends CI_Model{
 
     function set_select_price(){
         $this->db->select("references_prices.*");
-        $this->db->select("ref_id, ref_branch_id, ref_code, ref_name");        
+        $this->db->select("ref_id, ref_branch_id, ref_code, ref_name, ref_price_1, ref_price_2, ref_price_3, ref_price_4, ref_price_5, ref_price_6");        
     }
 
     function get_all_ref($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
@@ -273,5 +273,11 @@ class Ref_model extends CI_Model{
             return false;
         }
     }
+    function get_ref_price_custom_json($where,$where_json){
+        $this->db->select("JSON_EXTRACT(price_ref_json, '$.".$where_json."') AS result");
+        $this->db->where($where);
+        $this->db->where("JSON_CONTAINS_PATH(price_ref_json, 'all', '$.".$where_json."')"); 
+        return $this->db->get('references_prices')->row_array();
+    }       
 }
 ?>

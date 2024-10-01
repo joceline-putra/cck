@@ -400,6 +400,7 @@ class Referensi extends MY_Controller{
                     $return->search             = $search;
                     break;              
                 case "load_ref_room_type":
+                    $post = $this->input->post();
                     $limit      = $this->input->post('length');
                     $start      = $this->input->post('start');
                     $order      = $columns[$this->input->post('order')[0]['column']];
@@ -420,9 +421,17 @@ class Referensi extends MY_Controller{
                     if($identity == 7){ //Room / Table
                         //Root Access
                         // if($session_group_id > 1){ //If Not Root
-                            $params['ref_branch_id'] = intval($session_branch_id);
+                            // $params['ref_branch_id'] = intval($session_branch_id);
                         // }
                     }
+
+                    if(($post['filter_branch'] !== 'All') && ($post['filter_branch'] > 0)){
+                        $params['ref_branch_id'] = $post['filter_branch'];
+                    }
+
+                    if(($post['filter_flag'] !== 'All') && intval($post['filter_flag'])){
+                        $params['ref_flag'] = $post['filter_flag'];
+                    }                    
 
                     $datas_result = array();
                     $datas_count = $this->Referensi_model->get_all_referensis_count($params,$search);
@@ -605,6 +614,102 @@ class Referensi extends MY_Controller{
                         $return->status=1;
                         $return->message='Berhasil '.$msg;
                     }                
+                    break;
+                case "get_price":
+                    $this->form_validation->set_rules('ref_id', 'Jenis Kamar', 'required');
+                    $this->form_validation->set_message('required', '{field} wajib diisi');
+                    if ($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{
+                        $post = $this->input->post();
+                        $ref_id         = !empty($post['ref_id']) ? $post['ref_id'] : 0;
+                        $ref_sort       = !empty($post['ref_sort']) ? $post['ref_sort'] : 0;        
+                        
+                        $where = [
+                            "price_ref_id" => $ref_id,
+                            "price_sort" => $ref_sort,
+                        ];
+
+                        // Check reference_price is EXIST
+                        $count = $this->Ref_model->check_data_exist_prices($where);
+                        
+                        if($count==false){
+                            // Save when not exists
+                            $price_default = 0;
+                            $set_json = [
+                                "monday" => $price_default,
+                                "tuesday" => $price_default,
+                                "wednesday" => $price_default,
+                                "thursday" => $price_default,
+                                "friday" => $price_default,
+                                "saturday" => $price_default,
+                                "sunday" => $price_default,
+                            ];
+                            $params = array(
+                                'price_ref_id' => $ref_id,
+                                'price_sort' => $ref_sort,
+                                'price_ref_json' => json_encode($set_json)
+                            );
+                            $this->Ref_model->add_ref_price($params);
+                        }
+
+                        // Create where not exist;
+                        $gett = $this->Ref_model->get_ref_price_custom($where);
+                        if($gett){
+                            $return->status = 1;
+                            $return->message = 'Updated';
+                            $return->result = $gett;
+
+                            $col = 'ref_price_'.$ref_sort;
+                            $return->ref_price_default = $gett[$col];
+                        }else{
+                            $return->message = 'Failed';
+                        }
+                    }                    
+                    break;                    
+                case "update_price":
+                    $this->form_validation->set_rules('ref_id', 'Jenis Kamar', 'required');
+                    $this->form_validation->set_message('required', '{field} wajib diisi');
+                    if ($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{
+                        $post = $this->input->post();
+                        $ref_id         = !empty($post['ref_id']) ? $post['ref_id'] : 0;
+                        $ref_sort       = !empty($post['ref_sort']) ? $post['ref_sort'] : 0;                        
+                        $price_default  = !empty($post['ref_price']) ? $post['ref_price'] : 0;
+
+                        $set_json = [
+                            "monday" => !empty($post['monday']) ? $post['monday'] : 0,
+                            "tuesday" => !empty($post['tuesday']) ? $post['tuesday'] : 0,
+                            "wednesday" => !empty($post['wednesday']) ? $post['wednesday'] : 0,
+                            "thursday" => !empty($post['thursday']) ? $post['thursday'] : 0,
+                            "friday" => !empty($post['friday']) ? $post['friday'] : 0,
+                            "saturday" => !empty($post['saturday']) ? $post['saturday'] : 0,
+                            "sunday" => !empty($post['sunday']) ? $post['sunday'] : 0
+                        ];
+
+                        $where = [
+                            "price_ref_id" => $ref_id,
+                            "price_sort" => $ref_sort,
+                        ];
+                        $params = [
+                            "price_ref_json" => json_encode($set_json)
+                        ];
+                        // var_dump($params);die;
+                        $update = $this->Ref_model->update_ref_price_custom($where,$params);
+
+                        $set_price = [
+                            'ref_price_'.$ref_sort => $price_default
+                        ];
+                        // var_dump($set_price);die;
+                        $update_ref = $this->Ref_model->update_ref($ref_id,$set_price);
+                        if($update){
+                            $return->status = 1;
+                            $return->message = 'Updated';
+                        }else{
+                            $return->message = 'Failed';
+                        }
+                    }                    
                     break;
             }
         }else{

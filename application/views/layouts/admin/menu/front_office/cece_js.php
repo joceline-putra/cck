@@ -1194,7 +1194,7 @@
         function loadRefPrice(){ //Load ref_price and room
 
             $("#order_price").val(0);
-
+            var ref_check = $("input[name=order_ref_price_id]:checked").val();
             if(parseInt($("input[name='order_ref_id']:checked").val()) > 0){
                 let form = new FormData();
                 form.append('action', 'room_price');
@@ -1216,34 +1216,44 @@
                         let s = d.status;
                         let m = d.message;
                         let r = d.result;
+                        let rr = d.result_ref;
+                        let re = d.rooms;
                         if(parseInt(s) == 1){
-                            // notif(s,m);
-                            $("#order_price").val(r.price_value);
-                            $("#paid_total").val(r.price_value);                                                        
-                            console.log('Price: '+r.price_value);
+                            var set_price = d.set_pricing.price;
+                            // var set_price = 0;
+                            // if(ref_check == 0){
+                            //     set_price = rr.ref_price_0;
+                            // }else if(ref_check == 1){
+                            //     set_price = rr.ref_price_1;
+                            // }else if(ref_check == 2){
+                            //     set_price = rr.ref_price_2;
+                            // }else if(ref_check == 3){
+                            //     set_price = rr.ref_price_3;
+                            // }else if(ref_check == 4){
+                            //     set_price = rr.ref_price_4;
+                            // }else if(ref_check == 5){
+                            //     set_price = rr.ref_price_5;
+                            // }else if(ref_check == 6){
+                            //     set_price = rr.ref_price_6;
+                            // }else{
+                            //     set_price = 0;
+                            // }                            
+                            $("#order_price").val(set_price);
+                            $("#paid_total").val(set_price);                                                        
+                            console.log('Price: '+set_price);
                             //Display Room
-                            let re = d.rooms;
                             let total_records = re.length;
                             if(parseInt(total_records) > 0){
                                 $("#order_product_id").html('');
                             
                                 let dsp = '';
                                 for(let a=0; a < total_records; a++) {
-                                    // class="radio_group"
-                                    // if (a % 2 === 1) {
-                                        // dsp += `<div class="radio_group">`;
-                                    // }
-                                    // console.log(a % 2);
                                     let value = re[a];
                                     dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
                                     dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
                                             <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}" style="width:100%;height:124px;word-wrap:normal;">${value['product_name']}</label>
                                         `;
-                                        dsp += `</div>`;
-                                    // if (a % 2 === 1) {
-                                    //     dsp += `</div>`;
-                                    // }                                        
-                            
+                                    dsp += `</div>`;
                                 }
                                 $("#order_product_id").html(dsp);
                             }else{

@@ -1279,33 +1279,33 @@
                         let s = d.status;
                         let m = d.message;
                         let r = d.result;
-                        let rr = d.result_ref;                        
+                        let rr = d.result_ref;        
+                        let re = d.rooms;                
                         if(parseInt(s) == 1){
-                            // notif(s,m);
-                            var set_price = 0;
-                            if(ref_check == 0){
-                                set_price = rr.ref_price_0;
-                            }else if(ref_check == 1){
-                                set_price = rr.ref_price_1;
-                            }else if(ref_check == 2){
-                                set_price = rr.ref_price_2;
-                            }else if(ref_check == 3){
-                                set_price = rr.ref_price_3;
-                            }else if(ref_check == 4){
-                                set_price = rr.ref_price_4;
-                            }else if(ref_check == 5){
-                                set_price = rr.ref_price_5;
-                            }else if(ref_check == 6){
-                                set_price = rr.ref_price_6;
-                            }else{
-                                set_price = 0;
-                            }
+                            // var set_price = 0;
+                            var set_price = d.set_pricing.price;
+                            // if(ref_check == 0){
+                            //     set_price = rr.ref_price_0;
+                            // }else if(ref_check == 1){
+                            //     set_price = rr.ref_price_1;
+                            // }else if(ref_check == 2){
+                            //     set_price = rr.ref_price_2;
+                            // }else if(ref_check == 3){
+                            //     set_price = rr.ref_price_3;
+                            // }else if(ref_check == 4){
+                            //     set_price = rr.ref_price_4;
+                            // }else if(ref_check == 5){
+                            //     set_price = rr.ref_price_5;
+                            // }else if(ref_check == 6){
+                            //     set_price = rr.ref_price_6;
+                            // }else{
+                            //     set_price = 0;
+                            // }
                             // $("#order_price").val(r.price_value);
                             $("#order_price").val(set_price);   
                             $("#paid_total").val(set_price);                                                        
                             console.log('Price: '+set_price);
                             //Display Room
-                            let re = d.rooms;
                             let total_records = re.length;
                             if(parseInt(total_records) > 0){
                                 $("#order_product_id").html('');

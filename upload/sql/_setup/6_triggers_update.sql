@@ -75,3 +75,19 @@ BEGIN
    END IF;   
 END $$
 DELIMITER ;
+
+DELIMITER $$
+DROP TRIGGER IF EXISTS `tr_ref_price_before_insert`$$ 
+CREATE TRIGGER `tr_ref_price_before_insert` BEFORE INSERT ON `references_prices`
+FOR EACH ROW 
+BEGIN
+   IF NEW.price_sort = 1 THEN SET NEW.price_name ='Bulanan';
+   ELSEIF NEW.price_sort = 2 THEN SET NEW.price_name ='Harian';
+   ELSEIF NEW.price_sort = 3 THEN SET NEW.price_name ='Midnight';
+   ELSEIF NEW.price_sort = 4 THEN SET NEW.price_name ='4 Jam';
+   ELSEIF NEW.price_sort = 5 THEN SET NEW.price_name ='2 Jam';
+   ELSEIF NEW.price_sort = 6 THEN SET NEW.price_name ='3 Jam';   
+   ELSE SET NEW.price_name = '';
+   END IF;            
+END $$
+DELIMITER ;

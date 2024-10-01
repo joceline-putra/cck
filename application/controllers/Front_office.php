@@ -2281,11 +2281,49 @@ class Front_office extends MY_Controller{
                     $search = null; $limit = null; $start = null; $order  = 'product_name'; $dir = 'ASC';
                     $get_room = $this->Produk_model->get_all_produks($params_rooms,$search,$limit,$start,$order,$dir);
 
-                    $return->result = $get_ref;
-                    $return->result_ref = $get_ref_2;                    
-                    $return->rooms = $get_room;
+                    // Search Configuration Price Monday - Sunday
+                    $this_day_name = strtolower(date("l"));
+                    $where_ref_price = [
+                        'price_ref_id' => $post['ref_id'],
+                        'price_sort' => $post['ref_price_sort']
+                    ];
+                    $get_ref_price = $this->Ref_model->get_ref_price_custom_json($where_ref_price,$this_day_name);
+                    if(!empty($get_ref_price)){
+                        $set_price = intval(str_replace('"','',$get_ref_price['result']));
+                        $def = false;
+                    }else{
+                        //Search Default Price
+                        if($post['ref_price_sort'] == 0){ //Not Used / Promo
+                            $set_price = 0;
+                        }else if($post['ref_price_sort'] == 1){ //Bulanan
+                            $set_price = $get_ref_2['ref_price_1'];
+                        }else if($post['ref_price_sort'] == 2){ //Harian
+                            $set_price = $get_ref_2['ref_price_2'];
+                        }else if($post['ref_price_sort'] == 3){ //Midnight
+                            $set_price = $get_ref_2['ref_price_3'];
+                        }else if($post['ref_price_sort'] == 4){ //4 Jam
+                            $set_price = $get_ref_2['ref_price_4'];
+                        }else if($post['ref_price_sort'] == 5){ //2 Jam
+                            $set_price = $get_ref_2['ref_price_5'];
+                        }else if($post['ref_price_sort'] == 6){ //3 Jam
+                            $set_price = $get_ref_2['ref_price_6'];
+                        }
+                        $def = true;
+                    }
+
                     $return->status = 1;        
-                    $return->params = $params;            
+                    $return->params = $params;     
+
+                    $return->result = $get_ref; //Not Used
+                    $return->result_ref = $get_ref_2;   // To Display Default Price 
+                    $return->rooms = $get_room;         // To Display LOOP ROOM
+                    $return->set_pricing = 
+                        [
+                            "price_sort" => $post['ref_price_sort'],
+                            "default_price" => $def,
+                            "today" => $this_day_name,
+                            "price" => $set_price
+                        ];
                     break;    
                 case "load-order-items-for-report":
                     // $columns = array(

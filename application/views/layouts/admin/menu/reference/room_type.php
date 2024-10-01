@@ -131,7 +131,30 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:10px;">
-                                        <div class="col-lg-10 col-md-10 col-xs-12 form-group padding-remove-right">            
+                                        <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                <label class="form-label">Cabang</label>
+                                                <select id="filter_branch" name="filter_branch" class="form-control">
+                                                    <option value="All">Semua</option>
+                                                    <?php
+                                                    foreach($branch as $val){
+                                                        echo '<option value="'.$val['branch_id'].'">'.$val['branch_name'].'</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>  
+                                        <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                                <label class="form-label">Status</label>
+                                                <select id="filter_flag" name="filter_flag" class="form-control">
+                                                    <option value="1" selected>Aktif</option>
+                                                    <option value="All">Semua</option>
+                                                    <option value="0">Nonaktif</option>                                                                                                        
+                                                </select>
+                                            </div>
+                                        </div>                                                                             
+                                        <div class="col-lg-6 col-md-6 col-xs-12 form-group padding-remove-right">            
                                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                 <label class="form-label">Cari</label>                          
                                                 <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
