@@ -90,7 +90,7 @@
 			// placeholder: '<i class="fas fa-balance-scale"></i> Pilih Akun Perkiraan',		
 			placeholder: {
 				id: '0',
-				text: '<i class="fas fa-balance-scale"></i> Pilih Akun Perkiraan'
+				text: '<i class="fas fa-balance-scale"></i> Pilih Cara Bayar'
 			},
 			allowClear: true,		
 			minimumInputLength: 0,

@@ -456,12 +456,12 @@
                     notif(0,'Cabang wajib pilih');
                 }
             }
-            if(next){
-                if (!$("input[name='order_ref_price_id']:checked").val()) {
-                    next = false;
-                    notif(0,'Tipe Pesanan wajib pilih');
-                }
-            }
+            // if(next){
+            //     if (!$("input[name='order_ref_price_id']:checked").val()) {
+            //         next = false;
+            //         notif(0,'Tipe Pesanan wajib pilih');
+            //     }
+            // }
             if(next){
                 if (!$("input[name='order_ref_id']:checked").val()) {
                     next = false;
@@ -507,7 +507,8 @@
                 form.append('upload_3', $("#files_preview_3").attr('data-save-img'));   
                 form.append('order_item_ref_price_sort',$("input[name=order_ref_price_id]:checked").val());   
                 form.set('order_vehicle_cost',vehicleCOST.rawValue);             
-                form.append('day_booking',dayBooking);                             
+                form.append('day_booking',dayBooking);        
+                form.set('order_ref_price_id',1); //Bulanan                     
                 if(orderID > 0){
                     form.append('order_id', orderID);
                 }
@@ -1194,13 +1195,15 @@
         function loadRefPrice(){ //Load ref_price and room
 
             $("#order_price").val(0);
-            var ref_check = $("input[name=order_ref_price_id]:checked").val();
-            if(parseInt($("input[name='order_ref_id']:checked").val()) > 0){
+            // var ref_check = $("input[name=order_ref_price_id]:checked").val();
+            var ref_check = 1;
+            // if(parseInt($("input[name='order_ref_id']:checked").val()) > 0){
+            if(parseInt(ref_check) > 0){                
                 let form = new FormData();
                 form.append('action', 'room_price');
                 form.append('branch_id',  $("input[name=order_branch_id]:checked").val());
                 form.append('ref_id',  $("input[name=order_ref_id]:checked").val());                                                
-                form.append('ref_price_sort',  $("input[name=order_ref_price_id]:checked").val());
+                form.append('ref_price_sort',  ref_check);
                 $.ajax({
                     type: "post",
                     url: url,
@@ -3131,7 +3134,8 @@
         */
 
         //Child Tab Navigation
-        $(document).on("click", "input[name='order_branch_id']", function(e){ activeTab("tab12"); });
+        // $(document).on("click", "input[name='order_branch_id']", function(e){ activeTab("tab12"); });
+        $(document).on("click", "input[name='order_branch_id']", function(e){ activeTab("tab13"); });        
         $(document).on("click", "input[name='order_ref_price_id']", function(e){ activeTab("tab13"); });
         $(document).on("click", "input[name='order_ref_id']", function(e){ activeTab("tab14"); });
         $(document).on("click", "input[name='order_product_id']", function(e){ activeTab("tab15"); });     
@@ -3246,7 +3250,8 @@
             $("#table_confirm").html('');            
             var dsp = '';
             dsp += `<tr><td>Cabang</td><td>:</td><td>${$("input[name='order_branch_id']:checked").attr('data-name')}</td></tr>`;
-            dsp += `<tr><td>Tipe</td><td>:</td><td>${$("input[name='order_ref_price_id']:checked").attr('data-name')}</td></tr>`; 
+            // dsp += `<tr><td>Tipe</td><td>:</td><td>${$("input[name='order_ref_price_id']:checked").attr('data-name')}</td></tr>`; 
+            dsp += `<tr><td>Tipe</td><td>:</td><td>Bulanan</td></tr>`;             
             dsp += `<tr><td>Jenis Kamar</td><td>:</td><td>${$("input[name='order_ref_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Kamar</td><td>:</td><td>${$("input[name='order_product_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-mm-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-mm-yyyy')}</td></tr>`; 

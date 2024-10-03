@@ -94,12 +94,12 @@ $next = true;
                                             ?>
                                             <li class="start open li-report"> 
                                                 <a id="" data-id="" href="" style="padding-left: 38px!important;"><span class="title"><?php echo $sub_menu['menu_name']; ?></span> <span class="selected"></span></a> 
-                                                <ul class="sub-menu" style="display:none;">
+                                                <ul class="sub-menu" style="">
 
                                                     <?php
                                                     $submenu = $sub_menu['menu_name'];
                                                     switch ($submenu) {
-                                                        // case "Bisnis":
+                                                        case "Biaya":
                                                         //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/journal') . '" style=""><span class="title">Jurnal</span> <span class="selected"></span></a></li>';
                                                         //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/ledger') . '" style=""><span class="title">Buku Besar</span> <span class="selected"></span></a></li>';
                                                         //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/trial_balance') . '" style=""><span class="title">Neraca Saldo</span> <span class="selected"></span></a></li>';
@@ -108,8 +108,8 @@ $next = true;
                                                         //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/balance') . '" style=""><span class="title">Neraca</span> <span class="selected"></span></a></li>';
                                                         //     echo '<li class="start"><a id="" data-id="" href="#"><span class="title">&nbsp;</span> <span class="selected"></span></a></li>';
                                                         //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/cash_in') . '" style=""><span class="title">Pemasukan Uang</span> <span class="selected"></span></a></li>';
-                                                        //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/cash_out') . '" style=""><span class="title">Pengeluaran Uang</span> <span class="selected"></span></a></li>';
-                                                        //     break;
+                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/cash_out') . '" style=""><span class="title">Biaya</span> <span class="selected"></span></a></li>';
+                                                            break;
                                                         // case "Pembelian":
                                                         //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/buy/recap') . '" style=""><span class="title">Pembelian Rekap</span> <span class="selected"></span></a></li>';
                                                         //     echo '<li class="start"><a id="" data-id="" href="' . base_url('report/purchase/buy/detail') . '" style=""><span class="title">Pembelian Rinci</span> <span class="selected"></span></a></li>';
@@ -123,6 +123,7 @@ $next = true;
                                                             echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/sell/detail') . '" style=""><span class="title">Warmindo</span> <span class="selected"></span></a></li>';
                                                             // echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/sell/account_receivable') . '" style=""><span class="title">Piutang Customer</span> <span class="selected"></span></a></li>';
                                                             echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/order/detail') . '" style=""><span class="title">Kamar</span> <span class="selected"></span></a></li>';
+                                                            echo '<li class="start"><a id="" data-id="" href="' . base_url('report/finance/cash_out') . '" style=""><span class="title">Biaya</span> <span class="selected"></span></a></li>';
                                                             // echo '<li class="start"><a id="" data-id="" href="' . base_url('report/sales/return/detail') . '" style=""><span class="title">Retur Penjualan</span> <span class="selected"></span></a></li>';
                                                             // echo '<li class="hide"><a id="" data-id="" href="" style=""><span class="title">Usia Piutang</span> <span class="selected"></span></a></li>';
                                                             break;

@@ -70,7 +70,7 @@
 </style>
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
-		<?php include '_navigation.php';?>
+		<?php #include '_navigation.php';?>
 		<div class="tab-content">
 			<div class="tab-pane active" id="tab1">
 				<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
@@ -82,7 +82,7 @@
 										<h5><b><?php echo $title;?></b></h5>
 									</div>
 									<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-left pull-left">
-										<div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 padding-remove-left" style="margin-top:4px;">
+										<div class="hide col-lg-3 col-md-3 col-xs-12 col-sm-12 padding-remove-left" style="margin-top:4px;">
 											<select id="filter_type" name="filter_type" class="form-control" style="height:31px!important;border:0px!important;background-color:#ecf0f2;">
 												<option value="0" selected>Semua Transaksi Keluar</option>
 												<option value="1">Pembayaran Hutang</option>
