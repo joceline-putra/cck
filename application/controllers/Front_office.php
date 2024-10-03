@@ -922,8 +922,8 @@ class Front_office extends MY_Controller{
                                 $edate = $post['order_end_date']." ".$post['order_end_hour'].":".$end_minute.":00";                                
                                 // $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
                                 $check_room_available = $this->Front_model->sp_room_check($room_id,$sdate,$edate);
-                                // var_dump($check_room_available['room_is_available'],$room_id,$sdate,$edate);die;                                
-                                if(intval($check_room_available['room_is_available']) == 1){
+                                // var_dump($check_room_available['room_is_available'],$room_id,$sdate,$edate);die; 
+                                if(intval($check_room_available['room_is_available']) > 0){
                                     $get_product = $this->Produk_model->get_produk_quick($post['order_product_id']);
 
                                     $next = false;
@@ -1299,7 +1299,7 @@ class Front_office extends MY_Controller{
                                 // $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
                                 $check_room_available = $this->Front_model->sp_room_check($room_id,$sdate,$edate);
                                 // var_dump($check_room_available['room_is_available'],$room_id,$sdate,$edate);die;
-                                if(intval($check_room_available['room_is_available']) == 1){
+                                if(intval($check_room_available['room_is_available']) > 0){
                                     $get_product = $this->Produk_model->get_produk_quick($post['order_product_id']);
 
                                     $next = false;
