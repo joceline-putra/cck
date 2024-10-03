@@ -1926,7 +1926,8 @@ class Front_office extends MY_Controller{
                             }else if($post['order_item_flag_checkin']== 2){
                                 $set_msg = 'checkout '.$post['product_name'];
                                 $params['order_item_note'] = $post['file_note'];
-                                $params['order_item_checkout_date'] = date("YmdHis");                                
+                                $params['order_item_checkout_date'] = date("YmdHis");   
+                                $params['order_item_expired_time'] = 0;
                             }else if($post['order_item_flag_checkin']== 4){
                                 $set_msg = 'batal';
                             }else{

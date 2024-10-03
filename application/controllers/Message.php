@@ -2262,6 +2262,39 @@ class Message extends CI_Controller{
                     $next = false;
                 }
                 break;       
+            case "sales-sell-invoice-checkout":
+                $a = '';
+                $b = '';
+                $c = '';
+                // var_dump($params);die;
+                if($params['order_id'] > 0){
+                    $god  = $this->Front_model->get_booking($params['order_id']);
+                    $get_trans = $this->Front_model->get_booking_item_custom(array('order_item_order_id'=> $params['order_id']),$search = null,$limit = null,$start = null,$order = null,$dir = null);
+                    $text = '';
+                    $text .= "*Pengingat Checkout*"."\r\n";
+                    $text .= "Permisi Bpk/Ibu ".$params['contact_name']."\r\n";
+                    $text .= $params['contact_phone']."\r\n\r\n";                    
+                    if($get_trans['order_item_expired_time'] > 60){
+                        $sisa = $get_trans['order_item_expired_time'].' jam lagi';
+                    }elseif($get_trans['order_item_expired_time'] < 60){
+                        $sisa = ($get_trans['order_item_expired_time']/60).' menit lagi';
+                    }
+                    // $text .= "Masa berlaku kamar *".$sisa."*"."\r\n\r\n";
+
+                    $date_check = date("d/M/y", strtotime($get_trans['order_item_start_date'])) .' - '. date("d/M/y", strtotime($get_trans['order_item_end_date']));
+                    $hour_check = date("H:i", strtotime($get_trans['order_item_start_date'])) .' - '. date("H:i", strtotime($get_trans['order_item_end_date']));            
+
+                    $text .= "Checkin: ".$date_check." - ".$hour_check."\r\n";        
+                    $text .= "Kamar: ".$get_trans['ref_name']." - ".$get_trans['product_name']."\r\n";    
+
+                    // $set_user_id = null;
+                    $set_user_name = $params['contact_name'];
+                    $set_user_phone = $params['contact_phone'];
+                    $trans['trans_branch_id'] = $get_trans['order_item_branch_id'];                 
+                }else{
+                    $next = false;
+                }
+                break;       
             case "inventory-goods-out":
                 $a = '';
                 $b = '';
@@ -2329,6 +2362,7 @@ class Message extends CI_Controller{
                 'message_group_session' => $session_group,
                 // 'message_news_id' => $message_news,
                 // 'message_url' => $get_news_url,
+                'message_order_id' => $params['order_id'],
                 'message_flag' => 0, 
                 'message_date_created' => date("YmdHis"),
                 'message_branch_id' => $trans['trans_branch_id'],
@@ -2428,6 +2462,7 @@ class Message extends CI_Controller{
 
         $params = array(
             'order_item_type' => 222,
+            'order_item_type_2' => 'Bulanan',            
             'order_item_expired_day' => 1,
             'order_item_flag_checkin' => 1
         );
@@ -2451,168 +2486,60 @@ class Message extends CI_Controller{
         }  
         echo json_encode($return);
     }
-
-    //Sending Gateway Email
-    function email_template($action, $params){
-        // die;
-    }   
-    function email_send_message($params){ //Works 
+    function whatsapp_prepare_checkout(){
         $return          = new \stdClass();
         $return->status  = 0;
         $return->message = '';
         $return->result  = '';
+        
+        //Init Variable
+        $found = 0;
+        $contact_params = [];
 
-        // Default Value before Changes
-        $to_address = 'joceline.putra@gmail.com';
-        $to_subject = 'Email Subject';
-        $to_content = 'Content Email';
-
-        $datas = array();
-        $get_data=$this->Message_model->get_all_message($params,null,null,null,'message_id','asc');
-        if(count($get_data) > 0){
-            foreach($get_data as $v){
-
-                $datas[] = array(
-                    'message_group_session' => $v['message_group_session'],
-                    'message_id' => $v['message_id'],
-                    'message_session' => $v['message_session'],
-                    'message_text' => $v['message_text'],
-                    'message_contact_name' => $v['message_contact_name'],
-                    'message_contact_email' => $v['message_contact_email'],
-                    // 'message_url' => $v['message_url'],
-                    'message_device_id' => $v['message_device_id']
-                );
-                // var_dump($v['message_text']);die;
-                $prepare_text = "
-                <div style='padding:25px;background-color:#f2f2f2;'>
-                    <div style='padding:10px;background-color:white;'>
-                        <div>
-                            <p>
-                                <img src='https://app.aspri.cloud/upload/branch/default_logo.png' style='margin:5px 0;width:190px;'>
-                            </p>
-                            <p>".nl2br($v['message_text'])."</p>
-                        </div>
-                    </div>
-                </div>";    
-                $to_content = $prepare_text;    
-                $to_address = $v['message_contact_email'];
-
-                $result = $this->phpmailer_lib->sendMailSMTP($to_address, $to_subject, $to_content);
-                if(intval($result['status']) === 1){
-
-                    $where = array(
-                        'message_id' => $v['message_id']
-                    );
-                    $params = array(
-                        'message_date_sent' => date('YmdHis'),
-                        'message_flag' => 1
-                    );
-                    $this->Message_model->update_message_custom($where,$params);
-
-                    $return->status  = 1;
-                    $return->message = $result['message'];
-                }else{
-                    $return->message = $result['message'];
-                }
-
-                // Plan B
-                /*
-                $to_header = '';
-                $to_header .= "From: ".$this->config->item('mail_set_from_alias')." <".$this->config->item('mail_set_from').">\r\n";
-                $to_header .= "Reply-To:  <".$this->config->item('mail_set_reply_to').">\r\n"; 
-                $to_header .= "MIME-Version: 1.0\r\n";
-                $to_header .= "Content-type: text/html\r\n";
-                // var_dump($to_header);die;
-                $send_mail = mail($to_address,$to_subject,$to_content,$to_header);
-                var_dump($send_mail);die;
-                */
-            }
-        }else{ 
-            $return->message='No Email enqueue';                
-        }
-        return json_encode($return);        
-    }     
-    function email_send_flag_0(){ //Only cronjob running this function
-        $return          = new \stdClass();
-        $return->status  = 0;
-        $return->message = '';
-        $return->result  = '';
-
-        // Default Value before Changes
-        $to_address = 'joceline.putra@gmail.com';
-        $to_subject = 'Email Subject';
-        $to_content = 'Content Email';
-
-        $datas = array();
-        $where = array(
-            'message_platform' => 4,
-            'message_flag' => 0
+        $params = array(
+            'order_item_type' => 222,
+            'order_item_type_2' => 'Transit',
+            'order_item_flag_checkin' => 1
         );
-        $get_data=$this->Message_model->get_all_message($where,null,5,0,'message_id','asc');      
-        // var_dump($get_data);die; 
-        if(count($get_data) > 0){
+        $search = null; $limit=null; $start=null;$order=null;$dir=null;
+        $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
+
+        // Found Data
+        if($get_count > 0){
+
+            // Fetch All Data
+            $get_data = $this->Front_model->get_all_booking_item($params, $search, $limit, $start, $order, $dir);
+
             foreach($get_data as $v){
 
-                $datas[] = array(
-                    'message_group_session' => $v['message_group_session'],
-                    'message_id' => $v['message_id'],
-                    'message_session' => $v['message_session'],
-                    'message_text' => $v['message_text'],
-                    'message_contact_name' => $v['message_contact_name'],
-                    'message_contact_email' => $v['message_contact_email'],
-                    // 'message_url' => $v['message_url'],
-                    'message_device_id' => $v['message_device_id']
-                );
-                // var_dump($v['message_text']);die;
-                $prepare_text = "
-                <div style='padding:25px;background-color:#f2f2f2;'>
-                    <div style='padding:10px;background-color:white;'>
-                        <div>
-                            <p>
-                                <img src='https://app.aspri.cloud/upload/branch/default_logo.png' style='margin:5px 0;width:190px;'>
-                            </p>
-                            <p>".nl2br($v['message_text'])."</p>
-                        </div>
-                    </div>
-                </div>";    
-                $to_content = $prepare_text;    
-                $to_address = $v['message_contact_email'];
+                // More than 0 minute <> 20 minute
+                if((intval($v['order_item_expired_time_2']) > 0) && (intval($v['order_item_expired_time_2']) < 20)){
+                    $order_in_message = [
+                        'message_order_id' => $v['order_id']
+                    ];
+                    $get_not_exist = $this->Message_model->get_all_message_count($order_in_message,null);
+                    if($get_not_exist == 0){
 
-                $result = $this->phpmailer_lib->sendMailSMTP($to_address, $to_subject, $to_content);
-                if(intval($result['status']) === 1){
-                    $where = array(
-                        'message_id' => $v['message_id']
-                    );
-                    $params = array(
-                        'message_date_sent' => date('YmdHis'),
-                        'message_flag' => 1
-                    );
-                    $this->Message_model->update_message_custom($where,$params);                    
-                    $return->status  = 1;
-                    $return->message = $result['message'];
-                }else{
-                    $return->message = $result['message'];
+                        $found++;
+                        $contact_params = array(
+                            'order_id' => $v['order_id'],
+                            'contact_name' => $v['order_contact_name'],
+                            'contact_phone' => $v['order_contact_phone'],
+                        );
+
+                        // Save to messages
+                        $this->whatsapp_template('sales-sell-invoice-checkout',0,$contact_params);
+                    }
                 }
-
-                // Plan B
-                /*
-                $to_header = '';
-                $to_header .= "From: ".$this->config->item('mail_set_from_alias')." <".$this->config->item('mail_set_from').">\r\n";
-                $to_header .= "Reply-To:  <".$this->config->item('mail_set_reply_to').">\r\n"; 
-                $to_header .= "MIME-Version: 1.0\r\n";
-                $to_header .= "Content-type: text/html\r\n";
-                // var_dump($to_header);die;
-                $send_mail = mail($to_address,$to_subject,$to_content,$to_header);
-                var_dump($send_mail);die;
-                */
             }
-        }else{ 
-            $return->message='No Email enqueue';                
-        }
-        // var_dump($mail->ErrorInfo);die;        
-        // return json_encode($return);
-        echo json_encode($return);        
-    }
+            $return->status = 1;
+            $return->params = $contact_params;
+            $return->message = 'Found '.$found.' datas';
+        }else{
+            $return->message = 'No Transit Reminder Data';
+        }  
+        echo json_encode($return);
+    }    
 
     //Other
     function create_session($length){
