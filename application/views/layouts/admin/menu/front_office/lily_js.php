@@ -3316,7 +3316,7 @@
             dsp += `<tr><td>Tipe</td><td>:</td><td>${$("input[name='order_ref_price_id']:checked").attr('data-name')}</td></tr>`; 
             dsp += `<tr><td>Jenis Kamar</td><td>:</td><td>${$("input[name='order_ref_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Kamar</td><td>:</td><td>${$("input[name='order_product_id']:checked").attr('data-name')}</td></tr>`;
-            dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-mm-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-mm-yyyy')}</td></tr>`; 
+            dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-M-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-M-yyyy')}</td></tr>`; 
             dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()}:${$("#order_start_hour_minute").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}:${$("#order_end_hour_minute").find(":selected").val()}</td></tr>`;                                                            
             dsp += `<tr><td>Harga</td><td>:</td><td>${$("#order_price").val()}</td></tr>`;
             dsp += `<tr><td>Dibayar</td><td>:</td><td>${$("#paid_total").val()} - ${$("#paid_payment_method").find(":selected").val()}</td></tr>`;

@@ -1045,13 +1045,13 @@
                         dsp += '<form id="jc_form">';
                             dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
                             dsp += '    <div class="form-group">';
-                            dsp += '    <label class="form-label">Foto Kunci</label>';
+                            dsp += '    <label class="form-label">Foto Kunci(wajib)</label>';
                             dsp += '        <input id="file_key" name="file_key" type="file" class="form-control">';
                             dsp += '    </div>';
                             dsp += '</div>';
                             dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
                             dsp += '    <div class="form-group">';
-                            dsp += '    <label class="form-label">Foto Pengembalian Deposit</label>';
+                            dsp += '    <label class="form-label">Foto Pengembalian Deposit (tidak wajib)</label>';
                             dsp += '        <input id="file_deposit" name="file_deposit" type="file" class="form-control">';
                             dsp += '    </div>';
                             dsp += '</div>';
@@ -1079,9 +1079,6 @@
                                 if(!file_key){
                                     $.alert('Foto kunci dipilih dahulu');
                                     return false;
-                                } else if(!file_deposit){
-                                    $.alert('Foto pengembalian deposit dipilih dahulu');
-                                    return false; 
                                 } else{
                                     var form = new FormData();
                                     form.append('action', 'update_flag_item_lily');
@@ -3254,7 +3251,7 @@
             dsp += `<tr><td>Tipe</td><td>:</td><td>Bulanan</td></tr>`;             
             dsp += `<tr><td>Jenis Kamar</td><td>:</td><td>${$("input[name='order_ref_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Kamar</td><td>:</td><td>${$("input[name='order_product_id']:checked").attr('data-name')}</td></tr>`;
-            dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-mm-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-mm-yyyy')}</td></tr>`; 
+            dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-M-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-M-yyyy')}</td></tr>`; 
             dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}</td></tr>`;                                                            
             dsp += `<tr><td>Harga</td><td>:</td><td>${numberWithCommas(orderPRICE.rawValue)}</td></tr>`;
             dsp += `<tr><td>Biaya Parkir</td><td>:</td><td>${numberWithCommas(vehicleCOST.rawValue)}</td></tr>`;                                                

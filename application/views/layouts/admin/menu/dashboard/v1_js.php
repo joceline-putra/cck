@@ -1933,7 +1933,7 @@
                                     '</div>' +
                                     '<div class="info-wrapper small-width">' +
                                     '<div class="info text-black">' +
-                                    '<p style="text-align:left;">' +
+                                    '<p style="text-align:left;color:black;">' +
                                     '<a href="#"><b>' + val.user + '&nbsp;</b></a>&nbsp;' +
                                     teks +
                                     // '<span>'+teks +'</span>'+
