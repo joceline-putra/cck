@@ -2196,9 +2196,10 @@ class Message extends CI_Controller{
                     $text .= "*Pengingat ReBooking*"."\r\n";
                     // $text .= $get_trans['order_number']."\r\n";
                     // $text .= date("d/m/Y - H:i", strtotime($get_trans['order_date']))."\r\n\r\n";    
-                    $text .= "Permisi Bpk/Ibu ".$params['contact_name']."\r\n";
+                    $text .= "Permisi Kakak ".$params['contact_name']."\r\n";
                     $text .= $params['contact_phone']."\r\n\r\n";                    
-                    $text .= "Apakah anda ingin memperpanjang masa sewa yang akan berakhir dalam *".$get_trans['order_item_expired_day_2']." hari lagi*, hubungi kami untuk pembayaran perpanjangan"."\r\n\r\n";
+                    $text .= "Apakah anda ingin memperpanjang masa sewa yang akan berakhir dalam *".$get_trans['order_item_expired_day_2']." hari lagi*,"."\r\n";
+                    $text .= "Harap melakukan pembayaran, konfirmasi klik disini wa.me/6281907030380"."\r\n\r\n";
 
                     $date_check = date("d/M/y", strtotime($get_trans['order_item_start_date'])) .' - '. date("d/M/y", strtotime($get_trans['order_item_end_date']));
                     $hour_check = date("H:i", strtotime($get_trans['order_item_start_date'])) .' - '. date("H:i", strtotime($get_trans['order_item_end_date']));            
@@ -2222,9 +2223,10 @@ class Message extends CI_Controller{
                     // $text .= $get_trans['order_number']."\r\n";
                     $text .= "Checkin: ".$date_check." - ".$hour_check."\r\n";        
                     $text .= "Kamar: ".$get_trans['ref_name']." - ".$get_trans['product_name']."\r\n";    
-                    $text .= "Tipe: ".$sort_name."\r\n";        
+                    $text .= "Tipe: ".$sort_name."\r\n\r\n";        
                     // $text .= "Kontak: ".$get_trans['order_contact_name']."\r\n\r\n";        
-                    $text .= "\r\n"."Mohon mengiriman bukti transer, abaikan jika sudah lunas"."\r\n"."Terimakasih"."\r\n";
+                    $text .= "Abaikan jika sudah lunas";
+                    // $text .= "\r\n"."Mohon mengirimkan bukti transer ke nomor 081907030380 atau klik disini wa.me/6281907030380, abaikan jika sudah lunas"."\r\n"."Terimakasih"."\r\n";
                     // if(!empty($get_trans['order_vehicle_cost'])){            
                     //     $text .= "Jml Kndraan: ".$get_trans['order_vehicle_count']."\r\n";        
                     // }
@@ -2270,22 +2272,29 @@ class Message extends CI_Controller{
                 if($params['order_id'] > 0){
                     $god  = $this->Front_model->get_booking($params['order_id']);
                     $get_trans = $this->Front_model->get_booking_item_custom(array('order_item_order_id'=> $params['order_id']),$search = null,$limit = null,$start = null,$order = null,$dir = null);
+                    // var_dump($get_trans);die;
                     $text = '';
-                    $text .= "*Pengingat Checkout*"."\r\n";
-                    $text .= "Permisi Bpk/Ibu ".$params['contact_name']."\r\n";
-                    $text .= $params['contact_phone']."\r\n\r\n";                    
-                    if($get_trans['order_item_expired_time'] > 60){
-                        $sisa = $get_trans['order_item_expired_time'].' jam lagi';
-                    }elseif($get_trans['order_item_expired_time'] < 60){
-                        $sisa = ($get_trans['order_item_expired_time']/60).' menit lagi';
-                    }
+                    $text .= "Permisi kakak,"."\r\n\r\n";
+                    // $text .= $params['contact_phone']."\r\n\r\n";                    
+                    // if($get_trans['order_item_expired_time'] > 60){
+                    //     $sisa = $get_trans['order_item_expired_time'].' jam lagi';
+                    // }elseif($get_trans['order_item_expired_time'] < 60){
+                    //     $sisa = ($get_trans['order_item_expired_time']/60).' menit lagi';
+                    // }
+                    $text .= "Anda telah melakukan cek in di type kamar ".$get_trans['ref_name']." nomor ".$get_trans['product_name']." di jam : ".date("H:i, d/M/y", strtotime($get_trans['order_item_start_date']))."\r\n\r\n";
+                    $text .= "Waktu cek out anda maksimal di jam :".date("H:i, d/M/y", strtotime($get_trans['order_item_end_date']))."\r\n\r\n"; 
+                    $text .= "Apabila cek out lebih dari waktunya maka akan dikenakan biaya tambahan"."\r\n\r\n";
+                    $text .= "Silahkan konfirmasi ke admin:"."\r\n\r\n"; 
+                    $text .= "Lily 1: wa.me/62895610425010"."\r\n";
+                    $text .= "Lily 2: wa.me/6288299931765"."\r\n\r\n";
+                    $text .= "Terimakasih";                    
                     // $text .= "Masa berlaku kamar *".$sisa."*"."\r\n\r\n";
 
-                    $date_check = date("d/M/y", strtotime($get_trans['order_item_start_date'])) .' - '. date("d/M/y", strtotime($get_trans['order_item_end_date']));
-                    $hour_check = date("H:i", strtotime($get_trans['order_item_start_date'])) .' - '. date("H:i", strtotime($get_trans['order_item_end_date']));            
+                    // $date_check = date("d/M/y", strtotime($get_trans['order_item_start_date'])) .' - '. date("d/M/y", strtotime($get_trans['order_item_end_date']));
+                    // $hour_check = date("H:i", strtotime($get_trans['order_item_start_date'])) .' - '. date("H:i", strtotime($get_trans['order_item_end_date']));            
 
-                    $text .= "Checkin: ".$date_check." - ".$hour_check."\r\n";        
-                    $text .= "Kamar: ".$get_trans['ref_name']." - ".$get_trans['product_name']."\r\n";    
+                    // $text .= "Checkin: ".$date_check." - ".$hour_check."\r\n";        
+                    // $text .= "Kamar: ".$get_trans['ref_name']." - ".$get_trans['product_name']."\r\n";    
 
                     // $set_user_id = null;
                     $set_user_name = $params['contact_name'];
@@ -2513,7 +2522,7 @@ class Message extends CI_Controller{
             foreach($get_data as $v){
 
                 // More than 0 minute <> 20 minute
-                if((intval($v['order_item_expired_time_2']) > 0) && (intval($v['order_item_expired_time_2']) < 20)){
+                if((intval($v['order_item_expired_time_2']) > 0) && (intval($v['order_item_expired_time_2']) < 120)){
                     $order_in_message = [
                         'message_order_id' => $v['order_id']
                     ];
