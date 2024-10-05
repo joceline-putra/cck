@@ -36,8 +36,14 @@ switch($vendor){
 		break;
 	case "fonnte.com":
 		$whatsapp_server = 'https://api.fonnte.com/send';
-		$whatsapp_token = 'kWG9kt7kNAgUoe_ANzGg';		
-		$whatsapp_auth   = 'ir4ompavH@-AJGYnNq36E@Ko5#sC1Ngj';
+		
+		//Cece
+		// $whatsapp_token = 'kWG9kt7kNAgUoe_ANzGg';		
+		// $whatsapp_auth   = 'ir4ompavH@-AJGYnNq36E@Ko5#sC1Ngj';
+
+		//Lily
+		$whatsapp_token = 'jLzJPYC_HsTV6gYnFmoP';		
+		$whatsapp_auth   = 'ir4ompavH@-AJGYnNq36E@Ko5#sC1Ngj';		
 		// $whatsapp_sender   = '628989900149'; 
 		break;		
 	case "wam.umbrella.co.id":
