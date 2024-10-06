@@ -4505,3 +4505,35 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `sp_room_check_only`$$
+CREATE PROCEDURE `sp_room_check_only`(IN vROOM_ID INT(50))
+BEGIN
+    DECLARE mMESSAGE VARCHAR(255) DEFAULT 'Not Available';
+    DECLARE mIS_CHECKIN INTEGER DEFAULT 0;
+    DECLARE mPRODUCT_NAME VARCHAR(255);
+    
+    -- Retrieve product name
+    SELECT product_name INTO mPRODUCT_NAME 
+    FROM products 
+    WHERE product_id = vROOM_ID;
+
+    -- Check the room for global checkin
+    SELECT COUNT(*) INTO mIS_CHECKIN 
+    FROM orders_items 
+    WHERE order_item_product_id = vROOM_ID 
+    AND order_item_flag_checkin = 1;
+
+    IF mIS_CHECKIN > 0 THEN
+        SET mMESSAGE = 'Kamar masih checkin';
+    ELSE
+        -- Room not available
+        SET mMESSAGE = 'Kamar tersedia';
+    END IF;
+
+    -- Return the result
+    SELECT mIS_CHECKIN AS room_is_available, mMESSAGE AS message, mPRODUCT_NAME AS room;
+END $$
+
+DELIMITER ;

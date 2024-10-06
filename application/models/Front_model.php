@@ -394,6 +394,13 @@ class Front_model extends CI_Model{
         // $query->free_result();
         $result = $query->row_array();
         return $result;
-    }        
+    }    
+    function sp_room_check_only($room_id){
+        $prepare="CALL sp_room_check_only($room_id)";
+        $query=$this->db->query($prepare);
+        mysqli_next_result($this->db->conn_id);
+        $result = $query->row_array();
+        return $result;
+    }            
 }
 ?>

@@ -238,7 +238,7 @@
                                                     );
                                                     foreach($clock as $val){
                                                         $checked = '';
-                                                        if($val == "14"){
+                                                        if($val == "13"){
                                                             $checked = "selected";
                                                         }
                                                         echo '<option value="'.$val.'" '.$checked.'>'.$val.'</option>';

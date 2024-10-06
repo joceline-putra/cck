@@ -25,6 +25,9 @@
         var aa = '';
         let mHOUR = 0;
 
+        let hourCHECKIN = 13;
+        let hourCHECKOUT = 12;
+
         //Croppie
         var upload_crop_img_1 = $('#modal_croppie_canvas_1').croppie({
             enableExif: true,
@@ -1229,23 +1232,24 @@
         });
         $(document).on("change", "input[type=radio][name=order_ref_price_id]", function(e) { //Not Used
             console.log('2. order_ref_price_id checked');
-            e.preventDefault();
-            e.stopPropagation();
-            var oo = $(this).attr('data-val');
-            mHOUR = oo;
-            console.log('mHOUR = ' + mHOUR);
+            e.preventDefault(); e.stopPropagation();
+            // mHOUR = oo;
+            // console.log('mHOUR = ' + mHOUR);
             if(orderID == 0){
                 loadRefPrice();
             }
         });
         $(document).on("change", "input[type=radio][name=order_ref_id]", function(e) {
             console.log('3. order_ref_id checked');            
-            e.preventDefault();
-            e.stopPropagation();
+            e.preventDefault(); e.stopPropagation();
             if(orderID == 0){
                 loadRefPrice();
             }            
         });
+        $(document).on("change", "input[type=radio][name=order_product_id]", function(e) {
+            console.log('4. order_product_id checked');            
+            e.preventDefault(); e.stopPropagation();
+        });        
         $(document).on("change","#order_start_hour", function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -3222,9 +3226,68 @@
 
         //Child Tab Navigation
         $(document).on("click", "input[name='order_branch_id']", function(e){ activeTab("tab12"); });
-        $(document).on("click", "input[name='order_ref_price_id']", function(e){ activeTab("tab13"); });
+        $(document).on("click", "input[name='order_ref_price_id']", function(e){ 
+            var oo = $(this).data('val');
+            $("#order_start_hour").val(hourCHECKIN).trigger('change');
+            $("#order_end_hour").val(hourCHECKOUT).trigger('change');
+            
+            // console.log('T:'+oo);
+            if(oo == 24){ // Harian minimal checkin 13:00
+                var to = 'Harian';
+                $("#order_start_hour").val(13).trigger('change'); 
+                // $("#order_start_hour").attr('disabled',true); $("#order_start_hour_minute").attr('disabled',true);
+                
+                $("#order_end_hour").val(12).trigger('change'); 
+                // $("#order_end_hour").attr('disabled',true); $("#order_end_hour_minute").attr('disabled',true);
+            }else if(oo == 12){
+                var to = 'Midnight';
+                $("#order_start_hour").val('00').trigger('change'); 
+                // $("#order_start_hour").attr('disabled',true); $("#order_start_hour_minute").attr('disabled',true);
+                
+                $("#order_end_hour").val(12).trigger('change'); 
+                // $("#order_end_hour").attr('disabled',true); $("#order_end_hour_minute").attr('disabled',true);                
+            }else{
+                var to = 'Jam jam an';
+                // $("#order_start_hour").val(13).trigger('change'); 
+                // $("#order_start_hour").removeAttr('disabled',true); $("#order_start_hour_minute").removeAttr('disabled',true);
+                
+                // $("#order_end_hour").val(12).trigger('change'); 
+                // $("#order_end_hour").removeAttr('disabled',true); $("#order_end_hour_minute").removeAttr('disabled',true);                
+            }
+            console.log(to);
+            activeTab("tab13"); 
+        });
         $(document).on("click", "input[name='order_ref_id']", function(e){ activeTab("tab14"); });
-        $(document).on("click", "input[name='order_product_id']", function(e){ activeTab("tab15"); });     
+        $(document).on("click", "input[name='order_product_id']", function(e){ 
+            
+            var dd = $(this).val();
+            let form = new FormData();
+            form.append('action', 'room_check_is_checkin_or_not');
+            form.append('room_id',dd);
+            $.ajax({
+                type: "post",
+                url: url,
+                data: form, 
+                dataType: 'json', cache: 'false', 
+                contentType: false, processData: false,
+                beforeSend:function(x){
+                },
+                success:function(d){
+                    let s = d.status;
+                    let m = d.message;
+                    let r = d.result;
+                    if(parseInt(s) == 1){
+                        notif(s,'OK, '+m);
+                        activeTab("tab15"); 
+                    }else{
+                        notif(s,'Gagal, '+m);
+                    }
+                },
+                error:function(xhr,status,err){
+                    notif(0,err);
+                }
+            });  
+        });     
         $(document).on("click", "#btn_tab_15", function(e){ 
             var pr = orderPRICE.rawValue;
             if(pr > 0){

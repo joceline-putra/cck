@@ -2654,8 +2654,18 @@ class Front_office extends MY_Controller{
                         } 
                     }
                     break;
-                                    
-                default:
+                case "room_check_is_checkin_or_not":
+                    $room_id = $post['room_id'];
+                    $check = $this->Front_model->sp_room_check_only($room_id);
+                    if(intval($check['room_is_available']) > 0){
+                        //Not Availabe (Is Checkin)
+                        $return->message = $check['room'].' '.$check['message'];
+                    }else{
+                        $return->status = 1;
+                        $return->message = $check['room'].' '.$check['message'];
+                    }
+                    break;
+                    default:
                     $return->message='No Action';
                     break; 
             }
