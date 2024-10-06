@@ -4457,24 +4457,51 @@ END $$
 DELIMITER ;
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS `sp_room_check`$$
-CREATE PROCEDURE `sp_room_check`(
-  IN vROOM_ID VARCHAR(255),
-  IN vSD DATETIME, IN vED DATETIME
-)
-BEGIN
-	/*
-    SELECT COUNT(*) AS room_is_available FROM orders_items WHERE order_item_type=222 AND order_item_product_id=vROOM_ID
-    AND order_item_flag_checkin IN(0,1)
-    AND ((order_item_start_date <= vSD AND order_item_end_date >= vSD)
-    OR (order_item_start_date < vED AND order_item_end_date >= vED)
-    OR (vSD <= order_item_start_date AND vED >= order_item_start_date));
-    */
-	SELECT COUNT(*) AS room_is_available FROM orders_items WHERE order_item_type=222 AND order_item_product_id=vROOM_ID
-	AND order_item_flag_checkin IN(0,1)
-	AND ((order_item_start_date <= vSD AND order_item_end_date >= vSD)
-	OR (vED <= order_item_start_date AND vED >= order_item_start_date)
-	OR (order_item_start_date < vED AND order_item_end_date >= vED));    
 
+DROP PROCEDURE IF EXISTS `sp_room_check`$$
+CREATE PROCEDURE `sp_room_check`(IN vROOM_ID VARCHAR(255), IN vSD DATETIME, IN vED DATETIME)
+BEGIN
+    DECLARE mCOUNT INTEGER DEFAULT 0;
+    DECLARE mMESSAGE VARCHAR(255) DEFAULT 'Not Available';
+    DECLARE mIS_CHECKIN INTEGER DEFAULT 0;
+    DECLARE mPRODUCT_NAME VARCHAR(255);
+    
+    -- Check the room for global checkin
+    SELECT COUNT(*) INTO mIS_CHECKIN 
+    FROM orders_items 
+    WHERE order_item_product_id = vROOM_ID 
+    AND order_item_flag_checkin = 1;
+
+    -- Retrieve product name
+    SELECT product_name INTO mPRODUCT_NAME 
+    FROM products 
+    WHERE product_id = vROOM_ID;
+
+    IF mIS_CHECKIN > 0 THEN
+        -- Room is available, so check the date
+        SELECT COUNT(*) INTO mCOUNT 
+        FROM orders_items 
+        WHERE order_item_type = 222 
+        AND order_item_product_id = vROOM_ID
+        AND order_item_flag_checkin IN (0, 1)
+        AND (
+            (order_item_start_date <= vSD AND order_item_end_date >= vSD)
+            OR (vED <= order_item_start_date AND vED >= order_item_start_date)
+            OR (order_item_start_date < vED AND order_item_end_date >= vED)
+        );
+        
+        IF mCOUNT = 0 THEN
+            SET mMESSAGE = 'Room is available';
+        ELSE
+            SET mMESSAGE = 'Room is not available for the given dates';
+        END IF;
+    ELSE
+        -- Room not available
+        SET mMESSAGE = 'Room is not available';
+    END IF;
+
+    -- Return the result
+    SELECT mCOUNT AS room_is_available, mMESSAGE AS message, mPRODUCT_NAME AS room;
 END $$
+
 DELIMITER ;
