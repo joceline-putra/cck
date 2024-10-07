@@ -2326,6 +2326,22 @@ class Front_office extends MY_Controller{
                             "price" => $set_price
                         ];
                     break;    
+                case "load_extend_lily_price":
+                    $get = $this->Ref_model->get_ref_custom(['references.ref_id'=>$post['ref_id']]);
+                    $get_item = $this->Ref_model->get_ref_price_custom(['price_ref_id' => $post['ref_id']]);                    
+
+                    if($post['type'] == 3){
+                        $return->price = $get['ref_price_3'];
+                    }else if($post['type'] == 4){
+                        $return->price = $get['ref_price_4'];
+                    }else if($post['type'] == 5){
+                        $return->price = $get['ref_price_5'];
+                    }
+
+                    $return->result = $get;
+                    $return->result_item = $get_item;                    
+                    $return->status = 1;
+                    break;
                 case "load-order-items-for-report":
                     // $columns = array(
                     //     '0' => 'order_date',
@@ -2412,7 +2428,7 @@ class Front_office extends MY_Controller{
                     $this->form_validation->set_message('greater_than', '{field} wajib dipilih');                    
                     if ($this->form_validation->run() == FALSE){
                         $return->message = validation_errors();
-                    }else{                  
+                    }else{
                         $next = true;
                         $order_id = intval($post['order_id']);
                         $order_item_id = intval($post['order_item_id']);                        
