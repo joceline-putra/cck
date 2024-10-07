@@ -652,6 +652,26 @@ class Dashboard extends MY_Controller{
             $return->status=1;
             $return->message='Loaded';
             $return->result= $query->result_array();
+        }else if($request=="fo-lily-date-due"){
+            $query = $this->db->query("
+                SELECT order_id, order_number, order_date, order_total, order_total_paid, order_contact_name, order_contact_phone, branch_name, ref_name, product_name,
+                orders_items.order_item_id, orders_items.order_item_branch_id, orders_items.order_item_type, orders_items.order_item_type_name, orders_items.order_item_order_id, orders_items.order_item_qty, orders_items.order_item_price, orders_items.order_item_total, orders_items.order_item_date_created, orders_items.order_item_flag, orders_items.order_item_order_session, orders_items.order_item_note, 
+                orders_items.order_item_type_2, orders_items.order_item_ref_id, orders_items.order_item_ref_price_sort, orders_items.order_item_ref_price_id, orders_items.order_item_start_date, orders_items.order_item_end_date, orders_items.order_item_flag_checkin, orders_items.order_item_product_id,
+                FORMAT(order_item_price, 0, 'de_DE') AS total_sold_label,
+                order_item_expired_day, DATEDIFF(order_item_end_date,NOW()) AS order_item_expired_day_2,
+                order_item_expired_time, TIMESTAMPDIFF(MINUTE, NOW(), order_item_end_date) AS order_item_expired_time_2
+                FROM orders_items
+                LEFT JOIN orders ON order_item_order_id = order_id
+                LEFT JOIN branchs ON order_item_branch_id = branch_id
+                LEFT JOIN `references` ON order_item_ref_id = ref_id
+                LEFT JOIN products ON order_item_product_id = product_id
+                WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Transit'
+                AND DATEDIFF(order_item_end_date,NOW()) > -14
+                ORDER BY order_item_expired_day ASC LIMIT 10
+            ");            
+            $return->status=1;
+            $return->message='Loaded';
+            $return->result= $query->result_array();
         }else if($request=="load-room"){
             $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : null;
             $ref = !empty($this->input->post('ref')) ? $this->input->post('ref') : 0; 

@@ -484,7 +484,7 @@
                                                     <label class="form-label">Periode Awal</label>
                                                     <div class="col-md-12 col-sm-12 padding-remove-side">
                                                         <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                                            <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $end_date;?>">
+                                                            <input name="filter_start_date" id="filter_start_date" type="text" class="form-control input-sm" readonly="true" value="<?php echo $first_date;?>">
                                                             <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                                         </div>
                                                     </div>
@@ -509,9 +509,9 @@
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Status</label>
                                                         <select id="filter_flag_checkin" name="filter_flag_checkin" class="form-control">
-                                                            <option value="All">Semua</option>
+                                                            <option value="All" selected>Semua</option>
                                                             <option value="0">Waiting</option>
-                                                            <option value="1" selected>Checkin</option>
+                                                            <option value="1">Checkin</option>
                                                             <option value="2">Checkout</option>
                                                             <!-- <option value="4">Batal</option>                                                                                                                         -->
                                                         </select>

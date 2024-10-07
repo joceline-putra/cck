@@ -502,7 +502,7 @@
                 notif(0, 'Data tidak ditemukan');
             }
         });
-        function formSendReceipt(params) { //ols is formWhatsApp()
+        function formSendReceipt(params) { //old is formWhatsApp()
             console.log(params);
             var d = {
                 trans_id: params['trans_id'],
@@ -1589,6 +1589,7 @@
         // total_transaction_day(2);
         // top_product(1); 
         top_cece_date_due(); 
+        top_lily_date_due();
         // top_product(2);
         // top_contact(1);
         // top_trans_overdue(1);
@@ -2009,7 +2010,6 @@
     var url = "<?= base_url('dashboard/manage'); ?>";
     var url_trans = "<?= base_url('transaksi/manage'); ?>";
 
-
     function top_contact() { console.log('top_contact() 1');
         var start = $("#start").val();
         var end = $("#end").val();
@@ -2123,7 +2123,80 @@
                 notifError(err);
             }
         });
-    }    
+    }
+    function top_lily_date_due() { console.log('top_lily_date_due() 1');
+        var start = $("#start").val();
+        var end = $("#end").val();
+        var data = {
+            action: 'fo-lily-date-due',
+            // type: [2, 3],
+            limit: 5,
+            // start: start,
+            // end: end
+        };
+        $.ajax({
+            type: "post",
+            url: url,
+            data: data,
+            dataType: 'json',
+            cache: 'false',
+            beforeSend: function () {},
+            success: function (d) {
+                if (parseInt(d.status) === 1) {
+                    var datas = d.result;
+                    //Prepare List Contact
+                    $("#table_top_date_due_2 tbody").html('');
+                    if (parseInt(datas.length) > 0) {
+                        // $("#top_contact").show(300);
+                        var dsp = '';
+                        $.each(datas, function (i, val) {
+                            var lbl = '[' + val['branch_name'] + '] '+ val['product_name'];
+
+                            if(val['order_item_expired_time_2'] < 0){
+                                var exp = val['order_item_expired_time_2'] + ' lewat';
+                            }else{
+                                if(val['order_item_expired_time_2'] > 60){
+                                    var sisa = parseInt(val['order_item_expired_time_2'] / 60);
+                                    var tt = ' jam lagi';
+                                }else{
+                                    var sisa = val['order_item_expired_time_2'];
+                                    var tt = ' menit lagi';
+                                }
+                                var exp = sisa + tt;
+                            }
+                            // var dd = {
+                            //     'data-id':val['order_item_id'],
+                            //     'data-value':JSON.stringify(val)
+                            // };
+                            // console.log(dd);
+                            var vvv = btoa(JSON.stringify(val));
+                            // var vvv = JSON.stringify(val);
+                            dsp += '<tr>';
+                            dsp += '<td class="v-align-middle"><span>'+
+                               '<a class="btn_booking_info" data-order-id="' + val['order_id'] + '" data-order-item-id="'+ val['order_item_id']+'" data-order="'+vvv+'" href="#" style="cursor:pointer;color:#156397;">' + 
+                                lbl + 
+                                '</a></span></td>';
+                                dsp += '<td class="text-left"><span>' + moment(val['order_item_start_date']).format("DD-MMM-YY HH:mm") + ' sd ' + moment(val['order_item_end_date']).format("DD-MMM-YY HH:mm") + '</span></td>';
+                                dsp += '<td class="text-right"><span>' + exp + '</span></td>';
+                            // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
+                            dsp += '</tr>';
+                        });
+                    } else {
+                        $("#top_date_due_2").hide(300);                        
+                        dsp += '<tr>';
+                        dsp += '<td class="text-center" colspan="3">Tidak ada data</td>';
+                        dsp += '</tr>';
+                    }
+                    $("#table_top_date_due_2 tbody").html(dsp);
+                } else {
+                    notifError(d.message);
+                }
+            },
+            error: function (xhr, Status, err) {
+                notifError(err);
+            }
+        });
+    }        
     function top_trans_overdue(type) { console.log('top_trans_overdue() 2');
         var data = {
             action: 'trans-unpaid-and-overdue',

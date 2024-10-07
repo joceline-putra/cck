@@ -3499,7 +3499,7 @@
                         $("#rorder_contact_phone").val(ri['order_contact_phone']);
                         $("#rpaid_total").val(ri['order_total']);      
                         
-                        $("#rorder_previous_date").val(moment(rd['previous_start']).format("DD-MMM-YYYY. H:i")+' sd '+moment(rd['previous_end']).format("DD-MMM-YYYY, H:i"));
+                        $("#rorder_previous_date").val(moment(rd['previous_start']).format("DD-MMM-YYYY. HH:mm")+' sd '+moment(rd['previous_end']).format("DD-MMM-YYYY, HH:mm"));
                         $("#rorder_start_date").datepicker("update", moment(rd['rebooking_start']).format("DD-MM-YYYY"));
                         $("#rorder_end_date").datepicker("update", moment(rd['rebooking_end']).format("DD-MM-YYYY"));                
 
@@ -3538,7 +3538,7 @@
                         let m = d.message;
                         let r = d.result;
                         if(parseInt(s) == 1){
-                            notif(s,'Perpanjangan '+d.price);
+                            // notif(s,'Perpanjangan '+d.price);
                             /* hint zz_for or zz_each */
                             $("#rorder_ref_price").val(d.price);
                             $("#rpaid_total").val(d.price);                            

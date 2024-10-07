@@ -78,17 +78,17 @@
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <ul class="nav nav-tabs" role="tablist" style="display:inline;">      
-            <li class="">
+            <li class="active">
                 <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="true" style="cursor:pointer;">
                 <span class="fas fa-plus-square"></span> Form</a>
             </li>           
-            <li class="active">
+            <li class="">
                 <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="false">
                 <span class="fas fa-calendar-alt"></span> Check In</a>
             </li>                                            
         </ul>
         <div class="tab-content">
-            <div class="tab-pane" id="tab1">
+            <div class="tab-pane active" id="tab1">
                 <!-- 
                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                     <div class="col-md-6 col-xs-12 col-sm-12" style="padding-left: 0;">
@@ -435,7 +435,7 @@
                 <!-- End of Child Tab-Pane -->
 
             </div>
-            <div class="tab-pane active" id="tab2">
+            <div class="tab-pane" id="tab2">
                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                         <div class="grid simple">
@@ -506,9 +506,9 @@
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Status</label>
                                                         <select id="filter_flag_checkin" name="filter_flag_checkin" class="form-control">
-                                                            <option value="All">Semua</option>
+                                                            <option value="All" selected>Semua</option>
                                                             <option value="0">Waiting</option>
-                                                            <option value="1" selected>Checkin</option>
+                                                            <option value="1">Checkin</option>
                                                             <option value="2">Checkout</option>
                                                             <!-- <option value="4">Batal</option>                                                                                                                         -->
                                                         </select>
@@ -532,10 +532,10 @@
                                                         <label class="form-label">Type</label>
                                                         <select id="filter_ref_price" name="filter_ref_price" class="form-control">
                                                             <option value="All">Semua</option>
-                                                            <option value="1">Harian</option>
-                                                            <option value="2">Midnight</option>
-                                                            <option value="3">4 jam</option>
-                                                            <option value="4">2 jam</option>
+                                                            <option value="2">Harian</option>
+                                                            <option value="3">Midnight</option>
+                                                            <option value="4">4 jam</option>
+                                                            <option value="5">2 jam</option>
                                                             <!-- <option value="0">Bulanan</option>                                                                                                                         -->
                                                         </select>
                                                     </div>
@@ -548,7 +548,7 @@
                                                             <option value="All">Semua</option>
                                                             <?php
                                                             foreach($ref as $b){
-                                                                echo '<option value="'.$b['branch_id'].'">'.$b['branch_name'].' - '.$b['ref_name'].'</option>';
+                                                                echo '<option value="'.$b['ref_id'].'">'.$b['branch_name'].' - '.$b['ref_name'].'</option>';
                                                             }
                                                             ?>
                                                         </select>
@@ -779,34 +779,34 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="col-lg-6 col-md-6 col-xs-12 padding-remove-side">
+                                                <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                                    <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Nama</label>
-                                                            <input id="rorder_contact_name" name="rorder_contact_name" type="text" value="" class="form-control"/>
+                                                            <input id="rorder_contact_name" name="rorder_contact_name" type="text" value="" class="form-control" readonly>
                                                         </div>
                                                     </div>                                                         
                                                     <div class="col-lg-6 col-md-6 col-xs-6 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">WhatsApp</label>
-                                                            <input id="rorder_contact_phone" name="rorder_contact_phone" type="text" value="" class="form-control"/>
+                                                            <input id="rorder_contact_phone" name="rorder_contact_phone" type="text" value="" class="form-control" readonly>
                                                         </div>
                                                     </div>                                                       
                                                 </div>                                                
-                                                <div class="col-md-6 col-xs-12 padding-remove-side">
+                                                <div class="col-md-6 col-xs-6 padding-remove-side">
                                                     <div class="form-group">
                                                         <label class="form-label">Jenis Perpanjangan</label>
                                                         <div class="controls">
                                                             <select name="rorder_ref" id="rorder_ref" style="width:100%">
                                                                 <option value="0">Pilih</option>
-                                                                <option value="3">Harian</option>
+                                                                <option value="2">Harian</option>
                                                                 <option value="4">4 Jam</option>
                                                                 <option value="5">2 Jam</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-xs-12 padding-remove-side">
+                                                <div class="col-md-6 col-xs-6 padding-remove-side">
                                                     <div class="form-group">
                                                         <label class="form-label">Harga</label>
                                                         <div class="controls">
@@ -845,7 +845,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-xs-12 col-sm-12">                                                
+                                                <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">                                                
                                                     <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Metode</label>

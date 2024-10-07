@@ -549,6 +549,76 @@ if ($session['user_data']['user_id'] == 0) {
             </div>
             <div class="col-lg-5 col-md-12 col-xs-12 padding-remove-side">
                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-right">
+                    <div id="top_date_due_2" class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:inline;">
+                        <div class="grid simple">
+                            <div class="grid-title no-border">
+                                <h5>Transit Akan Habis</h5>
+                                <div class="tools">
+                                    <a id="btn_top_cece_date_due" href="#"><i class="fas fa-sync"></i></a>
+                                    <!-- <a href="javascript:;" class="collapse"></a> -->
+                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
+                                    <!-- <a id="btn_top_cece_date_due" href="#" class="reload"></a> -->
+                                    <!-- <a href="javascript:;" class="remove"></a> -->
+                                </div>
+                            </div>      
+                            <div class="grid-body no-border" style="padding:10px;">                   
+                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
+                                <div class="col-md-12 col-sm-12 padding-remove-side">          
+                                <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                                </div>
+                                <!-- </div> -->
+                                <table id="table_top_date_due_2" class="table no-more-tables">
+                                    <thead>
+                                        <tr>
+                                            <td><b>Room</b></td>
+                                            <td><b>CheckIn</b></td>                                            
+                                            <td style="text-align:right;"><b>Expired</b></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" style="text-align: center;">-- Data tidak tersedia --</td>
+                                        </tr>
+                                    </tbody>
+                                </table>      
+                            </div>
+                        </div>
+                    </div>                      
+                    <div id="top_date_due" class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="display:inline;">
+                        <div class="grid simple">
+                            <div class="grid-title no-border">
+                                <h5>Bulanan Akan Habis</h5>
+                                <div class="tools">
+                                    <a id="btn_top_cece_date_due" href="#"><i class="fas fa-sync"></i></a>
+                                    <!-- <a href="javascript:;" class="collapse"></a> -->
+                                    <!-- <a href="#grid-config" data-toggle="modal" class="config"></a> -->
+                                    <!-- <a id="btn_top_cece_date_due" href="#" class="reload"></a> -->
+                                    <!-- <a href="javascript:;" class="remove"></a> -->
+                                </div>
+                            </div>      
+                            <div class="grid-body no-border" style="padding:10px;">                   
+                                <!-- <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side"> -->
+                                <div class="col-md-12 col-sm-12 padding-remove-side">          
+                                <!-- <canvas id="chart-four" width="400" height="180"></canvas>                                -->
+                                </div>
+                                <!-- </div> -->
+                                <table id="table_top_date_due" class="table no-more-tables">
+                                    <thead>
+                                        <tr>
+                                            <td><b>Room</b></td>
+                                            <td><b>CheckIn</b></td>                                            
+                                            <td style="text-align:right;"><b>Expired</b></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" style="text-align: center;">-- Data tidak tersedia --</td>
+                                        </tr>
+                                    </tbody>
+                                </table>      
+                            </div>
+                        </div>
+                    </div>                     
                     <div class="hide col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                         <div class="grid simple">
                             <div class="grid-title no-border">

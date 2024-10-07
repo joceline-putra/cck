@@ -431,9 +431,9 @@ class Front_office extends MY_Controller{
                     if(!empty($post['filter_user']) && (intval($post['filter_user']) > 0)) {
                         $params['order_item_user_id'] = intval($post['filter_user']);
                     }                                                    
-                    // if($post['filter_ref_price'] !== "All") {
-                    //     $params['order_item_ref_id'] = $post['filter_ref'];
-                    // }            
+                    if($post['filter_ref_price'] !== "All") {
+                        $params['order_item_ref_price_sort'] = $post['filter_ref_price'];
+                    }            
                     // if(is_numeric($post['filter_paid'])) {
                     //     $params['order_paid'] = intval($post['filter_paid']);
                     // }                                        
@@ -2330,11 +2330,11 @@ class Front_office extends MY_Controller{
                     $get = $this->Ref_model->get_ref_custom(['references.ref_id'=>$post['ref_id']]);
                     $get_item = $this->Ref_model->get_ref_price_custom(['price_ref_id' => $post['ref_id']]);                    
 
-                    if($post['type'] == 3){
-                        $return->price = $get['ref_price_3'];
-                    }else if($post['type'] == 4){
+                    if($post['type'] == 2){ //Harian
+                        $return->price = $get['ref_price_2'];
+                    }else if($post['type'] == 4){ //4 Jam
                         $return->price = $get['ref_price_4'];
-                    }else if($post['type'] == 5){
+                    }else if($post['type'] == 5){ //2 Jam
                         $return->price = $get['ref_price_5'];
                     }
 
@@ -2614,6 +2614,205 @@ class Front_office extends MY_Controller{
                                 $params_checkout = array(
                                     'order_item_flag_checkin'=> 2,
                                     'order_item_checkout_date' => date('Y-m-d 23:59:59', strtotime('-1 days',strtotime($post['order_start_date'] .' 00:00:00'))),
+                                );
+                                $this->Front_model->update_booking_item(intval($post['order_item_id']),$params_checkout);
+
+                                $return->status  = 1;
+                                $return->message = 'Berhasil menambahkan '.$set_order_number;
+                                $return->result= array(
+                                    'order_id' => $create,
+                                    'order_number' => $get_booking['order_number'],
+                                    'order_session' => $get_booking['order_session'],
+                                    'order_date' => $get_booking['order_date'],
+                                    'order_total' => $get_booking['order_total'],
+                                    'contact_name' => $get_booking['order_contact_name'],
+                                    'contact_phone' => $get_booking['order_contact_phone'],
+                                    'order_item' => $this->Front_model->get_booking_item_custom(['order_item_order_id' => $create])
+                                );                                      
+                            }                                 
+                        }
+
+                        $return->next = $next;
+                    }
+                    break;
+                case "create_rebooking_lily":
+                    $this->form_validation->set_rules('order_id', 'Type', 'required');
+                    $this->form_validation->set_rules('order_item_id', 'Jenis Kamar', 'greater_than[0]');
+                    $this->form_validation->set_rules('upload_1', 'Foto Bukti Bayar', 'required');   
+                    $this->form_validation->set_rules('paid_total', 'Jumlah Pembayaran', 'required');    
+                    $this->form_validation->set_message('required', '{field} wajib diisi');
+                    $this->form_validation->set_message('greater_than', '{field} wajib dipilih');                    
+                    if ($this->form_validation->run() == FALSE){
+                        $return->message = validation_errors();
+                    }else{
+                        $next = true;
+                        $order_id = intval($post['order_id']);
+                        $order_item_id = intval($post['order_item_id']);                        
+
+                        if(strlen($post['upload_1']) < 10){
+                            $next = false;
+                            $return->message = 'Bukti bayar wajib dipilih';
+                        }
+
+                        // $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." 14:00:00");
+                        // if(intval($check_date_is_past) < 0){
+                        //     $next = false;
+                        //     $message = 'Tanggal Mulai tidak boleh mundur';
+                        // }
+
+                        // if($next){
+                        //     $check_date_is_past2 =$this->day_diff($post['order_start_date']." 14:00:00", $post['order_end_date']." 12:00:00");
+                        //     if(intval($check_date_is_past2) < 0){
+                        //         $next = false;
+                        //         $message = 'Tanggal Akhir sudah lewat';
+                        //     }         
+                        // }
+                        
+                        if($session_user_group_id < 3){
+                            $next=true;
+                        }
+
+                        //Continue Save
+                        if($next){
+                            //Get Previous Order_item 
+                            $get_previous = $this->Front_model->get_booking_previous_custom(['order_item_order_id' => $order_id]);
+                            $get_set_branch = $this->Produk_model->get_produk_quick($get_previous['order_item_product_id']);
+                            $get_product_branch = $get_set_branch['product_branch_id'];
+                            // var_dump($get_product_branch);die;
+                            $set_order_session = $this->random_session(20);
+                            $set_order_number  = $this->request_number_for_booking($this->booking_identity,$get_product_branch);
+
+                            //Set Params
+                            $params = array(
+                                'order_branch_id' => $get_previous['order_branch_id'],
+                                'order_type' => $this->booking_identity,
+                                'order_number' => $set_order_number,
+                                'order_session' => $set_order_session,
+                                'order_total_dpp' => !empty($post['paid_total']) ? intval(str_replace(",","",$post['paid_total'])) : 0,
+                                'order_total' => !empty($post['paid_total']) ? intval(str_replace(",","",$post['paid_total'])) : 0,
+                                'order_user_id' => $session_user_id,
+                                'order_ref_id' => $get_previous['order_item_ref_id'],
+                                'order_date' => date("YmdHis"),
+                                'order_date_created' => date("YmdHis"),
+                                'order_flag' => $get_previous['order_flag'],
+                                'order_contact_code' => !empty($post['order_contact_code']) ? str_replace(' ','',$post['order_contact_code']) : null,
+                                'order_contact_name' => !empty($post['order_contact_name']) ? $post['order_contact_name'] : $get_previous['order_contact_name'],
+                                'order_contact_phone' => !empty($post['order_contact_phone']) ? $this->contact_number($post['order_contact_phone']) : $post['order_contact_phone'],
+                                'order_parent_id' => intval($post['order_id'])                                                                                                                    
+                            );                            
+                            // var_dump($params);die;
+                            $create = $this->Front_model->add_booking($params);
+                            
+                            if($create){
+
+                                $get_booking = $this->Front_model->get_booking($create);
+
+                                //Croppie Upload Image [Bukti Bayar]
+                                $set_paid_url = null;
+                                $set_paid_name = null;
+                                $post_upload = !empty($this->input->post('upload_1')) ? $this->input->post('upload_1') : "";
+                                if(strlen($post_upload) > 10){
+                                    // $upload_process = $this->file_upload_image($this->folder_upload_file,$post_upload);
+                                    $upload_process = upload_file_base64($this->folder_upload_file,$post_upload);                                            
+                                    if($upload_process['status'] == 1){
+                                        if ($get_booking && $get_booking['order_id']) {
+                                            // $params_image = array(
+                                            //     'product_image' => $upload_process->result['file_location']
+                                            // );
+                                            // $stat = $this->Produk_model->update_produk($product_id, $params_image);
+                                            $file_session = $this->random_session(20);
+                                            $params_image = array(
+                                                'file_type' => 1,
+                                                'file_from_table' => 'orders',
+                                                'file_from_id' => $get_booking['order_id'],
+                                                'file_session' => $file_session,
+                                                'file_date_created' => date("YmdHis"),
+                                                'file_user_id' => $session_user_id,
+                                                'file_name' => 'Bukti Bayar - '.$upload_process['result']['file_name'],
+                                                'file_format' => str_replace(".","",$upload_process['result']['file_ext']),
+                                                'file_url' => $upload_process['result']['file_location'],
+                                                'file_size' => $upload_process['result']['file_size'],
+                                                'file_note' => 'Bukti Bayar'
+                                            );                                                    
+                                            $stat = $this->File_model->add_file($params_image);
+                                            $set_paid_url = $upload_process['result']['file_location'];
+                                            $set_paid_name = $upload_process['result']['file_name'] . $upload_process['result']['file_ext'];
+                                        }
+                                    }else{
+                                        $return->message = 'Fungsi Gambar gagal';
+                                    }
+                                }
+                                //End of Croppie   
+
+                                //Set Paid
+                                if($post['paid_total'] > 0){
+                                    $file_session = $this->random_session(20);
+                                    $paid_number = $this->request_number_for_order_paid();
+                                    $params = array(
+                                        // 'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : null,
+                                        'paid_order_id' => $get_booking['order_id'],
+                                        'paid_number' => $paid_number,
+                                        'paid_session' => $file_session,
+                                        'paid_date_created' => date("YmdHis"),
+                                        'paid_date' => date("YmdHis"),                                    
+                                        'paid_user_id' => $session_user_id,
+                                        'paid_url' => $set_paid_url,
+                                        'paid_name' => $set_paid_name,
+                                        'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_payment_method'] : null,
+                                        'paid_total' => !empty($post['paid_total']) ? str_replace(",","",$post['paid_total']) : null                           
+                                    );
+                                    $save_data = $this->Front_model->add_paid($params);
+                                }
+                                //End Set Paid
+
+                                // $params_price = array(
+                                //     'price_ref_id' => $get_previous['order_item_ref_id'],
+                                //     'price_sort' => $get_previous['order_item_ref_price_id']
+                                // );
+                                // $get_price = $this->Ref_model->get_ref_price_custom($params_price);
+                                // $order_ref_price_id = $get_price['price_id'];                                
+
+                                //Save Item
+                                $params_items = array(
+                                    'order_item_branch_id' => $get_previous['order_branch_id'],
+                                    'order_item_type' => $this->booking_identity,
+                                    'order_item_order_id' => $create,
+                                    'order_item_product_id' => $get_previous['order_item_product_id'],
+                                    'order_item_qty' => 1,
+                                    'order_item_price' => !empty($post['paid_total']) ? str_replace(",","",$post['paid_total']) : "0.00",
+                                    'order_item_user_id' => $session_user_id,
+                                    'order_item_date_created' => date("YmdHis"),
+                                    'order_item_flag' => 0,
+                                    'order_item_order_session' => $set_order_session,
+                                    'order_item_ref_id' => $post['order_ref_id'],
+                                    // 'order_item_ref_price_id' => $get_previous['order_item_ref_price_id'],
+                                    'order_item_ref_price_sort' => $post['order_ref_sort'],                                            
+                                    'order_item_flag_checkin' => 1,
+                                    'order_item_type_2' => 'Transit',
+                                    'order_item_parent_id' => intval($post['order_item_id'])
+                                );        
+                                $params_items['order_item_start_date']      = $get_previous['order_item_end_date']; 
+
+                                $params_items['order_item_checkin_date']    = $get_previous['order_item_end_date']; 
+
+                                $dtime = new DateTime($params_items['order_item_start_date']);
+                                if(intval($post['order_ref_sort']) == 2){ // Harian
+                                    $dtime->modify('+24 hours');                                    
+                                }else if(intval($post['order_ref_sort']) == 4){ // 4 Jam
+                                    $dtime->modify('+4 hours');
+                                }else if(intval($post['order_ref_sort']) == 5){ // 2 Jam
+                                    $dtime->modify('+2 hours');
+                                }
+                                $after_add_date = $dtime->format("Y-m-d H:i:s");
+                                $params_items['order_item_end_date']        = $after_add_date;   
+                                // var_dump($params_items);die;
+                                // $params_items['order_item_checkout_date']   = $post['order_end_date'] .' 23:59:59';                                                                                              
+                                $create_item = $this->Front_model->add_booking_item($params_items);
+
+                                //Do Checkout Previous
+                                $params_checkout = array(
+                                    'order_item_flag_checkin'=> 2,
+                                    'order_item_checkout_date' => $get_previous['order_item_end_date'],
                                 );
                                 $this->Front_model->update_booking_item(intval($post['order_item_id']),$params_checkout);
 
