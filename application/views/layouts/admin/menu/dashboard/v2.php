@@ -326,7 +326,7 @@ if ($session['user_data']['user_id'] == 0) {
                     </div>
                 </div>      
                 <div class="grid-body no-border" style="padding:10px;">              
-                    <div class="col-md-3 col-xs-3 padding-remove-left" style="margin-bottom:20px;">
+                    <div class="col-md-3 col-xs-6 padding-remove-left" style="margin-bottom:20px;">
                         <div class="form-group">
                             <label class="form-label">Cabang</label>
                             <div class="controls">
@@ -335,7 +335,7 @@ if ($session['user_data']['user_id'] == 0) {
                             </div>
                         </div>
                     </div> 
-                    <div class="col-md-3 col-xs-3 padding-remove-right" style="margin-bottom:20px;">
+                    <div class="col-md-3 col-xs-6 padding-remove-right" style="margin-bottom:20px;">
                         <div class="form-group">
                             <label class="form-label">Jenis Kamar</label>
                             <div class="controls">

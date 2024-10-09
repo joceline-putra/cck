@@ -1,6 +1,6 @@
 <input class="hidden" id="iduser" name="iduser" value="<?php echo $session['user_data']['user_id']; ?>">
 <script>
-    // Start document ready
+    // Start document ready Super Administrator
     $(document).ready(function () {
         var url_approval = "<?= base_url('approval'); ?>"; //Not Used
         var url_dashboard = "<?= base_url('dashboard'); ?>";
@@ -1465,7 +1465,7 @@
                                     // }
                                     
                                     var ci = '';
-                                    if(parseInt(v.order_item_ref_price_sort) == 1){ // Bulanan only
+                                    if(parseInt(v.order_item_ref_price_sort) < 2){ // Bulanan only
                                         if(parseInt(v.order_item_flag_checkin) == 1){ // Checkin only
                                             if(parseInt(v.order_item_expired_day_2) > 0){
                                                 ci += '<br><label class="label">'+v.order_item_expired_day_2 +' hari lagi</label>';
@@ -1490,6 +1490,7 @@
                                             ci += '-';
                                         }
                                     }
+
 
                                     dsp += `
                                         <div class="col-md-2 col-xs-6 div_room_status_child">
@@ -1554,7 +1555,7 @@
                             $("#rbook_contact_phone").val(ri.order_contact_phone);     
                             $(".rbook_room").html(': '+ri.product_name + ' / '+ri.ref_name + ' / '+ ri.branch_name);     
                             $(".rbook_total").html(': '+numberWithCommas(r.order_total));                                                                                                                        
-                            $(".rbook_checkin_date").html(': '+formatDateTime(ri.order_item_start_date)+' '+formatDateTime(ri.order_item_end_date));
+                            $(".rbook_checkin_date").html(': '+formatDateTime(ri.order_item_start_date)+' --sd-- '+formatDateTime(ri.order_item_end_date));
                         }else{
                             notif(s,m);
                         }
