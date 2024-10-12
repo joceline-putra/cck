@@ -76,6 +76,18 @@
     />
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="grid simple">
+            <div class="grid-body">
+                <div class="col-md-12 col-sm-12 col-xs-12" style="padding-bottom:10px;">
+                    <div class="row">
+                        <b>Waktu Sekarang</b>
+                        <div id="clock"></div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>    
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <ul class="nav nav-tabs" role="tablist" style="display:inline;">      
             <li class="active">
                 <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="true" style="cursor:pointer;">

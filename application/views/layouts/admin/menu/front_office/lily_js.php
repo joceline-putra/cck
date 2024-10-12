@@ -496,6 +496,59 @@
         $(document).on("click","#btn_save_order", function(e) {
             e.preventDefault(); e.stopPropagation();
             let next = true;
+            
+                // var order_item_ref_price_sort = $("input[name=order_ref_price_id]:checked").val();
+                // // order_ref_price_id value=2, data-val=24 Harian
+                // // order_ref_price_id value=3, data-val=12 Midnight
+                // // order_ref_price_id value=4, data-val=4 4 Jam
+                // // order_ref_price_id value=6, data-val=3 3 Jam
+                // // order_ref_price_id value=5, data-val=2 2 Jam            
+
+
+                // // Date time
+                // var ssd = $("#order_start_date").datepicker('getFormattedDate','yyyy-mm-dd');
+                // var ssdh = $("#order_start_hour").find(":selected").val();
+                // var ssdhm = $("#order_start_hour_minute").find(":selected").val();
+
+                // var eed = $("#order_end_date").datepicker('getFormattedDate','yyyy-mm-dd');
+                // var eedh = $("#order_end_hour").find(":selected").val();
+                // var ssdhm = $("#order_start_hour_minute").find(":selected").val();
+
+                // var startDate = ssd+" "+ssdh+":"+ssdhm+":00";
+                // var endDate = eed+" "+eedh+":"+ssdhm+":00";
+                
+                // // Konversi string tanggal menjadi objek Date
+                // var startD = new Date(startDate);
+                // var endD = new Date(endDate);
+                
+                // // Jika endDate lebih kecil dari startDate, maka next = false
+                // next = endD > startD;
+
+                // if (!next) {
+                //     notif(0,'Tgl Checkout < Tgl Checkin');
+                //     next = false;
+                //     return;
+                // }
+
+                // // Hitung selisih dalam milidetik
+                // var difference = endD - startD;
+
+                // // Konversi milidetik ke jam, menit, dan hari
+                // var totalMinutes = Math.floor(difference / 60000); // 1 menit = 60000 ms
+                // var totalHours = Math.floor(totalMinutes / 60);
+                // var days = Math.floor(totalHours / 24);
+                // var hours = totalHours % 24;
+                // var minutes = totalMinutes % 60;
+
+                // // Tampilkan hasil dalam format yang sesuai
+                // if (days > 0) {
+                //     console.log(`${days} hari, ${hours} jam, dan ${minutes} menit`);
+                // } else if (totalHours > 0) {
+                //     console.log(`${totalHours} jam dan ${minutes} menit`);
+                // } else {
+                //     console.log(`${totalMinutes} menit`);
+                // }
+
             if(next){
                 if (!$("input[name='order_branch_id']:checked").val()) {
                     next = false;
@@ -2276,7 +2329,7 @@
                     }
                 }
             });
-        }        
+        }
 
         //Attachment Info
         //Approval Function
@@ -3678,6 +3731,38 @@
                 });
             }   
         }); 
+
+        function updateClock() {
+            var now = new Date();
+            
+            var day = now.getDate();
+            var month = now.getMonth(); // Bulan dimulai dari 0
+            var year = now.getFullYear();
+            
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            // Daftar nama bulan
+            var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var monthName = monthNames[month];
+
+            // Tambahkan 0 di depan angka yang kurang dari 10
+            day = (day < 10) ? '0' + day : day;
+            minutes = (minutes < 10) ? '0' + minutes : minutes;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+            // Format tanggal dan waktu
+            var currentDate = `${day}-${monthName}-${year}`;
+            var currentTime = `${hours}:${minutes}:${seconds}`;
+            
+            // Gabungkan tanggal dan waktu
+            document.getElementById('clock').innerHTML = currentDate + ' ' + currentTime;
+        }
+
+        // Memperbarui waktu setiap detik
+        setInterval(updateClock, 1000);
+        updateClock(); // Memanggil fungsi sekali saat halaman dimuat        
     }); //End of Document Ready
 
     function formBookingSetDisplay(value){ // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan

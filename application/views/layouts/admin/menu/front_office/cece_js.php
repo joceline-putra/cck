@@ -3330,7 +3330,37 @@
             });
         });
         
-                               
+        function updateClock() {
+            var now = new Date();
+            
+            var day = now.getDate();
+            var month = now.getMonth(); // Bulan dimulai dari 0
+            var year = now.getFullYear();
+            
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            // Daftar nama bulan
+            var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var monthName = monthNames[month];
+
+            // Tambahkan 0 di depan angka yang kurang dari 10
+            day = (day < 10) ? '0' + day : day;
+            minutes = (minutes < 10) ? '0' + minutes : minutes;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+            // Format tanggal dan waktu
+            var currentDate = `${day}-${monthName}-${year}`;
+            var currentTime = `${hours}:${minutes}:${seconds}`;
+            
+            // Gabungkan tanggal dan waktu
+            document.getElementById('clock').innerHTML = currentDate + ' ' + currentTime;
+        }
+
+        // Memperbarui waktu setiap detik
+        setInterval(updateClock, 1000);
+        updateClock(); // Memanggil fungsi sekali saat halaman dimuat     
     }); //End of Document Ready
 
     function formBookingSetDisplay(value){ // 1 = Untuk Enable/ ditampilkan, 0 = Disabled/ disembunyikan
