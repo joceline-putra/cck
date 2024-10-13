@@ -88,14 +88,15 @@
             todayHighlight: true,
             weekStart: 1,
             // timezone:"+0700"
-        }).on('change', function(e){
+        }).on('changeDate', function(e){
             var sd = $("#order_start_date").datepicker("getFormattedDate","yyyy-mm-dd");
             var ed = $("#order_end_date").datepicker("getFormattedDate","yyyy-mm-dd");
             // var sh = $("#order_start_hour").find(":selected").val();
             // var eh = $("#order_end_hour").find(":selected").val();
             // dayBooking = get_date_diff(sd+' '+sh+":00",ed+' '+eh+":00");
+            reset_date_booking();
             dayBooking = get_date_diff(sd,ed);
-            console.log(dayBooking);              
+            console.log(dayBooking);
         });
         $('.clockpicker').clockpicker({
             default: 'now',
@@ -116,6 +117,10 @@
         }).on('change', function(e){
             e.stopImmediatePropagation();
             order_table.ajax.reload();
+        });
+
+        $(document).on("change","#order_duration", function(e) {
+            reset_date_booking();
         });
 
         //Autonumeric
@@ -376,6 +381,7 @@
                     render: function(data, meta, row) {
                         var dsp = '';
                         dsp += row.order_contact_name;
+                        dsp += '<br>'+row.order_contact_phone;                        
                         return dsp;
                     }
                 },{
@@ -1217,48 +1223,64 @@
                         let m = d.message;
                         let r = d.result;
                         let rr = d.result_ref;
-                        let re = d.rooms;
+                        // let re = d.rooms;
+
+                        let ro = d.rooms_status;
                         if(parseInt(s) == 1){
-                            var set_price = d.set_pricing.price;
-                            // var set_price = 0;
-                            // if(ref_check == 0){
-                            //     set_price = rr.ref_price_0;
-                            // }else if(ref_check == 1){
-                            //     set_price = rr.ref_price_1;
-                            // }else if(ref_check == 2){
-                            //     set_price = rr.ref_price_2;
-                            // }else if(ref_check == 3){
-                            //     set_price = rr.ref_price_3;
-                            // }else if(ref_check == 4){
-                            //     set_price = rr.ref_price_4;
-                            // }else if(ref_check == 5){
-                            //     set_price = rr.ref_price_5;
-                            // }else if(ref_check == 6){
-                            //     set_price = rr.ref_price_6;
-                            // }else{
-                            //     set_price = 0;
-                            // }                            
+                            var set_price = d.set_pricing.price;   
                             $("#order_price").val(set_price);
                             $("#paid_total").val(set_price);                                                        
                             console.log('Price: '+set_price);
                             //Display Room
-                            let total_records = re.length;
+                            // let total_records = re.length;
+                            // if(parseInt(total_records) > 0){
+                            //     $("#order_product_id").html('');
+                            
+                            //     let dsp = '';
+                            //     for(let a=0; a < total_records; a++) {
+                            //         let value = re[a];
+                            //         dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
+                            //         dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
+                            //                 <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}" style="width:100%;height:124px;word-wrap:normal;">${value['product_name']}</label>
+                            //             `;
+                            //         dsp += `</div>`;
+                            //     }
+                            //     $("#order_product_id").html(dsp);
+                            // }else{
+                            //     $("#order_product_id").html('Kamar belum di tambahkan');
+                            // }
+                            let total_records = ro.length;
                             if(parseInt(total_records) > 0){
                                 $("#order_product_id").html('');
-                            
+
                                 let dsp = '';
                                 for(let a=0; a < total_records; a++) {
-                                    let value = re[a];
-                                    dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
-                                    dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
-                                            <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}" style="width:100%;height:124px;word-wrap:normal;">${value['product_name']}</label>
-                                        `;
-                                    dsp += `</div>`;
+                                    let value = ro[a];
+                                    if(value['order_item_flag_checkin'] == 1){
+                                        dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
+                                        dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
+                                                <label class="radio_group_label radio_bg_not_ready" for="order_product_id_${value['product_id']}" style="background-color:#651215;width:100%;height:124px;word-wrap:normal;">
+                                                <b>${value['product_name']}</b><br><br>
+                                                ${value['order_contact_name']}<br>
+                                                ${value['order_item_expired_day_2']} hari lagi<br>
+                                                </label>
+                                            `;
+                                        dsp += `</div>`;
+                                    }else{
+                                        dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
+                                        dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
+                                                <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}" style="width:100%;height:124px;word-wrap:normal;">
+                                                ${value['product_name']}<br><br>
+                                                READY
+                                                </label>
+                                            `;
+                                        dsp += `</div>`;
+                                    }
                                 }
                                 $("#order_product_id").html(dsp);
                             }else{
                                 $("#order_product_id").html('Kamar belum di tambahkan');
-                            }
+                            }                            
                         }else{
                             notif(s,m);
                         }
@@ -1526,7 +1548,7 @@
                                 
                                         var siz = '1 kb';
                                         if(v['file_type'] == 1){
-                                            siz = v['file']['size_unit'];
+                                            siz = v['file']['size_new'];
                                         }
 
                                         var attr = 'data-file-type="'+v['file_type']+'" data-file-id="'+v['file_id']+'" data-file-session="'+v['file_session']+'" data-file-name="'+v['file']['name']+'" data-file-format="'+v['file']['format']+'" data-file-src="'+v['file']['src']+'"';                                                                                      
@@ -3135,7 +3157,36 @@
         $(document).on("click", "input[name='order_branch_id']", function(e){ activeTab("tab13"); });        
         $(document).on("click", "input[name='order_ref_price_id']", function(e){ activeTab("tab13"); });
         $(document).on("click", "input[name='order_ref_id']", function(e){ activeTab("tab14"); });
-        $(document).on("click", "input[name='order_product_id']", function(e){ activeTab("tab15"); });     
+        $(document).on("click", "input[name='order_product_id']", function(e){ 
+            // activeTab("tab15"); 
+            var dd = $(this).val();
+            let form = new FormData();
+            form.append('action', 'room_check_is_checkin_or_not');
+            form.append('room_id',dd);
+            $.ajax({
+                type: "post",
+                url: url,
+                data: form, 
+                dataType: 'json', cache: 'false', 
+                contentType: false, processData: false,
+                beforeSend:function(x){
+                },
+                success:function(d){
+                    let s = d.status;
+                    let m = d.message;
+                    let r = d.result;
+                    if(parseInt(s) == 1){
+                        notif(s,'OK, '+m);
+                        activeTab("tab15"); 
+                    }else{
+                        notif(s,'Gagal, '+m);
+                    }
+                },
+                error:function(xhr,status,err){
+                    notif(0,err);
+                }
+            });              
+        });     
         $(document).on("click", "#btn_tab_15", function(e){ 
             var pr = orderPRICE.rawValue;
             if(pr > 0){
@@ -3357,7 +3408,14 @@
             // Gabungkan tanggal dan waktu
             document.getElementById('clock').innerHTML = currentDate + ' ' + currentTime;
         }
-
+        function reset_date_booking(){
+            console.log('here');
+            var sls = $("#order_duration").find(":selected").val();
+            var sd = $("#order_start_date").datepicker("getFormattedDate","yyyy-mm-dd");
+            var ed = $("#order_end_date").datepicker("getFormattedDate","yyyy-mm-dd");
+            $("#order_end_date").datepicker("update", moment(sd).add(sls, "days").format("DD-MM-YYYY"));
+        }
+        reset_date_booking();
         // Memperbarui waktu setiap detik
         setInterval(updateClock, 1000);
         updateClock(); // Memanggil fungsi sekali saat halaman dimuat     

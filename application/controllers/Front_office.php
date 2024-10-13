@@ -2333,12 +2333,47 @@ class Front_office extends MY_Controller{
                         $def = true;
                     }
 
+                    $get_room_status = [];
+                    if($post['ref_id'] > 0){
+                        $branchs = !empty($this->input->post('branch_id')) ? $post['branch_id'] : null;
+                        $refs = !empty($this->input->post('ref_id')) ? $post['ref_id'] : 0; 
+                        $where_ref = '';           
+                        if($refs > 0){
+                            $where_ref = "AND ref_id=$refs";
+                        }
+                        $pre = "
+                            SELECT product_id, product_branch_id, product_category_id, product_ref_id, product_name, product_flag, ref_id, ref_name, branch_id, branch_code, branch_name,
+                            c.order_item_id, c.order_item_order_id, c.order_item_product_id, c.order_item_start_date, c.order_item_end_date, 
+                            c.order_item_flag_checkin, c.order_item_checkin_date, c.order_item_checkout_date,
+                            c.order_id, c.order_session, c.order_contact_name, c.order_contact_phone,
+                            c.order_item_expired_day, c.order_item_expired_day_2, c.order_item_expired_time, c.order_item_expired_time_2,
+                            c.order_item_ref_price_sort 
+                            FROM products
+                            LEFT JOIN `references` ON product_ref_id=ref_id
+                            LEFT JOIN branchs ON product_branch_id=branch_id
+                            LEFT OUTER JOIN (
+                                SELECT order_item_id, order_item_order_id, order_item_product_id, order_item_start_date, order_item_end_date, 
+                                order_item_flag_checkin, order_item_checkin_date, order_item_checkout_date, order_id, order_session, order_contact_name, order_contact_phone, 
+                                order_item_expired_day, DATEDIFF(order_item_end_date, NOW()) AS order_item_expired_day_2, `order_item_expired_time`, 
+                                TIMESTAMPDIFF(MINUTE, NOW(), order_item_end_date) AS order_item_expired_time_2, order_item_ref_price_sort                    
+                                FROM orders_items 
+                                LEFT JOIN orders ON order_item_order_id=order_id
+                                WHERE order_item_flag_checkin = 1
+                                GROUP BY order_item_product_id ORDER BY order_item_id DESC
+                            ) AS c ON product_id=c.order_item_product_id
+                            WHERE product_type=2 AND product_branch_id=$branchs AND product_flag=1 $where_ref ORDER BY `references`.`ref_name` ASC, product_name ASC
+                        ";                    
+                        $query = $this->db->query($pre);  
+                        $get_room_status = $query->result_array();
+                    }
+                    
                     $return->status = 1;        
                     $return->params = $params;     
 
-                    $return->result = $get_ref; //Not Used
+                    // $return->result = $get_ref; //Not Used
                     $return->result_ref = $get_ref_2;   // To Display Default Price 
                     $return->rooms = $get_room;         // To Display LOOP ROOM
+                    $return->rooms_status = $get_room_status;
                     $return->set_pricing = 
                         [
                             "price_sort" => $post['ref_price_sort'],

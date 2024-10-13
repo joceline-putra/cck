@@ -707,7 +707,7 @@ class Dashboard extends MY_Controller{
                     WHERE order_item_flag_checkin = 1
                     GROUP BY order_item_product_id ORDER BY order_item_id DESC
                 ) AS c ON product_id=c.order_item_product_id
-                WHERE product_type=2 AND product_branch_id=$branch $where_ref";
+                WHERE product_type=2 AND product_branch_id=$branch AND product_flag=1 $where_ref ORDER BY `references`.`ref_name` ASC, product_name ASC";
             // var_dump($pre);die;
             $query = $this->db->query($pre);            
             $return->status=1;

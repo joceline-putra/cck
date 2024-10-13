@@ -1483,8 +1483,13 @@
                                                     ci += '<br><label class="label">'+v.order_item_expired_time_2 +' menit lagi</label>';
                                                 }
                                             }else{
-                                                var td = parseInt(Math.abs(v.order_item_expired_time_2))/60;
-                                                ci += '<br><label class="label"><i style="color:red;font-size:12px;">lewat ' + td.toFixed(1)+' jam</i></label>';                                      
+                                                // var td = parseInt(Math.abs(v.order_item_expired_time_2))/60;
+                                                if(Math.abs(v.order_item_expired_time_2) > 60){
+                                                    var exp = 'lewat '+Math.abs(v.order_item_expired_time_2/60).toFixed()+' jam';
+                                                }else { 
+                                                    var exp = 'lewat '+Math.abs(v.order_item_expired_time_2)+' menit';
+                                                }                                                
+                                                ci += '<br><label class="label"><i style="color:red;font-size:12px;">'+exp+'</i></label>';                                      
                                             }
                                         }else{
                                             ci += '-';

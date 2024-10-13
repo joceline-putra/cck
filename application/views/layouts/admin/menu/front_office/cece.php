@@ -43,12 +43,12 @@
         background-repeat:no-repeat;
         display:inline-block;
         width:100px;height:70px;
-        -webkit-transition: all 100ms ease-in;
+        /* -webkit-transition: all 100ms ease-in;
         -moz-transition: all 100ms ease-in;
                 transition: all 100ms ease-in;
         -webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
         -moz-filter: brightness(1.8) grayscale(1) opacity(.7);
-                filter: brightness(1.8) grayscale(1) opacity(.7);
+                filter: brightness(1.8) grayscale(1) opacity(.7); */
     }
     .radio_group_label:hover{
         -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
@@ -56,8 +56,12 @@
                 filter: brightness(1.2) grayscale(.5) opacity(.9);
     }
     .radio_bg{
-        background-color:red;
+        background-color:#12651c;
     }
+
+    .radio_bg_not_ready{
+        background-color:#651215;
+    }    
     
     .visa{
         /* background-image:url(http://i.imgur.com/lXzJ1eB.png); */
@@ -223,6 +227,18 @@
                             </div>                            
                         </div> 
                         <div class="tab-pane tab-pane-sub" id="tab15" for="jam masuk">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
+                                <div class="form-group">
+                                    <label class="form-label">Durasi Menginap</label>
+                                    <div class="controls">
+                                        <select name="order_duration" id="order_duration" class="form-control" style="width:100%">
+                                            <option value="30" selected> 1 Bulan (30 hari)</option>
+                                            <option value="60"> 2 Bulan (60 hari)</option>
+                                            <option value="90"> 3 Bulan (90 hari)</option>                                                                                        
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>                             
                             <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
                                 <label class="form-label">Tanggal Mulai</label>
                                 <div class="col-md-12 col-sm-12 padding-remove-side">
@@ -239,14 +255,12 @@
                                 <label class="form-label">Tanggal Akhir</label>
                                 <div class="col-md-12 col-sm-12 padding-remove-side">
                                     <div class="input-append success date col-md-12 col-lg-12 no-padding">
-                                        <!-- <input name="order_end_date" id="order_end_date" type="text" class="form-control input-sm" readonly="true" 
-                                        value="<?php #echo $booking_end_date;?>" data-original="<?php #echo $booking_end_date;?>"> -->
                                         <input name="order_end_date" id="order_end_date" type="text" class="form-control input-sm" readonly="true" 
                                         value="<?php echo $booking_end_date;?>" data-original="<?php echo $booking_end_date;?>">                                        
                                         <span class="add-on date-add"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
-                            </div>                                              
+                            </div>                                                                           
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 padding-remove-side">
                                     <div class="form-group">
@@ -418,7 +432,7 @@
                                         <label class="form-label">Metode</label>
                                         <select id="paid_payment_method" name="paid_payment_method"class="form-control">
                                         <option value="CASH" selected>Cash</option>
-                                        <option value="TRANSFER">Transfer</option>
+                                        <!-- <option value="TRANSFER">Transfer</option> -->
                                         </select>
                                     </div>
                                 </div>

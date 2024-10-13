@@ -1111,7 +1111,19 @@
                                     }else{
                                         var scolor = 'background-color: #12651c;';
                                         var sgues = 'Ready';                                    
-                                    }              
+                                    }                                
+
+                                    var expired = '&nbsp;';
+                                    expired = '';
+                                    // if(v['branch_code'] == 1){
+                                    //     if(parseInt(v['order_item_expired_day']) > 0){
+                                    //         var expired = v['order_item_expired_day']+' hari lagi';
+                                    //     }
+                                    // }else{
+                                    //     if(parseInt(v['order_item_expired_time']) > 0){
+                                    //         var expired = v['order_item_expired_time']+' jam lagi';
+                                    //     }
+                                    // }
                                     
                                     var ci = '';
                                     if(parseInt(v.order_item_ref_price_sort) < 2){ // Bulanan only
@@ -1132,13 +1144,19 @@
                                                     ci += '<br><label class="label">'+v.order_item_expired_time_2 +' menit lagi</label>';
                                                 }
                                             }else{
-                                                var td = parseInt(Math.abs(v.order_item_expired_time_2))/60;
-                                                ci += '<br><label class="label"><i style="color:red;font-size:12px;">lewat ' + td.toFixed(1)+' jam</i></label>';                                      
+                                                // var td = parseInt(Math.abs(v.order_item_expired_time_2))/60;
+                                                if(Math.abs(v.order_item_expired_time_2) > 60){
+                                                    var exp = 'lewat '+Math.abs(v.order_item_expired_time_2/60).toFixed()+' jam';
+                                                }else { 
+                                                    var exp = 'lewat '+Math.abs(v.order_item_expired_time_2)+' menit';
+                                                }                                                
+                                                ci += '<br><label class="label"><i style="color:red;font-size:12px;">'+exp+'</i></label>';                                      
                                             }
                                         }else{
                                             ci += '-';
                                         }
                                     }
+
 
                                     dsp += `
                                         <div class="col-md-2 col-xs-6 div_room_status_child">
@@ -1170,7 +1188,7 @@
                     }
                 }
             });            
-        }
+        } 
         $(document).on("click",".btn_room_status", function(e){
             e.preventDefault();
             e.stopPropagation();

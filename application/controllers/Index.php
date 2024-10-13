@@ -33,9 +33,11 @@ class Index extends MY_Controller{
         $session_user_group = $session['user_data']['user_group_id']; 
 
         $params = array(
-            'user_branch_id' => $session_branch_id
+            // 'user_branch_id' => $session_branch_id,
+            'user_flag' => 1
         );
         $data['usernya'] = $this->User_model->get_all_users($params,null,null,null,'user_username','asc'); 
+        // var_dump($data['usernya']);die;
         $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
         //ssvar_dump($data['theme']);die;
         //Date First of the month

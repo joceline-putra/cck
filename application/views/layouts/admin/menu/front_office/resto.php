@@ -742,22 +742,22 @@
 </style>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <ul class="nav nav-tabs" role="tablist" style="display:inline;">      
-            <li class="active" style="display:none;">
-                <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
-                <span class="fas fa-calendar-alt"></span> Data</a>
-            </li>           
-            <li class="" style="display:none;">
+        <ul class="nav nav-tabs" role="tablist" style="display:inline;">            
+            <li class="active" style="">
                 <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="true">
                 <span class="fas fa-plus-square"></span> Form <?php echo $order_alias; ?></a>
             </li> 
+            <li class="" style="">
+                <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="false"  style="cursor:pointer;">
+                <span class="fas fa-calendar-alt"></span> Data</a>
+            </li>     
             <li class="" style="display:none;">
                 <a href="#tab3" role="tab" class="btn-tab-3" data-toggle="tab" aria-expanded="true">
                 <span class="fas fa-plus-square"></span> Checkout <?php echo $trans_alias; ?></a>
             </li>                                                                                             
         </ul>
         <div class="tab-content" style="border: 8px solid var(--form-background-color);">
-            <div class="tab-pane active" id="tab1"> <!-- Data -->
+            <div class="tab-pane" id="tab1"> <!-- Data -->
                 <div class="row div_mobile">
                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                         <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom:4px;">
@@ -864,7 +864,7 @@
                     </div>
                 </div>        
             </div>           
-            <div class="tab-pane" id="tab2"> <!-- Form -->
+            <div class="tab-pane active" id="tab2"> <!-- Form -->
                 <div class="row div_mobile">
                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                         <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom:4px;">

@@ -208,7 +208,7 @@
                 {"targets":0, "title":"Action", "searchable":true, "orderable":true},                    
                 {"targets":1, "title":"Status", "searchable":false, "orderable":true},               
                 {"targets":2, "title":"Tgl", "searchable":true, "orderable":true},
-                {"targets":3, "title":"Nomor", "searchable":true, "orderable":true},
+                {"targets":3, "title":"No. Book", "searchable":true, "orderable":true},
                 {"targets":4, "title":"Type", "searchable":true, "orderable":true},
                 {"targets":5, "title":"Kamar", "searchable":true, "orderable":true},            
                 {"targets":6, "title":"Kontak", "searchable":true, "orderable":true},
@@ -419,6 +419,7 @@
                     render: function(data, meta, row) {
                         var dsp = '';
                         dsp += row.order_contact_name;
+                        dsp += '<br>'+row.order_contact_phone;                        
                         return dsp;
                     }
                 },{
@@ -1337,58 +1338,90 @@
                         let m = d.message;
                         let r = d.result;
                         let rr = d.result_ref;        
-                        let re = d.rooms;                
+                        // let re = d.rooms;       
+                        let ro = d.rooms_status;
+
                         if(parseInt(s) == 1){
-                            // var set_price = 0;
                             var set_price = d.set_pricing.price;
-                            // if(ref_check == 0){
-                            //     set_price = rr.ref_price_0;
-                            // }else if(ref_check == 1){
-                            //     set_price = rr.ref_price_1;
-                            // }else if(ref_check == 2){
-                            //     set_price = rr.ref_price_2;
-                            // }else if(ref_check == 3){
-                            //     set_price = rr.ref_price_3;
-                            // }else if(ref_check == 4){
-                            //     set_price = rr.ref_price_4;
-                            // }else if(ref_check == 5){
-                            //     set_price = rr.ref_price_5;
-                            // }else if(ref_check == 6){
-                            //     set_price = rr.ref_price_6;
-                            // }else{
-                            //     set_price = 0;
-                            // }
                             // $("#order_price").val(r.price_value);
                             $("#order_price").val(set_price);   
                             $("#paid_total").val(set_price);                                                        
                             console.log('Price: '+set_price);
                             //Display Room
-                            let total_records = re.length;
+                            // let total_records = re.length;
+                            // if(parseInt(total_records) > 0){
+                            //     $("#order_product_id").html('');
+                            
+                            //     let dsp = '';
+                            //     for(let a=0; a < total_records; a++) {
+                            //         // class="radio_group"
+                            //         // if (a % 2 === 1) {
+                            //             // dsp += `<div class="radio_group">`;
+                            //         // }
+                            //         // console.log(a % 2);
+                            //         let value = re[a];
+                            //         dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
+                            //         dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
+                            //                 <label style="width:100%;height:124px;word-wrap:normal;" class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}">${value['product_name']}</label>
+                            //             `;
+                            //             dsp += `</div>`;
+                            //         // if (a % 2 === 1) {
+                            //         //     dsp += `</div>`;
+                            //         // }                                        
+                            
+                            //     }
+                            //     $("#order_product_id").html(dsp);
+                            // }else{
+                            //     $("#order_product_id").html('Kamar belum di tambahkan');
+                            // }
+                            let total_records = ro.length;
                             if(parseInt(total_records) > 0){
                                 $("#order_product_id").html('');
-                            
+
                                 let dsp = '';
                                 for(let a=0; a < total_records; a++) {
-                                    // class="radio_group"
-                                    // if (a % 2 === 1) {
-                                        // dsp += `<div class="radio_group">`;
-                                    // }
-                                    // console.log(a % 2);
-                                    let value = re[a];
-                                    dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
-                                    dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
-                                            <label style="width:100%;height:124px;word-wrap:normal;" class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}">${value['product_name']}</label>
-                                        `;
+                                    let value = ro[a];
+
+                                    if(value['order_item_expired_time_2'] > 60){
+                                        var ss = value['order_item_expired_time_2'] / 60;
+                                        var exp = ss.toFixed(1) +' jam lagi';
+                                    }else{
+                                        if(value['order_item_expired_time_2'] < 1){
+                                            if(Math.abs(value['order_item_expired_time_2']) > 60){
+                                                var exp = 'lewat '+Math.abs(value['order_item_expired_time_2']/60)+' jam';
+                                            }else { 
+                                                var exp = 'lewat '+Math.abs(value['order_item_expired_time_2'])+' menit';
+                                            }
+                                        }else{
+                                            var exp = value['order_item_expired_time_2']+' menit lagi';
+                                        }
+                                    }
+
+                                    if(value['order_item_flag_checkin'] == 1){
+                                        dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
+                                        dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
+                                                <label class="radio_group_label radio_bg_not_ready" for="order_product_id_${value['product_id']}" style="background-color:#651215;width:100%;height:124px;word-wrap:normal;">
+                                                <b>${value['product_name']}</b><br><br>
+                                                ${value['order_contact_name']}<br>
+                                                ${exp}<br>
+                                                </label>
+                                            `;
                                         dsp += `</div>`;
-                                    // if (a % 2 === 1) {
-                                    //     dsp += `</div>`;
-                                    // }                                        
-                            
+                                    }else{
+                                        dsp += `<div class="col-md-6 col-sm-6 col-xs-6">`;
+                                        dsp += `<input id="order_product_id_${value['product_id']}" type="radio" name="order_product_id" value="${value['product_id']}" data-name="${value['product_name']}">
+                                                <label class="radio_group_label radio_bg" for="order_product_id_${value['product_id']}" style="width:100%;height:124px;word-wrap:normal;">
+                                                ${value['product_name']}<br><br>
+                                                READY
+                                                </label>
+                                            `;
+                                        dsp += `</div>`;
+                                    }
                                 }
                                 $("#order_product_id").html(dsp);
                             }else{
                                 $("#order_product_id").html('Kamar belum di tambahkan');
-                            }
+                            }                                     
                         }else{
                             notif(s,m);
                         }
@@ -1712,7 +1745,7 @@
                                 
                                         var siz = '1 kb';
                                         if(v['file_type'] == 1){
-                                            siz = v['file']['size_unit'];
+                                            siz = v['file']['size_new'];
                                         }
 
                                         var attr = 'data-file-type="'+v['file_type']+'" data-file-id="'+v['file_id']+'" data-file-session="'+v['file_session']+'" data-file-name="'+v['file']['name']+'" data-file-format="'+v['file']['format']+'" data-file-src="'+v['file']['src']+'"';                                                                                      

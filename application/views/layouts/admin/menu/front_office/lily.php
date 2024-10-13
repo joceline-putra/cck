@@ -44,12 +44,12 @@
         background-repeat:no-repeat;
         display:inline-block;
         width:100px;height:70px;
-        -webkit-transition: all 100ms ease-in;
+        /* -webkit-transition: all 100ms ease-in;
         -moz-transition: all 100ms ease-in;
                 transition: all 100ms ease-in;
         -webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
         -moz-filter: brightness(1.8) grayscale(1) opacity(.7);
-                filter: brightness(1.8) grayscale(1) opacity(.7);
+                filter: brightness(1.8) grayscale(1) opacity(.7); */
     }
     .radio_group_label:hover{
         -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
@@ -57,8 +57,12 @@
                 filter: brightness(1.2) grayscale(.5) opacity(.9);
     }
     .radio_bg{
-        background-color:red;
+        background-color:#12651c;
     }
+
+    .radio_bg_not_ready{
+        background-color:#651215;
+    }   
     
     .visa{
         /* background-image:url(http://i.imgur.com/lXzJ1eB.png); */

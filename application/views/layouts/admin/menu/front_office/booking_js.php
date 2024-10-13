@@ -1434,7 +1434,7 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                                 
                                         var siz = '1 kb';
                                         if(v['file_type'] == 1){
-                                            siz = v['file']['size_unit'];
+                                            siz = v['file']['size_new'];
                                         }
 
                                         var attr = 'data-order-id="'+fid+'" data-file-type="'+v['file_type']+'" data-file-id="'+v['file_id']+'" data-file-session="'+v['file_session']+'" data-file-name="'+v['file']['name']+'" data-file-format="'+v['file']['format']+'" data-file-src="'+v['file']['src']+'"';                                                                                      
