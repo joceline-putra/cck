@@ -350,7 +350,7 @@
                         'file_old_name' => $file_name,
                         'file_ext' => $file_ext,
                         'file_location' => $path . $file_new_name,
-                        'file_size' => $file_size,
+                        'file_size' => $file_size/1024,
                     ); 
                 } else {
                     $errors[] = "Failed to upload $file_name.";
@@ -446,7 +446,7 @@
                                 'maintain_ratio' => TRUE,
                                 'width' => $compress['width'],
                                 'height' => $compress['height'],
-                                'quality' => '10%'
+                                'quality' => '70%'
                             ];                                    
                             $ci->load->library('image_lib', $config);
                             $ci->image_lib->resize();
