@@ -623,7 +623,6 @@ class Dashboard extends MY_Controller{
                 LEFT JOIN products ON order_item_product_id = product_id
                 WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Bulanan'
                 AND DATEDIFF(order_item_end_date,NOW()) > -14
-                ORDER BY order_item_expired_day ASC
             ");      
 
             $query = $this->db->query("
@@ -639,13 +638,14 @@ class Dashboard extends MY_Controller{
                 LEFT JOIN products ON order_item_product_id = product_id
                 WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Bulanan'
                 AND DATEDIFF(order_item_end_date,NOW()) > -14
-                ORDER BY order_item_expired_day DESC LIMIT $start,$limit
+                ORDER BY order_item_expired_day_2 ASC LIMIT $start,$limit
             ");            
             $total_record = $query_count->row_array();
             $return->status=1;
             $return->message='Loaded';
             $return->result= $query->result_array();
             $return->total_records= intval($total_record['total']);
+            $return->limit = $start.','.$limit;
         }else if($request=="fo-lily-date-due"){
             $start = $this->input->post('start');
             $limit = $this->input->post('limit');
@@ -656,8 +656,7 @@ class Dashboard extends MY_Controller{
             LEFT JOIN `references` ON order_item_ref_id = ref_id
             LEFT JOIN products ON order_item_product_id = product_id
             WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Transit'
-            AND DATEDIFF(order_item_end_date,NOW()) > -14
-            ORDER BY order_item_expired_day ASC");
+            AND DATEDIFF(order_item_end_date,NOW()) > -14");
 
             $query = $this->db->query("
                 SELECT order_id, order_number, order_date, order_total, order_total_paid, order_contact_name, order_contact_phone, branch_name, ref_name, product_name,
@@ -673,13 +672,14 @@ class Dashboard extends MY_Controller{
                 LEFT JOIN products ON order_item_product_id = product_id
                 WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Transit'
                 AND DATEDIFF(order_item_end_date,NOW()) > -14
-                ORDER BY order_item_expired_day ASC LIMIT $start,$limit
+                ORDER BY TIMESTAMPDIFF(MINUTE, NOW(), order_item_end_date) ASC LIMIT $start,$limit
             ");            
             $total_record = $query_count->row_array();
             $return->status=1;
             $return->message='Loaded';
             $return->result= $query->result_array();
-            $return->total_records= $total_record['total'];        
+            $return->total_records= intval($total_record['total']);  
+            $return->limit = $start.','.$limit;               
         }else if($request=="load-room"){
             $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : null;
             $ref = !empty($this->input->post('ref')) ? $this->input->post('ref') : 0; 

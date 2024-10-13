@@ -304,7 +304,7 @@ if ($session['user_data']['user_id'] == 0) {
             </div>   
         </div>
         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="margin-top:10px;">
-            <div class="col-lg-6 col-md-6 col-xs-12 padding-remove-side">
+            <div class="col-lg-6 col-md-6 col-xs-12 padding-remove-left">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="active">
                         <a href="#tab1" role="tab" data-toggle="tab" aria-expanded="true">
@@ -381,7 +381,7 @@ if ($session['user_data']['user_id'] == 0) {
                     </div>                                                    
                 </div>
             </div>
-            <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="col-md-6 col-sm-12 col-xs-12 padding-remove-side">
                 <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side">
                     <div class="grid simple">
                         <div class="grid-title no-border">

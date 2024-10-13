@@ -851,7 +851,7 @@
             };
             window.chart_two = new Chart(id_chart_two, config_chart_two);
 
-        /* Chart Three chart_trans_three() */
+        /* Chart Three chart_trans_three() */ 
             var id_chart_three = document.getElementById('chart-three').getContext('2d');
             var config_chart_three = {
                 type: 'line',
@@ -951,8 +951,8 @@
                                     beginAtZero: true,
                                     callback: function (value, index, values) {
                                         var dsp = '';
-                                        // dsp += value.toLocaleString();
-                                        dsp += numberToLabel(value);
+                                        dsp += value.toLocaleString();
+                                        // dsp += numberToLabel(value);
                                         return dsp;
                                     }
                                 },
@@ -1583,14 +1583,14 @@
         // chart_account_realtime();
         // chart_account_realtime();
         // chart_account_expense();
-        chart_recap_all(0); //Need Disable chart_trans_last_order(), chart_trans_buy_sell(), chart_trans_three()
+        // chart_recap_all(0); //Need Disable chart_trans_last_order(), chart_trans_buy_sell(), chart_trans_three()
 
         //Disabled
         // total_transaction_day(1);
         // total_transaction_day(2);
         // top_product(1); 
-        top_cece_date_due(); 
-        top_lily_date_due();
+        top_cece_date_due(0,5); 
+        top_lily_date_due(0,5);
         // top_product(2);
         // top_contact(1);
         // top_trans_overdue(1);
@@ -2059,14 +2059,14 @@
             }
         });
     }
-    function top_cece_date_due() { console.log('top_cece_date_due() 1');
+    function top_cece_date_due(start_limit, length_limit) { console.log('top_cece_date_due() 1');
         var start = $("#start").val();
         var end = $("#end").val();
         var data = {
             action: 'fo-cece-date-due',
             // type: [2, 3],
-            limit: 5,
-            // start: start,
+            limit: length_limit,
+            start: start_limit,
             // end: end
         };
         $.ajax({
@@ -2092,13 +2092,8 @@
                             }else{
                                 var exp = val['order_item_expired_day_2'] + ' hari lagi';
                             }
-                            // var dd = {
-                            //     'data-id':val['order_item_id'],
-                            //     'data-value':JSON.stringify(val)
-                            // };
-                            // console.log(dd);
+
                             var vvv = btoa(JSON.stringify(val));
-                            // var vvv = JSON.stringify(val);
                             dsp += '<tr>';
                             dsp += '<td class="v-align-middle"><span>'+
                                '<a class="btn_booking_info" data-order-id="' + val['order_id'] + '" data-order-item-id="'+ val['order_item_id']+'" data-order="'+vvv+'" href="#" style="cursor:pointer;color:#156397;">' + 
@@ -2110,11 +2105,35 @@
                             dsp += '</tr>';
                         });
                     } else {
-                        $("#top_date_due").hide(300);                        
+                        // $("#top_date_due").hide(300);                        
                         dsp += '<tr>';
                         dsp += '<td class="text-center" colspan="3">Tidak ada data</td>';
                         dsp += '</tr>';
                     }
+
+                    var total_record = parseInt(d.total_records);
+                    var page = total_record / parseInt(length_limit);
+                    if(total_record > 0){
+                        dsp += '<tr><td colspan="3">';
+                        // if(parseInt(start_limit) > 0){
+                            dsp += '<a style="cursor:pointer;" onClick="top_cece_date_due('+(start_limit-5)+','+length_limit+')"><b><i class="fas fa-arrow-left"></i> Sebelumnya</b></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+                        // }
+
+                        // var j = 0;
+                        // for(var i=0; i<page; i++){
+                        //     if(start_limit == j){ var style = "font-weight:800;border:3px solid #24639d;"; }else{ var style = 'border:1px solid #24639d;'; }
+                            
+                        //     dsp += '<a style="cursor:pointer;padding:0px 5px 0px 5px;margin:0px 5px 0px 5px;'+style+'" onClick="top_cece_date_due('+j+','+length_limit+')">'+(i+1)+'</a>';
+                        //     j = j + length_limit;
+                        // }
+
+                        if(parseInt(total_record) > parseInt(start_limit)){
+                            start_limit = start_limit + 5;
+                            dsp += '<a style="cursor:pointer;" onClick="top_cece_date_due('+start_limit+','+length_limit+')"><b>Selanjutnya <i class="fas fa-arrow-right"></i> </b></a>';
+                        }
+                        dsp += '</td></tr>';
+                    }      
+
                     $("#table_top_date_due tbody").html(dsp);
                 } else {
                     notifError(d.message);
@@ -2125,14 +2144,14 @@
             }
         });
     }
-    function top_lily_date_due() { console.log('top_lily_date_due() 1');
+    function top_lily_date_due(start_limit, length_limit) { console.log('top_lily_date_due()');
         var start = $("#start").val();
         var end = $("#end").val();
         var data = {
             action: 'fo-lily-date-due',
             // type: [2, 3],
-            limit: 5,
-            // start: start,
+            limit: length_limit,
+            start: start_limit,
             // end: end
         };
         $.ajax({
@@ -2147,9 +2166,9 @@
                     var datas = d.result;
                     //Prepare List Contact
                     $("#table_top_date_due_2 tbody").html('');
+                    var dsp = '';
                     if (parseInt(datas.length) > 0) {
                         // $("#top_contact").show(300);
-                        var dsp = '';
                         $.each(datas, function (i, val) {
                             var lbl = '[' + val['branch_name'] + '] '+ val['product_name'];
 
@@ -2181,13 +2200,36 @@
                                 dsp += '<td class="text-right"><span>' + exp + '</span></td>';
                             // dsp += '<td class="v-align-middle">'+val['last_insert']+'</td>';
                             dsp += '</tr>';
-                        });
-                    } else {
-                        $("#top_date_due_2").hide(300);                        
+                        });                       
+                    } else {                     
                         dsp += '<tr>';
                         dsp += '<td class="text-center" colspan="3">Tidak ada data</td>';
                         dsp += '</tr>';
                     }
+
+                    var total_record = parseInt(d.total_records);
+                    var page = total_record / parseInt(length_limit);
+                    if(total_record > 0){
+                        dsp += '<tr><td colspan="3">';
+                        // if(parseInt(start_limit) > 0){
+                            dsp += '<a style="cursor:pointer;" onClick="top_lily_date_due('+(start_limit-5)+','+length_limit+')"><b><i class="fas fa-arrow-left"></i> Sebelumnya</b></a>&nbsp;&nbsp;&nbsp;&nbsp;';
+                        // }
+
+                        // var j = 0;
+                        // for(var i=0; i<page; i++){
+                        //     if(start_limit == j){ var style = "font-weight:800;border:3px solid #24639d;"; }else{ var style = 'border:1px solid #24639d;'; }
+                            
+                        //     dsp += '<a style="cursor:pointer;padding:0px 5px 0px 5px;margin:0px 5px 0px 5px;'+style+'" onClick="top_lily_date_due('+j+','+length_limit+')">'+(i+1)+'</a>';
+                        //     j = j + length_limit;
+                        // }
+
+                        if(parseInt(total_record) > parseInt(start_limit)){
+                            start_limit = start_limit + 5;
+                            dsp += '<a style="cursor:pointer;" onClick="top_lily_date_due('+start_limit+','+length_limit+')"><b>Selanjutnya <i class="fas fa-arrow-right"></i> </b></a>';
+                        }
+                        dsp += '</td></tr>';
+                    }      
+
                     $("#table_top_date_due_2 tbody").html(dsp);
                 } else {
                     notifError(d.message);
