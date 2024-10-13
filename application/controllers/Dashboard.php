@@ -613,27 +613,19 @@ class Dashboard extends MY_Controller{
             //     array('index'=>'Bank BNI','value'=> 540000),
             // );
         }else if($request=="fo-cece-date-due"){
-            // $query = $this->db->query("
-            //     SELECT
-            //     account_id, account_code, account_name, account_group, account_group_sub,
-            //       DATE_FORMAT(journal_item_date, '%d %b') AS journal_item_date_short,
-            //       DATE_FORMAT(journal_item_date, '%d %M %Y') AS journal_item_date_format,
-            //       fn_time_ago(MAX(journal_item_date) OVER(PARTITION BY journal_item_date)) AS last_insert, 
-            //       CASE WHEN account_group = 1 THEN SUM(journal_item_debit)-SUM(journal_item_credit)
-            //       WHEN account_group = 5 THEN SUM(journal_item_debit)-SUM(journal_item_credit)
-            //       ELSE SUM(journal_item_credit)-SUM(journal_item_debit) END AS balance
-            //       -- FORMAT(SUM(trans_total), 0, 'de_DE') AS total_sold_label
-            //     FROM
-            //       journals_items
-            //       LEFT JOIN accounts
-            //         ON journal_item_account_id = account_id
-            //     WHERE journal_item_branch_id = $session_branch_id AND account_locked=1 AND account_group BETWEEN 1 AND 2
-            //       -- AND YEAR (journal_item_date) = YEAR(CURDATE())
-            //       -- AND MONTH (journal_item_date) = MONTH(CURDATE())
-            //     GROUP BY `journal_item_account_id`
-            //     ORDER BY balance DESC
-            //     LIMIT 6
-            // ");
+            $start = $this->input->post('start');
+            $limit = $this->input->post('limit');      
+            $query_count = $this->db->query("SELECT COUNT(*) AS total
+                FROM orders_items
+                LEFT JOIN orders ON order_item_order_id = order_id
+                LEFT JOIN branchs ON order_item_branch_id = branch_id
+                LEFT JOIN `references` ON order_item_ref_id = ref_id
+                LEFT JOIN products ON order_item_product_id = product_id
+                WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Bulanan'
+                AND DATEDIFF(order_item_end_date,NOW()) > -14
+                ORDER BY order_item_expired_day ASC
+            ");      
+
             $query = $this->db->query("
                 SELECT order_id, order_number, order_date, order_total, order_total_paid, order_contact_name, order_contact_phone, branch_name, ref_name, product_name,
                 orders_items.order_item_id, orders_items.order_item_branch_id, orders_items.order_item_type, orders_items.order_item_type_name, orders_items.order_item_order_id, orders_items.order_item_qty, orders_items.order_item_price, orders_items.order_item_total, orders_items.order_item_date_created, orders_items.order_item_flag, orders_items.order_item_order_session, orders_items.order_item_note, 
@@ -647,12 +639,26 @@ class Dashboard extends MY_Controller{
                 LEFT JOIN products ON order_item_product_id = product_id
                 WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Bulanan'
                 AND DATEDIFF(order_item_end_date,NOW()) > -14
-                ORDER BY order_item_expired_day ASC LIMIT 10
+                ORDER BY order_item_expired_day DESC LIMIT $start,$limit
             ");            
+            $total_record = $query_count->row_array();
             $return->status=1;
             $return->message='Loaded';
             $return->result= $query->result_array();
+            $return->total_records= intval($total_record['total']);
         }else if($request=="fo-lily-date-due"){
+            $start = $this->input->post('start');
+            $limit = $this->input->post('limit');
+            
+            $query_count = $this->db->query("SELECT COUNT(*) AS total FROM orders_items
+            LEFT JOIN orders ON order_item_order_id = order_id
+            LEFT JOIN branchs ON order_item_branch_id = branch_id
+            LEFT JOIN `references` ON order_item_ref_id = ref_id
+            LEFT JOIN products ON order_item_product_id = product_id
+            WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Transit'
+            AND DATEDIFF(order_item_end_date,NOW()) > -14
+            ORDER BY order_item_expired_day ASC");
+
             $query = $this->db->query("
                 SELECT order_id, order_number, order_date, order_total, order_total_paid, order_contact_name, order_contact_phone, branch_name, ref_name, product_name,
                 orders_items.order_item_id, orders_items.order_item_branch_id, orders_items.order_item_type, orders_items.order_item_type_name, orders_items.order_item_order_id, orders_items.order_item_qty, orders_items.order_item_price, orders_items.order_item_total, orders_items.order_item_date_created, orders_items.order_item_flag, orders_items.order_item_order_session, orders_items.order_item_note, 
@@ -667,11 +673,13 @@ class Dashboard extends MY_Controller{
                 LEFT JOIN products ON order_item_product_id = product_id
                 WHERE order_item_flag_checkin = 1 AND order_item_type_2 = 'Transit'
                 AND DATEDIFF(order_item_end_date,NOW()) > -14
-                ORDER BY order_item_expired_day ASC LIMIT 10
+                ORDER BY order_item_expired_day ASC LIMIT $start,$limit
             ");            
+            $total_record = $query_count->row_array();
             $return->status=1;
             $return->message='Loaded';
             $return->result= $query->result_array();
+            $return->total_records= $total_record['total'];        
         }else if($request=="load-room"){
             $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : null;
             $ref = !empty($this->input->post('ref')) ? $this->input->post('ref') : 0; 

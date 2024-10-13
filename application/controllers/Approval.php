@@ -575,10 +575,11 @@ class Approval extends MY_Controller{
                                     'file_session' => $v['file_session'],
                                     'file_flag' => intval($v['file_flag']),
                                     'file' => array(
-                                        'name' => $v['file_name'],
+                                        'name' => substr($v['file_name'],0,12),
                                         'src' => $file_src,
                                         'format' => $v['file_format'],
                                         'size' => $v['file_size'],
+                                        'size_new' => $this->file_size_kb($v['file_size']),                                        
                                         'size_unit' => $this->file_unit_size(intval($v['file_size'] / 1024)),                                                                                
                                         'format_label' => '<label class="label" style="'.$set_color.'">'.$v['file_format'].'</label>'
                                     ),
@@ -686,6 +687,7 @@ class Approval extends MY_Controller{
 
                                 // Call Helper for upload
                                 $upload_helper = upload_file_source($this->folder_upload, $this->input->post('source'));
+                                // var_dump($upload_helper);die;
                                 if ($upload_helper['status'] == 1) {
                                     $params_image = array(
                                         'file_name' => $post['note'].' - '.$upload_helper['result']['file_old_name'],
@@ -710,7 +712,7 @@ class Approval extends MY_Controller{
                                     $return->message = 'Error: '.$upload_helper['message'];
                                 }     
                             }else{                           
-                                $return->message = 'File lebih dari '.($this->file_size_limit / 1024) .' MB';
+                                $return->message = 'Gagal, File lebih dari '.($this->file_size_limit / 1024) .' MB';
                             }
                         }else{
                             $return->message = 'File tidak terbaca';
@@ -840,7 +842,15 @@ class Approval extends MY_Controller{
         }
 
         return $bytes;
-    }     
+    }    
+    function file_size_kb($a){
+        if($a > 1024){
+            $b = number_format($a/1024,0).' mb';
+        }else{
+            $b = number_format($a,0).' kb';
+        }
+        return $b;
+    } 
     function format_byte($bytes) {
         if ($bytes > 0) {
             $i = floor(log($bytes) / log(1024));

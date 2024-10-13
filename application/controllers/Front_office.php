@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Front_office extends MY_Controller{
 
-    public $folder_upload = 'upload/booking/';
+    public $folder_upload = 'upload/file/';
     public $folder_upload_file = 'upload/file/';    
     public $image_width   = 480;
     public $image_height  = 240;
@@ -298,7 +298,9 @@ class Front_office extends MY_Controller{
                         '2' => 'order_date',
                         '3' => 'order_number',
                         '4' => 'order_item_ref_id',
-                        '5' => 'product_name'
+                        '5' => 'product_name',
+                        '6' => 'order_contact_name',
+                        '7' => 'order_contact_phone',                        
                     );
 
                     $limit     = !empty($post['length']) ? $post['length'] : 10;
@@ -378,7 +380,8 @@ class Front_office extends MY_Controller{
                         '3' => 'order_number',
                         '4' => 'order_item_ref_id',
                         '5' => 'product_name',
-                        '6' => 'order_contact_name'
+                        '6' => 'order_contact_name',
+                        '7' => 'order_contact_phone',
                     );
 
                     $limit     = !empty($post['length']) ? $post['length'] : 10;
@@ -1934,6 +1937,21 @@ class Front_office extends MY_Controller{
                                 $set_msg = 'mendapatkan data';
                             }
 
+                            if(!empty($_FILES['file_key'])){
+                                if(intval($_FILES['file_key']['error']) == 1){
+                                    $next = false;
+                                    $set_msg = 'Foto kunci terlalu besar';
+                                }
+                            }
+
+                            if(!empty($_FILES['file_deposit'])){
+                                if(intval($_FILES['file_deposit']['error']) == 1){
+                                    $next = false;
+                                    $set_msg = 'Foto deposit terlalu besar';
+                                }
+                            }                            
+
+                            // var_dump($_FILES['file_key']);die;
                             if($next){
                                 if($get_data){
                                     $set_update=$this->Front_model->update_booking_item_custom($where,$params);
@@ -1953,8 +1971,10 @@ class Front_office extends MY_Controller{
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
                                                         'file_type' => 1,
-                                                        'file_note' => !empty($post['file_note']) ? $file_note.' '.$post['file_note'] : $file_note,                            
+                                                        'file_note' => !empty($post['file_note']) ? $file_note.' '.$post['file_note'] : $file_note,          
+                                                        'file_name' => 'Kunci - '.date("YmdHis")
                                                     );
+                                                    // var_dump($params);die;
                                                     $save_data = $this->File_model->add_file($params);
 
                                                     // Call Helper for upload
@@ -1967,8 +1987,8 @@ class Front_office extends MY_Controller{
                                                     // $upload_helper = upload_file_key($this->folder_upload, $this->input->post('file_key'));
                                                     $upload_helper = upload_file_checkout($this->folder_upload, $_FILES['file_key'],$image_config);
                                                     if ($upload_helper['status'] == 1) {
+                                                        // 'file_name' => $upload_helper['result']['file_old_name'],
                                                         $params_image = array(
-                                                            'file_name' => $upload_helper['result']['file_old_name'],
                                                             'file_format' => $upload_helper['result']['file_ext'],
                                                             'file_url' => $upload_helper['result']['file_location'],
                                                             'file_size' => $upload_helper['result']['file_size']
@@ -1995,7 +2015,8 @@ class Front_office extends MY_Controller{
                                                         'file_session' => $file_session,
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
-                                                        'file_type' => 1                            
+                                                        'file_type' => 1,
+                                                        'file_name' => 'Deposit - '.date("YmdHis")                                                                                    
                                                     );
                                                     $save_data = $this->File_model->add_file($params);
 
@@ -2003,7 +2024,7 @@ class Front_office extends MY_Controller{
                                                     $upload_helper = upload_file_deposit($this->folder_upload, $this->input->post('file_deposit'));
                                                     if ($upload_helper['status'] == 1) {
                                                         $params_image = array(
-                                                            'file_name' => $upload_helper['result']['client_name'],
+                                                            // 'file_name' => $upload_helper['result']['client_name'],
                                                             'file_format' => str_replace(".","",$upload_helper['result']['file_ext']),
                                                             'file_url' => $upload_helper['file'],
                                                             'file_size' => $upload_helper['result']['file_size']
@@ -2037,7 +2058,7 @@ class Front_office extends MY_Controller{
                                     $return->message='Gagal mendapatkan data';
                                 }   
                             }else{
-                                $return->message = 'False, '.$set_msg;
+                                $return->message = 'Gagal, '.$set_msg;
                             }
                         }else{
                             $return->message = 'Tidak ada data';
