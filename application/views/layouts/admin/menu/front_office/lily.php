@@ -220,7 +220,7 @@
                                 </button>                                                                                                       
                             </div>                            
                         </div> 
-                        <div class="tab-pane tab-pane-sub active" id="tab15" for="jam masuk">
+                        <div class="tab-pane tab-pane-sub" id="tab15" for="jam masuk">
                             <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
                                 <label class="form-label">Tanggal Mulai</label>
                                 <div class="col-md-12 col-sm-12 padding-remove-side">
