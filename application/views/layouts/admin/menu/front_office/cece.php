@@ -524,10 +524,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group padding-remove-side prs-15">
+                                                <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12 form-group padding-remove-right prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Cari</label>
-                                                        <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian" />
+                                                        <input id="filter_search" name="filter_search" type="text" value="" class="form-control" placeholder="Pencarian No.Book / Kontak / Telepon"/>
                                                     </div>
                                                 </div>          
                                                 <div class="clearfix"></div>
@@ -547,7 +547,11 @@
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Cabang</label>
                                                         <select id="filter_branch" name="filter_branch" class="form-control">
-                                                            <option value="All">Semua</option>
+                                                            <?php 
+                                                            if($session['user_data']['user_group_id'] < 3){
+                                                                echo "<option value='All'>Semua</option>";
+                                                            }
+                                                            ?>
                                                             <?php
                                                             foreach($branch_cece as $val){
                                                                 echo '<option value="'.$val['branch_id'].'">'.$val['branch_name'].'</option>';
@@ -556,19 +560,15 @@
                                                         </select>
                                                     </div>
                                                 </div>    
-                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                <!-- <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Type</label>
                                                         <select id="filter_ref_price" name="filter_ref_price" class="form-control">
                                                             <option value="All">Semua</option>
-                                                            <option value="1">Harian</option>
-                                                            <!-- <option value="2">Midnight</option> -->
-                                                            <!-- <option value="3">4 jam</option> -->
-                                                            <!-- <option value="4">2 jam</option> -->
                                                             <option value="0">Bulanan</option>                                                                                                                        
                                                         </select>
                                                     </div>
-                                                </div>  
+                                                </div>   -->
 
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
@@ -583,7 +583,7 @@
                                                         </select>
                                                     </div>
                                                 </div>    
-                                                <!-- <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
+                                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Pembayaran</label>
                                                         <select id="filter_paid_flag" name="filter_paid_flag" class="form-control">
@@ -592,7 +592,7 @@
                                                             <option value="0">Belum Lunas</option>
                                                         </select>
                                                     </div>
-                                                </div> -->
+                                                </div>
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Pembayaran</label>
@@ -602,7 +602,7 @@
                                                             <option value="TRANSFER">TRANSFER/QRIS</option>
                                                         </select>
                                                     </div>
-                                                </div>                                                
+                                                </div>                                                                                               
                                                 <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 form-group padding-remove-right prs-15">
                                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Tampil</label>

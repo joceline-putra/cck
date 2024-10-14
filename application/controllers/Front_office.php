@@ -66,7 +66,10 @@ class Front_office extends MY_Controller{
             $firstdateofmonth = $firstdate->format('d-m-Y');
 
             $data['session'] = $this->session->userdata();  
+
             $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+            $session_group_id = !empty($data['session']['user_data']['user_group_id']) ? $data['session']['user_data']['user_group_id'] : null;
+            $session_branch_id = !empty($data['session']['user_data']['branch']['id']) ? $data['session']['user_data']['branch']['id'] : null;            
             $data['branch'] = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
             $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10],null,null,null,'ref_name','asc');
             $data['first_date'] = $firstdateofmonth;
@@ -104,15 +107,51 @@ class Front_office extends MY_Controller{
             // var_dump($get_booking_item);die;
             $data['identity'] = $this->booking_identity;
             if($type_name == 'cece'){
-                $data['branch_cece'] = $this->Branch_model->get_all_branch(['branch_flag' => 1,'branch_code'=>1],null,null,null,'branch_name','asc');                
-                $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10, 'branchs.branch_code' => 1],null,null,null,'branch_name','asc');            
+                $branch_params = [
+                    'branch_flag' => 1, 
+                    'branch_code' => 1
+                ];
+                if($session_group_id > 2){ // Except Super Admin
+                    $branch_params['branch_id'] = intval($session_branch_id);
+                }                
+                
+                $ref_params = [
+                    'references.ref_type' => 10,
+                    'branchs.branch_code' => 1,
+                    'references.ref_flag' => 1
+                ];
+                
+                if($session_group_id > 2){ // Except Super Admin
+                    $ref_params['branchs.branch_id'] = intval($session_branch_id);
+                }
+
+                $data['branch_cece']      = $this->Branch_model->get_all_branch($branch_params,null, null,null,'branch_name','asc');  
+                $data['ref'] = $this->Ref_model->get_all_ref($ref_params,null,null,null,'branch_name','asc');          
                 $data['title'] = 'Booking Cece';
                 $data['_view'] = 'layouts/admin/menu/front_office/cece';
                 $this->load->view('layouts/admin/index',$data);
                 $this->load->view('layouts/admin/menu/front_office/cece_js.php',$data);
             }else if($type_name == 'lily'){
-                $data['branch_lily']      = $this->Branch_model->get_all_branch(['branch_flag' => 1, 'branch_code' => 2],null, null,null,'branch_name','asc');            
-                $data['ref'] = $this->Ref_model->get_all_ref(['references.ref_type' => 10, 'branchs.branch_code' => 2],null,null,null,'branch_name','asc');            
+
+                $branch_params = [
+                    'branch_flag' => 1, 
+                    'branch_code' => 2
+                ];
+                if($session_group_id > 2){ // Except Super Admin
+                    $branch_params['branch_id'] = intval($session_branch_id);
+                }                
+                
+                $ref_params = [
+                    'references.ref_type' => 10,
+                    'branchs.branch_code' => 2,
+                    'references.ref_flag' => 1
+                ];
+                
+                if($session_group_id > 2){ // Except Super Admin
+                    $ref_params['branchs.branch_id'] = intval($session_branch_id);
+                }
+                $data['branch_lily']      = $this->Branch_model->get_all_branch($branch_params,null, null,null,'branch_name','asc');  
+                $data['ref'] = $this->Ref_model->get_all_ref($ref_params,null,null,null,'branch_name','asc');            
 
                 $data['title'] = 'Booking Lily';
                 $data['_view'] = 'layouts/admin/menu/front_office/lily';
@@ -338,24 +377,24 @@ class Front_office extends MY_Controller{
                             $params['order_type'] = $post['filter_type'];
                         }
                     */
-                    if($post['filter_branch'] !== "All") {
+                    if((!empty($post['fiter_branch'])) && ($post['filter_branch'] !== "All")) {
                         $params['order_item_branch_id'] = intval($post['filter_branch']);
                     }
                     if($post['filter_ref'] !== "All") {
                         $params['order_item_ref_id'] = intval($post['filter_ref']);
                     }                    
-                    if($post['filter_payment_method'] !== "All") {
-                        $params['paid_payment_method'] = $post['filter_payment_method'];
-                    }
+                    // if($post['filter_payment_method'] !== "All") {
+                    //     $params['paid_payment_method'] = $post['filter_payment_method'];
+                    // }
                     if($post['filter_flag_checkin'] !== "All") {
                         $params['order_item_flag_checkin'] = $post['filter_flag_checkin'];
                     }                                                            
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
-                    // if(is_numeric($post['filter_paid'])) {
-                    //     $params['order_paid'] = intval($post['filter_paid']);
-                    // }                                        
+                    if($post['filter_paid_flag'] !== "All") {
+                        $params['order_paid'] = intval($post['filter_paid_flag']);
+                    }                                        
 
                     $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
                     if($get_count > 0){
@@ -2992,6 +3031,13 @@ class Front_office extends MY_Controller{
         }
     }
     function resto(){ 
+
+        $data['session'] = $this->session->userdata();  
+        $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
+        $session_user_group_id = !empty($data['session']['user_data']['user_group_id']) ? $data['session']['user_data']['user_group_id'] : null;            
+        $session_user_branch_id = !empty($data['session']['user_data']['branch']['id']) ? $data['session']['user_data']['branch']['id'] : null;                        
+
+
         if ($this->input->post()) {
             $return = new \stdClass();
             $return->status = 0;
@@ -3082,6 +3128,11 @@ class Front_office extends MY_Controller{
                     if(intval($type_paid) > 0){
                         $params_datatable['trans.trans_paid_type'] = intval($type_paid);
                     }
+
+                    if($session_user_group_id > 2){
+                        $params_datatable['trans.trans_branch_id'] = intval($session_user_branch_id);
+                    }
+
                     /*
                         Transaksi.php
                         1 Pembelian
@@ -3813,9 +3864,6 @@ class Front_office extends MY_Controller{
             $firstdate = new DateTime('first day of this month');
             $firstdateofmonth = $firstdate->format('d-m-Y');
 
-            $data['session'] = $this->session->userdata();  
-            $session_user_id = !empty($data['session']['user_data']['user_id']) ? $data['session']['user_data']['user_id'] : null;
-
             $data['first_date'] = $firstdateofmonth;
             $data['end_date'] = date("d-m-Y");
             $data['hour'] = date("H:i");
@@ -3847,8 +3895,15 @@ class Front_office extends MY_Controller{
             );                          
             $data['products']         = $this->Produk_model->get_all_produks_datatable($params_product,null,6,0,'product_name','asc');            
             $data['product_category'] = $this->Kategori_model->get_all_categoriess($params_datatable,null,null,null,'category_name','asc');            
-            $data['non_contact']      = $this->Kontak_model->get_kontak_custom($where_non);            
-            $data['branch']           = $this->Branch_model->get_all_branch(['branch_flag' => 1],null,null,null,'branch_name','asc');
+            $data['non_contact']      = $this->Kontak_model->get_kontak_custom($where_non);    
+            
+            $branch_params = [
+                'branch_flag' => 1
+            ];
+            if($session_user_group_id > 2){
+                $branch_params['branch_id'] = $session_user_branch_id;
+            }
+            $data['branch']           = $this->Branch_model->get_all_branch($branch_params,null,null,null,'branch_name','asc');
 
             $data['contact_1_alias']  = 'Customer';
             $data['contact_2_alias']  = 'Sales By';

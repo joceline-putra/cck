@@ -92,7 +92,7 @@ CREATE PROCEDURE `sp_chart_buy_sell`(IN vBRANCH BIGINT(255))
             DECLARE mNAME VARCHAR(255);
             DECLARE mFINISHED INTEGER;
             DECLARE mACTION_CURSOR CURSOR FOR
-                SELECT DATE_FORMAT(order_date,'%Y-%m'), DATE_FORMAT(order_date,'%b %Y') 
+                SELECT DATE_FORMAT(order_date,'%Y-%m'), DATE_FORMAT(order_date,'%b') 
                 FROM orders 
                 WHERE order_date > DATE_SUB(NOW(), INTERVAL 5 MONTH)
                 GROUP BY MONTH(order_date) ORDER BY order_date ASC;
@@ -117,7 +117,7 @@ CREATE PROCEDURE `sp_chart_buy_sell`(IN vBRANCH BIGINT(255))
             
             WHILE mMOUNTMAX >= 1 DO
                 SELECT DATE_FORMAT(DATE_SUB(NOW(),INTERVAL mMOUNTMAX MONTH),'%Y-%m'), 
-                DATE_FORMAT(DATE_SUB(NOW(),INTERVAL mMOUNTMAX MONTH),'%b %Y') INTO mLABEL, mNAME;
+                DATE_FORMAT(DATE_SUB(NOW(),INTERVAL mMOUNTMAX MONTH),'%b') INTO mLABEL, mNAME;
                 INSERT INTO temp(`temp_label`,`temp_name`)VALUES(mLABEL,mNAME);
                 SET mMOUNTMAX = mMOUNTMAX - 1;
             END WHILE;

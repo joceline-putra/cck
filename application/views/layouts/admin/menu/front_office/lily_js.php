@@ -77,12 +77,13 @@
             weekStart: 1,
             minDate: 0,
             // timezone:"+0700"
-        }).on('change', function(e){
+        }).on('changeDate', function(e){
             var sd = $("#order_start_date").datepicker("getFormattedDate","yyyy-mm-dd");
             var ed = $("#order_end_date").datepicker("getFormattedDate","yyyy-mm-dd");
             // var sh = $("#order_start_hour").find(":selected").val();
             // var eh = $("#order_end_hour").find(":selected").val();
             // dayBooking = get_date_diff(sd+' '+sh+":00",ed+' '+eh+":00");
+            reset_date_booking(mHOUR);
             dayBooking = get_date_diff(sd,ed);
             console.log(dayBooking);  
         });
@@ -205,18 +206,18 @@
             },
             "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             "columnDefs": [
-                {"targets":0, "title":"Action", "searchable":true, "orderable":true},                    
+                {"targets":0, "title":"Action", "searchable":false, "orderable":false},                    
                 {"targets":1, "title":"Status", "searchable":false, "orderable":true},               
-                {"targets":2, "title":"Tgl", "searchable":true, "orderable":true},
+                {"targets":2, "title":"Tgl", "searchable":false, "orderable":true},
                 {"targets":3, "title":"No. Book", "searchable":true, "orderable":true},
-                {"targets":4, "title":"Type", "searchable":true, "orderable":true},
-                {"targets":5, "title":"Kamar", "searchable":true, "orderable":true},            
-                {"targets":6, "title":"Kontak", "searchable":true, "orderable":true},
+                {"targets":4, "title":"Type", "searchable":false, "orderable":false},
+                {"targets":5, "title":"Kamar", "searchable":false, "orderable":false},            
+                {"targets":6, "title":"Kontak", "searchable":false, "orderable":false},
                 {"targets":7, "title":"Total", "searchable":true, "orderable":true},
-                {"targets":8, "title":"Pembayaran", "searchable":true, "orderable":true},   
-                {"targets":9, "title":"Attachment", "searchable":true, "orderable":true},                                    
+                {"targets":8, "title":"Pembayaran", "searchable":false, "orderable":false},   
+                {"targets":9, "title":"Attachment", "searchable":false, "orderable":false},                                    
             ],
-            "order": [[0, 'DESC']],
+            "order": [[2, 'DESC']],
             "columns": [
                 {
                     'data': 'order_id',
@@ -3313,34 +3314,15 @@
         //Child Tab Navigation
         $(document).on("click", "input[name='order_branch_id']", function(e){ activeTab("tab12"); });
         $(document).on("click", "input[name='order_ref_price_id']", function(e){ 
-            var oo = $(this).data('val');
-            $("#order_start_hour").val(hourCHECKIN).trigger('change');
-            $("#order_end_hour").val(hourCHECKOUT).trigger('change');
-            
-            // console.log('T:'+oo);
-            if(oo == 24){ // Harian minimal checkin 13:00
-                var to = 'Harian';
-                $("#order_start_hour").val(13).trigger('change'); 
-                // $("#order_start_hour").attr('disabled',true); $("#order_start_hour_minute").attr('disabled',true);
-                
-                $("#order_end_hour").val(12).trigger('change'); 
-                // $("#order_end_hour").attr('disabled',true); $("#order_end_hour_minute").attr('disabled',true);
-            }else if(oo == 12){
-                var to = 'Midnight';
-                $("#order_start_hour").val('00').trigger('change'); 
-                // $("#order_start_hour").attr('disabled',true); $("#order_start_hour_minute").attr('disabled',true);
-                
-                $("#order_end_hour").val(12).trigger('change'); 
-                // $("#order_end_hour").attr('disabled',true); $("#order_end_hour_minute").attr('disabled',true);                
+            var get_selected_hour = $(this).data('val');
+            if(get_selected_hour == 24){ // Harian minimal checkin 13:00
+                mHOUR = 24;
+            }else if(get_selected_hour == 12){
+                mHOUR = 12;   
             }else{
-                var to = 'Jam jam an';
-                // $("#order_start_hour").val(13).trigger('change'); 
-                // $("#order_start_hour").removeAttr('disabled',true); $("#order_start_hour_minute").removeAttr('disabled',true);
-                
-                // $("#order_end_hour").val(12).trigger('change'); 
-                // $("#order_end_hour").removeAttr('disabled',true); $("#order_end_hour_minute").removeAttr('disabled',true);                
+                mHOUR = parseInt(get_selected_hour);           
             }
-            console.log(to);
+            reset_date_booking(mHOUR);
             activeTab("tab13"); 
         });
         $(document).on("click", "input[name='order_ref_id']", function(e){ activeTab("tab14"); });
@@ -3458,6 +3440,43 @@
         $(document).on("click", "#btn_tab_18b", function(e){ activeTab("tab17"); });
         $(document).on("click", "#btn_tab_19b", function(e){ activeTab("tab18"); });                                
 
+        function reset_date_booking(hour){ 
+            console.log('mHOUR = '+hour);
+            /*
+                Kombinasi Bootstrap Datepicker dan Moment JS
+            */
+            let checkIN = moment(); let checktInDate = checkIN.format('YYYY-MM-DD HH:mm:00');
+            let checkOUT = moment(checkIN); let checkOutDate = checkOUT.format('YYYY-MM-DD HH:mm:00');
+
+            if(hour > 4){ // Harian n Midnight
+                if(hour == 12){
+
+                    checkIN.hour('0');
+                    checkOUT.hour(hourCHECKOUT);
+                }else{
+                    checkIN.hour(hourCHECKIN);
+                    checkOUT.hour(hourCHECKOUT);
+
+                    checkOUT.add(1,"days");
+                }
+                $("#order_start_date").datepicker("update", moment(checkIN).format("DD-MMM-YYYY"));
+                $("#order_end_date").datepicker("update", moment(checkOUT).format("DD-MMM-YYYY"));
+
+                $("#order_start_hour").val(moment(checkIN).format("HH")).trigger('change'); // Jam Checkin secara realtime
+                $("#order_end_hour").val(moment(checkOUT).format("HH")).trigger('change'); // Jam Checkout secara realtime                
+            }else{
+                checkOUT.add(parseInt(hour),'hours');
+                $("#order_start_date").datepicker("update", moment(checkIN).format("DD-MMM-YYYY")); //Update End Date
+                $("#order_start_hour").val(moment(checkIN).format("HH")).trigger('change'); // Jam Checkin secara realtime
+                // $("#order_start_hour_minute").val(moment(checkIN).format("mm")).trigger('change'); // Jam Checkin secara realtime 
+
+                $("#order_end_date").datepicker("update", moment(checkOUT).format("DD-MMM-YYYY")); //Update End Date
+                $("#order_end_hour").val(moment(checkOUT).format("HH")).trigger('change'); // Jam Checkout secara realtime
+                // $("#order_end_hour_minute").val(moment(checkOUT).format("mm")).trigger('change'); // Jam Checkout secara realtime 
+            }     
+            console.log("Moment Return -> "+checkIN.format('YYYY-MM-DD HH:mm:00')+', '+checkOUT.format('YYYY-MM-DD HH:mm:00'));
+            console.log("Datepicker Return -> "+$("#order_start_date").datepicker("getFormattedDate","yyyy-mm-dd")+', '+$("#order_end_date").datepicker("getFormattedDate","yyyy-mm-dd"));
+        }
         function loadBeforeBooking(){
             $("#table_confirm").html('');
             var dsp = '';

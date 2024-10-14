@@ -875,7 +875,7 @@
                             pointBorderColor: '#0090d9',
                             pointBackgroundColor: '#0090d9',
                             borderColor: '#0090d9'
-                        }, 
+                        },
                         // {
                         //     label: 'Pemasukan',
                         //     data: [90, 60, 35, 100, 60, 40],
@@ -1395,7 +1395,9 @@
                             // result_expense.push(parseInt(res[i].chart_expense));
                         }
 
+                        var ss = new Date();
                         config_chart_three.data.labels = labels;
+                        config_chart_three.data.datasets[0].label = ss.getFullYear();
                         // config_chart_three.data.datasets[0].data = result_buy;
                         config_chart_three.data.datasets[0].data = result_sell;
                         // config_chart_three.data.datasets[2].data = result_income;
@@ -1588,7 +1590,7 @@
         // chart_account_realtime();
         // chart_account_realtime();
         // chart_account_expense();
-        // chart_recap_all(0); //Need Disable chart_trans_last_order(), chart_trans_buy_sell(), chart_trans_three()
+        chart_recap_all(0); //Need Disable chart_trans_last_order(), chart_trans_buy_sell(), chart_trans_three()
 
         //Disabled
         // total_transaction_day(1);

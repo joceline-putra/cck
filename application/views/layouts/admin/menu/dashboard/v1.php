@@ -340,7 +340,7 @@ if ($session['user_data']['user_id'] == 0) {
                                                     <option value="0">Semua User</option>                                                 
                                                     <?php
                                                     foreach ($usernya as $i => $v) {
-                                                        echo "<option value=" . $v['user_id'] . ">" . ucwords(strtolower($v['user_username'])) . "</option>";
+                                                        echo "<option value=" . $v['user_id'] . ">" . ucwords(strtolower($v['user_username'])).' - '.$v['user_group_name']."</option>";
                                                     }
                                                     ?>                       
                                                 </select>

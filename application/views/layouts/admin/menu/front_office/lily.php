@@ -181,7 +181,7 @@
                                     <div class="radio_group"> -->
 
                                         <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_4" type="radio" name="order_ref_price_id" value="4" data-val="4" data-name="4 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_4" style="width:100%;height:124px;word-wrap: normal;">4 Jam</label></div>
-                                        <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_6" type="radio" name="order_ref_price_id" value="6" data-val="3" data-name="3 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_6" style="width:100%;height:124px;word-wrap: normal;">3 Jam</label></div>                                           
+                                        <!-- <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_6" type="radio" name="order_ref_price_id" value="6" data-val="3" data-name="3 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_6" style="width:100%;height:124px;word-wrap: normal;">3 Jam</label></div>                                            -->
                                         <div class="col-md-3 col-sm-6 col-xs-6"><input id="order_ref_price_id_5" type="radio" name="order_ref_price_id" value="5" data-val="2" data-name="2 Jam"><label class="radio_group_label radio_bg" for="order_ref_price_id_5" style="width:100%;height:124px;word-wrap: normal;">2 Jam</label></div>                                            
                                     </div>                                    
                                 </div>
@@ -220,7 +220,7 @@
                                 </button>                                                                                                       
                             </div>                            
                         </div> 
-                        <div class="tab-pane tab-pane-sub" id="tab15" for="jam masuk">
+                        <div class="tab-pane tab-pane-sub active" id="tab15" for="jam masuk">
                             <div class="col-lg-6 col-md-6 col-xs-6 col-sm-12 form-group padding-remove-side">
                                 <label class="form-label">Tanggal Mulai</label>
                                 <div class="col-md-12 col-sm-12 padding-remove-side">
@@ -534,7 +534,11 @@
                                                     <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <label class="form-label">Cabang</label>
                                                         <select id="filter_branch" name="filter_branch" class="form-control">
-                                                            <option value="All">Semua</option>
+                                                            <?php 
+                                                            if($session['user_data']['user_group_id'] < 3){
+                                                                echo "<option value='All'>Semua</option>";
+                                                            }
+                                                            ?>
                                                             <?php
                                                             foreach($branch_lily as $val){
                                                                 echo '<option value="'.$val['branch_id'].'">'.$val['branch_name'].'</option>';

@@ -151,9 +151,9 @@
                     d.date_start = $("#filter_start_date").val();
                     d.date_end = $("#filter_end_date").val();
                     d.filter_branch = $("#filter_branch").find(':selected').val();
-                    d.filter_ref_price = $("#filter_ref_price").find(':selected').val();
+                    // d.filter_ref_price = $("#filter_ref_price").find(':selected').val();
                     d.filter_ref = $("#filter_ref").find(':selected').val();     
-                    d.filter_paid = $("#filter_paid_flag").find(':selected').val(); 
+                    d.filter_paid_flag = $("#filter_paid_flag").find(':selected').val(); 
                     d.filter_payment_method = $("#filter_paid_payment_method").find(':selected').val();                                                                                
                     d.filter_flag = $("#filter_flag").find(':selected').val();
                     d.filter_flag_checkin = $("#filter_flag_checkin").find(':selected').val();                    
@@ -165,18 +165,18 @@
             },
             "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
             "columnDefs": [
-                {"targets":0, "title":"Action", "searchable":true, "orderable":true},                    
+                {"targets":0, "title":"Action", "searchable":false, "orderable":false},                    
                 {"targets":1, "title":"Status", "searchable":false, "orderable":true},               
                 {"targets":2, "title":"Tgl", "searchable":true, "orderable":true},
                 {"targets":3, "title":"Nomor", "searchable":true, "orderable":true},
-                {"targets":4, "title":"Type", "searchable":true, "orderable":true},
-                {"targets":5, "title":"Kamar", "searchable":true, "orderable":true},            
-                {"targets":6, "title":"Kontak", "searchable":true, "orderable":true},
-                {"targets":7, "title":"Total", "searchable":true, "orderable":true},
-                {"targets":8, "title":"Pembayaran", "searchable":true, "orderable":true},   
-                {"targets":9, "title":"Attachment", "searchable":true, "orderable":true},                                    
+                {"targets":4, "title":"Type", "searchable":false, "orderable":false},
+                {"targets":5, "title":"Kamar", "searchable":false, "orderable":false},            
+                {"targets":6, "title":"Kontak", "searchable":true, "orderable":false},
+                {"targets":7, "title":"Total", "searchable":false, "orderable":true},
+                {"targets":8, "title":"Pembayaran", "searchable":false, "orderable":false},   
+                {"targets":9, "title":"Attachment", "searchable":false, "orderable":false},                                    
             ],
-            "order": [[0, 'DESC']],
+            "order": [[2, 'DESC']],
             "columns": [
                 {
                     'data': 'order_id',
@@ -445,7 +445,8 @@
         });
         $("#filter_flag_checkin").on('change', function(e){ order_table.ajax.reload(); });        
         $("#filter_branch").on('change', function(e){ order_table.ajax.reload(); });
-        $("#filter_ref_price").on('change', function(e){ order_table.ajax.reload(); });
+        // $("#filter_ref_price").on('change', function(e){ order_table.ajax.reload(); });
+        $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });        
         $("#filter_ref").on('change', function(e){ order_table.ajax.reload(); });                
         $("#filter_paid_flag").on('change', function(e){ order_table.ajax.reload(); });   
         $("#filter_paid_payment_method").on('change', function(e){ order_table.ajax.reload(); });                        
@@ -3284,7 +3285,7 @@
 
         //Child Back Button
         $(document).on("click", "#btn_tab_12b", function(e){ activeTab("tab11"); });
-        $(document).on("click", "#btn_tab_13b", function(e){ activeTab("tab12"); });
+        $(document).on("click", "#btn_tab_13b", function(e){ activeTab("tab11"); });
         $(document).on("click", "#btn_tab_14b", function(e){ activeTab("tab13"); });
         $(document).on("click", "#btn_tab_15b", function(e){ activeTab("tab14"); });
         $(document).on("click", "#btn_tab_16b", function(e){ activeTab("tab15"); });
