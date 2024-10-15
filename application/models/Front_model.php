@@ -42,7 +42,7 @@ class Front_model extends CI_Model{
         $this->db->join('products','product_id=order_item_product_id','left');  
         $this->db->join("branchs","order_branch_id=branch_id","left");                
         $this->db->join('users','order_user_id=user_id','left');        
-        $this->db->join('orders_paids','paid_order_id=order_id','left');
+        $this->db->join('(SELECT * FROM orders_paids GROUP BY paid_order_id ORDER BY paid_id ASC) AS orders_paids','orders_paids.paid_order_id=orders.order_id','left');
     }
     
     function set_join_paid(){

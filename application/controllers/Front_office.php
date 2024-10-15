@@ -886,52 +886,6 @@ class Front_office extends MY_Controller{
                             }
                         }else{ /* Save New Data */
                             $next = true; $message = '';
-
-                            //Check Ref Price ID
-                            /*
-                                $start_date = $post['order_start_date'];
-                                $end_date   = $post['order_end_date'];                            
-                                if($post['order_ref_price_id'] == 0){ //Bulanan
-
-                                }else if($post['order_ref_price_id'] == 1){ //harian
-                                    
-                                }else if($post['order_ref_price_id'] == 2){ //midnight
-                                    $start_date  = $start_date.$post['order_start_hour'].':00';
-                                    $end_date    = $end_date.$post['order_end_hour'].':00';                                
-                                    $check_date  = $this->hour_diff($start_date,$end_date);
-                                    if(intval($check_date) < 0){
-                                        $message = 'Jam tidak boleh mundur';
-                                        $next = false;
-                                    }else if(intval($check_date) > 4){
-                                        $message = 'Tidak boleh lebih dari 4 jam';
-                                        $next = false;
-                                    }                                
-                                }else if($post['order_ref_price_id'] == 3){ //4jam
-                                    $start_date  = $start_date.$post['order_start_hour'].':00';
-                                    $end_date    = $end_date.$post['order_end_hour'].':00';                                
-                                    $check_date  = $this->hour_diff($start_date,$end_date);
-                                    if(intval($check_date) < 0){
-                                        $message = 'Jam tidak boleh mundur';
-                                        $next = false;
-                                    }else if(intval($check_date) > 4){
-                                        $message = 'Tidak boleh lebih dari 4 jam';
-                                        $next = false;
-                                    }
-                                }else if($post['order_ref_price_id'] == 4){ //2jam
-                                    $start_date  = $start_date.$post['order_start_hour'].':00';
-                                    $end_date    = $end_date.$post['order_end_hour'].':00';                                
-                                    $check_date  = $this->hour_diff($start_date,$end_date);
-                                    if(intval($check_date) < 0){
-                                        $message = 'Jam tidak boleh mundur';
-                                        $next = false;
-                                    }else if(intval($check_date) > 2){
-                                        $message = 'Tidak boleh lebih dari 2 jam';
-                                        $next = false;
-                                    }
-                                }
-                                var_dump($message);die;
-                            */
-
                             // $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");
                             $check_date_is_past =$this->time_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");                            
                             if(intval($check_date_is_past) < 0){
@@ -1265,7 +1219,7 @@ class Front_office extends MY_Controller{
                             }
                         }else{ /* Save New Data */
                             $next = true; $message = '';
-                            die;
+                            // die;
                             // $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");
                             $check_date_is_past =$this->time_diff(date("Y-m-d H:i:s"),$post['order_start_date']." ".$post['order_start_hour'].":00");                           
                             if(intval($check_date_is_past) < 0){
@@ -1460,12 +1414,16 @@ class Front_office extends MY_Controller{
                                         //End of Croppie                                            
                                         
                                         //Set Paid
-                                        $set_paid_full_or_termin = null;
+                                        $sorder_price = floatval($post['order_price']);
+                                        $sorder_vehicle_cost = floatval($post['order_vehicle_cost']);   
+                                        $stotal_all = $sorder_price + $sorder_vehicle_cost;                                     
+                                        $spaid_total = floatval($post['paid_total']);
+
+                                        $set_paid_full_or_termin = ($spaid_total >= $stotal_all) ? "FULL" : "TERMIN";
                                         if($post['paid_total'] > 0){
                                             $file_session = $this->random_session(20);
                                             $paid_number = $this->request_number_for_order_paid();
                                             $params = array(
-                                                // 'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : null,
                                                 'paid_order_id' => $get_booking['order_id'],
                                                 'paid_number' => $paid_number,
                                                 'paid_session' => $file_session,
@@ -2165,20 +2123,23 @@ class Front_office extends MY_Controller{
                     $file_name = !empty($this->input->post('file_name')) ? $this->input->post('file_name') : null;                        
 
                     if(intval($file_id) > 0){
-                        // $get_data=$this->Front_model->get_paid($file_id);
-                        // $set_data=$this->Front_model->delete_paid($file_id);            
                         $set_data = true;    
                         if($set_data){    
-                            // $file = FCPATH . $get_data['paid_url'];
-                            // if (file_exists($file)) {
-                            //     unlink($file);
-                            // }
-                            // $return->status=1;
-                            // $return->message='Berhasil menghapus '. $get_data['paid_name'];
-                            $return->status=1;
-                            $return->message='Fitur tidak tersedia';
+                            if($session_user_group_id < 3){ //Only Super Administrator
+                                $get_data=$this->Front_model->get_paid($file_id);
+                                $file = FCPATH . $get_data['paid_url'];
+                                if (file_exists($file)) {
+                                    $set_data=$this->Front_model->delete_paid($file_id);            
+                                    unlink($file);
+                                }
+                                $return->status=1;
+                                $return->message='Berhasil menghapus '. $get_data['paid_name'];
+                            }else{
+                                $return->status=1;
+                                $return->message='Hanya Super Administrator';
+                            }
                         }else{
-                            $return->message='Gagal menghapus '. $get_data['paid_name'];
+                            $return->message='Gagal menghapus';
                         } 
                         }else{
                             $return->message='Data tidak ditemukan';
@@ -2973,7 +2934,7 @@ class Front_office extends MY_Controller{
                 'booking_item_id' => 'value'
             );
             $search = null; $limit = null; $start = null; $order  = 'order_item_id'; $dir = 'desc';
-            $get_booking_item = $this->Front_model->get_all_booking_item(null,$search,$limit,$start,$order,$dir);
+            // $get_booking_item = $this->Front_model->get_all_booking_item(null,$search,$limit,$start,$order,$dir);
 
             // var_dump($get_booking_item);die;
             $data['identity'] = $this->booking_identity;

@@ -398,9 +398,15 @@
                     render: function(data, meta, row) {
                         var dsp = '';
                         if(parseInt(row.order_paid) == 0){
-                            var sts = 'Belum Lunas';
-                            var ic = 'fas fa-thumbs-down';
-                            var lg = 'danger';
+                            if(row.order_total_paid > 0){
+                                var sts = 'DP '+numberWithCommas(row.order_total_paid);
+                                var ic = '';
+                                var lg = 'danger';
+                            }else{
+                                var sts = 'Belum Lunas';
+                                var ic = 'fas fa-thumbs-down';
+                                var lg = 'danger';
+                            }
                         }else if(parseInt(row.order_paid) == 1){
                             var sts = 'Lunas';
                             var ic = 'fas fa-thumbs-up';
