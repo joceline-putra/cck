@@ -1535,8 +1535,10 @@ class Front_office extends MY_Controller{
                                             'price_ref_id' => $post['order_ref_id'],
                                             'price_sort' => $post['order_ref_price_id']
                                         );
+                                        // var_dump($params_price);die;
                                         $get_price = $this->Ref_model->get_ref_price_custom($params_price);
-                                        $order_ref_price_id = $get_price['price_id'];
+                                        // $order_ref_price_id = $get_price['price_id'];
+                                        $order_ref_price_id = null;
                                         
                                         //Save Item
                                         $params_items = array(
