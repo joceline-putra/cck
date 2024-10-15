@@ -431,8 +431,8 @@
                                     <div class="form-group">
                                         <label class="form-label">Metode</label>
                                         <select id="paid_payment_method" name="paid_payment_method"class="form-control">
-                                        <option value="CASH" selected>Cash</option>
-                                        <!-- <option value="TRANSFER">Transfer</option> -->
+                                            <option value="TRANSFER" selected>Transfer</option>
+                                        <!-- <option value="CASH">Cash</option> -->
                                         </select>
                                     </div>
                                 </div>
