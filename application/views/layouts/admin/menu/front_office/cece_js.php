@@ -3254,33 +3254,13 @@
             // }
         });
         $(document).on("click","#btn_tab_19", function(e){ 
-            // if(document.getElementById("files_1").files.length == 0 ){
-                // notif(0,'Bukti Bayar belum di pilih');
-            // }else 
-            // if($("#paid_total").val().length == 0){
-            //     notif(0,'Jumlah harus diisi');
-            // }else{
-                // var file = document.getElementById("files_1").files[0];
-                // var fileType = file["type"];
-                // var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-                // if ($.inArray(fileType, validImageTypes) < 0) {
-                //     notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
-                // }else{
-                //     var size_kb = file.size / 1024;
-                //     // console.log(size_kb);
-                //     if(size_kb < 1280){
-                        activeTab("tab20"); 
-                        // console.log('if');
-                        var price_plus_parkir = parseFloat(orderPRICE.rawValue) + parseFloat(vehicleCOST.rawValue);
-                        paidTOTAL.set(price_plus_parkir);
-                        
-                        $("#paid_total").val(paidTOTAL.rawValue);                        
-                        loadBeforeBooking();
-                //     }else{
-                //         notif(0,'Maksimal 1 MB');
-                //     }
-                // } 
-            // }
+            activeTab("tab20"); 
+
+            // var price_plus_parkir = parseFloat(orderPRICE.rawValue) + parseFloat(vehicleCOST.rawValue);
+            // paidTOTAL.set(price_plus_parkir);
+            $("#paid_total").val(paidTOTAL.rawValue);   
+            console.log(orderPRICE.rawValue+','+vehicleCOST.rawValue+','+paidTOTAL.rawValue);                     
+            loadBeforeBooking();
         });
 
         //Child Back Button

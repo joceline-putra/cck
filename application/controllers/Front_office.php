@@ -1265,59 +1265,14 @@ class Front_office extends MY_Controller{
                             }
                         }else{ /* Save New Data */
                             $next = true; $message = '';
-
-                            //Check Ref Price ID
-                            /*
-                                $start_date = $post['order_start_date'];
-                                $end_date   = $post['order_end_date'];                            
-                                if($post['order_ref_price_id'] == 0){ //Bulanan
-
-                                }else if($post['order_ref_price_id'] == 1){ //harian
-                                    
-                                }else if($post['order_ref_price_id'] == 2){ //midnight
-                                    $start_date  = $start_date.$post['order_start_hour'].':00';
-                                    $end_date    = $end_date.$post['order_end_hour'].':00';                                
-                                    $check_date  = $this->hour_diff($start_date,$end_date);
-                                    if(intval($check_date) < 0){
-                                        $message = 'Jam tidak boleh mundur';
-                                        $next = false;
-                                    }else if(intval($check_date) > 4){
-                                        $message = 'Tidak boleh lebih dari 4 jam';
-                                        $next = false;
-                                    }                                
-                                }else if($post['order_ref_price_id'] == 3){ //4jam
-                                    $start_date  = $start_date.$post['order_start_hour'].':00';
-                                    $end_date    = $end_date.$post['order_end_hour'].':00';                                
-                                    $check_date  = $this->hour_diff($start_date,$end_date);
-                                    if(intval($check_date) < 0){
-                                        $message = 'Jam tidak boleh mundur';
-                                        $next = false;
-                                    }else if(intval($check_date) > 4){
-                                        $message = 'Tidak boleh lebih dari 4 jam';
-                                        $next = false;
-                                    }
-                                }else if($post['order_ref_price_id'] == 4){ //2jam
-                                    $start_date  = $start_date.$post['order_start_hour'].':00';
-                                    $end_date    = $end_date.$post['order_end_hour'].':00';                                
-                                    $check_date  = $this->hour_diff($start_date,$end_date);
-                                    if(intval($check_date) < 0){
-                                        $message = 'Jam tidak boleh mundur';
-                                        $next = false;
-                                    }else if(intval($check_date) > 2){
-                                        $message = 'Tidak boleh lebih dari 2 jam';
-                                        $next = false;
-                                    }
-                                }
-                                var_dump($message);die;
-                            */
-
+                            die;
                             // $check_date_is_past =$this->day_diff(date("Y-m-d H:i:s"), $post['order_start_date']." ".$post['order_start_hour'].":00");
                             $check_date_is_past =$this->time_diff(date("Y-m-d H:i:s"),$post['order_start_date']." ".$post['order_start_hour'].":00");                           
                             if(intval($check_date_is_past) < 0){
                                 $next = false;
                                 $message = 'Waktu Mulai tidak boleh mundur';
                             }
-                            // var_dump(intval($check_date_is_past),$next);
+                            
                             if($next){
                                 $check_date_is_past2 =$this->day_diff($post['order_start_date']." 00:00:00", $post['order_end_date']." 00:00:00");
                                 $check_date_is_past2 =$this->time_diff($post['order_start_date']." 00:00:00", $post['order_end_date']." 00:00:00");                                
@@ -1327,20 +1282,15 @@ class Front_office extends MY_Controller{
                                 }         
                             }
                             
-                            if($session_user_group_id < 3){
+                            if($session_user_group_id < 3){ //Hanya super admin boleh mundur
                                 $next=true;
                             }
-                            // var_dump(date("Y-m-d H:i:s"),$post['order_start_date']." ".$post['order_start_hour'].":00");
-                            // var_dump($next);die;
-                            if($next){
+
+                            if($next){ //Cek kamar tersedia pada waktu tersebut
                                 $room_id = !empty($post['order_product_id']) ? $post['order_product_id'] : null;
-                                // $sdate = $post['order_start_date']." 00:00:00";
-                                // $edate = $post['order_end_date']." 23:59:59";
                                 $sdate = $post['order_start_date']." ".$post['order_start_hour'].":00";
                                 $edate = $post['order_end_date']." ".$post['order_end_hour'].":00";                                
-                                // $check_room_available = $this->Front_model->get_room_available_count($room_id,$sdate,$edate);
                                 $check_room_available = $this->Front_model->sp_room_check($room_id,$sdate,$edate);
-                                // var_dump($check_room_available['room_is_available'],$room_id,$sdate,$edate);die;
                                 if(intval($check_room_available['room_is_available']) > 0){
                                     $get_product = $this->Produk_model->get_produk_quick($post['order_product_id']);
 
@@ -1356,7 +1306,6 @@ class Front_office extends MY_Controller{
                                     'order_item_ref_id' => !empty($post['order_ref_id']) ? $post['order_ref_id'] : null ,
                                     'order_item_start_date' => $post['order_start_date'],                               
                                 ];
-                                // var_dump($params_check);die;
                                 $check_exists = $this->Front_model->check_data_exist_items($params_check);
 
                                 /* Continue Save if not exist */
@@ -1511,6 +1460,7 @@ class Front_office extends MY_Controller{
                                         //End of Croppie                                            
                                         
                                         //Set Paid
+                                        $set_paid_full_or_termin = null;
                                         if($post['paid_total'] > 0){
                                             $file_session = $this->random_session(20);
                                             $paid_number = $this->request_number_for_order_paid();
@@ -1524,6 +1474,7 @@ class Front_office extends MY_Controller{
                                                 'paid_user_id' => $session_user_id,
                                                 'paid_url' => $set_paid_url,
                                                 'paid_name' => $set_paid_name,
+                                                'paid_payment_type' => $set_paid_full_or_termin,
                                                 'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_payment_method'] : null,
                                                 'paid_total' => !empty($post['paid_total']) ? str_replace(",","",$post['paid_total']) : null                           
                                             );
