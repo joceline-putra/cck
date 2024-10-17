@@ -3453,6 +3453,7 @@
 
                     checkIN.hour('0');
                     checkOUT.hour(hourCHECKOUT);
+                    checkOUT.add(1,"days");                    
                 }else{
                     checkIN.hour(hourCHECKIN);
                     checkOUT.hour(hourCHECKOUT);
