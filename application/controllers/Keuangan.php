@@ -160,7 +160,8 @@ class Keuangan extends MY_Controller{
         $session = $this->session->userdata();        
         $session_branch_id = $session['user_data']['branch']['id'];
         $session_user_id = $session['user_data']['user_id'];
-        
+        $session_group_id = !empty($session['user_data']['user_group_id']) ? $session['user_data']['user_group_id'] : null;
+
         $data['session'] = $this->session->userdata();     
         $data['theme'] = $this->User_model->get_user($data['session']['user_data']['user_id']);
 
@@ -172,6 +173,16 @@ class Keuangan extends MY_Controller{
         $get_menu = $this->Menu_model->get_all_menus($params_menu,null,null,null,'menu_sorting','asc');
         $data['navigation'] = !empty($get_menu) ? $get_menu : [];
 
+        $params_branch = [
+            'branch_flag' => 1
+        ];
+
+        if($session_group_id > 2){ //Kecuali Super Admin
+            $params_branch['branch_id'] = $session_branch_id;
+        }
+        // var_dump($params_branch,$session_group_id);die;
+        $data['branch'] = $this->Branch_model->get_all_branch($params_branch,null,null,null,'branch_name','asc');
+        
         // var_dump($this->folder_location[$identity]['title']);die;
         // var_dump($data['navigation']);die;
         if($identity == 7){
@@ -248,6 +259,7 @@ class Keuangan extends MY_Controller{
         $session = $this->session->userdata();        
         $session_branch_id = $session['user_data']['branch']['id'];
         $session_user_id = $session['user_data']['user_id'];
+        $session_group_id = !empty($session['user_data']['user_group_id']) ? $session['user_data']['user_group_id'] : null;
 
         $return = new \stdClass();
         $return->status = 0;
@@ -393,7 +405,7 @@ class Keuangan extends MY_Controller{
                 */
                 $params_journal_items = array(
                     'journal_item_journal_id' => $journal_id,
-                    'journal_item_branch_id' => $session_branch_id,
+                    // 'journal_item_branch_id' => $session_branch_id,
                     'journal_item_position' => 2,
                     'journal_item_flag' => 1                    
                 );                             
@@ -1503,10 +1515,11 @@ class Keuangan extends MY_Controller{
                         $params['other_column'] = $this->input->post('other_column');
                     }
                     */
+                    
+                    // 'journals.journal_branch_id' => intval($session_branch_id),
                     $params_datatable = array(
                         'journals.journal_date >' => $date_start,
                         'journals.journal_date <' => $date_end,
-                        'journals.journal_branch_id' => intval($session_branch_id),
                         'journals.journal_type' => intval($identity),
                         'journals.journal_flag' => 1
                     );
@@ -1514,6 +1527,15 @@ class Keuangan extends MY_Controller{
                     if($kontak > 0){ $params_datatable['journals.journal_contact_id'] = $kontak; }
                     if($account > 0){ $params_datatable['journals.journal_account_id'] = $account; }
                     if($paid_type > 0){ $params_datatable['journals.journal_paid_type'] = $paid_type; }
+
+                    $branch = !empty($this->input->post('branch')) ? $this->input->post('branch') : 0;
+                    if($session_group_id > 2){ //Kecuali Super Admin
+                        $params_datatable['journals.journal_branch_id'] = $session_branch_id;
+                    }else{
+                        if($branch > 0){
+                            $params_datatable['journals.journal_branch_id'] = $branch;
+                        }
+                    }
 
                     if($identity == 5){ //Transfer Uang
                         $params_datatable = array(
@@ -2329,7 +2351,7 @@ class Keuangan extends MY_Controller{
                     break;
                 case "load-journal-items":
                     $journal_id = !empty($this->input->post('journal_id')) ? $this->input->post('journal_id') : 0;
-                    // var_dump($order_id);
+                    // var_dump($params_journal_items);die;
                     if(intval($journal_id) > 0){
                         $get_data = $this->Journal_model->get_all_journal_item($params_journal_items,null,null,null,null);
                     }else{

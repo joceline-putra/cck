@@ -82,6 +82,7 @@
                     // d.length = $("#table-data").attr('data-limit-end');
                     d.length = $("#filter_length").find(':selected').val();
                     d.kontak = $("#filter_kontak").find(':selected').val();
+                    d.branch = $("#filter_branch").find(':selected').val();                    
                     d.search = {
                         value: $("#filter_search").val()
                     };
@@ -116,6 +117,13 @@
                         dsp += '</a>';
                         return dsp;
                     },
+                }, {
+                    'data': 'branch_name',
+                    render:function(data,meta,row){
+                        var dsp = '';
+                        dsp += row.branch_name;
+                        return dsp;
+                    }
                 }, {
                     'data': 'account_name',
                     render:function(data,meta,row){
@@ -171,6 +179,9 @@
         //Datatable Config
         $("#table-data_filter").css('display', 'none');
         $("#table-data_length").css('display', 'none');
+        $("#filter_branch").on('change', function (e) {
+            index.ajax.reload();
+        });        
         $("#filter_length").on('change', function (e) {
             var value = $(this).find(':selected').val();
             $('select[name="table-data_length"]').val(value).trigger('change');
@@ -199,7 +210,7 @@
         formTransNew();
         // formTransItemSetDisplay(0);
         if (operator.length > 0) {
-            $("#div-form-trans").show(300);
+            // $("#div-form-trans").show(300);
         }
         loadJournalItems();
 
@@ -467,13 +478,15 @@
         $(document).on("click", "#btn-new", function (e) {
             formTransNew();
             // $("#div-form-trans").show(300);
-            $("#div-form-trans").show(300);
-            $(this).hide();
+            // $("#div-form-trans").show(300);
+            // $(this).hide();
+            activeTab('tab2');
         });
 
         $(document).on("click", "#btn-cancel", function (e) {
             formTransCancel();
-            $("#div-form-trans").hide(300);
+            // $("#div-form-trans").hide(300);
+            activeTab('tab1');            
         });
 
         // Save Button
@@ -638,7 +651,8 @@
                         $("#btn-cancel").show();
                         // $("#btn-update").attr('data-id',d.result.journal_id);
                         // $("#btn-print").attr('data-id',d.result.journal_id);            
-                        scrollUp('content');
+                        // scrollUp('content');
+                        activeTab('tab2');
                     } else {
                         notif(0, d.message);
                     }
@@ -1477,7 +1491,8 @@
                     success: function (d) {
                         if (parseInt(d.status) === 1) { //Success
                             notif(1, d.message);
-                            $("#div-form-trans").show(300);
+                            // $("#div-form-trans").show(300);
+
                             var total_records = d.total_records;
                             if (parseInt(total_records) > 0) {
                                 var dsp = '';
@@ -1491,8 +1506,7 @@
                                     var i = a;
                                     dsp += '<tr class="tr-trans-item-id" data-id="' + d.result[a]['journal_item_id'] + '">';
 
-                                    dsp += '<td>' + d.result[a]['account_code'] + '&nbsp&nbsp;' +
-                                            '' + d.result[a]['account_name'];
+                                    dsp += '<td>' + d.result[a]['account_name'];
                                     dsp += '</td>';
                                     dsp += '<td style="text-align:left;">' + d.result[a]['journal_item_note'] + '</td>';
                                     dsp += '<td style="text-align:right;">' + d.result[a]['journal_item_debit'] + '</td>';

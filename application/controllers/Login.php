@@ -942,7 +942,7 @@ class Login extends My_Controller{
                 // var_dump($user_info);die;
                 $username = $user_info['user_username'];
                 if(intval($user_info['user_activation']) == 1){
-                    if(intval($user_info['branch_flag']) == 1){
+                    if(intval($user_info['branch_flag']) > -1){
                         // $update_user_last_login = $this->User_model->update_user($user_info['user_id'],array('user_date_last_login'=>date("YmdHis")));
                         $user_group = $this->Login_model->get_group_info($user_info['user_user_group_id']); 
                         
@@ -1103,7 +1103,7 @@ class Login extends My_Controller{
             // var_dump($user_info);die;
             $username = $user_info['user_username'];
             if(intval($user_info['user_activation']) == 1){
-                if(intval($user_info['branch_flag']) == 1){
+                if(intval($user_info['branch_flag']) > -1){
                     // $update_user_last_login = $this->User_model->update_user($user_info['user_id'],array('user_date_last_login'=>date("YmdHis")));
                     $user_group = $this->Login_model->get_group_info($user_info['user_user_group_id']); 
                     

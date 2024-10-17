@@ -33,7 +33,8 @@ class Journal_model extends CI_Model{
         // $this->db->join('references','orders.order_ref_id=references.ref_id');
         $this->db->join('accounts','journals.journal_account_id=accounts.account_id','left');
         $this->db->join('contacts','journals.journal_contact_id=contacts.contact_id','left');
-        $this->db->join('users','journals.journal_user_id=users.user_id','left');        
+        $this->db->join('users','journals.journal_user_id=users.user_id','left');  
+        $this->db->join('branchs','journals.journal_branch_id=branchs.branch_id','left');        
     }
     function set_select_item_report(){
         $this->db->select("journal_id, journal_session, journal_number, journal_date, journal_type, journal_contact_id, journal_total, journal_note");
@@ -48,7 +49,7 @@ class Journal_model extends CI_Model{
     }
     /* Journals */
     function get_all_journal($params = null, $search = null, $limit = null, $start = null, $order = null, $dir = null) {
-        $this->db->select("*, journal_id AS journal_id, DATE_FORMAT(`journal_date`,'%d-%b-%y, %H:%i') AS journal_date_format, users.user_username, journal_total");
+        $this->db->select("journals.*, contacts.*, accounts.*, user_username, user_id, branch_id, branch_name, journal_id AS journal_id, DATE_FORMAT(`journal_date`,'%d-%b-%y, %H:%i') AS journal_date_format, users.user_username, journal_total");
         // $this->db->select("(SELECT SUM(journal_item_debit) FROM journals_items WHERE journal_item_journal_id=journal_id) AS journal_total");        
         $this->set_params($params);
         $this->set_search($search);
