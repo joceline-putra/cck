@@ -598,7 +598,7 @@
                                                         <select id="filter_paid_flag" name="filter_paid_flag" class="form-control">
                                                             <option value="All">Semua</option>
                                                             <option value="1">Lunas</option>
-                                                            <option value="0">Belum Lunas</option>
+                                                            <option value="0">DP</option>
                                                         </select>
                                                     </div>
                                                 </div>
