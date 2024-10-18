@@ -4496,8 +4496,23 @@ BEGIN
             SET mMESSAGE = 'Room is not available for the given dates';
         END IF;
     ELSE
-        -- Room not available
-        SET mMESSAGE = 'Room is not available';
+        -- Room is available, so check the date
+        SELECT COUNT(*) INTO mCOUNT 
+        FROM orders_items 
+        WHERE order_item_type = 222 
+        AND order_item_product_id = vROOM_ID
+        AND order_item_flag_checkin IN (0, 1)
+        AND (
+            (order_item_start_date <= vSD AND order_item_end_date >= vSD)
+            OR (vED <= order_item_start_date AND vED >= order_item_start_date)
+            OR (order_item_start_date < vED AND order_item_end_date >= vED)
+        );
+        
+        IF mCOUNT = 0 THEN
+            SET mMESSAGE = 'Room is available';
+        ELSE
+            SET mMESSAGE = 'Room is not available for the given dates';
+        END IF;
     END IF;
 
     -- Return the result

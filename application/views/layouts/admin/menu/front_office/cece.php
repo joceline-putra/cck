@@ -427,7 +427,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                <div class="col-md-3 col-xs-3 col-sm-6 padding-remove-side">
+                                    <div class="form-group">
+                                        <label class="form-label">Cara Bayar</label>
+                                        <select id="paid_payment_type" name="paid_payment_type"class="form-control">
+                                            <option value="FULL" selected>Full</option>
+                                            <option value="DP">DP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-4 col-sm-6 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Metode</label>
                                         <select id="paid_payment_method" name="paid_payment_method"class="form-control">
@@ -436,9 +445,9 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                <div class="col-md-4 col-xs-4 col-sm-6 padding-remove-side">
                                     <div class="form-group">
-                                        <label class="form-label">Jumlah (Rp)</label>
+                                        <label class="form-label">Jumlah Byr (Rp)</label>
                                         <input id="paid_total" name="paid_total" type="text" class="form-control">
                                     </div>
                                 </div>

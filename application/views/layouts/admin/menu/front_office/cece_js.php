@@ -2647,8 +2647,7 @@
                             dsp += '    <div class="form-group">';
                             dsp += '    <label class="form-label">Metode</label>';
                             dsp += '        <select id="jc_metode" name="jc_metode"class="form-control">';
-                            dsp += '            <option value="CASH" selected>Cash</option>';
-                            dsp += '            <option value="TRANSFER">Transfer</option>';
+                            dsp += '            <option value="TRANSFER" selected>Transfer</option>';
                             dsp += '        </select>';
                             dsp += '    </div>';
                             dsp += '</div>';
@@ -3293,7 +3292,7 @@
             dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}</td></tr>`;                                                            
             dsp += `<tr><td>Harga</td><td>:</td><td>${numberWithCommas(orderPRICE.rawValue)}</td></tr>`;
             dsp += `<tr><td>Biaya Parkir</td><td>:</td><td>${numberWithCommas(vehicleCOST.rawValue)}</td></tr>`;                                                
-            dsp += `<tr><td>Dibayar</td><td>:</td><td>${numberWithCommas(paidTOTAL.rawValue)} - ${$("#paid_payment_method").find(":selected").val()}</td></tr>`;
+            dsp += `<tr><td>Dibayar</td><td>:</td><td><b>${$("#paid_payment_type").find(":selected").val()} - ${numberWithCommas(paidTOTAL.rawValue)} - ${$("#paid_payment_method").find(":selected").val()}</b></td></tr>`;
             dsp += `<tr><td>Pemesan</td><td>:</td><td>${$("#order_contact_name").val()} - ${$("#order_contact_phone").val()}</td></tr>`;
             dsp += `<tr><td>Nomor Plat</td><td>:</td><td>${$("#order_vehicle_plate_number").val()}</td></tr>`;     
             dsp += `<tr><td>Jumlah Kendaraan</td><td>:</td><td>${$("#order_vehicle_count").val()}</td></tr>`;     
