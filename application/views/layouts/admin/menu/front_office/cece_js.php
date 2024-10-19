@@ -40,7 +40,13 @@
             viewport: {width: image_width, height: image_height},
             boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
             url: url_image,
-        });                
+        });  
+        var upload_crop_img_4 = $('#modal_croppie_canvas_4').croppie({
+            enableExif: true,
+            viewport: {width: image_width, height: image_height},
+            boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
+            url: url_image,
+        });                        
         $('.files_link_1').magnificPopup({
             type: 'image',
             mainClass: 'mfp-with-zoom', // this class is for CSS animation below
@@ -76,7 +82,19 @@
                         return openerElement.is('img') ? openerElement : openerElement.find('img');
                     }
                 }
-        });   
+        });
+        $('.files_link_4').magnificPopup({
+            type: 'image',
+            mainClass: 'mfp-with-zoom', // this class is for CSS animation below
+                zoom: {
+                    enabled: true, // By default it's false, so don't forget to enable it
+                    duration: 300, // duration of the effect, in milliseconds
+                    easing: 'ease-in-out', // CSS transition easing function
+                    opener: function (openerElement) {
+                        return openerElement.is('img') ? openerElement : openerElement.find('img');
+                    }
+                }
+        });           
 
         //Date Clock Picker
         $("#order_start_date, #order_end_date").datepicker({
@@ -514,10 +532,12 @@
                 form.set('paid_total', paidTOTAL.rawValue);
                 form.set('files_1', 0); //Bukti Bayar
                 form.set('files_2', 0); //Foto KTP
-                form.set('files_3', 0); //Plat Kendaraan                  
+                form.set('files_3', 0); //Form sewa    
+                form.set('files_4', 0); //Plat Kendaraan                                  
                 form.append('upload_1', $("#files_preview_1").attr('data-save-img'));
                 form.append('upload_2', $("#files_preview_2").attr('data-save-img'));
-                form.append('upload_3', $("#files_preview_3").attr('data-save-img'));   
+                form.append('upload_3', $("#files_preview_3").attr('data-save-img'));  
+                form.append('upload_4', $("#files_preview_4").attr('data-save-img'));                   
                 form.append('order_item_ref_price_sort',$("input[name=order_ref_price_id]:checked").val());   
                 form.set('order_vehicle_cost',vehicleCOST.rawValue);             
                 form.append('day_booking',dayBooking);        
@@ -3077,7 +3097,26 @@
                 });
             };
             reader.readAsDataURL(this.files[0]);
-        });               
+        });
+        $(document).on('change', '#files_4', function(e) {
+            if($("#files_4").val() == ''){
+                $("#files_preview_4").attr('src', url_image);
+                $("#files_link_4").attr('href', url_image);            
+                $("#files_preview_4").attr('data-save-img', '');
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                upload_crop_img_4.croppie('bind', {
+                    url: e.target.result
+                }).then(function (blob) {
+                    // aa = btoa(blob);s
+                    $("#modal_croppie_4").modal("show");
+                    setTimeout(function(){$('#modal_croppie_canvas_4').croppie('bind');}, 300);
+                });
+            };
+            reader.readAsDataURL(this.files[0]);
+        });                       
         $(document).on('click', '#modal_croppie_cancel_1', function(e){
             e.preventDefault();
             e.stopPropagation();
@@ -3140,7 +3179,28 @@
                 $("#files_preview_3").attr('data-save-img', resp);
                 $("#modal_croppie_3").modal("hide");
             });
-        });                   
+        }); 
+        $(document).on('click', '#modal_croppie_cancel_4', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            $("#files_4").val('');
+            $("#files_preview_4").attr('data-save-img', '');
+            $("#files_preview_4").attr('src', url_image);
+            $("#files_link_4").attr('href', url_image);
+        });
+        $(document).on('click', '#modal_croppie_save_4', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            upload_crop_img_4.croppie('result', {
+                type: 'canvas',
+                size: 'viewport',
+            }).then(function (resp) {
+                $("#files_preview_").attr('src', resp);
+                $("#files_link_4").attr('href', resp);
+                $("#files_preview_4").attr('data-save-img', resp);
+                $("#modal_croppie_4").modal("hide");
+            });
+        });                           
    
         /*
             imgInp.onchange = evt => {
@@ -3212,7 +3272,7 @@
                 activeTab("tab17");
             }
         });
-        $(document).on("click","#btn_tab_17", function(e){ 
+        $(document).on("click","#btn_tab_17", function(e){ //KTP
             if(document.getElementById("files_2").files.length == 0 ){
                 notif(0,'Foto KTP belum di pilih');
             }else{
@@ -3231,13 +3291,15 @@
                 }
             }
         });
-        $(document).on("click","#btn_tab_18", function(e){ 
+        $(document).on("click","#btn_tab_18", function(e){  //Form Sewa & Foto Plat
+            var next = true;
+
             if(document.getElementById("files_3").files.length == 0 ){
-                notif(0,'Foto Plat belum di pilih');
+                notif(0,'Foto Form Sewa belum di pilih');
+                next = false;
             }
-            else if($("#order_vehicle_plate_number").val().length == 0 ){
-                notif(0,'Nomor Plat kendaraan harus disi');
-            }else{
+
+            if(next){
                 var file = document.getElementById("files_3").files[0];
                 var fileType = file["type"];
                 var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
@@ -3247,21 +3309,76 @@
                 }else{
                     var size_kb = file.size / 1024;
                     if(size_kb < 1280){
-                        activeTab("tab19"); 
+                        // activeTab("tab19"); 
+                        next = true;
+                    }else{
+                        notif(0,'Maksimal 1 MB');
+                        next = false;                        
+                    }
+                }
+            }
+
+            if(next){
+                if(document.getElementById("files_4").files.length == 0 ){
+                    notif(0,'Foto Plat Kendaraan belum di pilih');
+                    next = false;
+                }else if($("#order_vehicle_plate_number").val().length == 0 ){
+                    notif(0,'Nomor Plat kendaraan harus disi');
+                    next = false;
+                }
+            }
+
+            if(next){
+                var file = document.getElementById("files_4").files[0];
+                var fileType = file["type"];
+                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                if ($.inArray(fileType, validImageTypes) < 0) {
+                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
+                    console.log('if');
+                }else{
+                    var size_kb = file.size / 1024;
+                    if(size_kb < 1280){
+                        // activeTab("tab19"); 
+                        next = true;
+                    }else{
+                        notif(0,'Maksimal 1 MB');
+                        next = false;                        
+                    }
+                }
+            }
+
+            if(next){
+                activeTab("tab19");
+            }
+
+        });
+        $(document).on("click","#btn_tab_19", function(e){ 
+
+            if(document.getElementById("files_1").files.length == 0 ){
+                notif(0,'Bukti Bayar belum di pilih');
+            }else{
+                var file = document.getElementById("files_1").files[0];
+                var fileType = file["type"];
+                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                if ($.inArray(fileType, validImageTypes) < 0) {
+                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
+                }else{
+                    var size_kb = file.size / 1024;
+                    if(size_kb < 1280){
+                        activeTab("tab20"); 
+                        $("#paid_total").val(paidTOTAL.rawValue);   
+                        console.log(orderPRICE.rawValue+','+vehicleCOST.rawValue+','+paidTOTAL.rawValue);                     
+                        loadBeforeBooking();                        
                     }else{
                         notif(0,'Maksimal 1 MB');
                     }
                 }
             }
-        });
-        $(document).on("click","#btn_tab_19", function(e){ 
-            activeTab("tab20"); 
 
-            // var price_plus_parkir = parseFloat(orderPRICE.rawValue) + parseFloat(vehicleCOST.rawValue);
-            // paidTOTAL.set(price_plus_parkir);
-            $("#paid_total").val(paidTOTAL.rawValue);   
-            console.log(orderPRICE.rawValue+','+vehicleCOST.rawValue+','+paidTOTAL.rawValue);                     
-            loadBeforeBooking();
+            // activeTab("tab20"); 
+            // $("#paid_total").val(paidTOTAL.rawValue);   
+            // console.log(orderPRICE.rawValue+','+vehicleCOST.rawValue+','+paidTOTAL.rawValue);                     
+            // loadBeforeBooking();
         });
 
         //Child Back Button
