@@ -46,8 +46,11 @@ switch($vendor){
 		// $whatsapp_auth   = 'ir4ompavH@-AJGYnNq36E@Ko5#sC1Ngj';		
 		// $whatsapp_sender   = '628989900149'; 
 
-		$whatsapp_token = 'a3KcBjdnaB6m6cJBfNRA';		
-		$whatsapp_auth   = '_Y1L42JcUSrh!TNEKFscyoReGUdXyAXZ56fB8#HRJyjaMt4zFs';			
+		// $whatsapp_token = 'a3KcBjdnaB6m6cJBfNRA';		
+		// $whatsapp_auth   = '_Y1L42JcUSrh!TNEKFscyoReGUdXyAXZ56fB8#HRJyjaMt4zFs';	
+		
+		$whatsapp_token = 'da7msTdD3FHUaPJRduZu';		
+		$whatsapp_auth   = 'dgkp6VrVpUAbrsFdcg4U8KxEDkC4sBsVgWRzeveFqAC';			
 		break;		
 	case "wam.umbrella.co.id":
 		$whatsapp_server   = 'https://teksmu.com/';				
