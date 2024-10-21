@@ -205,7 +205,8 @@ $route['search']                = "search/index";
 	$route['report/finance/balance'] 		= "report/pages/finance/balance/1";
 	$route['report/finance/business'] 		= "report/pages/finance/business/1";
 	$route['report/finance/cash_in'] 		= "report/pages/finance/cash_in/1";
-	$route['report/finance/cash_out'] 		= "report/pages/finance/cash_out/1";		
+	$route['report/finance/cash_out'] 		= "report/pages/finance/cash_out/1";
+	$route['report/finance/cash_flow'] 		= "report/pages/finance/cash_flow/1";			
 
 	$route['transaksi/print/(:any)']  = "transaksi/print_data/$1";
 	$route['keuangan/print/(:any)']  = "keuangan/print_data/$1";	

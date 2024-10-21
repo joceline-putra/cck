@@ -103,7 +103,7 @@ class Journal_model extends CI_Model{
         $this->db->join('journals','journals_items.journal_item_journal_id=journals.journal_id','left');
         $this->db->join('accounts','journals_items.journal_item_account_id=accounts.account_id','left');  
         $this->db->join('users','journals_items.journal_item_user_id=users.user_id','left');  
-        // $this->db->join('trans','journals_items.journal_item_trans_id=trans.trans_id');
+        $this->db->join('branchs','journals_items.journal_item_branch_id=branchs.branch_id');
 
         if ($order) {
             $this->db->order_by($order, $dir);
@@ -566,6 +566,37 @@ class Journal_model extends CI_Model{
         $this->db->where($params);           
         $this->db->group_by('journal_item_ref');        
         return $this->db->get()->row_array();
-    }            
+    }   
+    function get_all_booking_paid($params){
+        $this->db->select('order_paid, IFNULL(SUM(order_total),0) AS order_total');                
+        $this->db->from('orders');
+        // $this->db->join('orders','orders_paids.paid_order_id=orders.order_id','left');
+        $this->db->where($params);           
+        // $this->db->group_by('order_paid');        
+        return $this->db->get()->result_array();
+    }  
+    function get_all_resto_paid($params){
+        $this->db->select('trans_paid, IFNULL(SUM(trans_total),0) AS trans_total');                
+        $this->db->from('trans');
+        // $this->db->join('orders','orders_paids.paid_order_id=orders.order_id','left');
+        $this->db->where($params);           
+        // $this->db->group_by('order_paid');        
+        return $this->db->get()->result_array();
+    }      
+    function get_all_sum_cost($params){
+        $this->db->select('IFNULL(SUM(journal_item_debit),0) AS journal_item_debit');                
+        $this->db->from('journals_items');
+        $this->db->join('journals','journals_items.journal_item_journal_id=journals.journal_id','left');
+        $this->db->where($params);           
+        return $this->db->get()->result_array();
+    }    
+    function get_all_sum_paid($params){
+        $this->db->select('paid_payment_method, IFNULL(SUM(paid_total),0) AS paid_total');                
+        $this->db->from('orders_paids');
+        $this->db->join('orders','orders_paids.paid_order_id=orders.order_id','left');
+        $this->db->where($params);           
+        $this->db->group_by('paid_payment_method');        
+        return $this->db->get()->result_array();
+    }        
 }
 ?>

@@ -20,7 +20,44 @@ $next = true;
     <div class="page-sidebar-wrapper scrollbar-dynamic" id="main-menu-wrapper">
         <p class="menu-title sm" style="padding-top:0px!important;margin:0px 0px 0px!important;">
         </p>
-        <ul id="sidebar" style="" class="sidebarz">
+        <ul id="sidebar" class="sidebarz">
+         
+<li id="report" class="start open" style="display:inline;"> 
+    <a href="<?php echo base_url('report'); ?>">
+        <!-- <i class="fa fa-home" style=""></i> -->
+        <span class="material-icons">summarize</span>
+        <span class="title">Laporan Penjualan</span> <span class="selected"></span>
+    </a>
+    <ul class="open sub-menu" style="display:block;">
+        <li class="start open li-report"> 
+            <a style="padding-left: 38px!important;">
+                <span class="title">Harian</span> <span class="selected"></span>
+            </a> 
+            <ul class="open sub-menu" style="display:block;">
+                <li class="start"> 
+                    <a href="<?php echo base_url('report/sales/order/detail'); ?>" style="">
+                        <span class="title">Booking</span> <span class="selected"></span>
+                    </a> 
+                </li>  
+                <li class="start"> 
+                    <a href="<?php echo base_url('report/sales/sell/detail'); ?>" style="">
+                        <span class="title">Resto</span> <span class="selected"></span>
+                    </a> 
+                </li>  
+                <li class="start"> 
+                    <a href="<?php echo base_url('report/finance/cash_out'); ?>" style="">
+                        <span class="title">Pengeluaran</span> <span class="selected"></span>
+                    </a> 
+                </li> 
+                <li class="start"> 
+                    <a href="<?php echo base_url('report/finance/cash_flow'); ?>" style="">
+                        <span class="title">All</span> <span class="selected"></span>
+                    </a> 
+                </li>                                                  
+            </ul>                 
+        </li>
+    </ul>        
+</li>        
             <li class="start"> 
                 <a href="<?php echo base_url('admin'); ?>">
                   <!-- <i class="fa fa-home" style=""></i> -->
@@ -166,7 +203,7 @@ $next = true;
                     }
                 }
             }
-            ?>  
+            ?>            
             <li id="report" class="start open" style="display:none;"> 
                 <a href="<?php echo base_url('report'); ?>">
                   <!-- <i class="fa fa-home" style=""></i> -->

@@ -70,7 +70,7 @@
 </style>
 <div class="row">
 	<div class="col-md-12 col-sm-12 col-xs-12">
-		<?php #include '_navigation.php';?>
+		<?php include '_navigation.php';?>
 		<div class="tab-content">
 			<div class="tab-pane active" id="tab1">
 				<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">

@@ -787,7 +787,117 @@ class Report extends MY_Controller{
                     $return->recordsTotal = intval($total);
                     $return->recordsFiltered = intval($total);
                     echo json_encode($return);                        
-                break;                 
+                    break;     
+                case "load-report-cash-flow":
+                    $columns = array(
+                        '0' => 'journal_item_date',
+                        '1' => 'journal_item_account_id',
+                    );
+
+                    $limit = $this->input->post('length');
+                    $start = $this->input->post('start');
+                    $order = $columns[$this->input->post('order')[0]['column']];
+                    $dir = $this->input->post('order')[0]['dir'];
+
+                    $search = [];
+                    if ($this->input->post('search')['value']) {
+                        $s = $this->input->post('search')['value'];
+                        foreach ($columns as $v) {
+                            $search[$v] = $s;
+                        }
+                    }
+
+                    $date_start = $this->input->post('date_start');
+                    $date_end = $this->input->post('date_end');          
+                    $branchs = !empty($this->input->post('branch')) ? $this->input->post('branch') : 0;
+                    $users = !empty($this->input->post('user')) ? $this->input->post('user') : 0;           
+
+                    $params_paid = array(
+                        'order_type' => 222,
+                        'order_date >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
+                        'order_date <' => date("Y-m-d", strtotime($date_end)).' 23:59:59'
+                    );
+
+                    $params_cost = [
+                        'journal_item_type' => 4,
+                        'journal_date >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
+                        'journal_date <' => date("Y-m-d", strtotime($date_end)).' 23:59:59',
+                        'journal_item_position' => 2
+                    ];
+
+                    $params_resto = [
+                        'trans_type' => 222,
+                        'trans_date >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
+                        'trans_date <' => date("Y-m-d", strtotime($date_end)).' 23:59:59',
+                    ];        
+
+                    if(intval($branchs) > 0){
+                        $params_paid['order_branch_id'] = intval($branchs);
+                        $params_cost['journal_branch_id'] = intval($branchs);
+                        $params_resto['trans_branch_id'] = intval($branchs);          
+                    }
+
+                    if(intval($users) > 0){
+                        $params_paid['order_user_id'] = intval($users);
+                        $params_cost['journal_user_id'] = intval($users);
+                        $params_resto['trans_user_id'] = intval($users);        
+                    }        
+
+                    $paid_data = []; $booking_data = []; $cost_data = []; $resto_total = [];
+                    $booking_data = $this->Journal_model->get_all_booking_paid($params_paid);
+                    $paid_data = $this->Journal_model->get_all_sum_paid($params_paid);
+                    $cost_data = $this->Journal_model->get_all_sum_cost($params_cost);   
+                    $resto_data = $this->Journal_model->get_all_resto_paid($params_resto);   
+
+                    $mdatas = [
+
+                    ];        
+                    foreach($booking_data as $v){
+                        $mdatas[] = [
+                            'recap_name'=>'Booking',
+                            'order_paid'=>$v['order_paid'],
+                            'recap_total'=> $v['order_total'],
+                            'link' => base_url().'report/report_sales_order_detail/'.$date_start.'/'.$date_end.'/contact?0&act=1&branch='.$branchs.'&format=html&order=order_date&dir=asc&user='.$users 
+                        ];
+                    }
+                    foreach($paid_data as $v){
+                        $mdatas[] = [
+                            'recap_name'=>'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- '.ucfirst(strtolower($v['paid_payment_method'])),
+                            'paid_payment_method'=>$v['paid_payment_method'],
+                            'recap_total'=> $v['paid_total']
+                        ];
+                    }     
+                    foreach($resto_data as $v){
+                        $mdatas[] = [
+                            'recap_name'=>'Resto',
+                            'trans_paid'=>$v['trans_paid'],
+                            'recap_total'=> $v['trans_total'],
+                            'link' => base_url().'report/report_sales_sell_detail/'.$date_start.'/'.$date_end.'/0?branch='.$branchs.'&format=html&order=trans_date&dir=asc&user='.$users                 
+                        ];
+                    }
+                    foreach($cost_data as $v){
+                        $mdatas[] = [
+                            'recap_name'=>'Biaya',
+                            'recap_total'=> $v['journal_item_debit'],
+                            'link' => base_url().'report/report_finance_cost_out/'.$date_start.'/'.$date_end.'/'.$branchs.'/'.$users      
+                        ];
+                    }                        
+                    $total_data = 4;
+                    if(intval($total_data) > 0){
+                        $total=$total_data;
+                        $return->status=1; 
+                        $return->message='Loaded'; 
+                        $return->total_records=$total;
+                        $return->result=$mdatas;        
+                    }else{ 
+                        $data_source=0; $total=0; 
+                        $return->status=0; $return->message='No data'; $return->total_records=$total;
+                        $return->result=0;    
+                    }
+                    $return->recordsTotal = $total;
+                    $return->recordsFiltered = $total;
+                    echo json_encode($return);
+                    break;                       
             }
         }else{
 
@@ -872,8 +982,8 @@ class Report extends MY_Controller{
                 }else if ($version == 2){
                     // $data['identity'] = 1;
                     $data['title']  = 'Laporan Penjualan Warmindo';
-                    $data['_view']  = 'layouts/admin/menu/report/sales/detail';
-                    $file_js        = 'layouts/admin/menu/report/sales/detail_js.php';
+                    $data['_view']  = 'layouts/admin/menu/report/custom/detail';
+                    $file_js        = 'layouts/admin/menu/report/custom/detail_js.php';
                     // $data['trans_type'] = 1;
                 }else if ($version == 3){
                     // $data['identity'] = 1;
@@ -890,8 +1000,8 @@ class Report extends MY_Controller{
                 }else if ($version == 5){
                     // $data['identity'] = 1;
                     $data['title']  = 'Laporan Penjualan Kamar'; // 'Laporan Sales Order Rinci';
-                    $data['_view']  = 'layouts/admin/menu/report/sales/order/detail';
-                    $file_js        = 'layouts/admin/menu/report/sales/order/detail_js.php';
+                    $data['_view']  = 'layouts/admin/menu/report/custom/order/detail';
+                    $file_js        = 'layouts/admin/menu/report/custom/order/detail_js.php';
                     // $data['trans_type'] = 1;
                 }else if ($version == 6){
                     // $data['identity'] = 1;
@@ -997,17 +1107,17 @@ class Report extends MY_Controller{
                 $file_js        = 'layouts/admin/menu/report/finance/balance_js.php';
                 // $data['trans_type'] = 1;
             }else if($identity == 'cash_in'){ //Uang Masuk
-                // $data['identity'] = 1;
                 $data['title']  = 'Pemasukan Uang / Setoran';
                 $data['_view']  = 'layouts/admin/menu/report/finance/cash_in';
                 $file_js        = 'layouts/admin/menu/report/finance/cash_in_js.php';
-                // $data['trans_type'] = 1;
             }else if($identity == 'cash_out'){ //Uang Keluar
-                // $data['identity'] = 1;
                 $data['title']  = 'Pengeluaran Uang / Biaya';
-                $data['_view']  = 'layouts/admin/menu/report/finance/cash_out';
-                $file_js        = 'layouts/admin/menu/report/finance/cash_out_js.php';
-                // $data['trans_type'] = 1;
+                $data['_view']  = 'layouts/admin/menu/report/custom/cash_out';
+                $file_js        = 'layouts/admin/menu/report/custom/cash_out_js.php';
+            }else if($identity == 'cash_flow'){ //Uang Keluar
+                $data['title']  = 'Rekap All';
+                $data['_view']  = 'layouts/admin/menu/report/custom/cash_flow';
+                $file_js        = 'layouts/admin/menu/report/custom/cash_flow_js.php';
             }
         }else if($request=='other'){
 
@@ -3083,6 +3193,133 @@ class Report extends MY_Controller{
         $data['title'] = "Pengeluaran Uang / Biaya";        
         $this->load->view('layouts/admin/menu/prints/reports/report_finance_cash_out',$data);         
     }
+    function report_finance_cash_flow($date_start,$date_end,$branch,$users){
+        $session = $this->session->userdata(); 
+        $session_branch_id = $session['user_data']['branch']['id'];
+        $session_user_id = $session['user_data']['user_id'];
+
+        $product = $this->input->get('product');
+        $order = $this->input->get('order');
+        $dir = $this->input->get('dir');
+
+        $limit  = 5;
+        $start  = 0;
+        $order  = $order;
+        $dir    = $dir;
+        $search = null;
+
+        $params_paid = array(
+            'order_type' => 222,
+            'order_date >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
+            'order_date <' => date("Y-m-d", strtotime($date_end)).' 23:59:59'
+        );
+
+        $params_cost = [
+            'journal_item_type' => 4,
+            'journal_date >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
+            'journal_date <' => date("Y-m-d", strtotime($date_end)).' 23:59:59',
+            'journal_item_position' => 2
+        ];
+
+        $params_resto = [
+            'trans_type' => 222,
+            'trans_date >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
+            'trans_date <' => date("Y-m-d", strtotime($date_end)).' 23:59:59',
+        ];        
+
+        if(intval($branch) > 0){
+            $params_paid['order_branch_id'] = intval($branch);
+            $params_cost['journal_branch_id'] = intval($branch);
+            $params_resto['trans_branch_id'] = intval($branch);          
+
+            $get_branch = $this->Branch_model->get_branch(intval($branch));
+            $data['branch'] = $get_branch;
+        }
+
+        if(intval($users) > 0){
+            $params_paid['order_user_id'] = intval($users);
+            $params_cost['journal_user_id'] = intval($users);
+            $params_resto['trans_user_id'] = intval($users);        
+
+            $get_user = $this->User_model->get_user(intval($users));
+            $data['users'] = $get_user;
+        }        
+        // var_dump($params_cost);die;
+        
+        // if(intval($product) > 0){
+        //     $params_datatable['product_id'] = intval($product);
+        //     $get_product = $this->Produk_model->get_produk(intval($product));
+        //     $data['product'] = $get_product;
+        // }
+
+        $paid_data = []; $booking_data = []; $cost_data = []; $resto_total = [];
+        $booking_data = $this->Journal_model->get_all_booking_paid($params_paid);
+        $paid_data = $this->Journal_model->get_all_sum_paid($params_paid);
+        $cost_data = $this->Journal_model->get_all_sum_cost($params_cost);   
+        $resto_data = $this->Journal_model->get_all_resto_paid($params_resto);                
+        
+        // echo json_encode($mdatas);die;
+        
+        $data['periode'] = date("d-M-Y, H:i", strtotime($date_start.' 00:00:00')).' sd '.date("d-M-Y, H:i", strtotime($date_end.' 23:59:59')); 
+        $data['content'] = [
+            'booking' => $booking_data,
+            'paid' => $paid_data,
+            'resto' => $resto_data,
+            'cost' => $cost_data
+        ];
+        // var_dump($data['content']);die;
+        $data['title']              = "Laporan Rekap";
+        $data['contact_alias']      = $this->customer_alias;
+        $data['employee_alias']     = $this->employee_alias;
+        $data['ref_alias']          = $this->ref_alias;  
+        $data['product_alias']      = $this->product_alias;         
+        $this->load->view('layouts/admin/menu/prints/reports/report_finance_cash_flow',$data);
+    }
+    function report_finance_cost_out($date_start,$date_end,$branch,$users){
+        $session = $this->session->userdata(); 
+        $session_branch_id = $session['user_data']['branch']['id'];
+        $session_user_id = $session['user_data']['user_id'];
+
+        $order = $this->input->get('order');
+        $dir = $this->input->get('dir');
+
+        $limit  = 0;
+        $start  = 0;
+        $order  = $order;
+        $dir    = $dir;
+        $search = null;
+
+        $params_cost = [
+            'journal_item_type' => 4,
+            'journal_date >' => date("Y-m-d", strtotime($date_start)).' 00:00:00',
+            'journal_date <' => date("Y-m-d", strtotime($date_end)).' 23:59:59',
+            'journal_item_position' => 2
+        ];  
+
+        if(intval($branch) > 0){
+            $params_cost['journal_branch_id'] = intval($branch);
+            $get_branch = $this->Branch_model->get_branch(intval($branch));
+            $data['branch'] = $get_branch;
+        }
+
+        if(intval($users) > 0){
+            $params_cost['journal_user_id'] = intval($users);
+            $get_user = $this->User_model->get_user(intval($users));
+            $data['users'] = $get_user;
+        }        
+        // var_dump($params_cost);die;
+        $cost_data = $this->Journal_model->get_all_journal_item($params_cost,$search,$limit,$start,$order,$dir);               
+        
+        $data['periode'] = date("d-M-Y, H:i", strtotime($date_start.' 00:00:00')).' sd '.date("d-M-Y, H:i", strtotime($date_end.' 23:59:59')); 
+        $data['content'] = $cost_data;
+        // var_dump($data['content']);die;
+        $data['title']              = "Laporan Biaya";
+        $data['contact_alias']      = $this->customer_alias;
+        $data['employee_alias']     = $this->employee_alias;
+        $data['ref_alias']          = $this->ref_alias;  
+        $data['product_alias']      = $this->product_alias;         
+        $this->load->view('layouts/admin/menu/prints/reports/report_finance_cost_out',$data);
+    }    
 }
 
 ?>
