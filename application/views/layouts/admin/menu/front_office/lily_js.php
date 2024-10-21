@@ -173,7 +173,9 @@
             watchExternalChanges: true
         };
         let orderPRICE = new AutoNumeric('#order_price', autoNumericOption);
-        let paidTOTAL = new AutoNumeric('#paid_total', autoNumericOption);        
+        let paidTOTAL = new AutoNumeric('#paid_total', autoNumericOption);
+        let paidTOTAL_CASH = new AutoNumeric('#paid_total_cash', autoNumericOption);
+        let paidTOTAL_TRANSFER = new AutoNumeric('#paid_total_transfer', autoNumericOption);                        
 
         //Datatable
         let order_table = $("#table_order").DataTable({
@@ -437,7 +439,7 @@
                     render: function(data, meta, row) {
                         var dsp = '';
                         if(parseInt(row.order_paid) == 0){
-                            var sts = 'Belum Lunas';
+                            var sts = addCommas(row.order_total_paid);
                             var ic = 'fas fa-thumbs-down';
                             var lg = 'danger';
                         }else if(parseInt(row.order_paid) == 1){
@@ -600,6 +602,8 @@
                 form.set('order_end_date', $("#order_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
                 form.set('order_price', orderPRICE.rawValue);
                 form.set('paid_total', paidTOTAL.rawValue);
+                form.set('paid_total_cash', paidTOTAL_CASH.rawValue);
+                form.set('paid_total_transfer', paidTOTAL_TRANSFER.rawValue);                
                 form.set('files_1', 0); //Bukti Bayar
                 form.set('files_1', 0); //Foto KTP  
                 form.append('upload_1', $("#files_preview_1").attr('data-save-img'));
@@ -1312,7 +1316,16 @@
             let setHOURCHECKOUT = parseInt(thisHOUR) + parseInt(mHOUR);
             // $("#order_end_hour").val(setHOURCHECKOUT).trigger('change');
         });
-             
+        $(document).on('change','#paid_payment_method', function(e){
+            if($("#paid_payment_method").find(":selected").val() == "ALL"){
+                $(".div_payment_single").hide(300);
+                $(".div_payment_double").show(300);
+            }else{
+                $(".div_payment_double").hide(300);
+                $(".div_payment_single").show(300);
+            }
+        });
+
         function loadRefPrice(){ //Load ref_price and room
             console.log('loadRefPrice()');
             var ref_check = $("input[name=order_ref_price_id]:checked").val();
@@ -1659,7 +1672,7 @@
 
             orderID = 0;
             orderPRICE = 0;
-            paidTOTAL = 0;
+            paidTOTAL = 0; paidTOTAL_CASH = 0; paidTOTAL_TRANSFER = 0;
             $("#files_link_1").attr('href',url_image);
             $("#files_preview_1").attr('src',url_image);
             $("#files_preview_1").attr('data-save-img','');               
@@ -3381,10 +3394,31 @@
                 notif(0,'Bukti Bayar belum di pilih');
             }
             */ 
-            if($("#paid_total").val().length == 0){
-                notif(0,'Jumlah harus diisi');
-                $("#paid_total").focus();
+            var next = true;
+            var sls = $("#paid_payment_method").find(":selected").val();
+            if(sls == 'ALL'){
+                if($("#paid_total_cash").val().length == 0){
+                    notif(0,'Jumlah Tunai harus diisi');
+                    $("#paid_total_cash").focus();
+                    next = false;
+                }
+
+                if(next){
+                    if($("#paid_total_transfer").val().length == 0){
+                        notif(0,'Jumlah Transfer harus diisi');
+                        $("#paid_total_transfer").focus();
+                        next = false;
+                    }        
+                }        
             }else{
+                if($("#paid_total").val().length == 0){
+                    notif(0,'Jumlah harus diisi');
+                    $("#paid_total").focus();
+                    next = false;
+                }
+            }
+
+            if(next){
                 if(document.getElementById("files_1").files.length > 0){
                     var file = document.getElementById("files_1").files[0];
                     var fileType = file["type"];
@@ -3479,6 +3513,12 @@
             console.log("Datepicker Return -> "+$("#order_start_date").datepicker("getFormattedDate","yyyy-mm-dd")+', '+$("#order_end_date").datepicker("getFormattedDate","yyyy-mm-dd"));
         }
         function loadBeforeBooking(){
+            if($("#paid_payment_method").find(":selected").val() == "ALL"){
+                var kes = 'Tunai: '+addCommas(paidTOTAL_CASH.rawValue)+'<br>Transfer: '+addCommas(paidTOTAL_TRANSFER.rawValue);
+            }else{
+                var kes = $("#paid_total").val()+' - '+$("#paid_payment_method").find(":selected").val();
+            }
+
             $("#table_confirm").html('');
             var dsp = '';
             dsp += `<tr><td>Cabang</td><td>:</td><td>${$("input[name='order_branch_id']:checked").attr('data-name')}</td></tr>`;
@@ -3488,7 +3528,7 @@
             dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-M-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-M-yyyy')}</td></tr>`; 
             dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()}:${$("#order_start_hour_minute").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}:${$("#order_end_hour_minute").find(":selected").val()}</td></tr>`;                                                            
             dsp += `<tr><td>Harga</td><td>:</td><td>${$("#order_price").val()}</td></tr>`;
-            dsp += `<tr><td>Dibayar</td><td>:</td><td>${$("#paid_total").val()} - ${$("#paid_payment_method").find(":selected").val()}</td></tr>`;
+            dsp += `<tr><td>Dibayar</td><td>:</td><td>${kes}</td></tr>`;
             dsp += `<tr><td>Pemesan</td><td>:</td><td>${$("#order_contact_name").val()} - ${$("#order_contact_phone").val()}</td></tr>`;            
             $("#table_confirm").append(dsp);
         }

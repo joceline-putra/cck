@@ -385,20 +385,35 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                <div class="col-md-12 col-xs-12 col-sm-6 padding-remove-side">
                                     <div class="form-group">
                                         <label class="form-label">Metode</label>
                                         <select id="paid_payment_method" name="paid_payment_method"class="form-control">
-                                        <option value="CASH" selected>Cash</option>
+                                        <option value="CASH" selected>Tunai</option>
                                         <option value="TRANSFER">Transfer</option>
+                                        <option value="ALL">Tunai & Transfer</option>                                        
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
-                                    <div class="form-group">
-                                        <label class="form-label">Jumlah (Rp)</label>
-                                        <input id="paid_total" name="paid_total" type="text" class="form-control">
+                                <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">                                
+                                    <div class="div_payment_single col-md-12 col-xs-12 col-sm-6 padding-remove-side">
+                                        <div class="form-group">
+                                            <label class="form-label">Jumlah (Rp)</label>
+                                            <input id="paid_total" name="paid_total" type="text" class="form-control">
+                                        </div>
                                     </div>
+                                    <div class="div_payment_double col-md-6 col-xs-6 col-sm-6 padding-remove-side" style="display:none;">
+                                        <div class="form-group">
+                                            <label class="form-label">Jumlah Tunai (Rp)</label>
+                                            <input id="paid_total_cash" name="paid_total_cash" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="div_payment_double col-md-6 col-xs-6 col-sm-6 padding-remove-side" style="display:none;">
+                                        <div class="form-group">
+                                            <label class="form-label">Jumlah Transfer (Rp)</label>
+                                            <input id="paid_total_transfer" name="paid_total_transfer" type="text" class="form-control">
+                                        </div>
+                                    </div>                                                                        
                                 </div>
                             </div>  
                             <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">
@@ -738,7 +753,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="modal_rebooking" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
        <div class="modal-content">

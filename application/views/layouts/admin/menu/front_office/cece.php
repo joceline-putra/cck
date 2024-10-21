@@ -351,7 +351,7 @@
                         <div class="tab-pane tab-pane-sub" id="tab17" for="ktp">
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="form-group">
-                                    <label class="form-label">Foto KTP</label>
+                                    <label class="form-label">Foto KTP *</label>
                                     <a class="files_link_2" href="<?= site_url('upload/noimage.png'); ?>">
                                         <img id="files_preview_2" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                     </a>
@@ -372,7 +372,7 @@
                         <div class="tab-pane tab-pane-sub" id="tab18" for="kendaraan">
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="form-group">
-                                    <label class="form-label">Scan Form Sewa</label>
+                                    <label class="form-label">Foto Form Sewa *</label>
                                     <a class="files_link_3" href="<?= site_url('upload/noimage.png'); ?>">
                                         <img id="files_preview_3" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                     </a>
@@ -380,7 +380,18 @@
                                         <input class="form-control" id="files_3" name="files_3" type="file" tabindex="1">
                                     </div>
                                 </div>
-                            </div>   
+                            </div>
+                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                                <div class="form-group">
+                                    <label class="form-label">Foto Plat Kendaraan *</label>
+                                    <a class="files_link_4" href="<?= site_url('upload/noimage.png'); ?>">
+                                        <img id="files_preview_4" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
+                                    </a>
+                                    <div class="custom-file">
+                                        <input class="form-control" id="files_4" name="files_4" type="file" tabindex="1">
+                                    </div>
+                                </div>
+                            </div>                               
                             <div class="col-md-12 col-xs-12 padding-remove-side">
                                 <div class="form-group">
                                     <label class="form-label">Nomor Plat Kendaraan</label>
@@ -418,7 +429,7 @@
                             <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                     <div class="form-group">
-                                        <label class="form-label">Bukti Bayar</label>
+                                        <label class="form-label">Bukti Bayar *</label>
                                         <a class="files_link_1" href="<?= site_url('upload/noimage.png'); ?>">
                                             <img id="files_preview_1" src="<?= site_url('upload/noimage.png'); ?>" class="img-responsive" height="120px" width="240px" style="margin-bottom:5px;"/>
                                         </a>
@@ -698,6 +709,19 @@
             <div class="modal-footer">
                 <button id="modal_croppie_cancel_3" type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 <button id="modal_croppie_save_3" type="button" class="btn btn-primary">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal_croppie_4" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="modal_croppie_canvas_4"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal_croppie_cancel_4" type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button id="modal_croppie_save_4" type="button" class="btn btn-primary">Crop</button>
             </div>
         </div>
     </div>
