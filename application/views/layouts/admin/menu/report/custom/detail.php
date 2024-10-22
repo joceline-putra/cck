@@ -12,6 +12,12 @@
         overflow-y: auto; 
         text-align:justify; 
     } 
+    #filter_date{
+		color:#5e5e5e!important;
+	}
+    .monthselect, .yearselect{
+		height: 22px!important;
+	}    
 </style>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -59,7 +65,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="padding-top:8px;">
-                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                    <div class="col-lg-4 col-md-12 col-xs-12 col-sm-12 padding-remove-right">
+                                        <label class="form-label" style="margin-bottom:0px;">Periode</label>
+                                        <div id="filter_date" data-start="<?php echo $first_date;?>" data-end="<?php echo $end_date;?>" class="filter-daterangepicker" style="background: #ecf0f2;padding-top:6px;padding-bottom:6px;border:0px;">
+                                            <i class="fas fa-calendar-alt"></i>&nbsp;
+                                            <span></span> 
+                                            &nbsp;&nbsp;&nbsp;<i class="fas fa-caret-down" style="position: absolute;right: 24px;top: 22px;"></i>
+                                        </div>
+                                    </div>                                         
+                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right hide">
                                         <label class="form-label">Periode Awal</label>
                                         <div class="col-md-12 col-sm-12 padding-remove-side">
                                             <div class="input-append success date col-md-12 col-lg-12 no-padding">
@@ -69,7 +83,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right">
+                                    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12 form-group padding-remove-right hide">
                                         <label class="form-label">Periode Akhir</label>
                                         <div class="col-md-12 col-sm-12 padding-remove-side">
                                             <div class="input-append success date col-md-12 col-lg-12 no-padding">

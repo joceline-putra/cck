@@ -1115,7 +1115,7 @@ class Report extends MY_Controller{
                 $data['_view']  = 'layouts/admin/menu/report/custom/cash_out';
                 $file_js        = 'layouts/admin/menu/report/custom/cash_out_js.php';
             }else if($identity == 'cash_flow'){ //Uang Keluar
-                $data['title']  = 'Rekap All';
+                $data['title']  = 'Rekap';
                 $data['_view']  = 'layouts/admin/menu/report/custom/cash_flow';
                 $file_js        = 'layouts/admin/menu/report/custom/cash_flow_js.php';
             }

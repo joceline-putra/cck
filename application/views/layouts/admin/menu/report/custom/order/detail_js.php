@@ -1,6 +1,7 @@
 
 <script>
     $(document).ready(function () {
+        // alert('here');
         var url = "<?= base_url('front_office/booking'); ?>";
         //var url_print = "<?= base_url('report/prints'); ?>"; 
         var url_print_trans = "<?= base_url('order/prints'); ?>";
@@ -23,6 +24,60 @@
             watchExternalChanges: true //!!!        
         };
 
+		// Start of Daterange
+		var start = moment();
+		var end   = moment();
+
+		function set_daterangepicker(start, end) {
+			$("#filter_date").attr('data-start',start.format('DD-MM-YYYY'));
+			$("#filter_date").attr('data-end',end.format('DD-MM-YYYY'));
+			$('#filter_date span').html(start.format('D-MMM-YYYY') + '&nbsp;&nbsp;&nbsp;sd&nbsp;&nbsp;&nbsp;' + end.format('D-MMM-YYYY'));
+		}
+		$('#filter_date').daterangepicker({
+            "startDate": start, //mm/dd/yyyy
+            "endDate": end, ////mm/dd/yyyy
+            "showDropdowns": true,
+            // "minYear": 2019,
+            // "maxYear": 2020,
+            "autoApply": true,
+			"alwaysShowCalendars": true,
+			"opens": "left",
+			"buttonClasses": "btn btn-sms",
+			"applyButtonClasses": "btn-primaryd",
+			"cancelClass": "btn-defaults",        
+			"ranges": {
+				'Hari ini': [moment(), moment()],
+				'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'7 hari terakhir': [moment().subtract(6, 'days'), moment()],
+				'30 hari terakhir': [moment().subtract(29, 'days'), moment()],
+				'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+				'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			},
+			"locale": {
+				"format": "MM/DD/YYYY",
+				"separator": " - ",
+				"applyLabel": "Apply",
+				"cancelLabel": "Cancel",
+				"fromLabel": "From",
+				"toLabel": "To",
+				"customRangeLabel": "Custom",
+				"weekLabel": "W",
+				"daysOfWeek": ["Mn","Sn","Sl","Rb","Km","Jm","Sb"],
+				"monthNames": ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"],
+				"firstDay": 1
+			}
+		}, function(start, end, label) {
+			// console.log(start.format('YYYY-MM-DD')+' to '+end.format('YYYY-MM-DD'));
+			set_daterangepicker(start,end);
+			// checkup_table.ajax.reload();
+		});
+		$('#filter_date').on('apply.daterangepicker', function(ev, picker) {
+			// console.log(ev+', '+picker);
+			$(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+			index.ajax.reload();
+		});
+		set_daterangepicker(start,end); 
+		// End of Daterange        
         // new AutoNumeric('#harga_jual', autoNumericOption);
         // new AutoNumeric('#harga_beli', autoNumericOption);
         // console.log(identity+' - '+type);
@@ -37,8 +92,10 @@
                 data: function (d) {
                     d.action = 'load-order-items-for-report';
                     d.tipe = 222;
-                    d.date_start = $("#start").val();
-                    d.date_end = $("#end").val();
+                    // d.date_start = $("#start").val();
+                    // d.date_end = $("#end").val();
+                    d.date_start = $("#filter_date").attr('data-start');
+                    d.date_end = $("#filter_date").attr('data-end');                    
                     // d.start = $("#table-data").attr('data-limit-start');
                     // d.length = $("#table-data").attr('data-limit-end'); 
                     d.length = $("#filter_length").find(':selected').val();
@@ -357,8 +414,8 @@
             // var print_url = url_print +'/'+ action + '/' +request+ '/' +contact+ '/' + $("#start").val() + '/' + $("#end").val();
             var print_url = url_print + '/'
                     + request + '/'
-                    + $("#start").val() + '/'
-                    + $("#end").val() + '/'
+                    + $("#filter_date").attr('data-start') + '/'
+                    + $("#filter_date").attr('data-end') + '/'
                     + "contact?"+ contact +"&act=" + action +"&branch=" + branch + "&format=" + format + "&order=" + order + "&dir=" + dir + "&user="+users;
             window.open(print_url, '_blank');
             // var request = $('.btn-print-all').data('request');
