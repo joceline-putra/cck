@@ -9,6 +9,7 @@ class Message extends CI_Controller{
     public $app_name;
     public $app_url;
     public $app_logo;
+    public $lily_number_1; public $lily_number_2; public $cece_number;
     var $folder_upload = 'uploads/message/';
 
     function __construct(){
@@ -50,6 +51,10 @@ class Message extends CI_Controller{
         $this->app_name = $get_branch['branch_name'];
         $this->app_url  = site_url();  
         $this->app_logo = site_url().$get_branch['branch_logo'];          
+
+        $this->lily_number_1 = '62895610425010';
+        $this->lily_number_2 = '6288299931765';        
+        $this->cece_number = '6281907030380';        
     }
     function index(){
         $session            = $this->session->userdata();
@@ -2199,7 +2204,7 @@ class Message extends CI_Controller{
                     $text .= "Permisi Kakak ".$params['contact_name']."\r\n";
                     $text .= $params['contact_phone']."\r\n\r\n";                    
                     $text .= "Apakah anda ingin memperpanjang masa sewa yang akan berakhir dalam *".$get_trans['order_item_expired_day_2']." hari lagi*,"."\r\n";
-                    $text .= "Harap melakukan pembayaran, konfirmasi klik disini wa.me/6281907030380"."\r\n\r\n";
+                    $text .= "Harap melakukan pembayaran, konfirmasi klik disini wa.me/".$this->cece_number."\r\n\r\n";
 
                     $date_check = date("d/M/y", strtotime($get_trans['order_item_start_date'])) .' - '. date("d/M/y", strtotime($get_trans['order_item_end_date']));
                     $hour_check = date("H:i", strtotime($get_trans['order_item_start_date'])) .' - '. date("H:i", strtotime($get_trans['order_item_end_date']));            
@@ -2263,7 +2268,88 @@ class Message extends CI_Controller{
                 }else{
                     $next = false;
                 }
-                break;       
+                break;  
+            case "sales-sell-invoice-rebooking-h7":
+                $a = '';
+                $b = '';
+                $c = '';
+                // var_dump($params);die;
+                if($params['order_id'] > 0){
+                    $god  = $this->Front_model->get_booking($params['order_id']);
+                    // $get_branch = $this->Branch_model->get_branch($trans['order_branch_id']);                    
+                    $get_trans = $this->Front_model->get_booking_item_custom(array('order_item_order_id'=> $params['order_id']),$search = null,$limit = null,$start = null,$order = null,$dir = null);
+                    $text = '';
+                    $text .= "*Pengingat Konfirmasi Perpanjangan*"."\r\n";
+                    // $text .= $get_trans['order_number']."\r\n";
+                    // $text .= date("d/m/Y - H:i", strtotime($get_trans['order_date']))."\r\n\r\n";    
+                    $text .= "Permisi Kakak ".$params['contact_name']."\r\n";
+                    $text .= $params['contact_phone']."\r\n\r\n";                    
+                    $text .= "Apakah anda ingin memperpanjang masa sewa yang akan berakhir dalam *".$get_trans['order_item_expired_day_2']." hari lagi* ?"."\r\n\r\n";
+                    // $text .= "Harap melakukan pembayaran, konfirmasi klik disini wa.me/".$this->cece_number."\r\n\r\n";
+
+                    $date_check = date("d/M/y", strtotime($get_trans['order_item_start_date'])) .' - '. date("d/M/y", strtotime($get_trans['order_item_end_date']));
+                    $hour_check = date("H:i", strtotime($get_trans['order_item_start_date'])) .' - '. date("H:i", strtotime($get_trans['order_item_end_date']));            
+                    if($get_trans['order_item_ref_price_sort'] == 0){
+                        $sort_name = 'PROMO';
+                    }else if($get_trans['order_item_ref_price_sort'] == 1){
+                        $sort_name = 'Bulanan';
+                    }else if($get_trans['order_item_ref_price_sort'] == 2){
+                        $sort_name = 'Harian';                
+                    }else if($get_trans['order_item_ref_price_sort'] == 3){
+                        $sort_name = 'Midnight';                
+                    }else if($get_trans['order_item_ref_price_sort'] == 4){
+                        $sort_name = '4 Jam';                
+                    }else if($get_trans['order_item_ref_price_sort'] == 5){
+                        $sort_name = '2 Jam';                
+                    }else{
+                        $sort_name = '';
+                    }
+                    $word_wrap_width = 20;
+
+                    // $text .= $get_trans['order_number']."\r\n";
+                    $text .= "Checkin: ".$date_check." - ".$hour_check."\r\n";        
+                    $text .= "Kamar: ".$get_trans['ref_name']." - ".$get_trans['product_name']."\r\n";    
+                    $text .= "Tipe: ".$sort_name."\r\n\r\n";        
+                    // $text .= "Kontak: ".$get_trans['order_contact_name']."\r\n\r\n";        
+                    // $text .= "Abaikan jika sudah lunas";
+                    // $text .= "\r\n"."Mohon mengirimkan bukti transer ke nomor 081907030380 atau klik disini wa.me/6281907030380, abaikan jika sudah lunas"."\r\n"."Terimakasih"."\r\n";
+                    // if(!empty($get_trans['order_vehicle_cost'])){            
+                    //     $text .= "Jml Kndraan: ".$get_trans['order_vehicle_count']."\r\n";        
+                    // }
+                    // if(!empty($get_trans['order_vehicle_plate_number'])){
+                    //     $text .= "Plat Kndraan: ".$get_trans['order_vehicle_plate_number']."\r\n";                  
+                    // }            
+
+                    // if(!empty($get_trans['order_vehicle_cost']) && $get_trans['order_vehicle_cost'] > 0){
+                    //     $text .= "Biaya Parkir: ".number_format($get_trans['order_vehicle_cost'])."\r\n";                                  
+                    //     // $text .= dot_set_wrap_3('Biaya Parkir',':',''.number_format($get_trans['order_vehicle_cost'],0,'',','));    
+                    // }                        
+                    // if(!empty($get_trans['order_total']) && $get_trans['order_total'] > 0){
+                    //     $text .= "Kamar: ".number_format($get_trans['order_total'])."\r\n";                                                  
+                    //     // $text .= dot_set_wrap_3('Kamar',':',''.number_format($get_trans['order_total'],0,'',','));    
+                    // }
+                    // // $text .= dot_set_line('-',$word_wrap_width);            
+                    // if(!empty($get_trans['order_total_paid']) && $get_trans['order_total_paid'] > 0){
+                    //     $text .= "Dibayar: ".number_format($get_trans['order_total_paid'])."\r\n";                                                                  
+                    //     // $text .= dot_set_wrap_3('Dibayar',':',''.number_format($get_trans['order_total_paid'],0,'',','));    
+                    // }    
+
+                    // if($get_trans['order_paid'] == 1){
+                    //     $lunas = 'Lunas';                
+                    // }else{
+                    //     $lunas = 'Belum Lunas';
+                    // }
+                    // $text .= $lunas."\r\n";            
+
+                    // $set_user_id = null;
+                    $set_user_name = $params['contact_name'];
+                    $set_user_phone = $params['contact_phone'];
+                    // var_dump($set_user_phone);die;
+                    $trans['trans_branch_id'] = $get_trans['order_item_branch_id'];                 
+                }else{
+                    $next = false;
+                }
+                break;                       
             case "sales-sell-invoice-checkout":
                 $a = '';
                 $b = '';
@@ -2285,8 +2371,8 @@ class Message extends CI_Controller{
                     $text .= "Waktu cek out anda maksimal di jam :".date("H:i, d/M/y", strtotime($get_trans['order_item_end_date']))."\r\n\r\n"; 
                     $text .= "Apabila cek out lebih dari waktunya maka akan dikenakan biaya tambahan"."\r\n\r\n";
                     $text .= "Silahkan konfirmasi ke admin:"."\r\n\r\n"; 
-                    $text .= "Lily 1: wa.me/62895610425010"."\r\n";
-                    $text .= "Lily 2: wa.me/6288299931765"."\r\n\r\n";
+                    $text .= "Lily 1: wa.me/".$this->lily_number_1."\r\n";
+                    $text .= "Lily 2: wa.me/".$this->lily_number_2."\r\n\r\n";
                     $text .= "Terimakasih";                    
                     // $text .= "Masa berlaku kamar *".$sisa."*"."\r\n\r\n";
 
@@ -2463,7 +2549,7 @@ class Message extends CI_Controller{
             }
         }
     }
-    function whatsapp_prepare_rebooking(){
+    function whatsapp_prepare_rebooking_h1(){
         $return          = new \stdClass();
         $return->status  = 0;
         $return->message = '';
@@ -2495,6 +2581,38 @@ class Message extends CI_Controller{
         }  
         echo json_encode($return);
     }
+    function whatsapp_prepare_rebooking_h7(){
+        $return          = new \stdClass();
+        $return->status  = 0;
+        $return->message = '';
+        $return->result  = '';
+
+        $params = array(
+            'order_item_type' => 222,
+            'order_item_type_2' => 'Bulanan',            
+            'order_item_expired_day' => 7,
+            'order_item_flag_checkin' => 1
+        );
+        $search = null; $limit=null; $start=null;$order=null;$dir=null;
+        $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
+        if($get_count > 0){
+            $get_data = $this->Front_model->get_all_booking_item($params, $search, $limit, $start, $order, $dir);
+            foreach($get_data as $v){
+                $contact_params = array(
+                    'order_id' => $v['order_id'],
+                    'contact_name' => $v['order_contact_name'],
+                    'contact_phone' => $v['order_contact_phone'],
+                );
+                $this->whatsapp_template('sales-sell-invoice-rebooking-h7',0,$contact_params);
+            }
+            $return->status = 1;
+            $return->params = $contact_params;
+            $return->message = 'Found '.count($get_data).' datas';
+        }else{
+            $return->message = 'No Rebooking Reminder Data';
+        }  
+        echo json_encode($return);
+    }    
     function whatsapp_prepare_checkout(){
         $return          = new \stdClass();
         $return->status  = 0;
