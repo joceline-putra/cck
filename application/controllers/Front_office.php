@@ -2730,6 +2730,9 @@ class Front_office extends MY_Controller{
                                 );
                                 $this->Front_model->update_booking_item(intval($post['order_item_id']),$params_checkout);
 
+                                $prepare = "CALL sp_update_order_paid($create)";
+                                $query   = $this->db->query($prepare);
+                                                                
                                 $return->status  = 1;
                                 $return->message = 'Berhasil menambahkan '.$set_order_number;
                                 $return->result= array(
@@ -2928,6 +2931,9 @@ class Front_office extends MY_Controller{
                                     'order_item_checkout_date' => $get_previous['order_item_end_date'],
                                 );
                                 $this->Front_model->update_booking_item(intval($post['order_item_id']),$params_checkout);
+
+                                $prepare = "CALL sp_update_order_paid($create)";
+                                $query   = $this->db->query($prepare);
 
                                 $return->status  = 1;
                                 $return->message = 'Berhasil menambahkan '.$set_order_number;

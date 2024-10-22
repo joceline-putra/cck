@@ -3811,9 +3811,10 @@
                             //     contact_phone:r.contact_phone,
                             //     order_item:r.order_item                                                                                                                                                                                                                                  
                             // }
-                            // transSuccess(p);                            
+                            // transSuccess(p);      
+                            $(".jconfirm").hide();                     
                         }else{
-                            notif(s,m);
+                            notif(s,m);                        
                         }
                         $('#btn_save_rebook').html('<i class="fas fa-arrow-right"></i> Proses');
                         $('#btn_save_rebook').prop('disabled', false);                               
