@@ -151,8 +151,10 @@
         };
         let orderPRICE = new AutoNumeric('#order_price', autoNumericOption);
         let paidTOTAL = new AutoNumeric('#paid_total', autoNumericOption);        
+        let paidTOTAL_CASH = new AutoNumeric('#paid_total_cash', autoNumericOption);
+        let paidTOTAL_TRANSFER = new AutoNumeric('#paid_total_transfer', autoNumericOption);        
         let vehicleCOST = new AutoNumeric('#order_vehicle_cost', autoNumericOption);
-        console.log(paidTOTAL);
+        // console.log(paidTOTAL);
         //Datatable
         let order_table = $("#table_order").DataTable({
             "responsive": true,
@@ -530,6 +532,8 @@
                 form.set('order_end_date', $("#order_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
                 form.set('order_price', orderPRICE.rawValue);
                 form.set('paid_total', paidTOTAL.rawValue);
+                form.set('paid_total_cash', paidTOTAL_CASH.rawValue);
+                form.set('paid_total_transfer', paidTOTAL_TRANSFER.rawValue);                
                 form.set('files_1', 0); //Bukti Bayar
                 form.set('files_2', 0); //Foto KTP
                 form.set('files_3', 0); //Form sewa    
@@ -1221,7 +1225,17 @@
             if(orderID == 0){
                 loadRefPrice();
             }            
-        });                
+        }); 
+        $(document).on('change','#paid_payment_method', function(e){
+            if($("#paid_payment_method").find(":selected").val() == "ALL"){
+                $(".div_payment_single").hide(300);
+                $(".div_payment_double").show(300);
+            }else{
+                $(".div_payment_double").hide(300);
+                $(".div_payment_single").show(300);
+            }
+        });
+
         function loadRefPrice(){ //Load ref_price and room
 
             $("#order_price").val(0);
@@ -3353,24 +3367,49 @@
 
         });
         $(document).on("click","#btn_tab_19", function(e){ 
+            var next = true;
+            var sls = $("#paid_payment_method").find(":selected").val();
+            if(sls == 'ALL'){
+                if($("#paid_total_cash").val().length == 0){
+                    notif(0,'Jumlah Tunai harus diisi');
+                    $("#paid_total_cash").focus();
+                    next = false;
+                }
 
-            if(document.getElementById("files_1").files.length == 0 ){
-                notif(0,'Bukti Bayar belum di pilih');
+                if(next){
+                    if($("#paid_total_transfer").val().length == 0){
+                        notif(0,'Jumlah Transfer harus diisi');
+                        $("#paid_total_transfer").focus();
+                        next = false;
+                    }        
+                }        
             }else{
-                var file = document.getElementById("files_1").files[0];
-                var fileType = file["type"];
-                var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
-                if ($.inArray(fileType, validImageTypes) < 0) {
-                    notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
+                if($("#paid_total").val().length == 0){
+                    notif(0,'Jumlah harus diisi');
+                    $("#paid_total").focus();
+                    next = false;
+                }
+            }
+
+            if(next){
+                if(document.getElementById("files_1").files.length == 0 ){
+                    notif(0,'Bukti Bayar belum di pilih');
                 }else{
-                    var size_kb = file.size / 1024;
-                    if(size_kb < 1280){
-                        activeTab("tab20"); 
-                        $("#paid_total").val(paidTOTAL.rawValue);   
-                        console.log(orderPRICE.rawValue+','+vehicleCOST.rawValue+','+paidTOTAL.rawValue);                     
-                        loadBeforeBooking();                        
+                    var file = document.getElementById("files_1").files[0];
+                    var fileType = file["type"];
+                    var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+                    if ($.inArray(fileType, validImageTypes) < 0) {
+                        notif(0,'Hanya gambar [JPG, PNG] yg bisa di pilih');
                     }else{
-                        notif(0,'Maksimal 1 MB');
+                        var size_kb = file.size / 1024;
+                        if(size_kb < 1280){
+                            activeTab("tab20"); 
+                            // $("#paid_total").val(paidTOTAL.rawValue);   
+                            // console.log(orderPRICE.rawValue+','+vehicleCOST.rawValue+','+paidTOTAL.rawValue);                     
+                            loadBeforeBooking();
+                        }else{
+                            notif(0,'Maksimal 1 MB');
+                        }
                     }
                 }
             }
@@ -3393,6 +3432,12 @@
         $(document).on("click", "#btn_tab_20b", function(e){ activeTab("tab19"); });                                        
 
         function loadBeforeBooking(){
+            if($("#paid_payment_method").find(":selected").val() == "ALL"){
+                var kes = 'Tunai: '+addCommas(paidTOTAL_CASH.rawValue)+'<br>Transfer: '+addCommas(paidTOTAL_TRANSFER.rawValue);
+            }else{
+                var kes = $("#paid_total").val()+' - '+$("#paid_payment_method").find(":selected").val();
+            }
+
             // console.log('loadBeforeBooking()');
             $("#table_confirm").html('');            
             var dsp = '';
@@ -3405,7 +3450,7 @@
             dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}</td></tr>`;                                                            
             dsp += `<tr><td>Harga</td><td>:</td><td>${numberWithCommas(orderPRICE.rawValue)}</td></tr>`;
             dsp += `<tr><td>Biaya Parkir</td><td>:</td><td>${numberWithCommas(vehicleCOST.rawValue)}</td></tr>`;                                                
-            dsp += `<tr><td>Dibayar</td><td>:</td><td><b>${$("#paid_payment_type").find(":selected").val()} - ${numberWithCommas(paidTOTAL.rawValue)} - ${$("#paid_payment_method").find(":selected").val()}</b></td></tr>`;
+            dsp += `<tr><td>Dibayar</td><td>:</td><td><b>${$("#paid_payment_type").find(":selected").val()}</b><br>${kes}</td></tr>`;
             dsp += `<tr><td>Pemesan</td><td>:</td><td>${$("#order_contact_name").val()} - ${$("#order_contact_phone").val()}</td></tr>`;
             dsp += `<tr><td>Nomor Plat</td><td>:</td><td>${$("#order_vehicle_plate_number").val()}</td></tr>`;     
             dsp += `<tr><td>Jumlah Kendaraan</td><td>:</td><td>${$("#order_vehicle_count").val()}</td></tr>`;     
