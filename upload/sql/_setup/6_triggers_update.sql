@@ -47,7 +47,7 @@ BEGIN
     LEFT OUTER JOIN (
         SELECT paid_order_id, IFNULL(SUM(paid_total),0) AS total_paid FROM orders_paids WHERE paid_order_id=vORDER_ID GROUP BY paid_order_id
     ) AS p ON p.paid_order_id=o.order_id 
-    SET o.order_total_paid = p.total_paid, 
+    SET o.order_total_paid = IFNULL(p.total_paid,0), 
     o.order_paid = (
         CASE
             WHEN p.total_paid >= o.order_total THEN '1'

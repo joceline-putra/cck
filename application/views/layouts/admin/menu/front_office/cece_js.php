@@ -2393,7 +2393,7 @@
                 }
             });    
         }
-        function attachmentRemoveForm(params){
+        function attachmentRemoveForm(params){ console.log(params);
             let title   = 'Konfirmasi';
             let content = 'Data yg sudah dihapus tidak akan bisa dikembalikan lagi.';
             $.confirm({
@@ -2411,30 +2411,31 @@
                         keys: ['Escape'],
                         action: function(){
                             $.ajax({
-                                    type: "post",
-                                    url: "<?= base_url('approval'); ?>",
-                                    data: {
-                                        action:'file_delete',
-                                        file_id:params.file_id,
-                                    }, 
-                                    dataType: 'json',
-                                    cache: 'false',
-                                    beforeSend: function() {},
-                                    success: function(d) {
-                                        let s = d.status;
-                                        let m = d.message;
-                                        let r = d.result;
-                                        if(parseInt(s) == 1){
-                                            var ffid = $("#id_document").val();
-                                            loadAttachment(ffid);
-                                            // attachmentPreview(r);
-                                            notif(s,m);
-                                        }else{
-                                            notif(s,m);
-                                        }
-                                    },
-                                    error: function(xhr, status, err) {}
-                                });
+                                type: "post",
+                                url: "<?= base_url('approval'); ?>",
+                                data: {
+                                    action:'file_delete',
+                                    file_id:params.file_id,
+                                }, 
+                                dataType: 'json',
+                                cache: 'false',
+                                beforeSend: function() {},
+                                success: function(d) {
+                                    let s = d.status;
+                                    let m = d.message;
+                                    let r = d.result;
+                                    if(parseInt(s) == 1){
+                                        // attachmentPreview(r);
+                                        notif(s,m);
+                                    }else{
+                                        notif(s,m);
+                                    }
+                                },
+                                error: function(xhr, status, err) {}
+                            });
+
+                            var ffid = $("#id_document").val();
+                            loadAttachment(ffid);
                         }
                     },
                     button_2: {
@@ -2682,15 +2683,31 @@
                             dsp += '    <label class="form-label">Metode</label>';
                             dsp += '        <select id="jc_metode" name="jc_metode"class="form-control">';
                             dsp += '            <option value="TRANSFER" selected>Transfer</option>';
+                            dsp += '            <option value="CASH">Cash</option>';
+                            dsp += '            <option value="ALL">Transfer & Cash</option>';                                                        
                             dsp += '        </select>';
                             dsp += '    </div>';
                             dsp += '</div>';
-                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '<div class="div_single_payment col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="display:inline;">';
                             dsp += '    <div class="form-group">';
                             dsp += '    <label class="form-label">Jumlah (Rp)</label>';
                             dsp += '        <input id="jc_total" name="jc_total" type="text" class="form-control">';
                             dsp += '    </div>';
                             dsp += '</div>';
+                            dsp += '<div class="div_double_payment col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="display:none;">';
+                                dsp += '<div class="col-md-6 col-xs-6 col-sm-12 padding-remove-side">';
+                                dsp += '    <div class="form-group">';
+                                dsp += '    <label class="form-label">Jumlah Cash (Rp)</label>';
+                                dsp += '        <input id="jc_total_cash" name="jc_total_cash" type="text" class="form-control">';
+                                dsp += '    </div>';
+                                dsp += '</div>';                            
+                                dsp += '<div class="col-md-6 col-xs-6 col-sm-12 padding-remove-side">';
+                                dsp += '    <div class="form-group">';
+                                dsp += '    <label class="form-label">Jumlah Transfer (Rp)</label>';
+                                dsp += '        <input id="jc_total_transfer" name="jc_total_transfer" type="text" class="form-control">';
+                                dsp += '    </div>';
+                                dsp += '</div>';    
+                            dsp += '</div>';                                                        
                             dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
                             dsp += '    <div class="form-group">';
                             dsp += '    <label class="form-label">Pilih Bukti Pembayaran yg akan di upload (maks 2 MB)</label>';
@@ -2700,7 +2717,9 @@
                         dsp += '</form>';
                         content = dsp;
                         self.setContentAppend(content);
-                        new AutoNumeric('#jc_total', autoNumericOption);                    
+                        new AutoNumeric('#jc_total', autoNumericOption); 
+                        new AutoNumeric('#jc_total_cash', autoNumericOption);
+                        new AutoNumeric('#jc_total_transfer', autoNumericOption);                                                                    
                     },
                     buttons: {
                         button_1: {
@@ -2709,44 +2728,69 @@
                             keys: ['enter'],
                             action: function(e){
                                 let self      = this;
+                                var next = true;
                                 // let input     = self.$content.find('#jc_input').val();
                                 let input     = self.$content.find('#jc_input')[0].files[0];
                                 let metode     = self.$content.find('#jc_metode').val();
-                                let total      = self.$content.find('#jc_total').val();                                                                                        
+                                let total      = self.$content.find('#jc_total').val(); 
+                                let total_cash      = self.$content.find('#jc_total_cash').val();
+                                let total_transfer  = self.$content.find('#jc_total_transfer').val();                                                                                                                                                        
+                                
                                 // if(!input){
                                     // $.alert('File belum dipilih');
                                     // return false;
                                 // } else{
                                     // $('#upload1')[0].files[0]
-                                    let form = new FormData();
-                                    form.append('action', 'paid_create');
-                                    form.append('paid_order_id',id);
-                                    form.append('paid_total',total);
-                                    form.append('paid_payment_method',metode);                                                                        
-                                    form.append('source', input);
-                                    $.ajax({
-                                        type: "post",
-                                        url: url,
-                                        data: form, dataType: 'json',
-                                        cache: 'false', contentType: false, processData: false,
-                                        beforeSend: function() {},
-                                        success: function(d) {
-                                            let s = d.status;
-                                            let m = d.message;
-                                            let r = d.result;
-                                            if(parseInt(s) == 1){
-                                                notif(s, m);
-                                                loadPaid(id);
-                                                order_table.ajax.reload(null,false);
-                                            }else{
-                                                notif(s,m);
-                                                // notifSuccess(m);
-                                            }
-                                        },
-                                        error: function(xhr, status, err) {
-                                            notif(0,err);
+                                    if(metode == "ALL"){
+                                        if(!total_cash){
+                                            $.alert('Jumlah Cash wajib diisi');
+                                            next = false; return false;
                                         }
-                                    });
+
+                                        if(!total_transfer){
+                                            $.alert('Jumlah Transfer wajib diisi');
+                                            next = false; return false;
+                                        }                                        
+                                    }else{
+                                        if(!total){
+                                            $.alert('Jumlah wajib diisi');
+                                            next = false; return false;
+                                        }
+                                    }
+
+                                    if(next){
+                                        let form = new FormData();
+                                        form.append('action', 'paid_create');
+                                        form.append('paid_order_id',id);
+                                        form.append('paid_payment_method',metode);                                                                        
+                                        form.append('paid_total',total);
+                                        form.append('paid_total_cash',total_cash);
+                                        form.append('paid_total_transfer',total_transfer);                                                                        
+                                        form.append('source', input);
+                                        $.ajax({
+                                            type: "post",
+                                            url: url,
+                                            data: form, dataType: 'json',
+                                            cache: 'false', contentType: false, processData: false,
+                                            beforeSend: function() {},
+                                            success: function(d) {
+                                                let s = d.status;
+                                                let m = d.message;
+                                                let r = d.result;
+                                                if(parseInt(s) == 1){
+                                                    notif(s, m);
+                                                    loadPaid(id);
+                                                    order_table.ajax.reload(null,false);
+                                                }else{
+                                                    notif(s,m);
+                                                    // notifSuccess(m);
+                                                }
+                                            },
+                                            error: function(xhr, status, err) {
+                                                notif(0,err);
+                                            }
+                                        });
+                                    }
                                 // }
                             }
                         },
@@ -2780,6 +2824,18 @@
         });
         $(document).on("click","#btn_paid_delete", function(e){ //Not Used
         });
+        $(document).on("change","#jc_metode", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if($("#jc_metode").find(":selected").val() == "ALL"){
+                $(".div_single_payment").hide();
+                $(".div_double_payment").show();
+            }else{
+                $(".div_double_payment").hide();
+                $(".div_single_payment").show();                
+            }
+        });
+        
 
         function loadPaid(data_id){
             console.log('loadPaid('+data_id+')');
@@ -3209,7 +3265,7 @@
                 type: 'canvas',
                 size: 'viewport',
             }).then(function (resp) {
-                $("#files_preview_").attr('src', resp);
+                $("#files_preview_4").attr('src', resp);
                 $("#files_link_4").attr('href', resp);
                 $("#files_preview_4").attr('data-save-img', resp);
                 $("#modal_croppie_4").modal("hide");

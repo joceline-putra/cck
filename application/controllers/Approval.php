@@ -8,7 +8,7 @@ class Approval extends MY_Controller{
 
     public $folder_upload = 'upload/file/';
     public $image_width   = 240;
-    public $image_height  = 240;    
+    public $image_height  = 480;    
     public $file_size_limit = 1024; //in Byte
     
     function __construct(){
@@ -681,16 +681,21 @@ class Approval extends MY_Controller{
                                     'file_date_created' => date("YmdHis"),
                                     'file_user_id' => $session_user_id,
                                     'file_type' => 1,
-                                    'file_note' => !empty($post['note']) ? $post['note'] : null                            
+                                    'file_note' => !empty($post['note']) ? $post['note'] : 'Attachment'                            
                                 );
                                 $save_data = $this->File_model->add_file($params);
 
                                 // Call Helper for upload
-                                $upload_helper = upload_file_source($this->folder_upload, $this->input->post('source'));
+                                $image_config=array(
+                                    'compress' => 1,
+                                    'width'=>$this->image_width,
+                                    'height'=>$this->image_height
+                                );   
+                                $upload_helper = upload_file_source($this->folder_upload, $this->input->post('source'),$image_config);
                                 // var_dump($upload_helper);die;
                                 if ($upload_helper['status'] == 1) {
                                     $params_image = array(
-                                        'file_name' => $post['note'].' - '.$upload_helper['result']['file_old_name'],
+                                        'file_name' => !empty($post['note']).' - '.$upload_helper['result']['file_old_name'],
                                         'file_format' => str_replace(".","",$upload_helper['result']['file_ext']),
                                         'file_url' => $upload_helper['result']['file_location'],
                                         'file_size' => $upload_helper['result']['file_size']

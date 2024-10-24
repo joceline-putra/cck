@@ -370,7 +370,7 @@
                             </div>
                         </div>
                         <div class="tab-pane tab-pane-sub" id="tab18" for="kendaraan">
-                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                            <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="form-group">
                                     <label class="form-label">Foto Form Sewa *</label>
                                     <a class="files_link_3" href="<?= site_url('upload/noimage.png'); ?>">
@@ -381,7 +381,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
+                            <div class="col-md-6 col-xs-12 col-sm-12 padding-remove-side">
                                 <div class="form-group">
                                     <label class="form-label">Foto Plat Kendaraan *</label>
                                     <a class="files_link_4" href="<?= site_url('upload/noimage.png'); ?>">
