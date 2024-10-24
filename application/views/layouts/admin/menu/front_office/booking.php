@@ -654,14 +654,22 @@
                                                         </div>
                                                     </div>
                                                 </div>                                                  
-                                                <div class="col-md-12 col-xs-12 padding-remove-side">
+                                                <div class="col-md-6 col-xs-6 padding-remove-side">
                                                     <div class="form-group">
                                                         <label class="form-label">Tanggal Sebelumnya</label>
                                                         <div class="controls">
                                                             <input name="rorder_previous_date" id="rorder_previous_date" type="text" class="form-control input-sm" readonly>
                                                         </div>
                                                     </div>
-                                                </div>        
+                                                </div> 
+                                                <div class="col-md-6 col-xs-6 padding-remove-side">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Harga Sebelumnya</label>
+                                                        <div class="controls">
+                                                            <input name="rorder_previous_price" id="rorder_previous_price" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>                                                        
                                                 <div class="col-md-12 col-xs-12 padding-remove-side">
                                                     <div class="form-group">
                                                         <label class="form-label">Kamar</label>
@@ -716,22 +724,35 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-xs-12 col-sm-12">                                                
-                                                    <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                                    <div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Metode</label>
                                                             <select id="rpaid_payment_method" name="rpaid_payment_method"class="form-control">
                                                             <option value="0" selected>Pilih</option>
                                                             <option value="CASH">Cash</option>
                                                             <option value="TRANSFER">Transfer</option>
+                                                            <option value="ALL">Cash + Transfer</option>
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 col-xs-6 col-sm-6 padding-remove-side">
+                                                    <div class="rdiv_single_payment col-md-12 col-xs-12 col-sm-12 padding-remove-side">
                                                         <div class="form-group">
                                                             <label class="form-label">Jumlah (Rp)</label>
                                                             <input id="rpaid_total" name="rpaid_total" type="text" class="form-control">
                                                         </div>
                                                     </div>
+                                                    <div class="rdiv_double_payment col-md-6 col-xs-6 col-sm-6 padding-remove-side" style="display:none;">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Jumlah Cash (Rp)</label>
+                                                            <input id="rpaid_total_cash" name="rpaid_total_cash" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="rdiv_double_payment col-md-6 col-xs-6 col-sm-6 padding-remove-side" style="display:none;">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Jumlah Transfer (Rp)</label>
+                                                            <input id="rpaid_total_transfer" name="rpaid_total_transfer" type="text" class="form-control">
+                                                        </div>
+                                                    </div>                                                                                                        
                                                 </div>
                                             </div>                                         
                                             <div class="clearfix"></div>

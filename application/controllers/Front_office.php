@@ -1071,11 +1071,11 @@ class Front_office extends MY_Controller{
                                                     'paid_url' => $set_paid_url,
                                                     'paid_name' => $set_paid_name,
                                                     'paid_payment_method' => 'CASH',
-                                                    'paid_total' => !empty($paid_cash) ? str_replace(",","",$paid_cash) : null
-                                                    // 'paid_name' => !empty($upload_process_1['result']['file_name']) ? $upload_process_1['result']['file_name'].'.'.$upload_process_1['result']['file_ext'] : null,
-                                                    // 'paid_format' => !empty($upload_process_1['result']['file_ext']) ? $upload_process_1['result']['file_ext'] : null,
-                                                    // 'paid_url' => !empty($upload_process_1['result']['file_location']) ? $upload_process_1['result']['file_location'] : null,
-                                                    // 'paid_size' => !empty($upload_process_1['result']['file_size']) ? $upload_process_1['result']['file_size'] : null                                                                            
+                                                    'paid_total' => !empty($paid_cash) ? str_replace(",","",$paid_cash) : null,
+                                                    'paid_name' => !empty($upload_process_1['result']['file_name']) ? $upload_process_1['result']['file_name'].'.'.$upload_process_1['result']['file_ext'] : null,
+                                                    'paid_format' => !empty($upload_process_1['result']['file_ext']) ? $upload_process_1['result']['file_ext'] : null,
+                                                    'paid_url' => !empty($upload_process_1['result']['file_location']) ? $upload_process_1['result']['file_location'] : null,
+                                                    'paid_size' => !empty($upload_process_1['result']['file_size']) ? $upload_process_1['result']['file_size'] : null                                                                            
                                                 );
                                                 $save_data = $this->Front_model->add_paid($params);
                                             }   
@@ -1094,11 +1094,11 @@ class Front_office extends MY_Controller{
                                                     'paid_url' => $set_paid_url,
                                                     'paid_name' => $set_paid_name,
                                                     'paid_payment_method' => 'TRANSFER',
-                                                    'paid_total' => !empty($paid_transfer) ? str_replace(",","",$paid_transfer) : null
-                                                    // 'paid_name' => !empty($upload_process_1['result']['file_name']) ? $upload_process_1['result']['file_name'].'.'.$upload_process_1['result']['file_ext'] : null,
-                                                    // 'paid_format' => !empty($upload_process_1['result']['file_ext']) ? $upload_process_1['result']['file_ext'] : null,
-                                                    // 'paid_url' => !empty($upload_process_1['result']['file_location']) ? $upload_process_1['result']['file_location'] : null,
-                                                    // 'paid_size' => !empty($upload_process_1['result']['file_size']) ? $upload_process_1['result']['file_size'] : null                                                                            
+                                                    'paid_total' => !empty($paid_transfer) ? str_replace(",","",$paid_transfer) : null,
+                                                    'paid_name' => !empty($upload_process_1['result']['file_name']) ? $upload_process_1['result']['file_name'].'.'.$upload_process_1['result']['file_ext'] : null,
+                                                    'paid_format' => !empty($upload_process_1['result']['file_ext']) ? $upload_process_1['result']['file_ext'] : null,
+                                                    'paid_url' => !empty($upload_process_1['result']['file_location']) ? $upload_process_1['result']['file_location'] : null,
+                                                    'paid_size' => !empty($upload_process_1['result']['file_size']) ? $upload_process_1['result']['file_size'] : null                                                                            
                                                 );
                                                 $save_data = $this->Front_model->add_paid($params);
                                             }                                                                                        
@@ -1117,12 +1117,13 @@ class Front_office extends MY_Controller{
                                                     'paid_user_id' => $session_user_id,
                                                     'paid_url' => $set_paid_url,
                                                     'paid_name' => $set_paid_name,
+                                                    'paid_payment_type' => 'FULL',
                                                     'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_payment_method'] : null,
-                                                    'paid_total' => !empty($post['paid_total']) ? str_replace(",","",$post['paid_total']) : null
-                                                    // 'paid_name' => !empty($upload_process_1['result']['file_name']) ? $upload_process_1['result']['file_name'].'.'.$upload_process_1['result']['file_ext'] : null,
-                                                    // 'paid_format' => !empty($upload_process_1['result']['file_ext']) ? $upload_process_1['result']['file_ext'] : null,
-                                                    // 'paid_url' => !empty($upload_process_1['result']['file_location']) ? $upload_process_1['result']['file_location'] : null,
-                                                    // 'paid_size' => !empty($upload_process_1['result']['file_size']) ? $upload_process_1['result']['file_size'] : null                                                                            
+                                                    'paid_total' => !empty($post['paid_total']) ? str_replace(",","",$post['paid_total']) : null,
+                                                    'paid_name' => !empty($upload_process_1['result']['file_name']) ? $upload_process_1['result']['file_name'].'.'.$upload_process_1['result']['file_ext'] : null,
+                                                    'paid_format' => !empty($upload_process_1['result']['file_ext']) ? $upload_process_1['result']['file_ext'] : null,
+                                                    'paid_url' => !empty($upload_process_1['result']['file_location']) ? $upload_process_1['result']['file_location'] : null,
+                                                    'paid_size' => !empty($upload_process_1['result']['file_size']) ? $upload_process_1['result']['file_size'] : null                                                                            
                                                 );
                                                 $save_data = $this->Front_model->add_paid($params);
                                             }
@@ -2123,7 +2124,8 @@ class Front_office extends MY_Controller{
                                                         'file_date_created' => date("YmdHis"),
                                                         'file_user_id' => $session_user_id,
                                                         'file_type' => 1,
-                                                        'file_name' => 'Deposit - '.date("YmdHis")                                                                                    
+                                                        'file_name' => 'Deposit - '.date("YmdHis"),
+                                                        'file_note' => 'Deposit'                                                                                    
                                                     );
                                                     $save_data = $this->File_model->add_file($params);
 
@@ -2134,6 +2136,7 @@ class Front_office extends MY_Controller{
                                                         'height'=>$this->image_height
                                                     );            
                                                     $upload_helper = upload_file_deposit_2($this->folder_upload, $_FILES['file_deposit'],$image_config);
+                                                    // var_dump($upload_helper);die;
                                                     if ($upload_helper['status'] == 1) {
                                                         $params_image = array(
                                                             'file_format' => $upload_helper['result']['file_ext'],
@@ -2144,7 +2147,7 @@ class Front_office extends MY_Controller{
                                                         
                                                         $return->message    = $upload_helper['message'];
                                                         $return->status     = $upload_helper['status'];
-                                                        $return->raw_file   = $upload_helper['file'];
+                                                        $return->raw_file   = $upload_helper['result']['file_old_name'];
                                                         $return->return     = $upload_helper;                            
                                                     }else{
                                                         $return->message = 'Error: '.$upload_helper['message'];
@@ -2371,7 +2374,7 @@ class Front_office extends MY_Controller{
                                                 'paid_date' => date("YmdHis"),
                                                 'paid_user_id' => $session_user_id,
                                                 'paid_payment_type' => 'FULL',
-                                                'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_payment_method'] : null,
+                                                'paid_payment_method' => 'CASH',
                                                 'paid_total' => $paid_cash,
                                                 'paid_name' => !empty($upload_helper['result']['file_name']) ? 'Bukti Bayar - '.$upload_helper['result']['file_name'] : null,
                                                 'paid_format' => !empty($upload_helper['result']['file_ext']) ? str_replace(".","",$upload_helper['result']['file_ext']) : null,
@@ -2391,7 +2394,7 @@ class Front_office extends MY_Controller{
                                                 'paid_date' => date("YmdHis"),
                                                 'paid_user_id' => $session_user_id,
                                                 'paid_payment_type' => 'FULL',
-                                                'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_payment_method'] : null,
+                                                'paid_payment_method' => 'TRANSFER',
                                                 'paid_total' => $paid_transfer,
                                                 'paid_name' => !empty($upload_helper['result']['file_name']) ? 'Bukti Bayar - '.$upload_helper['result']['file_name'] : null,
                                                 'paid_format' => !empty($upload_helper['result']['file_ext']) ? str_replace(".","",$upload_helper['result']['file_ext']) : null,
@@ -2795,26 +2798,79 @@ class Front_office extends MY_Controller{
                                 }
                                 //End of Croppie   
 
-                                //Set Paid
-                                if($post['paid_total'] > 0){
-                                    $file_session = $this->random_session(20);
-                                    $paid_number = $this->request_number_for_order_paid();
-                                    $params = array(
-                                        // 'file_from_table' => !empty($post['from_table']) ? $post['from_table'] : null,
-                                        'paid_order_id' => $get_booking['order_id'],
-                                        'paid_number' => $paid_number,
-                                        'paid_session' => $file_session,
-                                        'paid_date_created' => date("YmdHis"),
-                                        'paid_date' => date("YmdHis"),                                    
-                                        'paid_user_id' => $session_user_id,
-                                        'paid_url' => $set_paid_url,
-                                        'paid_name' => $set_paid_name,
-                                        'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_payment_method'] : null,
-                                        'paid_total' => !empty($post['paid_total']) ? str_replace(",","",$post['paid_total']) : null                           
-                                    );
-                                    $save_data = $this->Front_model->add_paid($params);
+                                // //Set Paid
+                                $paid_payment_method = $post['paid_payment_method']; //ALL dari CASH / TRANSFER
+                                $paid_order_id = $create;
+                                if($paid_payment_method == 'ALL'){ 
+                                    //Tunai And Transfer
+                                    $paid_cash      = !empty($post['paid_total_cash']) ? str_replace(",","",$post['paid_total_cash']) : 0;
+                                    $paid_transfer  = !empty($post['paid_total_transfer']) ? str_replace(",","",$post['paid_total_transfer']) : 0;
+
+                                    if(floatval($paid_cash) > 0){
+                                        $params = array(
+                                            'paid_order_id' => $paid_order_id,
+                                            'paid_number' => $this->request_number_for_order_paid(),
+                                            'paid_session' => $this->random_session(20),
+                                            'paid_date_created' => date("YmdHis"),
+                                            'paid_date' => date("YmdHis"),
+                                            'paid_user_id' => $session_user_id,
+                                            'paid_payment_type' => 'FULL',
+                                            'paid_payment_method' => 'CASH',
+                                            'paid_total' => $paid_cash,
+                                            'paid_name' => !empty($upload_process['result']['file_name']) ? 'Bukti Bayar - '.$upload_process['result']['file_name'] : null,
+                                            'paid_format' => !empty($upload_process['result']['file_ext']) ? str_replace(".","",$upload_process['result']['file_ext']) : null,
+                                            'paid_url' => !empty($upload_process['result']['file_location']) ? $upload_process['result']['file_location'] : null,
+                                            'paid_size' => !empty($upload_process['result']['file_size']) ? $upload_process['result']['file_size'] : null
+                                        );
+
+                                        $save_data = $this->Front_model->add_paid($params);
+                                    }
+
+                                    if(floatval($paid_transfer) > 0){
+                                        $params = array(
+                                            'paid_order_id' => $paid_order_id,
+                                            'paid_number' => $this->request_number_for_order_paid(),
+                                            'paid_session' => $this->random_session(20),
+                                            'paid_date_created' => date("YmdHis"),
+                                            'paid_date' => date("YmdHis"),
+                                            'paid_user_id' => $session_user_id,
+                                            'paid_payment_type' => 'FULL',
+                                            'paid_payment_method' => 'TRANSFER',
+                                            'paid_total' => $paid_transfer,
+                                            'paid_name' => !empty($upload_process['result']['file_name']) ? 'Bukti Bayar - '.$upload_process['result']['file_name'] : null,
+                                            'paid_format' => !empty($upload_process['result']['file_ext']) ? str_replace(".","",$upload_process['result']['file_ext']) : null,
+                                            'paid_url' => !empty($upload_process['result']['file_location']) ? $upload_process['result']['file_location'] : null,
+                                            'paid_size' => !empty($upload_process['result']['file_size']) ? $upload_process['result']['file_size'] : null
+                                        );
+
+                                        $save_data = $this->Front_model->add_paid($params);
+                                    }    
+                                }else{
+                                    //Tunai only or Transfer Only
+                                    $paid_total      = !empty($post['paid_total']) ? str_replace(",","",$post['paid_total']) : 0;
+                                    if(floatval($paid_total) > 0){
+                                        $params = array(
+                                            'paid_order_id' => $paid_order_id,
+                                            'paid_number' => $this->request_number_for_order_paid(),
+                                            'paid_session' => $this->random_session(20),
+                                            'paid_date_created' => date("YmdHis"),
+                                            'paid_date' => date("YmdHis"),
+                                            'paid_user_id' => $session_user_id,
+                                            'paid_payment_type' => 'FULL',
+                                            'paid_payment_method' => !empty($post['paid_payment_method']) ? $post['paid_payment_method'] : null,
+                                            'paid_total' => $paid_total,
+                                            'paid_name' => !empty($upload_process['result']['file_name']) ? 'Bukti Bayar - '.$upload_process['result']['file_name'] : null,
+                                            'paid_format' => !empty($upload_process['result']['file_ext']) ? str_replace(".","",$upload_process['result']['file_ext']) : null,
+                                            'paid_url' => !empty($upload_process['result']['file_location']) ? $upload_process['result']['file_location'] : null,
+                                            'paid_size' => !empty($upload_process['result']['file_size']) ? $upload_process['result']['file_size'] : null
+                                        );
+
+                                        $save_data = $this->Front_model->add_paid($params);
+                                    }    
                                 }
-                                //End Set Paid
+
+                                $prepare = "CALL sp_update_order_paid($paid_order_id)";
+                                $query   = $this->db->query($prepare);
 
                                 $params_price = array(
                                     'price_ref_id' => $get_previous['order_item_ref_id'],

@@ -42,12 +42,12 @@
             boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
             url: url_image,
         });
-var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
-    enableExif: true,
-    viewport: {width: image_width, height: image_height},
-    boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
-    url: url_image,
-});
+        var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
+            enableExif: true,
+            viewport: {width: image_width, height: image_height},
+            boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
+            url: url_image,
+        });
         $('.files_link').magnificPopup({
             type: 'image',
             mainClass: 'mfp-with-zoom', // this class is for CSS animation below
@@ -213,7 +213,7 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
             language: "id",
             todayHighlight: true,
             weekStart: 1 
-        }).on('change', function(e){
+        }).on('changeDate', function(e){
             e.stopImmediatePropagation();
             order_table.ajax.reload();
         });
@@ -1717,7 +1717,6 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                             dsp += '    <label class="form-label">Jenis File</label>';
                             dsp += '        <select id="jc_select" name="jc_select" class="form-control">';
                             dsp += '            <option value="0">Pilih</option>';
-                            dsp += '            <option value="Bukti Bayar">Bukti Bayar</option>';
                             dsp += '            <option value="KTP">KTP</option>';
                             dsp += '            <option value="Form Sewa">Form</option>';
                             dsp += '            <option value="Plat Kendaraan">Plat Kendaraan</option>';
@@ -2396,17 +2395,32 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                             dsp += '    <div class="form-group">';
                             dsp += '    <label class="form-label">Metode</label>';
                             dsp += '        <select id="jc_metode" name="jc_metode"class="form-control">';
-                            dsp += '            <option value="CASH" selected>Cash</option>';
-                            dsp += '            <option value="TRANSFER">Transfer</option>';
+                            dsp += '            <option value="TRANSFER" selected>Transfer</option>';
+                            dsp += '            <option value="CASH">Cash</option>';
+                            dsp += '            <option value="ALL">Transfer & Cash</option>';    
                             dsp += '        </select>';
                             dsp += '    </div>';
                             dsp += '</div>';
-                            dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                            dsp += '<div class="div_single_payment col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="display:inline;">';
                             dsp += '    <div class="form-group">';
                             dsp += '    <label class="form-label">Jumlah (Rp)</label>';
                             dsp += '        <input id="jc_total" name="jc_total" type="text" class="form-control">';
                             dsp += '    </div>';
                             dsp += '</div>';
+                            dsp += '<div class="div_double_payment col-md-12 col-xs-12 col-sm-12 padding-remove-side" style="display:none;">';
+                                dsp += '<div class="col-md-6 col-xs-6 col-sm-12 padding-remove-side">';
+                                dsp += '    <div class="form-group">';
+                                dsp += '    <label class="form-label">Jumlah Cash (Rp)</label>';
+                                dsp += '        <input id="jc_total_cash" name="jc_total_cash" type="text" class="form-control">';
+                                dsp += '    </div>';
+                                dsp += '</div>';                            
+                                dsp += '<div class="col-md-6 col-xs-6 col-sm-12 padding-remove-side">';
+                                dsp += '    <div class="form-group">';
+                                dsp += '    <label class="form-label">Jumlah Transfer (Rp)</label>';
+                                dsp += '        <input id="jc_total_transfer" name="jc_total_transfer" type="text" class="form-control">';
+                                dsp += '    </div>';
+                                dsp += '</div>';    
+                            dsp += '</div>';       
                             dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
                             dsp += '    <div class="form-group">';
                             dsp += '    <label class="form-label">Pilih Bukti Pembayaran yg akan di upload (maks 2 MB)</label>';
@@ -2416,7 +2430,9 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                         dsp += '</form>';
                         content = dsp;
                         self.setContentAppend(content);
-                        new AutoNumeric('#jc_total', autoNumericOption);                    
+                        new AutoNumeric('#jc_total', autoNumericOption);          
+                        new AutoNumeric('#jc_total_cash', autoNumericOption);
+                        new AutoNumeric('#jc_total_transfer', autoNumericOption);             
                     },
                     buttons: {
                         button_1: {
@@ -2425,44 +2441,68 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                             keys: ['enter'],
                             action: function(e){
                                 let self      = this;
+                                var next = true;
                                 // let input     = self.$content.find('#jc_input').val();
                                 let input     = self.$content.find('#jc_input')[0].files[0];
                                 let metode     = self.$content.find('#jc_metode').val();
-                                let total      = self.$content.find('#jc_total').val();                                                                                        
+                                let total      = self.$content.find('#jc_total').val();       
+                                let total_cash      = self.$content.find('#jc_total_cash').val();
+                                let total_transfer  = self.$content.find('#jc_total_transfer').val();                                                                                        
                                 // if(!input){
                                     // $.alert('File belum dipilih');
                                     // return false;
                                 // } else{
                                     // $('#upload1')[0].files[0]
-                                    let form = new FormData();
-                                    form.append('action', 'paid_create');
-                                    form.append('paid_order_id',id);
-                                    form.append('paid_total',total);
-                                    form.append('paid_payment_method',metode);                                                                        
-                                    form.append('source', input);
-                                    $.ajax({
-                                        type: "post",
-                                        url: url,
-                                        data: form, dataType: 'json',
-                                        cache: 'false', contentType: false, processData: false,
-                                        beforeSend: function() {},
-                                        success: function(d) {
-                                            let s = d.status;
-                                            let m = d.message;
-                                            let r = d.result;
-                                            if(parseInt(s) == 1){
-                                                notif(s, m);
-                                                loadPaid(id);
-                                                order_table.ajax.reload(null,false);
-                                            }else{
-                                                notif(s,m);
-                                                // notifSuccess(m);
-                                            }
-                                        },
-                                        error: function(xhr, status, err) {
-                                            notif(0,err);
+                                    if(metode == "ALL"){
+                                        if(!total_cash){
+                                            $.alert('Jumlah Cash wajib diisi');
+                                            next = false; return false;
                                         }
-                                    });
+
+                                        if(!total_transfer){
+                                            $.alert('Jumlah Transfer wajib diisi');
+                                            next = false; return false;
+                                        }                                        
+                                    }else{
+                                        if(!total){
+                                            $.alert('Jumlah wajib diisi');
+                                            next = false; return false;
+                                        }
+                                    }
+
+                                    if(next){                                    
+                                        let form = new FormData();
+                                        form.append('action', 'paid_create');
+                                        form.append('paid_order_id',id);
+                                        form.append('paid_payment_method',metode);                                                                        
+                                        form.append('paid_total',total);
+                                        form.append('paid_total_cash',total_cash);
+                                        form.append('paid_total_transfer',total_transfer);                                          
+                                        form.append('source', input);
+                                        $.ajax({
+                                            type: "post",
+                                            url: url,
+                                            data: form, dataType: 'json',
+                                            cache: 'false', contentType: false, processData: false,
+                                            beforeSend: function() {},
+                                            success: function(d) {
+                                                let s = d.status;
+                                                let m = d.message;
+                                                let r = d.result;
+                                                if(parseInt(s) == 1){
+                                                    notif(s, m);
+                                                    loadPaid(id);
+                                                    order_table.ajax.reload(null,false);
+                                                }else{
+                                                    notif(s,m);
+                                                    // notifSuccess(m);
+                                                }
+                                            },
+                                            error: function(xhr, status, err) {
+                                                notif(0,err);
+                                            }
+                                        });
+                                    }
                                 // }
                             }
                         },
@@ -2496,6 +2536,17 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
         });
         $(document).on("click","#btn_paid_delete", function(e){ //Not Used
 
+        });
+        $(document).on("change","#jc_metode", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if($("#jc_metode").find(":selected").val() == "ALL"){
+                $(".div_single_payment").hide();
+                $(".div_double_payment").show();
+            }else{
+                $(".div_double_payment").hide();
+                $(".div_single_payment").show();                
+            }
         });
 
         function loadPaid(data_id){
@@ -2871,7 +2922,9 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
             });
         });  
 
-        let orderRPRICE = new AutoNumeric('#rpaid_total', autoNumericOption);  
+        let orderRPRICE = new AutoNumeric('#rpaid_total', autoNumericOption);
+        let orderRPRICE_CASH = new AutoNumeric('#rpaid_total_cash', autoNumericOption);
+        let orderRPRICE_TRANSFER = new AutoNumeric('#rpaid_total_transfer', autoNumericOption);                  
         $(document).on("click",".btn_rebooking", function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -2907,7 +2960,10 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                         $("#rorder_contact_phone").val(ri['order_contact_phone']);
                         $("#rpaid_total").val(ri['order_total']);      
                         
+                        var price_before = parseFloat(r.order_total);
+
                         $("#rorder_previous_date").val(moment(rd['previous_start']).format("DD-MMM-YYYY")+' sd '+moment(rd['previous_end']).format("DD-MMM-YYYY"));
+                        $("#rorder_previous_price").val('Rp. '+addCommas(price_before.toFixed(0)));
                         $("#rorder_start_date").datepicker("update", moment(rd['rebooking_start']).format("DD-MM-YYYY"));
                         $("#rorder_end_date").datepicker("update", moment(rd['rebooking_end']).format("DD-MM-YYYY"));                
 
@@ -3022,26 +3078,6 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
         $(document).on("click","#btn_save_rebook", function(e) {
             e.preventDefault(); e.stopPropagation();
             let next = true;
-            // if(next){
-            //     if (!$("input[name='order_branch_id']:checked").val()) {
-            //         next = false;
-            //         notif(0,'Cabang wajib pilih');
-            //     }
-            // }
-
-            // if(next){
-            //     if (!$("input[name='order_ref_id']:checked").val()) {
-            //         next = false;
-            //         notif(0,'Jenis Kamar wajib pilih');
-            //     }
-            // }  
-            // if(next){
-            //     if (!$("input[name='order_product_id']:checked").val()) {
-            //         next = false;
-            //         notif(0,'Nomor Kamar wajib pilih');
-            //     }
-            // }              
-            
             if(next){
                 if ($("input[name='rorder_id']").val().length == 0) {
                     next = false;
@@ -3067,10 +3103,31 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                 }
             }               
             if(next){
-                if (orderRPRICE.rawValue < 1) {
-                    next = false;
-                    notif(0,'Jumlah (Rp) tidak boleh kosong');
-                }
+                // if (orderRPRICE.rawValue < 1) {
+                //     next = false;
+                //     notif(0,'Jumlah (Rp) tidak boleh kosong');
+                // }
+                var total_cash = $("#rpaid_total_cash").val();
+                var total_transfer = $("#rpaid_total_transfer").val();
+                var total = orderRPRICE.rawValue;
+                var metode = $("#rpaid_payment_method").find(":selected").val();
+
+                if(metode == "ALL"){
+                    if(!total_cash){
+                        $.alert('Jumlah Cash wajib diisi');
+                        next = false;
+                    }
+
+                    if(!total_transfer){
+                        $.alert('Jumlah Transfer wajib diisi');
+                        next = false;
+                    }                                        
+                }else{
+                    if(!total){
+                        $.alert('Jumlah wajib diisi');
+                        next = false;
+                    }
+                }                
             }
 
             /* Prepare ajax for UPDATE */
@@ -3086,12 +3143,14 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
                 // form.set('order_ref_id',$("input[name='order_ref_id']:checked").val());
                 form.set('order_start_date', $("#rorder_start_date").datepicker('getFormattedDate', 'yyyy-mm-dd'));
                 form.set('order_end_date', $("#rorder_end_date").datepicker('getFormattedDate', 'yyyy-mm-dd')); 
+                form.append('paid_payment_method', $("#rpaid_payment_method").find(":selected").val());
                 form.set('paid_total', orderRPRICE.rawValue);
+                form.set('paid_total_cash', orderRPRICE_CASH.rawValue);
+                form.set('paid_total_transfer', orderRPRICE_TRANSFER.rawValue);                                
                 form.set('files_1', 0); //Bukti Bayar
                 // form.set('files_2', 0); //Foto KTP
                 // form.set('files_3', 0); //Plat Kendaraan                  
                 form.append('upload_1', $("#files_preview_10").attr('data-save-img'));
-                form.append('paid_payment_method', $("#rpaid_payment_method").find(":selected").val());
                 // form.append('upload_2', $("#files_preview_2").attr('data-save-img'));
                 // form.append('upload_3', $("#files_preview_3").attr('data-save-img'));   
                 // form.append('order_item_ref_price_sort',$("input[name=order_ref_price_id]:checked").val());   
@@ -3147,6 +3206,17 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
             e.preventDefault();
             e.stopPropagation();
             formRebookingReset();
+        });
+        $(document).on("change","#rpaid_payment_method", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if($("#rpaid_payment_method").find(":selected").val() == "ALL"){
+                $(".rdiv_single_payment").hide();
+                $(".rdiv_double_payment").show();
+            }else{
+                $(".rdiv_double_payment").hide();
+                $(".rdiv_single_payment").show();                
+            }
         });
 
         //Image Croppie
@@ -3348,7 +3418,9 @@ var upload_crop_img_10 = $('#modal_croppie_canvas_10').croppie({
             $("#rorder_contact_name").val('');      
             $("#rorder_contact_phone").val('');      
             $("#rpaid_payment_method").val(0).trigger('change');
-            $("#rpaid_total").val(0); 
+            $("#rpaid_total").val(0);
+            $("#rpaid_total_cash").val(0);
+            $("#rpaid_total_transfer").val(0);                         
             orderRPRICE.set(0);
             $("#files_preview_10").attr('src', url_image);
             console.log(url_image);

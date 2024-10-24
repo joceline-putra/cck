@@ -350,7 +350,7 @@
                         'file_old_name' => $file_name,
                         'file_ext' => $file_ext,
                         'file_location' => $path . $file_new_name,
-                        'file_size' => $file_size,
+                        'file_size' => $file_size/1024
                     ); 
                 } else {
                     $errors[] = "Failed to upload $file_name.";
@@ -502,8 +502,8 @@
                                 'new_image' => $path . $file_new_name,
                                 // 'create_thumb' => FALSE,
                                 'maintain_ratio' => TRUE,
-                                'width' => $compress['width'],
-                                'height' => $compress['height'],
+                                // 'width' => $compress['width'],
+                                // 'height' => $compress['height'],
                                 'quality' => '70%'
                             ];                                    
                             $ci->load->library('image_lib', $config);
@@ -518,7 +518,7 @@
                         'file_old_name' => $file_name,
                         'file_ext' => $file_ext,
                         'file_location' => $path . $file_new_name,
-                        'file_size' => $file_size,
+                        'file_size' => $file_size/1024,
                     ); 
                 } else {
                     $errors[] = "Failed to upload $file_name.";

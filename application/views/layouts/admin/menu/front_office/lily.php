@@ -337,6 +337,7 @@
                                         <label class="form-label">Harga</label>
                                         <input id="order_price" name="order_price" type="text" value="" class="form-control" readonly/>
                                     </div>
+                                    <p id="order_price_p" style="color:red;display:none;"><i class="fas fa-question"></i> Khusus Midnight, harga dapat di rubah diatas mengantisipasi pindah tanggal</p>
                                 </div>                                                       
                             </div>       
                             <div class="col-md-12 col-sm-12 col-xs-12 padding-remove-side" style="margin-top:20px;">

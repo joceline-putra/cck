@@ -692,7 +692,6 @@ class Approval extends MY_Controller{
                                     'height'=>$this->image_height
                                 );   
                                 $upload_helper = upload_file_source($this->folder_upload, $this->input->post('source'),$image_config);
-                                // var_dump($upload_helper);die;
                                 if ($upload_helper['status'] == 1) {
                                     $params_image = array(
                                         'file_name' => !empty($post['note']).' - '.$upload_helper['result']['file_old_name'],

@@ -1685,7 +1685,10 @@
             var ed = $("#form_booking input[id='order_end_date']");   
 
             sd.val(sd.attr('data-original'));
-            ed.val(ed.attr('data-original'));                 
+            ed.val(ed.attr('data-original'));    
+            
+            $("#order_price").attr('readonly',true);   
+            $("#order_price_p").hide();              
         } 
 
         //Approval Button
@@ -3476,6 +3479,8 @@
 
         function reset_date_booking(hour){ 
             console.log('mHOUR = '+hour);
+            $("#order_price_p").hide();
+            $("#order_price").attr('readonly'); 
             /*
                 Kombinasi Bootstrap Datepicker dan Moment JS
             */
@@ -3487,7 +3492,9 @@
 
                     checkIN.hour('0');
                     checkOUT.hour(hourCHECKOUT);
-                    checkOUT.add(1,"days");                    
+                    checkOUT.add(1,"days");        
+                    $("#order_price").removeAttr('readonly'); 
+                    $("#order_price_p").show();           
                 }else{
                     checkIN.hour(hourCHECKIN);
                     checkOUT.hour(hourCHECKOUT);
@@ -3514,9 +3521,9 @@
         }
         function loadBeforeBooking(){
             if($("#paid_payment_method").find(":selected").val() == "ALL"){
-                var kes = 'Tunai: '+addCommas(paidTOTAL_CASH.rawValue)+'<br>Transfer: '+addCommas(paidTOTAL_TRANSFER.rawValue);
+                var kes = 'Cash: '+addCommas(paidTOTAL_CASH.rawValue)+'<br>Transfer: '+addCommas(paidTOTAL_TRANSFER.rawValue);
             }else{
-                var kes = $("#paid_total").val()+' - '+$("#paid_payment_method").find(":selected").val();
+                var kes = $("#paid_payment_method").find(":selected").val()+': '+addCommas(paidTOTAL.rawValue);
             }
 
             $("#table_confirm").html('');
@@ -3527,8 +3534,8 @@
             dsp += `<tr><td>Kamar</td><td>:</td><td>${$("input[name='order_product_id']:checked").attr('data-name')}</td></tr>`;
             dsp += `<tr><td>Tanggal</td><td>:</td><td>${$("#order_start_date").datepicker('getFormattedDate', 'dd-M-yyyy')} sd ${$("#order_end_date").datepicker('getFormattedDate', 'dd-M-yyyy')}</td></tr>`; 
             dsp += `<tr><td>Check-In</td><td>:</td><td>${$("#order_start_hour").find(":selected").val()}:${$("#order_start_hour_minute").find(":selected").val()} sd ${$("#order_end_hour").find(":selected").val()}:${$("#order_end_hour_minute").find(":selected").val()}</td></tr>`;                                                            
-            dsp += `<tr><td>Harga</td><td>:</td><td>${$("#order_price").val()}</td></tr>`;
-            dsp += `<tr><td>Dibayar</td><td>:</td><td>${kes}</td></tr>`;
+            dsp += `<tr><td>Harga Kamar</td><td>:</td><td><b>Rp. ${addCommas(orderPRICE.rawValue)}</td></b></tr>`;
+            dsp += `<tr><td>Dibayar</td><td>:</td><td><b>${kes}</b></td></tr>`;
             dsp += `<tr><td>Pemesan</td><td>:</td><td>${$("#order_contact_name").val()} - ${$("#order_contact_phone").val()}</td></tr>`;            
             $("#table_confirm").append(dsp);
         }

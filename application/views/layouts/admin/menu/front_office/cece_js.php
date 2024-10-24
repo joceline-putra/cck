@@ -9,9 +9,13 @@
         var url_print = "<?= base_url('front_office/prints'); ?>"; 
         let url_tool = "<?php base_url('search/manage'); ?>";
         var url_image = "<?php site_url('upload/noimage.png'); ?>";
-        var url_message         = "<?= base_url('message'); ?>";   
+        var url_message         = "<?= base_url('message'); ?>"; 
+
         let image_width = "<?= $image_width;?>";
         let image_height = "<?= $image_height;?>";
+
+        let image_width_2 = 480;
+        let image_height_2 = 240;
 
         let orderID = 0;
         let orderItemID = 0;
@@ -31,8 +35,8 @@
         });
         var upload_crop_img_2 = $('#modal_croppie_canvas_2').croppie({
             enableExif: true,
-            viewport: {width: image_width, height: image_height},
-            boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
+            viewport: {width: image_width_2, height: image_height_2},
+            boundary: {width: parseInt(image_width_2)+10, height: parseInt(image_height_2)+10},
             url: url_image,
         });    
         var upload_crop_img_3 = $('#modal_croppie_canvas_3').croppie({
@@ -43,8 +47,8 @@
         });  
         var upload_crop_img_4 = $('#modal_croppie_canvas_4').croppie({
             enableExif: true,
-            viewport: {width: image_width, height: image_height},
-            boundary: {width: parseInt(image_width)+10, height: parseInt(image_height)+10},
+            viewport: {width: image_width_2, height: image_height_2},
+            boundary: {width: parseInt(image_width_2)+10, height: parseInt(image_height_2)+10},
             url: url_image,
         });                        
         $('.files_link_1').magnificPopup({
