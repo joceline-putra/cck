@@ -1582,7 +1582,7 @@ class Keuangan extends MY_Controller{
                     $journal_item_journal_id = !empty($data['journal_id']) ? $data['journal_id'] : null;
                     $journal_item_account_id = !empty($this->input->post('journal_account')) ? $this->input->post('journal_account') : $data['journal_account'];
                     $journal_item_trans_id = !empty($this->input->post('journal_trans')) ? $this->input->post('journal_trans') : null;
-                    $journal_item_note = !empty($this->input->post('keterangan')) ? $this->input->post('keterangan') : $data['keterangan']; 
+                    $journal_item_note = !empty($this->input->post('keterangan')) ? $this->input->post('keterangan') : null; 
 
                     $journal_item_debit = !empty($data['debit']) ? str_replace(',','',$data['debit']) : 0;
                     $journal_item_credit = !empty($data['kredit']) ? str_replace(',','',$data['kredit']) : 0;  

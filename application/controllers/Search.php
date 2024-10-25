@@ -759,6 +759,53 @@ class Search extends MY_Controller{
                     'text' => 'Buat Akun Baru'
                 ));                             
             }
+            else if($source=="accounts_branch_1"){
+                if(!empty($group)){
+                    $where_group = ' AND account_group='.$group.'';
+                }else{
+                    $where_group = '';
+                }
+
+                if(!empty($group_sub)){
+                    $where_group_sub = ' AND account_group_sub='.$group_sub.'';
+                }else{
+                    $where_group_sub = '';
+                }                
+
+                if(!empty($terms)){
+                    $prepare = "
+                        SELECT account_id AS id, account_name AS nama, account_branch_id,
+                            (SELECT CONCAT(IFNULL(`account_code`,''),' - ',IFNULL(`account_name`,''))) AS `text` 
+                        FROM accounts
+                        WHERE account_code LIKE '%".$terms."%' OR account_name LIKE '%".$terms."%' 
+                        AND account_flag=1 AND account_branch_id=1
+                        ".$where_group." ".$where_group_sub."
+                    ";
+                    $query = $this->db->query($prepare);
+                }else{
+                    $prepare = "
+                        SELECT account_id AS id, account_name AS nama, account_branch_id,
+                            (SELECT CONCAT(IFNULL(`account_code`,''),' - ',IFNULL(`account_name`,''))) AS `text` 
+                        FROM accounts
+                        WHERE account_flag=1 AND account_branch_id=1
+                        ".$where_group." ".$where_group_sub."
+                        ORDER BY account_name ASC LIMIT 50;
+                    ";
+                    $query = $this->db->query($prepare);                    
+                }
+                // var_dump($prepare);
+                $result = $query->result();
+                $json = array_push($result,array(
+                    'id' => "0",
+                    'nama' => '-- Ketik yg ingin di cari --',
+                    'text' => '-- Ketik yg ingin di cari --'
+                ));     
+                $json = array_push($result,array(
+                    'id' => "-",
+                    'nama' => 'Buat Akun Baru',
+                    'text' => 'Buat Akun Baru'
+                ));                             
+            }
             else if($source=="accounts_banks"){
                 if(!empty($group)){
                     $where_group = ' AND account_group='.$group.'';

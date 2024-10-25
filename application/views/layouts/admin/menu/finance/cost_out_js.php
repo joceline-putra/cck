@@ -12,8 +12,8 @@
         // Auto Set Navigation
         var identity = "<?php echo $identity; ?>";
         var menu_link = "<?php echo $_view; ?>";
-        $(".nav-tabs").find('li[class="active"]').removeClass('active');
-        $(".nav-tabs").find('li[data-name="finance/cost_out"]').addClass('active');
+        // $(".nav-tabs").find('li[class="active"]').removeClass('active');
+        // $(".nav-tabs").find('li[data-name="finance/cost_out"]').addClass('active');
         // console.log(menu_link);
         var url = "<?= base_url('keuangan/manage'); ?>";
         var url_print = "<?= base_url('keuangan/print'); ?>";
@@ -315,7 +315,7 @@
                         search: params.term,
                         tipe: 1, //1=Supplier, 2=Asuransi
                         // category: 0,
-                        source: 'accounts',
+                        source: 'accounts_branch_1',
                         group: 5,
                         group_sub: 16
                     }
@@ -413,7 +413,7 @@
                 data: function (params) {
                     var query = {
                         search: params.term,
-                        source: 'accounts',
+                        source: 'accounts_branch_1',
                         group: 1,
                         group_sub: 3
                     }
@@ -1508,7 +1508,7 @@
 
                                     dsp += '<td>' + d.result[a]['account_name'];
                                     dsp += '</td>';
-                                    dsp += '<td style="text-align:left;">' + d.result[a]['journal_item_note'] + '</td>';
+                                    // dsp += '<td style="text-align:left;">' + d.result[a]['journal_item_note'] + '</td>';
                                     dsp += '<td style="text-align:right;">' + d.result[a]['journal_item_debit'] + '</td>';
                                     // dsp += '<td style="text-align:right;">'+d.result[a]['journal_item_credit']+'</td>';                    
                                     dsp += '<td>';
