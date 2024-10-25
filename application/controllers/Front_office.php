@@ -2047,20 +2047,19 @@ class Front_office extends MY_Controller{
                             }
 
                             if(!empty($_FILES['file_key'])){
-                                if(intval($_FILES['file_key']['error']) == 1){
+                                if(intval($_FILES['file_key']['size']) < 1){
                                     $next = false;
                                     $set_msg = 'Foto kunci terlalu besar';
                                 }
                             }
 
                             if(!empty($_FILES['file_deposit'])){
-                                if(intval($_FILES['file_deposit']['error']) == 1){
+                                if(intval($_FILES['file_deposit']['size']) < 1){
                                     $next = false;
                                     $set_msg = 'Foto deposit terlalu besar';
                                 }
                             }                            
 
-                            // var_dump($_FILES['file_key']);die;
                             if($next){
                                 if($get_data){
                                     $set_update=$this->Front_model->update_booking_item_custom($where,$params);

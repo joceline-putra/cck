@@ -502,8 +502,8 @@
                                 'new_image' => $path . $file_new_name,
                                 // 'create_thumb' => FALSE,
                                 'maintain_ratio' => TRUE,
-                                // 'width' => $compress['width'],
-                                // 'height' => $compress['height'],
+                                'width' => $compress['width'],
+                                'height' => $compress['height'],
                                 'quality' => '70%'
                             ];                                    
                             $ci->load->library('image_lib', $config);
