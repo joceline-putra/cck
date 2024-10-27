@@ -334,8 +334,8 @@
             "columnDefs": [
                 {"targets": 0, "title": "Tanggal", "searchable": true, "orderable": true},
                 {"targets": 1, "title": "Nomor "+trans_alias, "searchable": true, "orderable": true},
-                {"targets": 2, "title": "Cabang", "searchable": true, "orderable": true, "className": "text-left"},
-                {"targets": 3, "title": "Kamar", "searchable": true, "orderable": true},
+                {"targets": 2, "title": "Cabang / Kamar", "searchable": true, "orderable": true, "className": "text-left"},
+                {"targets": 3, "title": "Tamu / Metode", "searchable": true, "orderable": true},
                 {"targets": 4, "title": "Total", "searchable": true, "orderable": true},
                 {"targets": 5, "title": "Action", "searchable": false, "orderable": false}
             ],
@@ -347,25 +347,25 @@
                     render: function (data, meta, row) {
                         var dsp = '';
                         dsp += moment(row.trans_date).format("DD-MMM-YYYY, HH:mm");
-                        if (row.trans_label == undefined) {
-                            dsp += '&nbsp;<span class="label btn-label" style="cursor:pointer;color:white;background-color:#929ba1;padding:1px 4px;" data-trans-id="' + row.trans_id + '">Label</span>';
-                        } else {
-                            var bgcolor = '#929ba1';
-                            var color = 'white';
-                            var icon = '';
+                        // if (row.trans_label == undefined) {
+                        //     dsp += '&nbsp;<span class="label btn-label" style="cursor:pointer;color:white;background-color:#929ba1;padding:1px 4px;" data-trans-id="' + row.trans_id + '">Label</span>';
+                        // } else {
+                        //     var bgcolor = '#929ba1';
+                        //     var color = 'white';
+                        //     var icon = '';
 
-                            if (row.trans_label !== undefined) {
-                                icon = row.label_icon;
-                                bgcolor = row.label_background;
-                                color = row.label_color;
-                            }
+                        //     if (row.trans_label !== undefined) {
+                        //         icon = row.label_icon;
+                        //         bgcolor = row.label_background;
+                        //         color = row.label_color;
+                        //     }
 
-                            dsp += '&nbsp;<span class="label btn-label" data-trans-id="' + row.trans_id + '" style="cursor:pointer;color:' + color + ';background-color:' + bgcolor + ';padding:1px 4px;">';
-                            dsp += '<span class="' + icon + '">&nbsp;';
-                            dsp += row.trans_label;
-                            dsp += '</span>';
-                            dsp += '</span>';
-                        }                               
+                        //     dsp += '&nbsp;<span class="label btn-label" data-trans-id="' + row.trans_id + '" style="cursor:pointer;color:' + color + ';background-color:' + bgcolor + ';padding:1px 4px;">';
+                        //     dsp += '<span class="' + icon + '">&nbsp;';
+                        //     dsp += row.trans_label;
+                        //     dsp += '</span>';
+                        //     dsp += '</span>';
+                        // }                               
                         return dsp;
                     }
                 }, {
@@ -381,7 +381,8 @@
                     'data': 'branch_name',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        dsp += row.branch_name;
+                        dsp += row.branch_name+'<br>';
+                        dsp += row.product_name;
                         // if(row.trans_contact_name == undefined){
                         //     dsp += '<label class="label label-inverse">'+ contact_1_alias +'</label>&nbsp;';
                         //     dsp += row.contact_name;
@@ -394,7 +395,16 @@
                     'data': 'trans_total', className: 'text-left',
                     render: function (data, meta, row) {
                         var dsp = '';
-                        dsp += row.product_name;
+                        dsp += row.trans_contact_name+'<br>';
+                        if(row.trans_paid == 1){
+                            if(row.trans_paid_type == 1){
+                                dsp += 'CASH';
+                            }else if(row.trans_paid_type == 2){
+                                dsp += 'TRANSFER';
+                            }
+                        }else{
+                            dsp += 'Belum Bayar';
+                        }
                         return dsp;
                     }
                 }, {
@@ -672,6 +682,7 @@
                 return false;
             }
 
+            
             if(next){
                 var trans_is_member       = parseInt($(".trans_contact_checkbox").attr('data-flag'));
                 var trans_contact_id      = $("#trans_contact_id").find(':selected').val();
@@ -722,59 +733,127 @@
                 }
                             
                 if(next){
-                    let form = new FormData();
-                    form.append('action', 'create');
-                    form.append('trans_id', transId); 
-                    form.append('trans_branch_id', branch_id);                     
-                    form.append('trans_date', trans_date);                    
-                    // form.append('trans_contact_checkbox', $(".trans_contact_checbox").attr('data-flag'));  
-                    // form.append('trans_non_contact_id', contact_non_id);  
-                    form.append('trans_contact_id', 1);  
-                    form.append('trans_contact_name', $("#trans_contact_name").val());  
-                    form.append('trans_contact_phone', $("#trans_contact_phone").val());  
-                    form.append('trans_item_list', JSON.stringify(transItemsList));         
-                    form.append('trans_product_id', trans_ref_id);         
-                    // form.append('sales_id', trans_sales_id);
-                    $.ajax({
-                        type: "post",
-                        url: url,
-                        data: form, 
-                        dataType: 'json', cache: 'false', 
-                        contentType: false, processData: false,                        
-                        beforeSend:function(){
-                            if(transId > 0){
-                                notif(1,'Memperbarui '+trans_alias);
-                            }else{
-                                notif(1,'Menyimpan '+trans_alias);
-                            }
+
+
+                    let title   = 'Metode Pembayaran';
+                    $.confirm({
+                        title: title,
+                        columnClass: 'col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1',      
+                        animation:'zoom', closeAnimation:'bottom', animateFromElement:false, useBootstrap:true,
+                        content: function(){
                         },
-                        success:function(d){
-                            let s = d.status;
-                            let m = d.message;
-                            let r = d.result;
-                            if(parseInt(s) == 1){
-                                notif(s,m);
-                                formTransReset();
-                                trans_table.ajax.reload();
-                                var p = {
-                                    trans_id:d.result.id,
-                                    trans_number:d.result.number,
-                                    trans_date:d.result.date,
-                                    trans_session:d.result.session,
-                                    contact_id:d.result.contact.id,
-                                    contact_name:d.result.contact.name,
-                                    contact_phone:d.result.contact.phone,
-                                    message:m                                                                                                                                                                                                                                  
+                        onContentReady: function(e){
+                            let self    = this;
+                            let content = '';
+                            let dsp     = '';
+                    
+                            // dsp += '<div>Content is ready after process !</div>';
+                            dsp += '<form id="jc_form">';
+                                dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                                dsp += '    <div class="form-group">';
+                                dsp += '    <label class="form-label">Total Pembayaran</label>';
+                                dsp += '        <input id="jc_input" name="jc_input" class="form-control" value="'+addCommas(transItemTotal)+'" readonly>';
+                                dsp += '    </div>';
+                                dsp += '</div>';
+                                dsp += '<div class="col-md-12 col-xs-12 col-sm-12 padding-remove-side">';
+                                dsp += '    <div class="form-group">';
+                                dsp += '    <label class="form-label">Metode Bayar</label>';
+                                dsp += '        <select id="jc_select" name="jc_select" class="form-control">';
+                                dsp += '            <option value="CASH" selected>Cash</option>';
+                                dsp += '            <option value="TRANSFER">Transfer</option>';
+                                dsp += '        </select>';
+                                dsp += '    </div>';
+                                dsp += '</div>';
+                            dsp += '</form>';
+                            content = dsp;
+                            self.setContentAppend(content);
+                        },
+                        buttons: {
+                            button_1: {
+                                text:'<i class="fas fa-check white"></i> Process',
+                                btnClass: 'btn-primary',
+                                keys: ['enter'],
+                                action: function(e){
+                                    let self      = this;
+                    
+                                    let jc_input     = self.$content.find('#jc_input').val();
+                                    let jc_select    = self.$content.find('#jc_select').val();
+                                    
+                                    if(!jc_select){
+                                        $.alert('Metode Bayar mohon dipilih dahulu');
+                                        return false;
+                                    } else{
+                                        let form = new FormData();
+                                        form.append('action', 'create');
+                                        form.append('trans_id', transId); 
+                                        form.append('trans_branch_id', branch_id);                     
+                                        form.append('trans_date', trans_date);                    
+                                        // form.append('trans_contact_checkbox', $(".trans_contact_checbox").attr('data-flag'));  
+                                        // form.append('trans_non_contact_id', contact_non_id);  
+                                        form.append('trans_contact_id', 1);  
+                                        form.append('trans_contact_name', $("#trans_contact_name").val());  
+                                        form.append('trans_contact_phone', $("#trans_contact_phone").val());  
+                                        form.append('trans_item_list', JSON.stringify(transItemsList));         
+                                        form.append('trans_product_id', trans_ref_id);   
+                                        form.append('trans_total',transItemTotal);
+                                        form.append('payment_method',jc_select);      
+                                        // form.append('sales_id', trans_sales_id);
+                                        $.ajax({
+                                            type: "post",
+                                            url: url,
+                                            data: form, 
+                                            dataType: 'json', cache: 'false', 
+                                            contentType: false, processData: false,                        
+                                            beforeSend:function(){
+                                                if(transId > 0){
+                                                    notif(1,'Memperbarui '+trans_alias);
+                                                }else{
+                                                    notif(1,'Menyimpan '+trans_alias);
+                                                }
+                                            },
+                                            success:function(d){
+                                                let s = d.status;
+                                                let m = d.message;
+                                                let r = d.result;
+                                                if(parseInt(s) == 1){
+                                                    notif(s,m);
+                                                    formTransReset();
+                                                    trans_table.ajax.reload();
+                                                    var p = {
+                                                        trans_id:d.result.id,
+                                                        trans_number:d.result.number,
+                                                        trans_date:d.result.date,
+                                                        trans_session:d.result.session,
+                                                        contact_id:d.result.contact.id,
+                                                        contact_name:d.result.contact.name,
+                                                        contact_phone:d.result.contact.phone,
+                                                        payment_method:d.result.payment_method,
+                                                        trans_total:d.result.total,
+                                                        message:m                                                                                                                                                                                                                                  
+                                                    }
+                                                    transSuccess(p);
+                                                }else{
+                                                    notif(s,m);
+                                                }
+                                            },
+                                            error:function(xhr,status,err){
+                                                notif(0,err);
+                                            }
+                                        });                                        
+                                    }
                                 }
-                                transSuccess(p);
-                            }else{
-                                notif(s,m);
+                            },
+                            button_2: {
+                                text: '<i class="fas fa-times white"></i> Close',
+                                btnClass: 'btn-danger',
+                                keys: ['Escape'],
+                                action: function(){
+                                    //Close
+                                }
                             }
-                        },
-                        error:function(xhr,status,err){
-                            notif(0,err);
                         }
                     });
+
                 }
             }
         });
@@ -2386,7 +2465,7 @@
         }
         function transSuccess(params){ // OLD paymentSuccess()
             var d = params; 
-
+            // console.log(d);
             //Prepare Print
             $("#modal-print-title").html(d.message);
             $(".btn_print_trans").attr('data-id', d.trans_id);
@@ -2399,10 +2478,13 @@
             
             $("#modal-print-contact-name").val(' ' + d.contact_name);
             $("#modal-print-contact-phone").val(' ' + d.contact_phone);
+            $(".modal-print-trans-total").html(': ' + addCommas(d.trans_total));
+            $(".modal-print-payment-method").html(': ' + d.payment_method);                        
             
             $(".btn_send_whatsapp").attr('data-id',d.trans_id)
             .attr('data-number',d.trans_number)
             .attr('data-date',d.trans_date)
+            .attr('data-total',d.trans_total)            
             .attr('data-contact-id',d.contact_id)
             .attr('data-contact-name',d.contact_name)
             .attr('data-contact-phone',d.contact_phone);            

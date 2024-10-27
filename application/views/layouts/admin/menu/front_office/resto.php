@@ -1368,7 +1368,15 @@
                             <tr>
                                 <td>Tanggal</td>
                                 <td class="modal-print-trans-date">:</td>
-                            </tr>                 
+                            </tr> 
+                            <tr>
+                                <td>Total</td>
+                                <td class="modal-print-trans-total">:</td>
+                            </tr>
+                            <tr>
+                                <td>Metode Pembayaran</td>
+                                <td class="modal-print-payment-method">:</td>
+                            </tr>                                             
                             <tr>
                                 <td><?php echo $contact_1_alias?></td>
                                 <td>:<input id="modal-print-contact-name" name="modal-contact-name" value="" style="border:none!important;"></td>

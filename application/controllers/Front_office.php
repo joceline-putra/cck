@@ -3300,7 +3300,7 @@ class Front_office extends MY_Controller{
                         '2' => 'branch_name',
                         '3' => 'product_name',
                         '4' => 'trans_total',
-                        '5' => 'label'
+                        '5' => 'trans_contact_name'
                     );                
                     $limit      = $this->input->post('length');
                     $start      = $this->input->post('start');
@@ -3658,7 +3658,10 @@ class Front_office extends MY_Controller{
                         $sales_id               = !empty($post['sales_id']) ? $post['sales_id'] : null;                                                
                         // $payment_method         = !empty($datas['payment_method']) ? intval($datas['payment_method']) : 0;
                         $trans_product_id       = !empty($post['trans_product_id']) ? $post['trans_product_id'] : null;
-                        $trans_branch_id       = !empty($post['trans_branch_id']) ? $post['trans_branch_id'] : null;                        
+                        $trans_branch_id       = !empty($post['trans_branch_id']) ? $post['trans_branch_id'] : null;     
+                        
+                        $trans_total       = !empty($post['trans_total']) ? $post['trans_total'] : null;
+                        $payment_method       = !empty($post['payment_method']) ? $post['payment_method'] : null;                             
                         
                         $document_session       = $this->random_code(20);
                         $document_number        = $this->request_number_for_transaction($this->resto_identity);
@@ -3683,12 +3686,12 @@ class Front_office extends MY_Controller{
                             // 'trans_total_ppn' => 0,
                             // 'trans_discount' => 0,
                             // 'trans_voucher' => 0,
-                            // 'trans_total' => $total,
-                            // 'trans_total_paid' => $total,
+                            'trans_total' => $trans_total,
+                            'trans_total_paid' => $trans_total,
                             // 'trans_change' => $total_change,
-                            // 'trans_received' => $total_received,
-                            // 'trans_paid' => 1,
-                            // 'trans_paid_type' => $payment_method,
+                            'trans_received' => $trans_total,
+                            'trans_paid' => 1,
+                            'trans_paid_type' => ($payment_method == 'CASH') ? "1" : "2",
                             'trans_session' => $document_session,
                             //   'trans_ppn' => !empty($post['trans_ppn']) ? $post['trans_voucher_id'] : null,
                             'trans_sales_id' => $sales_id,
@@ -3806,6 +3809,8 @@ class Front_office extends MY_Controller{
                                     'number' => $get_trans['trans_number'],
                                     'date' => $get_trans['trans_date'],                                    
                                     'session' => $get_trans['trans_session'],
+                                    'total' => $trans_total,
+                                    'payment_method' => $payment_method,
                                     'contact' => array(
                                         'id' => $set_contact_id,
                                         'name' => $set_contact_name,

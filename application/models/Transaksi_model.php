@@ -153,6 +153,7 @@ class Transaksi_model extends CI_Model{
         $this->db->join('references AS label','label.ref_name=trans_label','left');        
         // $this->db->join('categories','categories.category_id=contacts.contact_category_id','left');
         $this->db->join('branchs','trans.trans_branch_id=branchs.branch_id','left');        
+        $this->db->join('products','trans.trans_product_id=products.product_id','left');                
         $this->set_params($params);
         $this->set_search($search);            
         return $this->db->count_all_results();
