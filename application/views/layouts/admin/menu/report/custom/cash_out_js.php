@@ -103,7 +103,7 @@
 					var query = {
 						search: params.term,
 						group_sub:3,
-						source: 'accounts'
+						source: 'accounts_branch_1'
 					}      
 					return query;  
 				},
@@ -124,7 +124,7 @@
 			templateResult: function(datas){ //When Select on Click
 				if (!datas.id) { return datas.text; }
 				if($.isNumeric(datas.id) == true){
-					return '<i class="fas fa-balance-scale"></i> '+datas.text;
+					// return '<i class="fas fa-balance-scale"></i> '+datas.nama;
 					return datas.text;          
 				}
 			},
@@ -132,8 +132,8 @@
 				if (!datas.id) { return datas.text; }
 				//Custom Data Attribute         
 				if($.isNumeric(datas.id) == true){
+					// return datas.nama;
 					return datas.text;
-					return '<i class="fas fa-balance-scale"></i> '+datas.text;
 				}
 			}
 		});
@@ -171,7 +171,7 @@
 			"columnDefs": [
 				{"targets":0, "width":"15%", "title":"Tanggal","searchable":true,"orderable":true},   
 				{"targets":1, "width":"20%", "title":"Nomor","searchable":true,"orderable":true},
-				{"targets":2, "width":"20%", "title":"Keluar Dari","searchable":true,"orderable":true},
+				{"targets":2, "width":"20%", "title":"Metode Bayar","searchable":true,"orderable":true},
 				{"targets":3, "width":"25%", "title":"Keterangan","searchable":true,"orderable":true,"class":"text-left"},
 				{"targets":4, "width":"20", "title":"Total","searchable":false,"orderable":false,"class":"text-right"}                        
 			],
@@ -206,7 +206,7 @@
 					'data': 'account_name',
 					render:function(data,meta,row){
 						var dsp ='';
-						dsp += '<a class="btn-print" data-id="'+row.account_id+'" style="cursor:pointer;">'+row.account_code+'<br>'+row.account_name+'</a>';
+						dsp += '<a class="btn-print" data-id="'+row.account_id+'" style="cursor:pointer;">'+row.account_name+'</a>';
 						return dsp;
 					}
 				},{

@@ -94,7 +94,7 @@
 										</div>
 										<div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 padding-remove-left" style="margin-top:4px;">
 											<select id="filter_account" name="filter_account" class="form-control" style="height:31px!important;border:0px!important;background-color:#ecf0f2;">
-												<option value="0" selected>Semua Akun Perkiraan</option>
+												<option value="0" selected>Semua</option>
 											</select>
 										</div>										
 										<div class="col-lg-3 col-md-12 col-xs-12 col-sm-12 padding-remove-left" style="margin-top:4px;">

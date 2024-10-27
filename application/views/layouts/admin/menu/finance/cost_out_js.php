@@ -128,7 +128,7 @@
                     'data': 'account_name',
                     render:function(data,meta,row){
                         var dsp = '';
-                        dsp += row.account_code+' - '+row.account_name;
+                        dsp += row.account_name;
                         return dsp;
                     }
                 }, {
@@ -333,21 +333,21 @@
             },
             templateResult: function (datas) { //When Select on Click
                 if (!datas.id) {
-                    return datas.text;
+                    return datas.nama;
                 }
                 if ($.isNumeric(datas.id) == true) {
                     // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                    return datas.text;
+                    return datas.nama;
                     // }else{
                     // return '<i class="fas fa-plus '+datas.id.toLowerCase()+'"></i> '+datas.text;    
                 }
             },
             templateSelection: function (datas) { //When Option on Click
                 if (!datas.id) {
-                    return datas.text;
+                    return datas.nama;
                 }
                 //Custom Data Attribute         
-                return '<i class="fas fa-balance-scale ' + datas.id.toLowerCase() + '"></i> ' + datas.text;
+                return datas.nama;
             }
         });
         $('#filter_kontak').select2({
@@ -431,12 +431,12 @@
             },
             templateResult: function (datas) { //When Select on Click
                 if (!datas.id) {
-                    return datas.text;
+                    return datas.nama;
                 }
                 // return '<i class="fas fa-balance-scale '+datas.id.toLowerCase()+'"></i> '+datas.text;
                 if ($.isNumeric(datas.id) == true) {
                     // return '<i class="fas fa-user-check '+datas.id.toLowerCase()+'"></i> '+datas.text;
-                    return datas.text;
+                    return datas.nama;
                 } else {
                     // return '<i class="fas fa-plus '+datas.id.toLowerCase()+'"></i> '+datas.text;    
                 }
@@ -1673,7 +1673,7 @@
         //Attr Input yang perlu di setel
         var form = '#form-trans';
         var attrInput = [
-            "nomor",
+            // "nomor",
             // "jumlah",
             "keterangan"
         ];

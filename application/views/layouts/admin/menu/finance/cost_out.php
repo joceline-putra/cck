@@ -110,7 +110,7 @@
         <ul class="nav nav-tabs" role="tablist" style="display:inline;">           
             <li class="active">
                 <a href="#tab2" role="tab" class="btn-tab-2" data-toggle="tab" aria-expanded="false">
-                <span class="fas fa-calendar-alt"></span> Form</a>
+                <span class="fas fa-calendar-alt"></span> Form Biaya</a>
             </li>     
             <li class="">
                 <a href="#tab1" role="tab" class="btn-tab-1" data-toggle="tab" aria-expanded="true" style="cursor:pointer;">

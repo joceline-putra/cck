@@ -774,8 +774,8 @@ class Search extends MY_Controller{
 
                 if(!empty($terms)){
                     $prepare = "
-                        SELECT account_id AS id, account_name AS nama, account_branch_id,
-                            (SELECT CONCAT(IFNULL(`account_code`,''),' - ',IFNULL(`account_name`,''))) AS `text` 
+                        SELECT account_id AS id, LTRIM(account_name) AS nama, account_branch_id,
+                            LTRIM(account_name) AS `text` 
                         FROM accounts
                         WHERE account_code LIKE '%".$terms."%' OR account_name LIKE '%".$terms."%' 
                         AND account_flag=1 AND account_branch_id=1
@@ -784,8 +784,8 @@ class Search extends MY_Controller{
                     $query = $this->db->query($prepare);
                 }else{
                     $prepare = "
-                        SELECT account_id AS id, account_name AS nama, account_branch_id,
-                            (SELECT CONCAT(IFNULL(`account_code`,''),' - ',IFNULL(`account_name`,''))) AS `text` 
+                        SELECT account_id AS id, LTRIM(account_name) AS nama, account_branch_id,
+                            LTRIM(account_name) AS `text` 
                         FROM accounts
                         WHERE account_flag=1 AND account_branch_id=1
                         ".$where_group." ".$where_group_sub."
