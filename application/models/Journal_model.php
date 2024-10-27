@@ -576,17 +576,19 @@ class Journal_model extends CI_Model{
         return $this->db->get()->result_array();
     }  
     function get_all_resto_paid($params){
-        $this->db->select('trans_paid, IFNULL(SUM(trans_total),0) AS trans_total');                
+        $this->db->select('trans_paid_type, IFNULL(SUM(trans_total),0) AS trans_total');                
         $this->db->from('trans');
         // $this->db->join('orders','orders_paids.paid_order_id=orders.order_id','left');
         $this->db->where($params);           
-        // $this->db->group_by('order_paid');        
+        $this->db->group_by('trans_paid_type');        
         return $this->db->get()->result_array();
     }      
     function get_all_sum_cost($params){
-        $this->db->select('IFNULL(SUM(journal_item_debit),0) AS journal_item_debit');                
+        $this->db->select('account_id, account_name, account_code, IFNULL(SUM(journal_item_debit),0) AS journal_item_debit');                
         $this->db->from('journals_items');
         $this->db->join('journals','journals_items.journal_item_journal_id=journals.journal_id','left');
+        $this->db->join('accounts','journals.journal_account_id=accounts.account_id','left');        
+        $this->db->group_by('journal_account_id');           
         $this->db->where($params);           
         return $this->db->get()->result_array();
     }    

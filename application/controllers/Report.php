@@ -3253,7 +3253,7 @@ class Report extends MY_Controller{
         // }
 
         $paid_data = []; $booking_data = []; $cost_data = []; $resto_total = [];
-        $booking_data = $this->Journal_model->get_all_booking_paid($params_paid);
+        // $booking_data = $this->Journal_model->get_all_booking_paid($params_paid);
         $paid_data = $this->Journal_model->get_all_sum_paid($params_paid);
         $cost_data = $this->Journal_model->get_all_sum_cost($params_cost);   
         $resto_data = $this->Journal_model->get_all_resto_paid($params_resto);                
@@ -3267,7 +3267,7 @@ class Report extends MY_Controller{
             'resto' => $resto_data,
             'cost' => $cost_data
         ];
-        // var_dump($data['content']);die;
+        // var_dump($data['content']['resto']);die;
         $data['title']              = "Laporan Rekap";
         $data['contact_alias']      = $this->customer_alias;
         $data['employee_alias']     = $this->employee_alias;

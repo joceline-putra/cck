@@ -66,15 +66,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr style="background-color:#eaeaea;">
+                        <td>Booking</td>                   
+                        <td style="text-align:right;"></td>     
+                    </tr>                    
                     <?php 
-                    $num=1;      
-                    foreach($content['booking'] as $v):
-                        $ototal = !empty($v['order_total']) ? $v['order_total'] : 0;
-                        echo '<tr>';
-                            echo '<td>Booking</td>';
-                            echo '<td style="text-align:right;">'.number_format($ototal).'</td>';
-                        echo '</tr>';                                              
-                    endforeach;
+                    // $num=1;      
+                    // foreach($content['booking'] as $v):
+                    //     $ototal = !empty($v['order_total']) ? $v['order_total'] : 0;
+                    //     echo '<tr style="background-color:#eaeaea;">';
+                    //         echo '<td>Booking</td>';
+                    //         // echo '<td style="text-align:right;">'.number_format($ototal).'</td>';
+                    //         echo '<td style="text-align:right;"></td>';                            
+                    //     echo '</tr>';                                              
+                    // endforeach;
                     ?>  
                     <?php 
                     $num=1;      
@@ -86,22 +91,42 @@
                         echo '</tr>';                                              
                     endforeach;
                     ?>  
+                    <tr style="background-color:#eaeaea;">
+                        <td>Warmindo</td>                   
+                        <td style="text-align:right;"></td>     
+                    </tr>                    
                     <?php 
                     $num=1;      
                     foreach($content['resto'] as $v):
                         $ttotal = !empty($v['trans_total']) ? $v['trans_total'] : 0;
+                        if($v['trans_paid_type'] == 1){
+                            $s = 'Cash';
+                        }else if($v['trans_paid_type'] == 2){
+                            $s = 'Transfer';
+                        }else{
+                            $s = 'Tidak diketahui';
+                        }
                         echo '<tr>';
-                            echo '<td>Resto</td>';
+                            echo '<td>&nbsp;&nbsp;&nbsp;- '.$s.'</td>';
                             echo '<td style="text-align:right;">'.number_format($ttotal).'</td>';
                         echo '</tr>';                                              
                     endforeach;
-                    ?>                       
+                    ?>          
+                    <tr style="background-color:#eaeaea;">
+                        <td>Biaya</td>                   
+                        <td style="text-align:right;"></td>     
+                    </tr>                                    
                     <?php 
                     $num=1;      
                     foreach($content['cost'] as $v):
-                        $ctotal = !empty($v['journal_item_debit']) ? $v['journal_item_debit'] : 0;                               
+                        $ctotal = !empty($v['journal_item_debit']) ? $v['journal_item_debit'] : 0;      
+                        if($v['account_id'] > 0){
+                            $s = $v['account_name'];
+                        }else{
+                            $s = 'Tidak diketahui';
+                        }                                                 
                         echo '<tr>';
-                            echo '<td>Biaya</td>';
+                            echo '<td>&nbsp;&nbsp;&nbsp;- '.$s.'</td>';
                             echo '<td style="text-align:right;">'.number_format($ctotal).'</td>';
                         echo '</tr>';                                              
                     endforeach;
