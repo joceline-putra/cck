@@ -42,7 +42,13 @@ class Front_model extends CI_Model{
         $this->db->join('products','product_id=order_item_product_id','left');  
         $this->db->join("branchs","order_branch_id=branch_id","left");                
         $this->db->join('users','order_user_id=user_id','left');        
-        $this->db->join('(SELECT * FROM orders_paids GROUP BY paid_order_id ORDER BY paid_id ASC) AS orders_paids','orders_paids.paid_order_id=orders.order_id','left');
+        // $this->db->join('(SELECT * FROM orders_paids GROUP BY paid_order_id ORDER BY paid_id ASC) AS orders_paids','orders_paids.paid_order_id=orders.order_id','left');
+        $this->db->join("(SELECT orders_paids.*, SUM(paid_total) AS paid_total_all, GROUP_CONCAT(paid_payment_method SEPARATOR ', ') AS paid_payment_method_all 
+        FROM orders_paids 
+        GROUP BY paid_order_id 
+        ORDER BY paid_id ASC) AS orders_paids",
+        "orders_paids.paid_order_id=orders.order_id",
+        "left");        
     }
     
     function set_join_paid(){
@@ -66,7 +72,8 @@ class Front_model extends CI_Model{
         $this->db->select("order_item_expired_time, TIMESTAMPDIFF(MINUTE, NOW(), order_item_end_date) AS order_item_expired_time_2");        
         $this->db->select("branch_id, branch_name, branch_code");         
         $this->db->select("user_id, user_username");      
-        $this->db->select("paid_id, paid_payment_method, paid_order_id, paid_number");                
+        // $this->db->select("paid_id, paid_payment_method, paid_order_id, paid_number");            
+        $this->db->select("paid_id, paid_payment_method, paid_order_id, paid_number, paid_payment_method, paid_total_all, paid_payment_method_all");    
     }
     
     function set_select_paid(){

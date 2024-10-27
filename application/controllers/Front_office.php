@@ -232,11 +232,17 @@ class Front_office extends MY_Controller{
                         $params['order_item_flag_checkin'] = $post['filter_flag_checkin'];
                     }            
                     if($post['filter_payment_method'] !== "All") {
-                        $params['paid_payment_method'] = $post['filter_payment_method'];
+                        if($post['filter_payment_method'] == "CASH_AND_TRANSFER"){
+                            $search['paid_payment_method_all'] = "CASH, TRANSFER";
+                            // $search['paid_payment_method_all'] = "TRANSFER";                            
+                        }else{
+                            $params['paid_payment_method_all'] = $post['filter_payment_method'];
+                        }
                     }                          
                     if(!empty($post['filter_user']) && (intval($post['filter_user']) > 0)) {
                         $params['order_item_user_id'] = intval($post['filter_user']);
-                    }                                                             
+                    }        
+                                                                     
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
                     // }            
@@ -255,6 +261,7 @@ class Front_office extends MY_Controller{
                         $return->result          = [];
                     }
                     $return->params = $params;
+                    $return->search = $search;                    
                     $return->message             = 'Load '.$return->total_records.' data';
                     $return->recordsTotal        = $return->total_records;
                     $return->recordsFiltered     = $return->total_records;
@@ -304,9 +311,9 @@ class Front_office extends MY_Controller{
                     if($post['filter_ref'] !== "All") {
                         $params['order_item_ref_id'] = intval($post['filter_ref']);
                     }                    
-                    if($post['filter_payment_method'] !== "All") {
-                        $params['paid_payment_method'] = $post['filter_payment_method'];
-                    }     
+                    // if($post['filter_payment_method'] !== "All") {
+                    //     $params['paid_payment_method'] = $post['filter_payment_method'];
+                    // }     
                                      
                     // if($post['filter_ref_price'] !== "All") {
                     //     $params['order_item_ref_id'] = $post['filter_ref'];
@@ -383,9 +390,14 @@ class Front_office extends MY_Controller{
                     if($post['filter_ref'] !== "All") {
                         $params['order_item_ref_id'] = intval($post['filter_ref']);
                     }                    
-                    // if($post['filter_payment_method'] !== "All") {
-                    //     $params['paid_payment_method'] = $post['filter_payment_method'];
-                    // }
+                    if($post['filter_payment_method'] !== "All") {
+                        if($post['filter_payment_method'] == "CASH_AND_TRANSFER"){
+                            $search['paid_payment_method_all'] = "CASH, TRANSFER";
+                            // $search['paid_payment_method_all'] = "TRANSFER";                            
+                        }else{
+                            $params['paid_payment_method_all'] = $post['filter_payment_method'];
+                        }
+                    } 
                     if($post['filter_flag_checkin'] !== "All") {
                         $params['order_item_flag_checkin'] = $post['filter_flag_checkin'];
                     }                                                            
@@ -395,7 +407,7 @@ class Front_office extends MY_Controller{
                     if($post['filter_paid_flag'] !== "All") {
                         $params['order_paid'] = intval($post['filter_paid_flag']);
                     }                                        
-
+                    // var_dump($search);die;
                     $get_count = $this->Front_model->get_all_booking_item_count($params, $search);
                     if($get_count > 0){
                         $get_data = $this->Front_model->get_all_booking_item($params, $search, $limit, $start, $order, $dir);
@@ -407,6 +419,7 @@ class Front_office extends MY_Controller{
                         $return->result          = [];
                     }
                     $return->params = $params;
+                    $return->search = $search;                    
                     $return->message             = 'Load '.$return->total_records.' data';
                     $return->recordsTotal        = $return->total_records;
                     $return->recordsFiltered     = $return->total_records;
@@ -464,9 +477,17 @@ class Front_office extends MY_Controller{
                     if($post['filter_ref'] !== "All") {
                         $params['order_item_ref_id'] = intval($post['filter_ref']);
                     }                 
+                    // if($post['filter_payment_method'] !== "All") {
+                    //     $params['paid_payment_method'] = $post['filter_payment_method'];
+                    // }           
                     if($post['filter_payment_method'] !== "All") {
-                        $params['paid_payment_method'] = $post['filter_payment_method'];
-                    }           
+                        if($post['filter_payment_method'] == "CASH_AND_TRANSFER"){
+                            $search['paid_payment_method_all'] = "CASH, TRANSFER";
+                            // $search['paid_payment_method_all'] = "TRANSFER";                            
+                        }else{
+                            $params['paid_payment_method_all'] = $post['filter_payment_method'];
+                        }
+                    }                    
                     if($post['filter_flag_checkin'] !== "All") {
                         $params['order_item_flag_checkin'] = $post['filter_flag_checkin'];
                     }      

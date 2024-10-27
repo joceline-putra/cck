@@ -136,7 +136,7 @@
             language: "id",
             todayHighlight: true,
             weekStart: 1 
-        }).on('change', function(e){
+        }).on('changeDate', function(e){
             e.stopImmediatePropagation();
             order_table.ajax.reload();
         });
@@ -192,7 +192,7 @@
                 {"targets":0, "title":"Action", "searchable":false, "orderable":false},                    
                 {"targets":1, "title":"Status", "searchable":false, "orderable":true},               
                 {"targets":2, "title":"Tgl", "searchable":true, "orderable":true},
-                {"targets":3, "title":"Nomor", "searchable":true, "orderable":true},
+                {"targets":3, "title":"No. Book", "searchable":true, "orderable":true},
                 {"targets":4, "title":"Type", "searchable":false, "orderable":false},
                 {"targets":5, "title":"Kamar", "searchable":false, "orderable":false},            
                 {"targets":6, "title":"Kontak", "searchable":true, "orderable":false},
@@ -439,6 +439,13 @@
                         var set_product = row.order_item_type_2 + ' | ' + row.ref_name + ' | ' +row.product_name + ' | ' + row.price_name;
                         var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
                         dsp += '<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="'+ic+'"></span>&nbsp;'+sts+'</span>';
+                        
+                        var paid_method = row.paid_payment_method_all;
+                        if(paid_method.length > 9){
+                            dsp += '<br><div style="margin-top: 4px;"><span class="label label-inverse">CASH & TRANSFER</span></div>';
+                        }else{
+                            dsp += '<br><div style="margin-top: 4px;"><span class="label label-inverse">'+row.paid_payment_method+'</span></div>';
+                        }
                         return dsp;
                     }
                 },{

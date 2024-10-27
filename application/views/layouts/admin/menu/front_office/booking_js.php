@@ -275,7 +275,7 @@
             "columnDefs": [
                 {"targets":0, "title":"Action", "searchable":true, "orderable":true},                
                 {"targets":1, "title":"Tgl", "searchable":true, "orderable":true},
-                {"targets":2, "title":"Nomor", "searchable":true, "orderable":true},
+                {"targets":2, "title":"No. Book", "searchable":true, "orderable":true},
                 {"targets":3, "title":"Type", "searchable":true, "orderable":true},
                 {"targets":4, "title":"Kamar", "searchable":true, "orderable":true},            
                 {"targets":5, "title":"Kontak", "searchable":true, "orderable":true},
@@ -285,7 +285,7 @@
                 {"targets":9, "title":"Sisa", "searchable":false, "orderable":true},                    
                 {"targets":10, "title":"Attachment", "searchable":false, "orderable":true},                                
             ],
-            "order": [[0, 'ASC']],
+            "order": [[1, 'DESC']],
             "columns": [
                 {
                     'data': 'order_id',
@@ -430,7 +430,8 @@
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        dsp += row.order_contact_name;
+                        dsp += row.order_contact_name+'<br>';
+                        dsp += row.order_contact_phone;                        
                         return dsp;
                     }
                 },{
@@ -438,7 +439,7 @@
                     className: 'text-left',
                     render: function(data, meta, row) {
                         var dsp = '';
-                        dsp += addCommas(row.order_total_paid);
+                        dsp += addCommas(row.order_total);                    
                         return dsp;
                     }
                 },{
@@ -447,9 +448,18 @@
                     render: function(data, meta, row) {
                         var dsp = '';
                         if(parseInt(row.order_paid) == 0){
-                            var sts = 'Belum Lunas';
-                            var ic = 'fas fa-thumbs-down';
-                            var lg = 'danger';
+                            // var sts = 'Belum Lunas';
+                            // var ic = 'fas fa-thumbs-down';
+                            // var lg = 'danger';
+                            if(row.order_total_paid > 0){
+                                var sts = 'DP '+numberWithCommas(row.order_total_paid);
+                                var ic = '';
+                                var lg = 'danger';
+                            }else{
+                                var sts = 'DP';
+                                var ic = 'fas fa-thumbs-down';
+                                var lg = 'danger';
+                            }                            
                         }else if(parseInt(row.order_paid) == 1){
                             var sts = 'Lunas';
                             var ic = 'fas fa-thumbs-up';
@@ -459,7 +469,15 @@
                         var st = 'data-product="'+set_product+'" data-id="'+row.order_id+'" data-from="orders" data-number="'+row.order_number+'" data-contact-name="'+row.order_contact_name+'" data-contact-id="'+row.contact_id+'" data-date="'+ moment(row.order_item_start_date).format("DD-MMM-YYYY, HH:mm")+'" data-total="'+ addCommas(row.order_total)+'" data-type="'+row.order_type+'" data-contact-type="'+row.contact_type+'"';
                         dsp += '<span '+st+' class="btn_paid_info label label-'+lg+'" style="cursor:pointer;color:white;"><span class="'+ic+'"></span>&nbsp;'+sts+'</span>';
                         
-                        dsp += '<br>'+row.user_username;
+                        dsp += '&nbsp;'+row.user_username;
+
+                        var paid_method = row.paid_payment_method_all;
+                        if(paid_method.length > 9){
+                            dsp += '<br><div style="margin-top: 4px;"><span class="label label-inverse">CASH & TRANSFER</span></div>';
+                        }else{
+                            dsp += '<br><div style="margin-top: 4px;"><span class="label label-inverse">'+row.paid_payment_method+'</span></div>';
+                        }
+                                                
                         return dsp;
                     }
                 },{
