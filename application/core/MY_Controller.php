@@ -779,7 +779,7 @@ class MY_Controller extends CI_Controller{
         }
         return $r;
     }
-    public function file_upload($path = null, $file, $params = null) { //Binary Upload File
+    public function file_upload($path = null, $file = null, $params = null) { //Binary Upload File
         $return          = new \stdClass();
         $return->status  = 0;
         $return->message = '';
