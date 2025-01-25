@@ -27,49 +27,7 @@ $next = true;
                     <i class="fas fa-home"></i>
                     <span class="title">Beranda</span> <span class="selected"></span>
                 </a>            
-            </li>
-            <?php
-            if($session['user_data']['user_group_id'] == 1){
-            ?>
-                <li id="report" class="start open" style="display:inline;"> 
-                    <a href="<?php echo base_url('report'); ?>">
-                        <!-- <i class="fa fa-home" style=""></i> -->
-                        <span class="material-icons">summarize</span>
-                        <span class="title">Laporan v2</span> <span class="selected"></span>
-                    </a>
-                    <ul class="open sub-menu" style="display:block;">
-                        <li class="start open li-report"> 
-                            <a style="padding-left: 38px!important;">
-                                <span class="title">Pendapatan</span> <span class="selected"></span>
-                            </a> 
-                            <ul class="open sub-menu" style="display:block;">
-                                <li class="start"> 
-                                    <a href="<?php echo base_url('report/sales/order/detail'); ?>" style="">
-                                        <span class="title">Booking</span> <span class="selected"></span>
-                                    </a> 
-                                </li>  
-                                <li class="start"> 
-                                    <a href="<?php echo base_url('report/sales/sell/detail'); ?>" style="">
-                                        <span class="title">Resto</span> <span class="selected"></span>
-                                    </a> 
-                                </li>  
-                                <li class="start"> 
-                                    <a href="<?php echo base_url('report/finance/cash_out'); ?>" style="">
-                                        <span class="title">Pengeluaran</span> <span class="selected"></span>
-                                    </a> 
-                                </li> 
-                                <li class="start"> 
-                                    <a href="<?php echo base_url('report/finance/cash_flow'); ?>" style="">
-                                        <span class="title">Rekap</span> <span class="selected"></span>
-                                    </a> 
-                                </li>                                                  
-                            </ul>                 
-                        </li>
-                    </ul>        
-                </li>   
-            <?php                
-            }
-            ?>          
+            </li>     
             <?php  
             if ($next) {
                 ?>
@@ -103,6 +61,50 @@ $next = true;
                             </li> 
                             <?php } else {
                             ?>
+
+                            <?php //Laporan v2s
+                            if($session['user_data']['user_group_id'] == 1){
+                            ?>
+                                <li id="report" class="start open" style="display:inline;"> 
+                                    <a href="<?php echo base_url('report'); ?>">
+                                        <!-- <i class="fa fa-home" style=""></i> -->
+                                        <span class="material-icons">summarize</span>
+                                        <span class="title">Laporan v2</span> <span class="selected"></span>
+                                    </a>
+                                    <ul class="open sub-menu" style="display:block;">
+                                        <li class="start open li-report"> 
+                                            <a style="padding-left: 38px!important;">
+                                                <span class="title">Pendapatan</span> <span class="selected"></span>
+                                            </a> 
+                                            <ul class="open sub-menu" style="display:block;">
+                                                <li class="start"> 
+                                                    <a href="<?php echo base_url('report/sales/order/detail'); ?>" style="">
+                                                        <span class="title">Booking</span> <span class="selected"></span>
+                                                    </a> 
+                                                </li>  
+                                                <li class="start"> 
+                                                    <a href="<?php echo base_url('report/sales/sell/detail'); ?>" style="">
+                                                        <span class="title">Resto</span> <span class="selected"></span>
+                                                    </a> 
+                                                </li>  
+                                                <li class="start"> 
+                                                    <a href="<?php echo base_url('report/finance/cash_out'); ?>" style="">
+                                                        <span class="title">Pengeluaran</span> <span class="selected"></span>
+                                                    </a> 
+                                                </li> 
+                                                <li class="start"> 
+                                                    <a href="<?php echo base_url('report/finance/cash_flow'); ?>" style="">
+                                                        <span class="title">Rekap</span> <span class="selected"></span>
+                                                    </a> 
+                                                </li>                                                  
+                                            </ul>                 
+                                        </li>
+                                    </ul>        
+                                </li>   
+                            <?php                
+                            }
+                            ?>
+
                             <li id="report" class="start open"> 
                                 <a href="<?php echo base_url('report'); ?>">
                                     <span class="material-icons">summarize</span>

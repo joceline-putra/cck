@@ -2712,6 +2712,7 @@ class Front_office extends MY_Controller{
                         if(intval($check_date_is_past) < 0){
                             $next = false;
                             $message = 'Tanggal Mulai tidak boleh mundur';
+                            $return->message = 'Tanggal Mulai tidak boleh mundur';                            
                         }
 
                         if($next){
@@ -2719,13 +2720,14 @@ class Front_office extends MY_Controller{
                             if(intval($check_date_is_past2) < 0){
                                 $next = false;
                                 $message = 'Tanggal Akhir sudah lewat';
+                                $return->message = 'Tanggal Akhir sudah lewat';                                
                             }         
                         }
                         
                         if($session_user_group_id < 3){
                             $next=true;
                         }
-
+                        // var_dump($next);die;
                         //Continue Save
                         if($next){
                             //Get Previous Order_item 
